@@ -7,7 +7,9 @@
 			],
 			"source": "FTD",
 			"page": 161,
-			"size": "H",
+			"size": [
+				"H"
+			],
 			"type": {
 				"type": "dragon",
 				"tags": [
@@ -216,7 +218,7 @@
 									"items": [
 										{
 											"type": "item",
-											"name": "Change Shape.",
+											"name": "Change Shape",
 											"entries": [
 												"You can decide that a dragon acquires this action at a younger age than usual, particularly if you want to feature a dragon in Humanoid form in your campaign:",
 												"The dragon magically polymorphs into a humanoid or beast that has a challenge rating no higher than its own, or back into its true form. It reverts to its true form if it dies. Any equipment it is wearing or carrying is absorbed or borne by the new form (the dragon's choice).",
@@ -225,7 +227,7 @@
 										},
 										{
 											"type": "item",
-											"name": "Flyby,",
+											"name": "Flyby",
 											"entries": [
 												"The dragon is an agile flier, quick to fly out of enemies' reach.",
 												"The dragon doesn't provoke an opportunity attack when it flies out of an enemy's reach."
@@ -233,7 +235,7 @@
 										},
 										{
 											"type": "item",
-											"name": "Mimicry.",
+											"name": "Mimicry",
 											"entries": [
 												"Impersonating characters or their allies could be a fun trick for a crafty dragon.",
 												"The dragon can mimic any sounds it has heard, including voices. A creature that hears the sounds can tell they are imitations with a successful {@dc 13} Wisdom ({@skill Insight}) check."
@@ -241,7 +243,7 @@
 										},
 										{
 											"type": "item",
-											"name": "Rejuvenation.",
+											"name": "Rejuvenation",
 											"entries": [
 												"You might decide that dragons in your campaign, being an essential part of the Material Plane, are nearly impossible to destroy. A dragon's life essence might be preserved in the egg from which it first emerged, in its hoard, or in a cavernous hall at the center of the world, just as a lich's essence is hidden in a phylactery.",
 												"If it has an essence-preserving object, a destroyed dragon gains a new body in {@dice 1d10} days, regaining all its hit points and becoming active again. The new body appears within 5 feet of the object."
@@ -249,9 +251,9 @@
 										},
 										{
 											"type": "item",
-											"name": "Special Senses.",
+											"name": "Special Senses",
 											"entries": [
-												"Most dragons have {@sense blindsight} and {@sense darkvision}. You might upgrade {@sense blindsight} to {@sense truesight}, or you could give a dragon with a burrowing speed {@sense tremorsense}."
+												"Most dragons have {@sense blindsight} and {@sense darkvision}. You might upgrade {@sense blindsight} to {@sense truesight}, or you could give a dragon with a burrowing speed {@sense tremorsense|MM}."
 											]
 										}
 									]
@@ -261,6 +263,7 @@
 					]
 				}
 			],
+			"dragonAge": "adult",
 			"traitTags": [
 				"Amphibious",
 				"Legendary Resistances"
@@ -283,6 +286,9 @@
 				"O",
 				"P",
 				"S"
+			],
+			"damageTagsSpell": [
+				"B"
 			],
 			"spellcastingTags": [
 				"P"
@@ -309,7 +315,9 @@
 			],
 			"source": "FTD",
 			"page": 171,
-			"size": "H",
+			"size": [
+				"H"
+			],
 			"type": {
 				"type": "dragon",
 				"tags": [
@@ -508,7 +516,7 @@
 									"items": [
 										{
 											"type": "item",
-											"name": "Change Shape.",
+											"name": "Change Shape",
 											"entries": [
 												"You can decide that a dragon acquires this action at a younger age than usual, particularly if you want to feature a dragon in Humanoid form in your campaign:",
 												"The dragon magically polymorphs into a humanoid or beast that has a challenge rating no higher than its own, or back into its true form. It reverts to its true form if it dies. Any equipment it is wearing or carrying is absorbed or borne by the new form (the dragon's choice).",
@@ -517,7 +525,7 @@
 										},
 										{
 											"type": "item",
-											"name": "Flyby,",
+											"name": "Flyby",
 											"entries": [
 												"The dragon is an agile flier, quick to fly out of enemies' reach.",
 												"The dragon doesn't provoke an opportunity attack when it flies out of an enemy's reach."
@@ -525,7 +533,7 @@
 										},
 										{
 											"type": "item",
-											"name": "Mimicry.",
+											"name": "Mimicry",
 											"entries": [
 												"Impersonating characters or their allies could be a fun trick for a crafty dragon.",
 												"The dragon can mimic any sounds it has heard, including voices. A creature that hears the sounds can tell they are imitations with a successful {@dc 12} Wisdom ({@skill Insight}) check."
@@ -533,7 +541,7 @@
 										},
 										{
 											"type": "item",
-											"name": "Rejuvenation.",
+											"name": "Rejuvenation",
 											"entries": [
 												"You might decide that dragons in your campaign, being an essential part of the Material Plane, are nearly impossible to destroy. A dragon's life essence might be preserved in the egg from which it first emerged, in its hoard, or in a cavernous hall at the center of the world, just as a lich's essence is hidden in a phylactery.",
 												"If it has an essence-preserving object, a destroyed dragon gains a new body in {@dice 1d10} days, regaining all its hit points and becoming active again. The new body appears within 5 feet of the object."
@@ -541,14 +549,14 @@
 										},
 										{
 											"type": "item",
-											"name": "Special Senses.",
+											"name": "Special Senses",
 											"entries": [
-												"Most dragons have {@sense blindsight} and {@sense darkvision}. You might upgrade {@sense blindsight} to {@sense truesight}, or you could give a dragon with a burrowing speed {@sense tremorsense}."
+												"Most dragons have {@sense blindsight} and {@sense darkvision}. You might upgrade {@sense blindsight} to {@sense truesight}, or you could give a dragon with a burrowing speed {@sense tremorsense|MM}."
 											]
 										},
 										{
 											"type": "item",
-											"name": "Tunneler.",
+											"name": "Tunneler",
 											"entries": [
 												"The dragon can burrow through solid rock at half its burrowing speed and leaves a tunnel in its wake."
 											]
@@ -560,6 +568,7 @@
 					]
 				}
 			],
+			"dragonAge": "adult",
 			"traitTags": [
 				"Legendary Resistances"
 			],
@@ -582,6 +591,9 @@
 				"R",
 				"S"
 			],
+			"damageTagsLegendary": [
+				"R"
+			],
 			"spellcastingTags": [
 				"P"
 			],
@@ -603,7 +615,9 @@
 			"name": "Adult Deep Dragon",
 			"source": "FTD",
 			"page": 174,
-			"size": "H",
+			"size": [
+				"H"
+			],
 			"type": "dragon",
 			"alignment": [
 				"N",
@@ -778,7 +792,7 @@
 									"items": [
 										{
 											"type": "item",
-											"name": "Change Shape.",
+											"name": "Change Shape",
 											"entries": [
 												"You can decide that a dragon acquires this action at a younger age than usual, particularly if you want to feature a dragon in Humanoid form in your campaign:",
 												"The dragon magically polymorphs into a humanoid or beast that has a challenge rating no higher than its own, or back into its true form. It reverts to its true form if it dies. Any equipment it is wearing or carrying is absorbed or borne by the new form (the dragon's choice).",
@@ -787,7 +801,7 @@
 										},
 										{
 											"type": "item",
-											"name": "Flyby,",
+											"name": "Flyby",
 											"entries": [
 												"The dragon is an agile flier, quick to fly out of enemies' reach.",
 												"The dragon doesn't provoke an opportunity attack when it flies out of an enemy's reach."
@@ -795,7 +809,7 @@
 										},
 										{
 											"type": "item",
-											"name": "Mimicry.",
+											"name": "Mimicry",
 											"entries": [
 												"Impersonating characters or their allies could be a fun trick for a crafty dragon.",
 												"The dragon can mimic any sounds it has heard, including voices. A creature that hears the sounds can tell they are imitations with a successful {@dc 12} Wisdom ({@skill Insight}) check."
@@ -803,7 +817,7 @@
 										},
 										{
 											"type": "item",
-											"name": "Rejuvenation.",
+											"name": "Rejuvenation",
 											"entries": [
 												"You might decide that dragons in your campaign, being an essential part of the Material Plane, are nearly impossible to destroy. A dragon's life essence might be preserved in the egg from which it first emerged, in its hoard, or in a cavernous hall at the center of the world, just as a lich's essence is hidden in a phylactery.",
 												"If it has an essence-preserving object, a destroyed dragon gains a new body in {@dice 1d10} days, regaining all its hit points and becoming active again. The new body appears within 5 feet of the object."
@@ -811,14 +825,14 @@
 										},
 										{
 											"type": "item",
-											"name": "Special Senses.",
+											"name": "Special Senses",
 											"entries": [
-												"Most dragons have {@sense blindsight} and {@sense darkvision}. You might upgrade {@sense blindsight} to {@sense truesight}, or you could give a dragon with a burrowing speed {@sense tremorsense}."
+												"Most dragons have {@sense blindsight} and {@sense darkvision}. You might upgrade {@sense blindsight} to {@sense truesight}, or you could give a dragon with a burrowing speed {@sense tremorsense|MM}."
 											]
 										},
 										{
 											"type": "item",
-											"name": "Tunneler.",
+											"name": "Tunneler",
 											"entries": [
 												"The dragon can burrow through solid rock at half its burrowing speed and leaves a tunnel in its wake."
 											]
@@ -831,6 +845,7 @@
 				}
 			],
 			"dragonCastingColor": "deep",
+			"dragonAge": "adult",
 			"traitTags": [
 				"Legendary Resistances"
 			],
@@ -854,6 +869,9 @@
 				"P",
 				"S",
 				"Y"
+			],
+			"damageTagsLegendary": [
+				"I"
 			],
 			"miscTags": [
 				"AOE",
@@ -879,7 +897,9 @@
 			],
 			"source": "FTD",
 			"page": 196,
-			"size": "H",
+			"size": [
+				"H"
+			],
 			"type": {
 				"type": "dragon",
 				"tags": [
@@ -976,7 +996,7 @@
 				{
 					"name": "Shift Perception (1/Day)",
 					"entries": [
-						"The dragon can cast hallucinatory terrain, requiring no spell components and using Intelligence as the spellcasting ability (spell save {@dc 17})."
+						"The dragon can cast {@spell hallucinatory terrain}, requiring no spell components and using Intelligence as the spellcasting ability (spell save {@dc 17})."
 					]
 				},
 				{
@@ -1090,7 +1110,7 @@
 									"items": [
 										{
 											"type": "item",
-											"name": "Change Shape.",
+											"name": "Change Shape",
 											"entries": [
 												"You can decide that a dragon acquires this action at a younger age than usual, particularly if you want to feature a dragon in Humanoid form in your campaign:",
 												"The dragon magically polymorphs into a humanoid or beast that has a challenge rating no higher than its own, or back into its true form. It reverts to its true form if it dies. Any equipment it is wearing or carrying is absorbed or borne by the new form (the dragon's choice).",
@@ -1099,7 +1119,7 @@
 										},
 										{
 											"type": "item",
-											"name": "Flyby,",
+											"name": "Flyby",
 											"entries": [
 												"The dragon is an agile flier, quick to fly out of enemies' reach.",
 												"The dragon doesn't provoke an opportunity attack when it flies out of an enemy's reach."
@@ -1107,7 +1127,7 @@
 										},
 										{
 											"type": "item",
-											"name": "Mimicry.",
+											"name": "Mimicry",
 											"entries": [
 												"Impersonating characters or their allies could be a fun trick for a crafty dragon.",
 												"The dragon can mimic any sounds it has heard, including voices. A creature that hears the sounds can tell they are imitations with a successful {@dc 17} Wisdom ({@skill Insight}) check."
@@ -1115,7 +1135,7 @@
 										},
 										{
 											"type": "item",
-											"name": "Rejuvenation.",
+											"name": "Rejuvenation",
 											"entries": [
 												"You might decide that dragons in your campaign, being an essential part of the Material Plane, are nearly impossible to destroy. A dragon's life essence might be preserved in the egg from which it first emerged, in its hoard, or in a cavernous hall at the center of the world, just as a lich's essence is hidden in a phylactery.",
 												"If it has an essence-preserving object, a destroyed dragon gains a new body in {@dice 1d10} days, regaining all its hit points and becoming active again. The new body appears within 5 feet of the object."
@@ -1123,14 +1143,14 @@
 										},
 										{
 											"type": "item",
-											"name": "Special Senses.",
+											"name": "Special Senses",
 											"entries": [
-												"Most dragons have {@sense blindsight} and {@sense darkvision}. You might upgrade {@sense blindsight} to {@sense truesight}, or you could give a dragon with a burrowing speed {@sense tremorsense}."
+												"Most dragons have {@sense blindsight} and {@sense darkvision}. You might upgrade {@sense blindsight} to {@sense truesight}, or you could give a dragon with a burrowing speed {@sense tremorsense|MM}."
 											]
 										},
 										{
 											"type": "item",
-											"name": "Tunneler.",
+											"name": "Tunneler",
 											"entries": [
 												"The dragon can burrow through solid rock at half its burrowing speed and leaves a tunnel in its wake."
 											]
@@ -1142,6 +1162,7 @@
 					]
 				}
 			],
+			"dragonAge": "adult",
 			"traitTags": [
 				"Legendary Resistances"
 			],
@@ -1165,6 +1186,9 @@
 				"S",
 				"Y"
 			],
+			"damageTagsLegendary": [
+				"Y"
+			],
 			"spellcastingTags": [
 				"P"
 			],
@@ -1184,7 +1208,9 @@
 			"name": "Adult Moonstone Dragon",
 			"source": "FTD",
 			"page": 212,
-			"size": "H",
+			"size": [
+				"H"
+			],
 			"type": "dragon",
 			"alignment": [
 				"N"
@@ -1304,14 +1330,14 @@
 							"items": [
 								{
 									"type": "item",
-									"name": "Dream Breath.",
+									"name": "Dream Breath",
 									"entries": [
 										"The dragon exhales mist in a 90-foot cone. Each creature in that area must succeed on a {@dc 18} Constitution saving throw or fall {@condition unconscious} for 10 minutes. This effect ends for a creature if the creature takes damage or someone uses an action to wake it."
 									]
 								},
 								{
 									"type": "item",
-									"name": "Moonlight Breath.",
+									"name": "Moonlight Breath",
 									"entries": [
 										"The dragon exhales a beam of moonlight in a 90-foot line that is 10 feet wide. Each creature in that area must make a {@dc 18} Dexterity saving throw, taking 49 ({@damage 9d10}) radiant damage on a failed save, or half as much damage on a successful one."
 									]
@@ -1379,7 +1405,7 @@
 									"items": [
 										{
 											"type": "item",
-											"name": "Flyby,",
+											"name": "Flyby",
 											"entries": [
 												"The dragon is an agile flier, quick to fly out of enemies' reach.",
 												"The dragon doesn't provoke an opportunity attack when it flies out of an enemy's reach."
@@ -1387,7 +1413,7 @@
 										},
 										{
 											"type": "item",
-											"name": "Mimicry.",
+											"name": "Mimicry",
 											"entries": [
 												"Impersonating characters or their allies could be a fun trick for a crafty dragon.",
 												"The dragon can mimic any sounds it has heard, including voices. A creature that hears the sounds can tell they are imitations with a successful {@dc 14} Wisdom ({@skill Insight}) check."
@@ -1395,7 +1421,7 @@
 										},
 										{
 											"type": "item",
-											"name": "Rejuvenation.",
+											"name": "Rejuvenation",
 											"entries": [
 												"You might decide that dragons in your campaign, being an essential part of the Material Plane, are nearly impossible to destroy. A dragon's life essence might be preserved in the egg from which it first emerged, in its hoard, or in a cavernous hall at the center of the world, just as a lich's essence is hidden in a phylactery.",
 												"If it has an essence-preserving object, a destroyed dragon gains a new body in {@dice 1d10} days, regaining all its hit points and becoming active again. The new body appears within 5 feet of the object."
@@ -1403,9 +1429,9 @@
 										},
 										{
 											"type": "item",
-											"name": "Special Senses.",
+											"name": "Special Senses",
 											"entries": [
-												"Most dragons have {@sense blindsight} and {@sense darkvision}. You might upgrade {@sense blindsight} to {@sense truesight}, or you could give a dragon with a burrowing speed {@sense tremorsense}."
+												"Most dragons have {@sense blindsight} and {@sense darkvision}. You might upgrade {@sense blindsight} to {@sense truesight}, or you could give a dragon with a burrowing speed {@sense tremorsense|MM}."
 											]
 										}
 									]
@@ -1415,6 +1441,7 @@
 					]
 				}
 			],
+			"dragonAge": "adult",
 			"traitTags": [
 				"Legendary Resistances"
 			],
@@ -1466,7 +1493,9 @@
 			],
 			"source": "FTD",
 			"page": 215,
-			"size": "H",
+			"size": [
+				"H"
+			],
 			"type": {
 				"type": "dragon",
 				"tags": [
@@ -1677,7 +1706,7 @@
 									"items": [
 										{
 											"type": "item",
-											"name": "Change Shape.",
+											"name": "Change Shape",
 											"entries": [
 												"You can decide that a dragon acquires this action at a younger age than usual, particularly if you want to feature a dragon in Humanoid form in your campaign:",
 												"The dragon magically polymorphs into a humanoid or beast that has a challenge rating no higher than its own, or back into its true form. It reverts to its true form if it dies. Any equipment it is wearing or carrying is absorbed or borne by the new form (the dragon's choice).",
@@ -1686,7 +1715,7 @@
 										},
 										{
 											"type": "item",
-											"name": "Flyby,",
+											"name": "Flyby",
 											"entries": [
 												"The dragon is an agile flier, quick to fly out of enemies' reach.",
 												"The dragon doesn't provoke an opportunity attack when it flies out of an enemy's reach."
@@ -1694,7 +1723,7 @@
 										},
 										{
 											"type": "item",
-											"name": "Mimicry.",
+											"name": "Mimicry",
 											"entries": [
 												"Impersonating characters or their allies could be a fun trick for a crafty dragon.",
 												"The dragon can mimic any sounds it has heard, including voices. A creature that hears the sounds can tell they are imitations with a successful {@dc 12} Wisdom ({@skill Insight}) check."
@@ -1702,7 +1731,7 @@
 										},
 										{
 											"type": "item",
-											"name": "Rejuvenation.",
+											"name": "Rejuvenation",
 											"entries": [
 												"You might decide that dragons in your campaign, being an essential part of the Material Plane, are nearly impossible to destroy. A dragon's life essence might be preserved in the egg from which it first emerged, in its hoard, or in a cavernous hall at the center of the world, just as a lich's essence is hidden in a phylactery.",
 												"If it has an essence-preserving object, a destroyed dragon gains a new body in {@dice 1d10} days, regaining all its hit points and becoming active again. The new body appears within 5 feet of the object."
@@ -1710,14 +1739,14 @@
 										},
 										{
 											"type": "item",
-											"name": "Special Senses.",
+											"name": "Special Senses",
 											"entries": [
-												"Most dragons have {@sense blindsight} and {@sense darkvision}. You might upgrade {@sense blindsight} to {@sense truesight}, or you could give a dragon with a burrowing speed {@sense tremorsense}."
+												"Most dragons have {@sense blindsight} and {@sense darkvision}. You might upgrade {@sense blindsight} to {@sense truesight}, or you could give a dragon with a burrowing speed {@sense tremorsense|MM}."
 											]
 										},
 										{
 											"type": "item",
-											"name": "Tunneler.",
+											"name": "Tunneler",
 											"entries": [
 												"The dragon can burrow through solid rock at half its burrowing speed and leaves a tunnel in its wake."
 											]
@@ -1729,6 +1758,7 @@
 					]
 				}
 			],
+			"dragonAge": "adult",
 			"traitTags": [
 				"Legendary Resistances",
 				"Spider Climb"
@@ -1752,6 +1782,13 @@
 				"P",
 				"S",
 				"T"
+			],
+			"damageTagsLegendary": [
+				"T"
+			],
+			"damageTagsSpell": [
+				"B",
+				"Y"
 			],
 			"spellcastingTags": [
 				"P"
@@ -1784,7 +1821,9 @@
 			],
 			"source": "FTD",
 			"page": 221,
-			"size": "H",
+			"size": [
+				"H"
+			],
 			"type": {
 				"type": "dragon",
 				"tags": [
@@ -1875,7 +1914,7 @@
 				{
 					"name": "Fabricate (1/Day)",
 					"entries": [
-						"The dragon can cast fabricate, requiring no spell components and using Intelligence as the spellcasting ability."
+						"The dragon can cast {@spell fabricate}, requiring no spell components and using Intelligence as the spellcasting ability."
 					]
 				},
 				{
@@ -1989,7 +2028,7 @@
 									"items": [
 										{
 											"type": "item",
-											"name": "Change Shape.",
+											"name": "Change Shape",
 											"entries": [
 												"You can decide that a dragon acquires this action at a younger age than usual, particularly if you want to feature a dragon in Humanoid form in your campaign:",
 												"The dragon magically polymorphs into a humanoid or beast that has a challenge rating no higher than its own, or back into its true form. It reverts to its true form if it dies. Any equipment it is wearing or carrying is absorbed or borne by the new form (the dragon's choice).",
@@ -1998,7 +2037,7 @@
 										},
 										{
 											"type": "item",
-											"name": "Flyby,",
+											"name": "Flyby",
 											"entries": [
 												"The dragon is an agile flier, quick to fly out of enemies' reach.",
 												"The dragon doesn't provoke an opportunity attack when it flies out of an enemy's reach."
@@ -2006,7 +2045,7 @@
 										},
 										{
 											"type": "item",
-											"name": "Mimicry.",
+											"name": "Mimicry",
 											"entries": [
 												"Impersonating characters or their allies could be a fun trick for a crafty dragon.",
 												"The dragon can mimic any sounds it has heard, including voices. A creature that hears the sounds can tell they are imitations with a successful {@dc 12} Wisdom ({@skill Insight}) check."
@@ -2014,7 +2053,7 @@
 										},
 										{
 											"type": "item",
-											"name": "Rejuvenation.",
+											"name": "Rejuvenation",
 											"entries": [
 												"You might decide that dragons in your campaign, being an essential part of the Material Plane, are nearly impossible to destroy. A dragon's life essence might be preserved in the egg from which it first emerged, in its hoard, or in a cavernous hall at the center of the world, just as a lich's essence is hidden in a phylactery.",
 												"If it has an essence-preserving object, a destroyed dragon gains a new body in {@dice 1d10} days, regaining all its hit points and becoming active again. The new body appears within 5 feet of the object."
@@ -2022,9 +2061,9 @@
 										},
 										{
 											"type": "item",
-											"name": "Special Senses.",
+											"name": "Special Senses",
 											"entries": [
-												"Most dragons have {@sense blindsight} and {@sense darkvision}. You might upgrade {@sense blindsight} to {@sense truesight}, or you could give a dragon with a burrowing speed {@sense tremorsense}."
+												"Most dragons have {@sense blindsight} and {@sense darkvision}. You might upgrade {@sense blindsight} to {@sense truesight}, or you could give a dragon with a burrowing speed {@sense tremorsense|MM}."
 											]
 										}
 									]
@@ -2034,6 +2073,7 @@
 					]
 				}
 			],
+			"dragonAge": "adult",
 			"traitTags": [
 				"Amphibious",
 				"Legendary Resistances"
@@ -2057,6 +2097,12 @@
 				"P",
 				"S"
 			],
+			"damageTagsLegendary": [
+				"N"
+			],
+			"damageTagsSpell": [
+				"B"
+			],
 			"spellcastingTags": [
 				"P"
 			],
@@ -2076,7 +2122,9 @@
 			],
 			"source": "FTD",
 			"page": 162,
-			"size": "M",
+			"size": [
+				"M"
+			],
 			"type": {
 				"type": "dragon",
 				"tags": [
@@ -2223,7 +2271,7 @@
 									"items": [
 										{
 											"type": "item",
-											"name": "Change Shape.",
+											"name": "Change Shape",
 											"entries": [
 												"You can decide that a dragon acquires this action at a younger age than usual, particularly if you want to feature a dragon in Humanoid form in your campaign:",
 												"The dragon magically polymorphs into a humanoid or beast that has a challenge rating no higher than its own, or back into its true form. It reverts to its true form if it dies. Any equipment it is wearing or carrying is absorbed or borne by the new form (the dragon's choice).",
@@ -2232,7 +2280,7 @@
 										},
 										{
 											"type": "item",
-											"name": "Flyby,",
+											"name": "Flyby",
 											"entries": [
 												"The dragon is an agile flier, quick to fly out of enemies' reach.",
 												"The dragon doesn't provoke an opportunity attack when it flies out of an enemy's reach."
@@ -2240,7 +2288,7 @@
 										},
 										{
 											"type": "item",
-											"name": "Mimicry.",
+											"name": "Mimicry",
 											"entries": [
 												"Impersonating characters or their allies could be a fun trick for a crafty dragon.",
 												"The dragon can mimic any sounds it has heard, including voices. A creature that hears the sounds can tell they are imitations with a successful {@dc 11} Wisdom ({@skill Insight}) check."
@@ -2248,7 +2296,7 @@
 										},
 										{
 											"type": "item",
-											"name": "Rejuvenation.",
+											"name": "Rejuvenation",
 											"entries": [
 												"You might decide that dragons in your campaign, being an essential part of the Material Plane, are nearly impossible to destroy. A dragon's life essence might be preserved in the egg from which it first emerged, in its hoard, or in a cavernous hall at the center of the world, just as a lich's essence is hidden in a phylactery.",
 												"If it has an essence-preserving object, a destroyed dragon gains a new body in {@dice 1d10} days, regaining all its hit points and becoming active again. The new body appears within 5 feet of the object."
@@ -2256,9 +2304,9 @@
 										},
 										{
 											"type": "item",
-											"name": "Special Senses.",
+											"name": "Special Senses",
 											"entries": [
-												"Most dragons have {@sense blindsight} and {@sense darkvision}. You might upgrade {@sense blindsight} to {@sense truesight}, or you could give a dragon with a burrowing speed {@sense tremorsense}."
+												"Most dragons have {@sense blindsight} and {@sense darkvision}. You might upgrade {@sense blindsight} to {@sense truesight}, or you could give a dragon with a burrowing speed {@sense tremorsense|MM}."
 											]
 										}
 									]
@@ -2268,6 +2316,7 @@
 					]
 				}
 			],
+			"dragonAge": "wyrmling",
 			"traitTags": [
 				"Amphibious"
 			],
@@ -2304,7 +2353,9 @@
 			],
 			"source": "FTD",
 			"page": 201,
-			"size": "G",
+			"size": [
+				"G"
+			],
 			"type": {
 				"type": "dragon",
 				"tags": [
@@ -2518,7 +2569,7 @@
 									"items": [
 										{
 											"type": "item",
-											"name": "Change Shape.",
+											"name": "Change Shape",
 											"entries": [
 												"You can decide that a dragon acquires this action at a younger age than usual, particularly if you want to feature a dragon in Humanoid form in your campaign:",
 												"The dragon magically polymorphs into a humanoid or beast that has a challenge rating no higher than its own, or back into its true form. It reverts to its true form if it dies. Any equipment it is wearing or carrying is absorbed or borne by the new form (the dragon's choice).",
@@ -2527,7 +2578,7 @@
 										},
 										{
 											"type": "item",
-											"name": "Flyby,",
+											"name": "Flyby",
 											"entries": [
 												"The dragon is an agile flier, quick to fly out of enemies' reach.",
 												"The dragon doesn't provoke an opportunity attack when it flies out of an enemy's reach."
@@ -2535,7 +2586,7 @@
 										},
 										{
 											"type": "item",
-											"name": "Mimicry.",
+											"name": "Mimicry",
 											"entries": [
 												"Impersonating characters or their allies could be a fun trick for a crafty dragon.",
 												"The dragon can mimic any sounds it has heard, including voices. A creature that hears the sounds can tell they are imitations with a successful {@dc 15} Wisdom ({@skill Insight}) check."
@@ -2543,7 +2594,7 @@
 										},
 										{
 											"type": "item",
-											"name": "Rejuvenation.",
+											"name": "Rejuvenation",
 											"entries": [
 												"You might decide that dragons in your campaign, being an essential part of the Material Plane, are nearly impossible to destroy. A dragon's life essence might be preserved in the egg from which it first emerged, in its hoard, or in a cavernous hall at the center of the world, just as a lich's essence is hidden in a phylactery.",
 												"If it has an essence-preserving object, a destroyed dragon gains a new body in {@dice 1d10} days, regaining all its hit points and becoming active again. The new body appears within 5 feet of the object."
@@ -2551,14 +2602,14 @@
 										},
 										{
 											"type": "item",
-											"name": "Special Senses.",
+											"name": "Special Senses",
 											"entries": [
-												"Most dragons have {@sense blindsight} and {@sense darkvision}. You might upgrade {@sense blindsight} to {@sense truesight}, or you could give a dragon with a burrowing speed {@sense tremorsense}."
+												"Most dragons have {@sense blindsight} and {@sense darkvision}. You might upgrade {@sense blindsight} to {@sense truesight}, or you could give a dragon with a burrowing speed {@sense tremorsense|MM}."
 											]
 										},
 										{
 											"type": "item",
-											"name": "Tunneler.",
+											"name": "Tunneler",
 											"entries": [
 												"The dragon can burrow through solid rock at half its burrowing speed and leaves a tunnel in its wake."
 											]
@@ -2570,6 +2621,7 @@
 					]
 				}
 			],
+			"dragonAge": "greatwyrm",
 			"traitTags": [
 				"Legendary Resistances"
 			],
@@ -2604,6 +2656,7 @@
 				"prone",
 				"restrained"
 			],
+			"hasToken": true,
 			"hasFluff": true
 		},
 		{
@@ -2613,7 +2666,9 @@
 			],
 			"source": "FTD",
 			"page": 160,
-			"size": "G",
+			"size": [
+				"G"
+			],
 			"type": {
 				"type": "dragon",
 				"tags": [
@@ -2825,7 +2880,7 @@
 									"items": [
 										{
 											"type": "item",
-											"name": "Change Shape.",
+											"name": "Change Shape",
 											"entries": [
 												"You can decide that a dragon acquires this action at a younger age than usual, particularly if you want to feature a dragon in Humanoid form in your campaign:",
 												"The dragon magically polymorphs into a humanoid or beast that has a challenge rating no higher than its own, or back into its true form. It reverts to its true form if it dies. Any equipment it is wearing or carrying is absorbed or borne by the new form (the dragon's choice).",
@@ -2834,7 +2889,7 @@
 										},
 										{
 											"type": "item",
-											"name": "Flyby,",
+											"name": "Flyby",
 											"entries": [
 												"The dragon is an agile flier, quick to fly out of enemies' reach.",
 												"The dragon doesn't provoke an opportunity attack when it flies out of an enemy's reach."
@@ -2842,7 +2897,7 @@
 										},
 										{
 											"type": "item",
-											"name": "Mimicry.",
+											"name": "Mimicry",
 											"entries": [
 												"Impersonating characters or their allies could be a fun trick for a crafty dragon.",
 												"The dragon can mimic any sounds it has heard, including voices. A creature that hears the sounds can tell they are imitations with a successful {@dc 14} Wisdom ({@skill Insight}) check."
@@ -2850,7 +2905,7 @@
 										},
 										{
 											"type": "item",
-											"name": "Rejuvenation.",
+											"name": "Rejuvenation",
 											"entries": [
 												"You might decide that dragons in your campaign, being an essential part of the Material Plane, are nearly impossible to destroy. A dragon's life essence might be preserved in the egg from which it first emerged, in its hoard, or in a cavernous hall at the center of the world, just as a lich's essence is hidden in a phylactery.",
 												"If it has an essence-preserving object, a destroyed dragon gains a new body in {@dice 1d10} days, regaining all its hit points and becoming active again. The new body appears within 5 feet of the object."
@@ -2858,9 +2913,9 @@
 										},
 										{
 											"type": "item",
-											"name": "Special Senses.",
+											"name": "Special Senses",
 											"entries": [
-												"Most dragons have {@sense blindsight} and {@sense darkvision}. You might upgrade {@sense blindsight} to {@sense truesight}, or you could give a dragon with a burrowing speed {@sense tremorsense}."
+												"Most dragons have {@sense blindsight} and {@sense darkvision}. You might upgrade {@sense blindsight} to {@sense truesight}, or you could give a dragon with a burrowing speed {@sense tremorsense|MM}."
 											]
 										}
 									]
@@ -2870,6 +2925,7 @@
 					]
 				}
 			],
+			"dragonAge": "ancient",
 			"traitTags": [
 				"Amphibious",
 				"Legendary Resistances"
@@ -2892,6 +2948,9 @@
 				"O",
 				"P",
 				"S"
+			],
+			"damageTagsSpell": [
+				"B"
 			],
 			"spellcastingTags": [
 				"P"
@@ -2918,7 +2977,9 @@
 			],
 			"source": "FTD",
 			"page": 170,
-			"size": "G",
+			"size": [
+				"G"
+			],
 			"type": {
 				"type": "dragon",
 				"tags": [
@@ -3118,7 +3179,7 @@
 									"items": [
 										{
 											"type": "item",
-											"name": "Change Shape.",
+											"name": "Change Shape",
 											"entries": [
 												"You can decide that a dragon acquires this action at a younger age than usual, particularly if you want to feature a dragon in Humanoid form in your campaign:",
 												"The dragon magically polymorphs into a humanoid or beast that has a challenge rating no higher than its own, or back into its true form. It reverts to its true form if it dies. Any equipment it is wearing or carrying is absorbed or borne by the new form (the dragon's choice).",
@@ -3127,7 +3188,7 @@
 										},
 										{
 											"type": "item",
-											"name": "Flyby,",
+											"name": "Flyby",
 											"entries": [
 												"The dragon is an agile flier, quick to fly out of enemies' reach.",
 												"The dragon doesn't provoke an opportunity attack when it flies out of an enemy's reach."
@@ -3135,7 +3196,7 @@
 										},
 										{
 											"type": "item",
-											"name": "Mimicry.",
+											"name": "Mimicry",
 											"entries": [
 												"Impersonating characters or their allies could be a fun trick for a crafty dragon.",
 												"The dragon can mimic any sounds it has heard, including voices. A creature that hears the sounds can tell they are imitations with a successful {@dc 13} Wisdom ({@skill Insight}) check."
@@ -3143,7 +3204,7 @@
 										},
 										{
 											"type": "item",
-											"name": "Rejuvenation.",
+											"name": "Rejuvenation",
 											"entries": [
 												"You might decide that dragons in your campaign, being an essential part of the Material Plane, are nearly impossible to destroy. A dragon's life essence might be preserved in the egg from which it first emerged, in its hoard, or in a cavernous hall at the center of the world, just as a lich's essence is hidden in a phylactery.",
 												"If it has an essence-preserving object, a destroyed dragon gains a new body in {@dice 1d10} days, regaining all its hit points and becoming active again. The new body appears within 5 feet of the object."
@@ -3151,14 +3212,14 @@
 										},
 										{
 											"type": "item",
-											"name": "Special Senses.",
+											"name": "Special Senses",
 											"entries": [
-												"Most dragons have {@sense blindsight} and {@sense darkvision}. You might upgrade {@sense blindsight} to {@sense truesight}, or you could give a dragon with a burrowing speed {@sense tremorsense}."
+												"Most dragons have {@sense blindsight} and {@sense darkvision}. You might upgrade {@sense blindsight} to {@sense truesight}, or you could give a dragon with a burrowing speed {@sense tremorsense|MM}."
 											]
 										},
 										{
 											"type": "item",
-											"name": "Tunneler.",
+											"name": "Tunneler",
 											"entries": [
 												"The dragon can burrow through solid rock at half its burrowing speed and leaves a tunnel in its wake."
 											]
@@ -3170,6 +3231,7 @@
 					]
 				}
 			],
+			"dragonAge": "ancient",
 			"traitTags": [
 				"Legendary Resistances"
 			],
@@ -3191,6 +3253,9 @@
 				"P",
 				"R",
 				"S"
+			],
+			"damageTagsLegendary": [
+				"R"
 			],
 			"spellcastingTags": [
 				"P"
@@ -3214,7 +3279,9 @@
 			"name": "Ancient Deep Dragon",
 			"source": "FTD",
 			"page": 173,
-			"size": "G",
+			"size": [
+				"G"
+			],
 			"type": "dragon",
 			"alignment": [
 				"N",
@@ -3389,7 +3456,7 @@
 									"items": [
 										{
 											"type": "item",
-											"name": "Change Shape.",
+											"name": "Change Shape",
 											"entries": [
 												"You can decide that a dragon acquires this action at a younger age than usual, particularly if you want to feature a dragon in Humanoid form in your campaign:",
 												"The dragon magically polymorphs into a humanoid or beast that has a challenge rating no higher than its own, or back into its true form. It reverts to its true form if it dies. Any equipment it is wearing or carrying is absorbed or borne by the new form (the dragon's choice).",
@@ -3398,7 +3465,7 @@
 										},
 										{
 											"type": "item",
-											"name": "Flyby,",
+											"name": "Flyby",
 											"entries": [
 												"The dragon is an agile flier, quick to fly out of enemies' reach.",
 												"The dragon doesn't provoke an opportunity attack when it flies out of an enemy's reach."
@@ -3406,7 +3473,7 @@
 										},
 										{
 											"type": "item",
-											"name": "Mimicry.",
+											"name": "Mimicry",
 											"entries": [
 												"Impersonating characters or their allies could be a fun trick for a crafty dragon.",
 												"The dragon can mimic any sounds it has heard, including voices. A creature that hears the sounds can tell they are imitations with a successful {@dc 13} Wisdom ({@skill Insight}) check."
@@ -3414,7 +3481,7 @@
 										},
 										{
 											"type": "item",
-											"name": "Rejuvenation.",
+											"name": "Rejuvenation",
 											"entries": [
 												"You might decide that dragons in your campaign, being an essential part of the Material Plane, are nearly impossible to destroy. A dragon's life essence might be preserved in the egg from which it first emerged, in its hoard, or in a cavernous hall at the center of the world, just as a lich's essence is hidden in a phylactery.",
 												"If it has an essence-preserving object, a destroyed dragon gains a new body in {@dice 1d10} days, regaining all its hit points and becoming active again. The new body appears within 5 feet of the object."
@@ -3422,14 +3489,14 @@
 										},
 										{
 											"type": "item",
-											"name": "Special Senses.",
+											"name": "Special Senses",
 											"entries": [
-												"Most dragons have {@sense blindsight} and {@sense darkvision}. You might upgrade {@sense blindsight} to {@sense truesight}, or you could give a dragon with a burrowing speed {@sense tremorsense}."
+												"Most dragons have {@sense blindsight} and {@sense darkvision}. You might upgrade {@sense blindsight} to {@sense truesight}, or you could give a dragon with a burrowing speed {@sense tremorsense|MM}."
 											]
 										},
 										{
 											"type": "item",
-											"name": "Tunneler.",
+											"name": "Tunneler",
 											"entries": [
 												"The dragon can burrow through solid rock at half its burrowing speed and leaves a tunnel in its wake."
 											]
@@ -3442,6 +3509,7 @@
 				}
 			],
 			"dragonCastingColor": "deep",
+			"dragonAge": "ancient",
 			"traitTags": [
 				"Legendary Resistances"
 			],
@@ -3466,6 +3534,9 @@
 				"S",
 				"Y"
 			],
+			"damageTagsLegendary": [
+				"I"
+			],
 			"miscTags": [
 				"AOE",
 				"MW",
@@ -3487,7 +3558,9 @@
 			"name": "Ancient Dragon Turtle",
 			"source": "FTD",
 			"page": 191,
-			"size": "G",
+			"size": [
+				"G"
+			],
 			"type": "dragon",
 			"alignment": [
 				"N"
@@ -3680,7 +3753,7 @@
 									"items": [
 										{
 											"type": "item",
-											"name": "Flyby,",
+											"name": "Flyby",
 											"entries": [
 												"The dragon is an agile flier, quick to fly out of enemies' reach.",
 												"The dragon doesn't provoke an opportunity attack when it flies out of an enemy's reach."
@@ -3688,7 +3761,7 @@
 										},
 										{
 											"type": "item",
-											"name": "Mimicry.",
+											"name": "Mimicry",
 											"entries": [
 												"Impersonating characters or their allies could be a fun trick for a crafty dragon.",
 												"The dragon can mimic any sounds it has heard, including voices. A creature that hears the sounds can tell they are imitations with a successful {@dc 10} Wisdom ({@skill Insight}) check."
@@ -3696,7 +3769,7 @@
 										},
 										{
 											"type": "item",
-											"name": "Rejuvenation.",
+											"name": "Rejuvenation",
 											"entries": [
 												"You might decide that dragons in your campaign, being an essential part of the Material Plane, are nearly impossible to destroy. A dragon's life essence might be preserved in the egg from which it first emerged, in its hoard, or in a cavernous hall at the center of the world, just as a lich's essence is hidden in a phylactery.",
 												"If it has an essence-preserving object, a destroyed dragon gains a new body in {@dice 1d10} days, regaining all its hit points and becoming active again. The new body appears within 5 feet of the object."
@@ -3704,9 +3777,9 @@
 										},
 										{
 											"type": "item",
-											"name": "Special Senses.",
+											"name": "Special Senses",
 											"entries": [
-												"Most dragons have {@sense blindsight} and {@sense darkvision}. You might upgrade {@sense blindsight} to {@sense truesight}, or you could give a dragon with a burrowing speed {@sense tremorsense}."
+												"Most dragons have {@sense blindsight} and {@sense darkvision}. You might upgrade {@sense blindsight} to {@sense truesight}, or you could give a dragon with a burrowing speed {@sense tremorsense|MM}."
 											]
 										}
 									]
@@ -3716,6 +3789,7 @@
 					]
 				}
 			],
+			"dragonAge": "ancient",
 			"traitTags": [
 				"Amphibious",
 				"Legendary Resistances"
@@ -3737,6 +3811,9 @@
 				"L",
 				"P",
 				"S"
+			],
+			"damageTagsLegendary": [
+				"F"
 			],
 			"miscTags": [
 				"AOE",
@@ -3760,7 +3837,9 @@
 			],
 			"source": "FTD",
 			"page": 195,
-			"size": "G",
+			"size": [
+				"G"
+			],
 			"type": {
 				"type": "dragon",
 				"tags": [
@@ -3864,7 +3943,7 @@
 				{
 					"name": "Warp Perception (1/Day)",
 					"entries": [
-						"The dragon can cast mirage arcane, requiring no spell components and using Intelligence as the spellcasting ability."
+						"The dragon can cast {@spell mirage arcane}, requiring no spell components and using Intelligence as the spellcasting ability."
 					]
 				}
 			],
@@ -3972,7 +4051,7 @@
 									"items": [
 										{
 											"type": "item",
-											"name": "Change Shape.",
+											"name": "Change Shape",
 											"entries": [
 												"You can decide that a dragon acquires this action at a younger age than usual, particularly if you want to feature a dragon in Humanoid form in your campaign:",
 												"The dragon magically polymorphs into a humanoid or beast that has a challenge rating no higher than its own, or back into its true form. It reverts to its true form if it dies. Any equipment it is wearing or carrying is absorbed or borne by the new form (the dragon's choice).",
@@ -3981,7 +4060,7 @@
 										},
 										{
 											"type": "item",
-											"name": "Flyby,",
+											"name": "Flyby",
 											"entries": [
 												"The dragon is an agile flier, quick to fly out of enemies' reach.",
 												"The dragon doesn't provoke an opportunity attack when it flies out of an enemy's reach."
@@ -3989,7 +4068,7 @@
 										},
 										{
 											"type": "item",
-											"name": "Mimicry.",
+											"name": "Mimicry",
 											"entries": [
 												"Impersonating characters or their allies could be a fun trick for a crafty dragon.",
 												"The dragon can mimic any sounds it has heard, including voices. A creature that hears the sounds can tell they are imitations with a successful {@dc 20} Wisdom ({@skill Insight}) check."
@@ -3997,7 +4076,7 @@
 										},
 										{
 											"type": "item",
-											"name": "Rejuvenation.",
+											"name": "Rejuvenation",
 											"entries": [
 												"You might decide that dragons in your campaign, being an essential part of the Material Plane, are nearly impossible to destroy. A dragon's life essence might be preserved in the egg from which it first emerged, in its hoard, or in a cavernous hall at the center of the world, just as a lich's essence is hidden in a phylactery.",
 												"If it has an essence-preserving object, a destroyed dragon gains a new body in {@dice 1d10} days, regaining all its hit points and becoming active again. The new body appears within 5 feet of the object."
@@ -4005,14 +4084,14 @@
 										},
 										{
 											"type": "item",
-											"name": "Special Senses.",
+											"name": "Special Senses",
 											"entries": [
-												"Most dragons have {@sense blindsight} and {@sense darkvision}. You might upgrade {@sense blindsight} to {@sense truesight}, or you could give a dragon with a burrowing speed {@sense tremorsense}."
+												"Most dragons have {@sense blindsight} and {@sense darkvision}. You might upgrade {@sense blindsight} to {@sense truesight}, or you could give a dragon with a burrowing speed {@sense tremorsense|MM}."
 											]
 										},
 										{
 											"type": "item",
-											"name": "Tunneler.",
+											"name": "Tunneler",
 											"entries": [
 												"The dragon can burrow through solid rock at half its burrowing speed and leaves a tunnel in its wake."
 											]
@@ -4024,6 +4103,7 @@
 					]
 				}
 			],
+			"dragonAge": "ancient",
 			"traitTags": [
 				"Legendary Resistances"
 			],
@@ -4047,6 +4127,12 @@
 				"S",
 				"Y"
 			],
+			"damageTagsLegendary": [
+				"Y"
+			],
+			"damageTagsSpell": [
+				"O"
+			],
 			"spellcastingTags": [
 				"P"
 			],
@@ -4068,7 +4154,9 @@
 			"name": "Ancient Moonstone Dragon",
 			"source": "FTD",
 			"page": 211,
-			"size": "G",
+			"size": [
+				"G"
+			],
 			"type": "dragon",
 			"alignment": [
 				"N"
@@ -4185,14 +4273,14 @@
 							"items": [
 								{
 									"type": "item",
-									"name": "Dream Breath.",
+									"name": "Dream Breath",
 									"entries": [
 										"The dragon exhales mist in a 90-foot cone. Each creature in that area must succeed on a {@dc 21} Constitution saving throw or fall {@condition unconscious} for 10 minutes. This effect ends for a creature if the creature takes damage or someone uses an action to wake it."
 									]
 								},
 								{
 									"type": "item",
-									"name": "Moonlight Breath.",
+									"name": "Moonlight Breath",
 									"entries": [
 										"The dragon exhales a beam of moonlight in a 120-foot line that is 10 feet wide. Each creature in that area must make a {@dc 21} Dexterity saving throw, taking 60 ({@damage 11d10}) radiant damage on a failed save, or half as much damage on a successful one."
 									]
@@ -4260,7 +4348,7 @@
 									"items": [
 										{
 											"type": "item",
-											"name": "Flyby,",
+											"name": "Flyby",
 											"entries": [
 												"The dragon is an agile flier, quick to fly out of enemies' reach.",
 												"The dragon doesn't provoke an opportunity attack when it flies out of an enemy's reach."
@@ -4268,7 +4356,7 @@
 										},
 										{
 											"type": "item",
-											"name": "Mimicry.",
+											"name": "Mimicry",
 											"entries": [
 												"Impersonating characters or their allies could be a fun trick for a crafty dragon.",
 												"The dragon can mimic any sounds it has heard, including voices. A creature that hears the sounds can tell they are imitations with a successful {@dc 16} Wisdom ({@skill Insight}) check."
@@ -4276,7 +4364,7 @@
 										},
 										{
 											"type": "item",
-											"name": "Rejuvenation.",
+											"name": "Rejuvenation",
 											"entries": [
 												"You might decide that dragons in your campaign, being an essential part of the Material Plane, are nearly impossible to destroy. A dragon's life essence might be preserved in the egg from which it first emerged, in its hoard, or in a cavernous hall at the center of the world, just as a lich's essence is hidden in a phylactery.",
 												"If it has an essence-preserving object, a destroyed dragon gains a new body in {@dice 1d10} days, regaining all its hit points and becoming active again. The new body appears within 5 feet of the object."
@@ -4284,9 +4372,9 @@
 										},
 										{
 											"type": "item",
-											"name": "Special Senses.",
+											"name": "Special Senses",
 											"entries": [
-												"Most dragons have {@sense blindsight} and {@sense darkvision}. You might upgrade {@sense blindsight} to {@sense truesight}, or you could give a dragon with a burrowing speed {@sense tremorsense}."
+												"Most dragons have {@sense blindsight} and {@sense darkvision}. You might upgrade {@sense blindsight} to {@sense truesight}, or you could give a dragon with a burrowing speed {@sense tremorsense|MM}."
 											]
 										}
 									]
@@ -4296,6 +4384,7 @@
 					]
 				}
 			],
+			"dragonAge": "ancient",
 			"traitTags": [
 				"Legendary Resistances"
 			],
@@ -4343,7 +4432,9 @@
 			],
 			"source": "FTD",
 			"page": 214,
-			"size": "G",
+			"size": [
+				"G"
+			],
 			"type": {
 				"type": "dragon",
 				"tags": [
@@ -4555,7 +4646,7 @@
 									"items": [
 										{
 											"type": "item",
-											"name": "Change Shape.",
+											"name": "Change Shape",
 											"entries": [
 												"You can decide that a dragon acquires this action at a younger age than usual, particularly if you want to feature a dragon in Humanoid form in your campaign:",
 												"The dragon magically polymorphs into a humanoid or beast that has a challenge rating no higher than its own, or back into its true form. It reverts to its true form if it dies. Any equipment it is wearing or carrying is absorbed or borne by the new form (the dragon's choice).",
@@ -4564,7 +4655,7 @@
 										},
 										{
 											"type": "item",
-											"name": "Flyby,",
+											"name": "Flyby",
 											"entries": [
 												"The dragon is an agile flier, quick to fly out of enemies' reach.",
 												"The dragon doesn't provoke an opportunity attack when it flies out of an enemy's reach."
@@ -4572,7 +4663,7 @@
 										},
 										{
 											"type": "item",
-											"name": "Mimicry.",
+											"name": "Mimicry",
 											"entries": [
 												"Impersonating characters or their allies could be a fun trick for a crafty dragon.",
 												"The dragon can mimic any sounds it has heard, including voices. A creature that hears the sounds can tell they are imitations with a successful {@dc 13} Wisdom ({@skill Insight}) check."
@@ -4580,7 +4671,7 @@
 										},
 										{
 											"type": "item",
-											"name": "Rejuvenation.",
+											"name": "Rejuvenation",
 											"entries": [
 												"You might decide that dragons in your campaign, being an essential part of the Material Plane, are nearly impossible to destroy. A dragon's life essence might be preserved in the egg from which it first emerged, in its hoard, or in a cavernous hall at the center of the world, just as a lich's essence is hidden in a phylactery.",
 												"If it has an essence-preserving object, a destroyed dragon gains a new body in {@dice 1d10} days, regaining all its hit points and becoming active again. The new body appears within 5 feet of the object."
@@ -4588,14 +4679,14 @@
 										},
 										{
 											"type": "item",
-											"name": "Special Senses.",
+											"name": "Special Senses",
 											"entries": [
-												"Most dragons have {@sense blindsight} and {@sense darkvision}. You might upgrade {@sense blindsight} to {@sense truesight}, or you could give a dragon with a burrowing speed {@sense tremorsense}."
+												"Most dragons have {@sense blindsight} and {@sense darkvision}. You might upgrade {@sense blindsight} to {@sense truesight}, or you could give a dragon with a burrowing speed {@sense tremorsense|MM}."
 											]
 										},
 										{
 											"type": "item",
-											"name": "Tunneler.",
+											"name": "Tunneler",
 											"entries": [
 												"The dragon can burrow through solid rock at half its burrowing speed and leaves a tunnel in its wake."
 											]
@@ -4607,6 +4698,7 @@
 					]
 				}
 			],
+			"dragonAge": "ancient",
 			"traitTags": [
 				"Legendary Resistances",
 				"Spider Climb"
@@ -4630,6 +4722,13 @@
 				"P",
 				"S",
 				"T"
+			],
+			"damageTagsLegendary": [
+				"T"
+			],
+			"damageTagsSpell": [
+				"B",
+				"Y"
 			],
 			"spellcastingTags": [
 				"P"
@@ -4659,7 +4758,9 @@
 			"name": "Ancient Sea Serpent",
 			"source": "FTD",
 			"page": 219,
-			"size": "G",
+			"size": [
+				"G"
+			],
 			"type": "dragon",
 			"alignment": [
 				"N"
@@ -4708,6 +4809,12 @@
 			],
 			"cr": "14",
 			"trait": [
+				{
+					"name": "Amphibious",
+					"entries": [
+						"The sea serpent can breathe air and water."
+					]
+				},
 				{
 					"name": "Legendary Resistance (2/Day)",
 					"entries": [
@@ -4767,7 +4874,9 @@
 					]
 				}
 			],
+			"dragonAge": "ancient",
 			"traitTags": [
+				"Amphibious",
 				"Legendary Resistances",
 				"Siege Monster"
 			],
@@ -4808,7 +4917,9 @@
 			],
 			"source": "FTD",
 			"page": 220,
-			"size": "G",
+			"size": [
+				"G"
+			],
 			"type": {
 				"type": "dragon",
 				"tags": [
@@ -4900,7 +5011,7 @@
 				{
 					"name": "Fabricate (1/Day)",
 					"entries": [
-						"The dragon can cast fabricate, requiring no spell components and using Intelligence as the spellcasting ability."
+						"The dragon can cast {@spell fabricate}, requiring no spell components and using Intelligence as the spellcasting ability."
 					]
 				},
 				{
@@ -5014,7 +5125,7 @@
 									"items": [
 										{
 											"type": "item",
-											"name": "Change Shape.",
+											"name": "Change Shape",
 											"entries": [
 												"You can decide that a dragon acquires this action at a younger age than usual, particularly if you want to feature a dragon in Humanoid form in your campaign:",
 												"The dragon magically polymorphs into a humanoid or beast that has a challenge rating no higher than its own, or back into its true form. It reverts to its true form if it dies. Any equipment it is wearing or carrying is absorbed or borne by the new form (the dragon's choice).",
@@ -5023,7 +5134,7 @@
 										},
 										{
 											"type": "item",
-											"name": "Flyby,",
+											"name": "Flyby",
 											"entries": [
 												"The dragon is an agile flier, quick to fly out of enemies' reach.",
 												"The dragon doesn't provoke an opportunity attack when it flies out of an enemy's reach."
@@ -5031,7 +5142,7 @@
 										},
 										{
 											"type": "item",
-											"name": "Mimicry.",
+											"name": "Mimicry",
 											"entries": [
 												"Impersonating characters or their allies could be a fun trick for a crafty dragon.",
 												"The dragon can mimic any sounds it has heard, including voices. A creature that hears the sounds can tell they are imitations with a successful {@dc 13} Wisdom ({@skill Insight}) check."
@@ -5039,7 +5150,7 @@
 										},
 										{
 											"type": "item",
-											"name": "Rejuvenation.",
+											"name": "Rejuvenation",
 											"entries": [
 												"You might decide that dragons in your campaign, being an essential part of the Material Plane, are nearly impossible to destroy. A dragon's life essence might be preserved in the egg from which it first emerged, in its hoard, or in a cavernous hall at the center of the world, just as a lich's essence is hidden in a phylactery.",
 												"If it has an essence-preserving object, a destroyed dragon gains a new body in {@dice 1d10} days, regaining all its hit points and becoming active again. The new body appears within 5 feet of the object."
@@ -5047,9 +5158,9 @@
 										},
 										{
 											"type": "item",
-											"name": "Special Senses.",
+											"name": "Special Senses",
 											"entries": [
-												"Most dragons have {@sense blindsight} and {@sense darkvision}. You might upgrade {@sense blindsight} to {@sense truesight}, or you could give a dragon with a burrowing speed {@sense tremorsense}."
+												"Most dragons have {@sense blindsight} and {@sense darkvision}. You might upgrade {@sense blindsight} to {@sense truesight}, or you could give a dragon with a burrowing speed {@sense tremorsense|MM}."
 											]
 										}
 									]
@@ -5059,6 +5170,7 @@
 					]
 				}
 			],
+			"dragonAge": "ancient",
 			"traitTags": [
 				"Amphibious",
 				"Legendary Resistances"
@@ -5082,6 +5194,12 @@
 				"P",
 				"S"
 			],
+			"damageTagsLegendary": [
+				"N"
+			],
+			"damageTagsSpell": [
+				"B"
+			],
 			"spellcastingTags": [
 				"P"
 			],
@@ -5098,7 +5216,9 @@
 			"name": "Animated Breath",
 			"source": "FTD",
 			"page": 163,
-			"size": "L",
+			"size": [
+				"L"
+			],
 			"type": "elemental",
 			"alignment": [
 				"N",
@@ -5195,7 +5315,7 @@
 				{
 					"name": "Lightning Burst (Lightning Form Only)",
 					"entries": [
-						"The animated breath magically teleports to an unoccupied space it can see within 30 feet of it. Each creature with 5 feet of the animated breath after it teleports takes 3 ({@damage 1d6}) lightning damage."
+						"The animated breath magically teleports to an unoccupied space it can see within 30 feet of it. Each creature within 5 feet of the animated breath after it teleports takes 3 ({@damage 1d6}) lightning damage."
 					]
 				}
 			],
@@ -5230,7 +5350,9 @@
 			"name": "Aspect of Bahamut",
 			"source": "FTD",
 			"page": 165,
-			"size": "G",
+			"size": [
+				"G"
+			],
 			"type": {
 				"type": "dragon",
 				"tags": [
@@ -5357,14 +5479,14 @@
 							"items": [
 								{
 									"type": "item",
-									"name": "Exalting Breath.",
+									"name": "Exalting Breath",
 									"entries": [
 										"The aspect exhales the restoring winds of Mount Celestia in a 300-foot cone. Each creature in that area of the aspect's choice regains 71 ({@dice 13d10}) hit points, and each creature in that area of the aspect's choice that has been dead for no longer than 1 hour is restored to life with all its hit points."
 									]
 								},
 								{
 									"type": "item",
-									"name": "Platinum Breath.",
+									"name": "Platinum Breath",
 									"entries": [
 										"The aspect exhales radiant platinum flames in a 300-foot cone. Each creature in that area must make a {@dc 26} Dexterity saving throw, taking 66 ({@damage 12d10}) radiant damage on a failed save, or half as much damage on a successful one."
 									]
@@ -5413,6 +5535,7 @@
 					]
 				}
 			],
+			"dragonAge": "aspect",
 			"traitTags": [
 				"Legendary Resistances"
 			],
@@ -5454,7 +5577,9 @@
 			"name": "Aspect of Tiamat",
 			"source": "FTD",
 			"page": 166,
-			"size": "G",
+			"size": [
+				"G"
+			],
 			"type": {
 				"type": "dragon",
 				"tags": [
@@ -5610,6 +5735,7 @@
 					]
 				}
 			],
+			"dragonAge": "aspect",
 			"traitTags": [
 				"Legendary Resistances"
 			],
@@ -5652,7 +5778,9 @@
 			],
 			"source": "FTD",
 			"page": 168,
-			"size": "G",
+			"size": [
+				"G"
+			],
 			"type": {
 				"type": "dragon",
 				"tags": [
@@ -5845,7 +5973,7 @@
 									"items": [
 										{
 											"type": "item",
-											"name": "Flyby,",
+											"name": "Flyby",
 											"entries": [
 												"The dragon is an agile flier, quick to fly out of enemies' reach.",
 												"The dragon doesn't provoke an opportunity attack when it flies out of an enemy's reach."
@@ -5853,7 +5981,7 @@
 										},
 										{
 											"type": "item",
-											"name": "Mimicry.",
+											"name": "Mimicry",
 											"entries": [
 												"Impersonating characters or their allies could be a fun trick for a crafty dragon.",
 												"The dragon can mimic any sounds it has heard, including voices. A creature that hears the sounds can tell they are imitations with a successful {@dc 16} Wisdom ({@skill Insight}) check."
@@ -5861,7 +5989,7 @@
 										},
 										{
 											"type": "item",
-											"name": "Rejuvenation.",
+											"name": "Rejuvenation",
 											"entries": [
 												"You might decide that dragons in your campaign, being an essential part of the Material Plane, are nearly impossible to destroy. A dragon's life essence might be preserved in the egg from which it first emerged, in its hoard, or in a cavernous hall at the center of the world, just as a lich's essence is hidden in a phylactery.",
 												"If it has an essence-preserving object, a destroyed dragon gains a new body in {@dice 1d10} days, regaining all its hit points and becoming active again. The new body appears within 5 feet of the object."
@@ -5869,14 +5997,14 @@
 										},
 										{
 											"type": "item",
-											"name": "Special Senses.",
+											"name": "Special Senses",
 											"entries": [
-												"Most dragons have {@sense blindsight} and {@sense darkvision}. You might upgrade {@sense blindsight} to {@sense truesight}, or you could give a dragon with a burrowing speed {@sense tremorsense}."
+												"Most dragons have {@sense blindsight} and {@sense darkvision}. You might upgrade {@sense blindsight} to {@sense truesight}, or you could give a dragon with a burrowing speed {@sense tremorsense|MM}."
 											]
 										},
 										{
 											"type": "item",
-											"name": "Tunneler.",
+											"name": "Tunneler",
 											"entries": [
 												"The dragon can burrow through solid rock at half its burrowing speed and leaves a tunnel in its wake."
 											]
@@ -5889,6 +6017,7 @@
 				}
 			],
 			"dragonCastingColor": "black",
+			"dragonAge": "greatwyrm",
 			"traitTags": [
 				"Legendary Resistances"
 			],
@@ -5920,6 +6049,7 @@
 				"prone",
 				"restrained"
 			],
+			"hasToken": true,
 			"hasFluff": true
 		},
 		{
@@ -5929,7 +6059,9 @@
 			],
 			"source": "FTD",
 			"page": 168,
-			"size": "G",
+			"size": [
+				"G"
+			],
 			"type": {
 				"type": "dragon",
 				"tags": [
@@ -6122,7 +6254,7 @@
 									"items": [
 										{
 											"type": "item",
-											"name": "Flyby,",
+											"name": "Flyby",
 											"entries": [
 												"The dragon is an agile flier, quick to fly out of enemies' reach.",
 												"The dragon doesn't provoke an opportunity attack when it flies out of an enemy's reach."
@@ -6130,7 +6262,7 @@
 										},
 										{
 											"type": "item",
-											"name": "Mimicry.",
+											"name": "Mimicry",
 											"entries": [
 												"Impersonating characters or their allies could be a fun trick for a crafty dragon.",
 												"The dragon can mimic any sounds it has heard, including voices. A creature that hears the sounds can tell they are imitations with a successful {@dc 16} Wisdom ({@skill Insight}) check."
@@ -6138,7 +6270,7 @@
 										},
 										{
 											"type": "item",
-											"name": "Rejuvenation.",
+											"name": "Rejuvenation",
 											"entries": [
 												"You might decide that dragons in your campaign, being an essential part of the Material Plane, are nearly impossible to destroy. A dragon's life essence might be preserved in the egg from which it first emerged, in its hoard, or in a cavernous hall at the center of the world, just as a lich's essence is hidden in a phylactery.",
 												"If it has an essence-preserving object, a destroyed dragon gains a new body in {@dice 1d10} days, regaining all its hit points and becoming active again. The new body appears within 5 feet of the object."
@@ -6146,14 +6278,14 @@
 										},
 										{
 											"type": "item",
-											"name": "Special Senses.",
+											"name": "Special Senses",
 											"entries": [
-												"Most dragons have {@sense blindsight} and {@sense darkvision}. You might upgrade {@sense blindsight} to {@sense truesight}, or you could give a dragon with a burrowing speed {@sense tremorsense}."
+												"Most dragons have {@sense blindsight} and {@sense darkvision}. You might upgrade {@sense blindsight} to {@sense truesight}, or you could give a dragon with a burrowing speed {@sense tremorsense|MM}."
 											]
 										},
 										{
 											"type": "item",
-											"name": "Tunneler.",
+											"name": "Tunneler",
 											"entries": [
 												"The dragon can burrow through solid rock at half its burrowing speed and leaves a tunnel in its wake."
 											]
@@ -6166,6 +6298,7 @@
 				}
 			],
 			"dragonCastingColor": "blue",
+			"dragonAge": "greatwyrm",
 			"traitTags": [
 				"Legendary Resistances"
 			],
@@ -6207,7 +6340,9 @@
 			],
 			"source": "FTD",
 			"page": 208,
-			"size": "G",
+			"size": [
+				"G"
+			],
 			"type": {
 				"type": "dragon",
 				"tags": [
@@ -6327,14 +6462,14 @@
 							"items": [
 								{
 									"type": "item",
-									"name": "Elemental Breath.",
+									"name": "Elemental Breath",
 									"entries": [
 										"The greatwyrm exhales elemental energy in a 300-foot cone. Each creature in that area must make a {@dc 25} Dexterity saving throw, taking 84 ({@damage 13d12}) fire damage on a failed save, or half as much damage on a successful one."
 									]
 								},
 								{
 									"type": "item",
-									"name": "Sapping Breath.",
+									"name": "Sapping Breath",
 									"entries": [
 										"The greatwyrm exhales gas in a 300-foot cone. Each creature in that area must make a {@dc 25} Constitution saving throw. On a failed save, the creature falls {@condition unconscious} for 1 minute. On a successful save, the creature has disadvantage on attack rolls and saving throws until the end of the greatwyrm's next turn. An {@condition unconscious} creature can repeat the saving throw at the end of each of its turns, ending the effect on itself on a success."
 									]
@@ -6421,7 +6556,7 @@
 									"items": [
 										{
 											"type": "item",
-											"name": "Change Shape.",
+											"name": "Change Shape",
 											"entries": [
 												"You can decide that a dragon acquires this action at a younger age than usual, particularly if you want to feature a dragon in Humanoid form in your campaign:",
 												"The dragon magically polymorphs into a humanoid or beast that has a challenge rating no higher than its own, or back into its true form. It reverts to its true form if it dies. Any equipment it is wearing or carrying is absorbed or borne by the new form (the dragon's choice).",
@@ -6430,7 +6565,7 @@
 										},
 										{
 											"type": "item",
-											"name": "Flyby,",
+											"name": "Flyby",
 											"entries": [
 												"The dragon is an agile flier, quick to fly out of enemies' reach.",
 												"The dragon doesn't provoke an opportunity attack when it flies out of an enemy's reach."
@@ -6438,7 +6573,7 @@
 										},
 										{
 											"type": "item",
-											"name": "Mimicry.",
+											"name": "Mimicry",
 											"entries": [
 												"Impersonating characters or their allies could be a fun trick for a crafty dragon.",
 												"The dragon can mimic any sounds it has heard, including voices. A creature that hears the sounds can tell they are imitations with a successful {@dc 18} Wisdom ({@skill Insight}) check."
@@ -6446,7 +6581,7 @@
 										},
 										{
 											"type": "item",
-											"name": "Rejuvenation.",
+											"name": "Rejuvenation",
 											"entries": [
 												"You might decide that dragons in your campaign, being an essential part of the Material Plane, are nearly impossible to destroy. A dragon's life essence might be preserved in the egg from which it first emerged, in its hoard, or in a cavernous hall at the center of the world, just as a lich's essence is hidden in a phylactery.",
 												"If it has an essence-preserving object, a destroyed dragon gains a new body in {@dice 1d10} days, regaining all its hit points and becoming active again. The new body appears within 5 feet of the object."
@@ -6454,14 +6589,14 @@
 										},
 										{
 											"type": "item",
-											"name": "Special Senses.",
+											"name": "Special Senses",
 											"entries": [
-												"Most dragons have {@sense blindsight} and {@sense darkvision}. You might upgrade {@sense blindsight} to {@sense truesight}, or you could give a dragon with a burrowing speed {@sense tremorsense}."
+												"Most dragons have {@sense blindsight} and {@sense darkvision}. You might upgrade {@sense blindsight} to {@sense truesight}, or you could give a dragon with a burrowing speed {@sense tremorsense|MM}."
 											]
 										},
 										{
 											"type": "item",
-											"name": "Tunneler.",
+											"name": "Tunneler",
 											"entries": [
 												"The dragon can burrow through solid rock at half its burrowing speed and leaves a tunnel in its wake."
 											]
@@ -6474,6 +6609,7 @@
 				}
 			],
 			"dragonCastingColor": "brass",
+			"dragonAge": "greatwyrm",
 			"traitTags": [
 				"Legendary Resistances"
 			],
@@ -6509,6 +6645,7 @@
 				"restrained",
 				"unconscious"
 			],
+			"hasToken": true,
 			"hasFluff": true
 		},
 		{
@@ -6518,7 +6655,9 @@
 			],
 			"source": "FTD",
 			"page": 208,
-			"size": "G",
+			"size": [
+				"G"
+			],
 			"type": {
 				"type": "dragon",
 				"tags": [
@@ -6638,14 +6777,14 @@
 							"items": [
 								{
 									"type": "item",
-									"name": "Elemental Breath.",
+									"name": "Elemental Breath",
 									"entries": [
 										"The greatwyrm exhales elemental energy in a 300-foot cone. Each creature in that area must make a {@dc 25} Dexterity saving throw, taking 84 ({@damage 13d12}) lightning damage on a failed save, or half as much damage on a successful one."
 									]
 								},
 								{
 									"type": "item",
-									"name": "Sapping Breath.",
+									"name": "Sapping Breath",
 									"entries": [
 										"The greatwyrm exhales gas in a 300-foot cone. Each creature in that area must make a {@dc 25} Constitution saving throw. On a failed save, the creature falls {@condition unconscious} for 1 minute. On a successful save, the creature has disadvantage on attack rolls and saving throws until the end of the greatwyrm's next turn. An {@condition unconscious} creature can repeat the saving throw at the end of each of its turns, ending the effect on itself on a success."
 									]
@@ -6732,7 +6871,7 @@
 									"items": [
 										{
 											"type": "item",
-											"name": "Change Shape.",
+											"name": "Change Shape",
 											"entries": [
 												"You can decide that a dragon acquires this action at a younger age than usual, particularly if you want to feature a dragon in Humanoid form in your campaign:",
 												"The dragon magically polymorphs into a humanoid or beast that has a challenge rating no higher than its own, or back into its true form. It reverts to its true form if it dies. Any equipment it is wearing or carrying is absorbed or borne by the new form (the dragon's choice).",
@@ -6741,7 +6880,7 @@
 										},
 										{
 											"type": "item",
-											"name": "Flyby,",
+											"name": "Flyby",
 											"entries": [
 												"The dragon is an agile flier, quick to fly out of enemies' reach.",
 												"The dragon doesn't provoke an opportunity attack when it flies out of an enemy's reach."
@@ -6749,7 +6888,7 @@
 										},
 										{
 											"type": "item",
-											"name": "Mimicry.",
+											"name": "Mimicry",
 											"entries": [
 												"Impersonating characters or their allies could be a fun trick for a crafty dragon.",
 												"The dragon can mimic any sounds it has heard, including voices. A creature that hears the sounds can tell they are imitations with a successful {@dc 18} Wisdom ({@skill Insight}) check."
@@ -6757,7 +6896,7 @@
 										},
 										{
 											"type": "item",
-											"name": "Rejuvenation.",
+											"name": "Rejuvenation",
 											"entries": [
 												"You might decide that dragons in your campaign, being an essential part of the Material Plane, are nearly impossible to destroy. A dragon's life essence might be preserved in the egg from which it first emerged, in its hoard, or in a cavernous hall at the center of the world, just as a lich's essence is hidden in a phylactery.",
 												"If it has an essence-preserving object, a destroyed dragon gains a new body in {@dice 1d10} days, regaining all its hit points and becoming active again. The new body appears within 5 feet of the object."
@@ -6765,14 +6904,14 @@
 										},
 										{
 											"type": "item",
-											"name": "Special Senses.",
+											"name": "Special Senses",
 											"entries": [
-												"Most dragons have {@sense blindsight} and {@sense darkvision}. You might upgrade {@sense blindsight} to {@sense truesight}, or you could give a dragon with a burrowing speed {@sense tremorsense}."
+												"Most dragons have {@sense blindsight} and {@sense darkvision}. You might upgrade {@sense blindsight} to {@sense truesight}, or you could give a dragon with a burrowing speed {@sense tremorsense|MM}."
 											]
 										},
 										{
 											"type": "item",
-											"name": "Tunneler.",
+											"name": "Tunneler",
 											"entries": [
 												"The dragon can burrow through solid rock at half its burrowing speed and leaves a tunnel in its wake."
 											]
@@ -6785,6 +6924,7 @@
 				}
 			],
 			"dragonCastingColor": "bronze",
+			"dragonAge": "greatwyrm",
 			"traitTags": [
 				"Legendary Resistances"
 			],
@@ -6820,6 +6960,7 @@
 				"restrained",
 				"unconscious"
 			],
+			"hasToken": true,
 			"hasFluff": true
 		},
 		{
@@ -6829,7 +6970,9 @@
 			],
 			"source": "FTD",
 			"page": 208,
-			"size": "G",
+			"size": [
+				"G"
+			],
 			"type": {
 				"type": "dragon",
 				"tags": [
@@ -6949,14 +7092,14 @@
 							"items": [
 								{
 									"type": "item",
-									"name": "Elemental Breath.",
+									"name": "Elemental Breath",
 									"entries": [
 										"The greatwyrm exhales elemental energy in a 300-foot cone. Each creature in that area must make a {@dc 25} Dexterity saving throw, taking 84 ({@damage 13d12}) acid damage on a failed save, or half as much damage on a successful one."
 									]
 								},
 								{
 									"type": "item",
-									"name": "Sapping Breath.",
+									"name": "Sapping Breath",
 									"entries": [
 										"The greatwyrm exhales gas in a 300-foot cone. Each creature in that area must make a {@dc 25} Constitution saving throw. On a failed save, the creature falls {@condition unconscious} for 1 minute. On a successful save, the creature has disadvantage on attack rolls and saving throws until the end of the greatwyrm's next turn. An {@condition unconscious} creature can repeat the saving throw at the end of each of its turns, ending the effect on itself on a success."
 									]
@@ -7043,7 +7186,7 @@
 									"items": [
 										{
 											"type": "item",
-											"name": "Change Shape.",
+											"name": "Change Shape",
 											"entries": [
 												"You can decide that a dragon acquires this action at a younger age than usual, particularly if you want to feature a dragon in Humanoid form in your campaign:",
 												"The dragon magically polymorphs into a humanoid or beast that has a challenge rating no higher than its own, or back into its true form. It reverts to its true form if it dies. Any equipment it is wearing or carrying is absorbed or borne by the new form (the dragon's choice).",
@@ -7052,7 +7195,7 @@
 										},
 										{
 											"type": "item",
-											"name": "Flyby,",
+											"name": "Flyby",
 											"entries": [
 												"The dragon is an agile flier, quick to fly out of enemies' reach.",
 												"The dragon doesn't provoke an opportunity attack when it flies out of an enemy's reach."
@@ -7060,7 +7203,7 @@
 										},
 										{
 											"type": "item",
-											"name": "Mimicry.",
+											"name": "Mimicry",
 											"entries": [
 												"Impersonating characters or their allies could be a fun trick for a crafty dragon.",
 												"The dragon can mimic any sounds it has heard, including voices. A creature that hears the sounds can tell they are imitations with a successful {@dc 18} Wisdom ({@skill Insight}) check."
@@ -7068,7 +7211,7 @@
 										},
 										{
 											"type": "item",
-											"name": "Rejuvenation.",
+											"name": "Rejuvenation",
 											"entries": [
 												"You might decide that dragons in your campaign, being an essential part of the Material Plane, are nearly impossible to destroy. A dragon's life essence might be preserved in the egg from which it first emerged, in its hoard, or in a cavernous hall at the center of the world, just as a lich's essence is hidden in a phylactery.",
 												"If it has an essence-preserving object, a destroyed dragon gains a new body in {@dice 1d10} days, regaining all its hit points and becoming active again. The new body appears within 5 feet of the object."
@@ -7076,14 +7219,14 @@
 										},
 										{
 											"type": "item",
-											"name": "Special Senses.",
+											"name": "Special Senses",
 											"entries": [
-												"Most dragons have {@sense blindsight} and {@sense darkvision}. You might upgrade {@sense blindsight} to {@sense truesight}, or you could give a dragon with a burrowing speed {@sense tremorsense}."
+												"Most dragons have {@sense blindsight} and {@sense darkvision}. You might upgrade {@sense blindsight} to {@sense truesight}, or you could give a dragon with a burrowing speed {@sense tremorsense|MM}."
 											]
 										},
 										{
 											"type": "item",
-											"name": "Tunneler.",
+											"name": "Tunneler",
 											"entries": [
 												"The dragon can burrow through solid rock at half its burrowing speed and leaves a tunnel in its wake."
 											]
@@ -7096,6 +7239,7 @@
 				}
 			],
 			"dragonCastingColor": "copper",
+			"dragonAge": "greatwyrm",
 			"traitTags": [
 				"Legendary Resistances"
 			],
@@ -7131,6 +7275,7 @@
 				"restrained",
 				"unconscious"
 			],
+			"hasToken": true,
 			"hasFluff": true
 		},
 		{
@@ -7140,7 +7285,9 @@
 			],
 			"source": "FTD",
 			"page": 172,
-			"size": "M",
+			"size": [
+				"M"
+			],
 			"type": {
 				"type": "dragon",
 				"tags": [
@@ -7269,7 +7416,7 @@
 									"items": [
 										{
 											"type": "item",
-											"name": "Change Shape.",
+											"name": "Change Shape",
 											"entries": [
 												"You can decide that a dragon acquires this action at a younger age than usual, particularly if you want to feature a dragon in Humanoid form in your campaign:",
 												"The dragon magically polymorphs into a humanoid or beast that has a challenge rating no higher than its own, or back into its true form. It reverts to its true form if it dies. Any equipment it is wearing or carrying is absorbed or borne by the new form (the dragon's choice).",
@@ -7278,7 +7425,7 @@
 										},
 										{
 											"type": "item",
-											"name": "Flyby,",
+											"name": "Flyby",
 											"entries": [
 												"The dragon is an agile flier, quick to fly out of enemies' reach.",
 												"The dragon doesn't provoke an opportunity attack when it flies out of an enemy's reach."
@@ -7286,7 +7433,7 @@
 										},
 										{
 											"type": "item",
-											"name": "Mimicry.",
+											"name": "Mimicry",
 											"entries": [
 												"Impersonating characters or their allies could be a fun trick for a crafty dragon.",
 												"The dragon can mimic any sounds it has heard, including voices. A creature that hears the sounds can tell they are imitations with a successful {@dc 10} Wisdom ({@skill Insight}) check."
@@ -7294,7 +7441,7 @@
 										},
 										{
 											"type": "item",
-											"name": "Rejuvenation.",
+											"name": "Rejuvenation",
 											"entries": [
 												"You might decide that dragons in your campaign, being an essential part of the Material Plane, are nearly impossible to destroy. A dragon's life essence might be preserved in the egg from which it first emerged, in its hoard, or in a cavernous hall at the center of the world, just as a lich's essence is hidden in a phylactery.",
 												"If it has an essence-preserving object, a destroyed dragon gains a new body in {@dice 1d10} days, regaining all its hit points and becoming active again. The new body appears within 5 feet of the object."
@@ -7302,14 +7449,14 @@
 										},
 										{
 											"type": "item",
-											"name": "Special Senses.",
+											"name": "Special Senses",
 											"entries": [
-												"Most dragons have {@sense blindsight} and {@sense darkvision}. You might upgrade {@sense blindsight} to {@sense truesight}, or you could give a dragon with a burrowing speed {@sense tremorsense}."
+												"Most dragons have {@sense blindsight} and {@sense darkvision}. You might upgrade {@sense blindsight} to {@sense truesight}, or you could give a dragon with a burrowing speed {@sense tremorsense|MM}."
 											]
 										},
 										{
 											"type": "item",
-											"name": "Tunneler.",
+											"name": "Tunneler",
 											"entries": [
 												"The dragon can burrow through solid rock at half its burrowing speed and leaves a tunnel in its wake."
 											]
@@ -7321,6 +7468,7 @@
 					]
 				}
 			],
+			"dragonAge": "wyrmling",
 			"senseTags": [
 				"B",
 				"D"
@@ -7345,7 +7493,8 @@
 				"RCH"
 			],
 			"hasToken": true,
-			"hasFluff": true
+			"hasFluff": true,
+			"hasFluffImages": true
 		},
 		{
 			"name": "Crystal Greatwyrm",
@@ -7354,7 +7503,9 @@
 			],
 			"source": "FTD",
 			"page": 201,
-			"size": "G",
+			"size": [
+				"G"
+			],
 			"type": {
 				"type": "dragon",
 				"tags": [
@@ -7568,7 +7719,7 @@
 									"items": [
 										{
 											"type": "item",
-											"name": "Change Shape.",
+											"name": "Change Shape",
 											"entries": [
 												"You can decide that a dragon acquires this action at a younger age than usual, particularly if you want to feature a dragon in Humanoid form in your campaign:",
 												"The dragon magically polymorphs into a humanoid or beast that has a challenge rating no higher than its own, or back into its true form. It reverts to its true form if it dies. Any equipment it is wearing or carrying is absorbed or borne by the new form (the dragon's choice).",
@@ -7577,7 +7728,7 @@
 										},
 										{
 											"type": "item",
-											"name": "Flyby,",
+											"name": "Flyby",
 											"entries": [
 												"The dragon is an agile flier, quick to fly out of enemies' reach.",
 												"The dragon doesn't provoke an opportunity attack when it flies out of an enemy's reach."
@@ -7585,7 +7736,7 @@
 										},
 										{
 											"type": "item",
-											"name": "Mimicry.",
+											"name": "Mimicry",
 											"entries": [
 												"Impersonating characters or their allies could be a fun trick for a crafty dragon.",
 												"The dragon can mimic any sounds it has heard, including voices. A creature that hears the sounds can tell they are imitations with a successful {@dc 15} Wisdom ({@skill Insight}) check."
@@ -7593,7 +7744,7 @@
 										},
 										{
 											"type": "item",
-											"name": "Rejuvenation.",
+											"name": "Rejuvenation",
 											"entries": [
 												"You might decide that dragons in your campaign, being an essential part of the Material Plane, are nearly impossible to destroy. A dragon's life essence might be preserved in the egg from which it first emerged, in its hoard, or in a cavernous hall at the center of the world, just as a lich's essence is hidden in a phylactery.",
 												"If it has an essence-preserving object, a destroyed dragon gains a new body in {@dice 1d10} days, regaining all its hit points and becoming active again. The new body appears within 5 feet of the object."
@@ -7601,14 +7752,14 @@
 										},
 										{
 											"type": "item",
-											"name": "Special Senses.",
+											"name": "Special Senses",
 											"entries": [
-												"Most dragons have {@sense blindsight} and {@sense darkvision}. You might upgrade {@sense blindsight} to {@sense truesight}, or you could give a dragon with a burrowing speed {@sense tremorsense}."
+												"Most dragons have {@sense blindsight} and {@sense darkvision}. You might upgrade {@sense blindsight} to {@sense truesight}, or you could give a dragon with a burrowing speed {@sense tremorsense|MM}."
 											]
 										},
 										{
 											"type": "item",
-											"name": "Tunneler.",
+											"name": "Tunneler",
 											"entries": [
 												"The dragon can burrow through solid rock at half its burrowing speed and leaves a tunnel in its wake."
 											]
@@ -7620,6 +7771,7 @@
 					]
 				}
 			],
+			"dragonAge": "greatwyrm",
 			"traitTags": [
 				"Legendary Resistances"
 			],
@@ -7654,13 +7806,16 @@
 				"prone",
 				"restrained"
 			],
+			"hasToken": true,
 			"hasFluff": true
 		},
 		{
 			"name": "Deep Dragon Wyrmling",
 			"source": "FTD",
 			"page": 175,
-			"size": "M",
+			"size": [
+				"M"
+			],
 			"type": "dragon",
 			"alignment": [
 				"N",
@@ -7774,7 +7929,7 @@
 									"items": [
 										{
 											"type": "item",
-											"name": "Change Shape.",
+											"name": "Change Shape",
 											"entries": [
 												"You can decide that a dragon acquires this action at a younger age than usual, particularly if you want to feature a dragon in Humanoid form in your campaign:",
 												"The dragon magically polymorphs into a humanoid or beast that has a challenge rating no higher than its own, or back into its true form. It reverts to its true form if it dies. Any equipment it is wearing or carrying is absorbed or borne by the new form (the dragon's choice).",
@@ -7783,7 +7938,7 @@
 										},
 										{
 											"type": "item",
-											"name": "Flyby,",
+											"name": "Flyby",
 											"entries": [
 												"The dragon is an agile flier, quick to fly out of enemies' reach.",
 												"The dragon doesn't provoke an opportunity attack when it flies out of an enemy's reach."
@@ -7791,7 +7946,7 @@
 										},
 										{
 											"type": "item",
-											"name": "Mimicry.",
+											"name": "Mimicry",
 											"entries": [
 												"Impersonating characters or their allies could be a fun trick for a crafty dragon.",
 												"The dragon can mimic any sounds it has heard, including voices. A creature that hears the sounds can tell they are imitations with a successful {@dc 9} Wisdom ({@skill Insight}) check."
@@ -7799,7 +7954,7 @@
 										},
 										{
 											"type": "item",
-											"name": "Rejuvenation.",
+											"name": "Rejuvenation",
 											"entries": [
 												"You might decide that dragons in your campaign, being an essential part of the Material Plane, are nearly impossible to destroy. A dragon's life essence might be preserved in the egg from which it first emerged, in its hoard, or in a cavernous hall at the center of the world, just as a lich's essence is hidden in a phylactery.",
 												"If it has an essence-preserving object, a destroyed dragon gains a new body in {@dice 1d10} days, regaining all its hit points and becoming active again. The new body appears within 5 feet of the object."
@@ -7807,14 +7962,14 @@
 										},
 										{
 											"type": "item",
-											"name": "Special Senses.",
+											"name": "Special Senses",
 											"entries": [
-												"Most dragons have {@sense blindsight} and {@sense darkvision}. You might upgrade {@sense blindsight} to {@sense truesight}, or you could give a dragon with a burrowing speed {@sense tremorsense}."
+												"Most dragons have {@sense blindsight} and {@sense darkvision}. You might upgrade {@sense blindsight} to {@sense truesight}, or you could give a dragon with a burrowing speed {@sense tremorsense|MM}."
 											]
 										},
 										{
 											"type": "item",
-											"name": "Tunneler.",
+											"name": "Tunneler",
 											"entries": [
 												"The dragon can burrow through solid rock at half its burrowing speed and leaves a tunnel in its wake."
 											]
@@ -7827,6 +7982,7 @@
 				}
 			],
 			"dragonCastingColor": "deep",
+			"dragonAge": "wyrmling",
 			"senseTags": [
 				"B",
 				"D"
@@ -7856,7 +8012,9 @@
 			"name": "Dracohydra",
 			"source": "FTD",
 			"page": 176,
-			"size": "H",
+			"size": [
+				"H"
+			],
 			"type": "monstrosity",
 			"alignment": [
 				"C",
@@ -7963,7 +8121,9 @@
 			"name": "Draconian Dreadnought",
 			"source": "FTD",
 			"page": 177,
-			"size": "L",
+			"size": [
+				"L"
+			],
 			"type": "monstrosity",
 			"alignment": [
 				"A"
@@ -8072,7 +8232,9 @@
 			"name": "Draconian Foot Soldier",
 			"source": "FTD",
 			"page": 178,
-			"size": "M",
+			"size": [
+				"M"
+			],
 			"type": "monstrosity",
 			"alignment": [
 				"A"
@@ -8167,7 +8329,9 @@
 			"name": "Draconian Infiltrator",
 			"source": "FTD",
 			"page": 178,
-			"size": "M",
+			"size": [
+				"M"
+			],
 			"type": "monstrosity",
 			"alignment": [
 				"A"
@@ -8280,7 +8444,9 @@
 			"name": "Draconian Mage",
 			"source": "FTD",
 			"page": 179,
-			"size": "M",
+			"size": [
+				"M"
+			],
 			"type": "monstrosity",
 			"alignment": [
 				"A"
@@ -8406,7 +8572,9 @@
 			"name": "Draconian Mastermind",
 			"source": "FTD",
 			"page": 180,
-			"size": "M",
+			"size": [
+				"M"
+			],
 			"type": "monstrosity",
 			"alignment": [
 				"A"
@@ -8535,6 +8703,9 @@
 				"O",
 				"S"
 			],
+			"damageTagsSpell": [
+				"O"
+			],
 			"miscTags": [
 				"AOE",
 				"MW"
@@ -8554,7 +8725,9 @@
 			"name": "Draconic Shard",
 			"source": "FTD",
 			"page": 181,
-			"size": "H",
+			"size": [
+				"H"
+			],
 			"type": "undead",
 			"alignment": [
 				"N"
@@ -8663,7 +8836,7 @@
 				{
 					"name": "Incorporeal Movement",
 					"entries": [
-						"The shard can move through creatures and objects as if they were difficult terrain. If it ends its turn inside an object, it takes 5 ({@damage 1d10}) force damage."
+						"The shard can move through creatures and objects as if they were {@quickref difficult terrain||3}. If it ends its turn inside an object, it takes 5 ({@damage 1d10}) force damage."
 					]
 				},
 				{
@@ -8701,7 +8874,7 @@
 				{
 					"name": "Inhabit Object",
 					"entries": [
-						"The shard disappears as it pours its psychic essence into a Medium or smaller nonsentient object it can see within 30 feet of it, magically possessing it. The object uses the shard's AC, and any damage dealt to the object applies to the shard's hit points. The shard inhabits the object until it uses an action to leave; until it is turned; until it is reduced to 0 hit points; or until an effect that ends possession, such as a dispel evil and good spell, is used on it. When it leaves the object, it reappears in the nearest unoccupied space.",
+						"The shard disappears as it pours its psychic essence into a Medium or smaller nonsentient object it can see within 30 feet of it, magically possessing it. The object uses the shard's AC, and any damage dealt to the object applies to the shard's hit points. The shard inhabits the object until it uses an action to leave; until it is turned; until it is reduced to 0 hit points; or until an effect that ends possession, such as a {@spell dispel evil and good} spell, is used on it. When it leaves the object, it reappears in the nearest unoccupied space.",
 						"While inhabited, the object becomes a magic item if it wasn't already, and a Tiny cracked gemstone matching the kind of gem dragon the shard was in life appears somewhere on the object. The shard can cause the object to fly using the shard's own flying speed, use its senses, speak verbally or telepathically, cast spells, and use its legendary actions.",
 						"If a creature wears or carries the inhabited object, the shard can grant the creature the following benefits:",
 						"Each of the creature's attacks deals an extra {@damage 1d8} force damage on a hit.",
@@ -8780,7 +8953,10 @@
 			"source": "FTD",
 			"page": 21,
 			"summonedBySpell": "Summon Draconic Spirit|FTD",
-			"size": "L",
+			"summonedBySpellLevel": 5,
+			"size": [
+				"L"
+			],
 			"type": "dragon",
 			"alignment": [
 				{
@@ -8900,7 +9076,9 @@
 			"name": "Dragon Blessed",
 			"source": "FTD",
 			"page": 188,
-			"size": "M",
+			"size": [
+				"M"
+			],
 			"type": "humanoid",
 			"alignment": [
 				"A"
@@ -8999,6 +9177,10 @@
 				"B",
 				"R"
 			],
+			"damageTagsSpell": [
+				"F",
+				"R"
+			],
 			"miscTags": [
 				"MW"
 			],
@@ -9010,7 +9192,9 @@
 			"name": "Dragon Chosen",
 			"source": "FTD",
 			"page": 189,
-			"size": "M",
+			"size": [
+				"M"
+			],
 			"type": "humanoid",
 			"alignment": [
 				"A"
@@ -9106,7 +9290,9 @@
 			"name": "Dragon Speaker",
 			"source": "FTD",
 			"page": 189,
-			"size": "S",
+			"size": [
+				"S"
+			],
 			"type": "humanoid",
 			"alignment": [
 				"A"
@@ -9223,7 +9409,9 @@
 			"name": "Dragon Turtle Wyrmling",
 			"source": "FTD",
 			"page": 192,
-			"size": "L",
+			"size": [
+				"L"
+			],
 			"type": "dragon",
 			"alignment": [
 				"N"
@@ -9329,7 +9517,7 @@
 									"items": [
 										{
 											"type": "item",
-											"name": "Flyby,",
+											"name": "Flyby",
 											"entries": [
 												"The dragon is an agile flier, quick to fly out of enemies' reach.",
 												"The dragon doesn't provoke an opportunity attack when it flies out of an enemy's reach."
@@ -9337,7 +9525,7 @@
 										},
 										{
 											"type": "item",
-											"name": "Mimicry.",
+											"name": "Mimicry",
 											"entries": [
 												"Impersonating characters or their allies could be a fun trick for a crafty dragon.",
 												"The dragon can mimic any sounds it has heard, including voices. A creature that hears the sounds can tell they are imitations with a successful {@dc 8} Wisdom ({@skill Insight}) check."
@@ -9345,7 +9533,7 @@
 										},
 										{
 											"type": "item",
-											"name": "Rejuvenation.",
+											"name": "Rejuvenation",
 											"entries": [
 												"You might decide that dragons in your campaign, being an essential part of the Material Plane, are nearly impossible to destroy. A dragon's life essence might be preserved in the egg from which it first emerged, in its hoard, or in a cavernous hall at the center of the world, just as a lich's essence is hidden in a phylactery.",
 												"If it has an essence-preserving object, a destroyed dragon gains a new body in {@dice 1d10} days, regaining all its hit points and becoming active again. The new body appears within 5 feet of the object."
@@ -9353,9 +9541,9 @@
 										},
 										{
 											"type": "item",
-											"name": "Special Senses.",
+											"name": "Special Senses",
 											"entries": [
-												"Most dragons have {@sense blindsight} and {@sense darkvision}. You might upgrade {@sense blindsight} to {@sense truesight}, or you could give a dragon with a burrowing speed {@sense tremorsense}."
+												"Most dragons have {@sense blindsight} and {@sense darkvision}. You might upgrade {@sense blindsight} to {@sense truesight}, or you could give a dragon with a burrowing speed {@sense tremorsense|MM}."
 											]
 										}
 									]
@@ -9365,6 +9553,7 @@
 					]
 				}
 			],
+			"dragonAge": "wyrmling",
 			"traitTags": [
 				"Amphibious"
 			],
@@ -9393,7 +9582,9 @@
 			"name": "Dragonblood Ooze",
 			"source": "FTD",
 			"page": 182,
-			"size": "L",
+			"size": [
+				"L"
+			],
 			"type": "ooze",
 			"alignment": [
 				"U"
@@ -9517,7 +9708,9 @@
 			"name": "Dragonbone Golem",
 			"source": "FTD",
 			"page": 183,
-			"size": "L",
+			"size": [
+				"L"
+			],
 			"type": "construct",
 			"alignment": [
 				"U"
@@ -9643,7 +9836,9 @@
 			"name": "Dragonborn of Bahamut",
 			"source": "FTD",
 			"page": 184,
-			"size": "M",
+			"size": [
+				"M"
+			],
 			"type": "humanoid",
 			"alignment": [
 				"L",
@@ -9757,7 +9952,9 @@
 			"name": "Dragonborn of Sardior",
 			"source": "FTD",
 			"page": 185,
-			"size": "M",
+			"size": [
+				"M"
+			],
 			"type": "humanoid",
 			"alignment": [
 				"N"
@@ -9879,6 +10076,10 @@
 				"P",
 				"Y"
 			],
+			"damageTagsSpell": [
+				"B",
+				"O"
+			],
 			"spellcastingTags": [
 				"P"
 			],
@@ -9900,7 +10101,9 @@
 			"name": "Dragonborn of Tiamat",
 			"source": "FTD",
 			"page": 185,
-			"size": "M",
+			"size": [
+				"M"
+			],
 			"type": "humanoid",
 			"alignment": [
 				"C",
@@ -10006,7 +10209,9 @@
 			"name": "Dragonflesh Abomination",
 			"source": "FTD",
 			"page": 187,
-			"size": "H",
+			"size": [
+				"H"
+			],
 			"type": "monstrosity",
 			"alignment": [
 				"N",
@@ -10130,7 +10335,9 @@
 			"name": "Dragonflesh Grafter",
 			"source": "FTD",
 			"page": 186,
-			"size": "L",
+			"size": [
+				"L"
+			],
 			"type": "monstrosity",
 			"alignment": [
 				"N",
@@ -10220,7 +10427,9 @@
 			"name": "Dragonnel",
 			"source": "FTD",
 			"page": 190,
-			"size": "L",
+			"size": [
+				"L"
+			],
 			"type": "dragon",
 			"alignment": [
 				"N"
@@ -10311,7 +10520,9 @@
 			"name": "Drake Companion",
 			"source": "FTD",
 			"page": 15,
-			"size": "S",
+			"size": [
+				"S"
+			],
 			"type": "dragon",
 			"ac": [
 				{
@@ -10386,7 +10597,9 @@
 			"name": "Egg Hunter Adult",
 			"source": "FTD",
 			"page": 193,
-			"size": "S",
+			"size": [
+				"S"
+			],
 			"type": "monstrosity",
 			"alignment": [
 				"U"
@@ -10501,7 +10714,9 @@
 			"name": "Egg Hunter Hatchling",
 			"source": "FTD",
 			"page": 193,
-			"size": "T",
+			"size": [
+				"T"
+			],
 			"type": "monstrosity",
 			"alignment": [
 				"U"
@@ -10598,7 +10813,9 @@
 			"name": "Elder Brain Dragon",
 			"source": "FTD",
 			"page": 194,
-			"size": "G",
+			"size": [
+				"G"
+			],
 			"type": "aberration",
 			"alignment": [
 				"L",
@@ -10709,7 +10926,7 @@
 					"entries": [
 						"The dragon exhales brine in a 120-foot line that is 15 feet wide. Each creature in that area must make a {@dc 22} Constitution saving throw, taking 55 ({@damage 10d10}) psychic damage on a failed save, or half as much damage on a successful one. On a success or failure, if the creature isn't a Construct or an Undead, it becomes infested with illithid tadpoles.",
 						"While infested, the creature takes 16 ({@damage 3d10}) psychic damage at the start of each of its turns. The creature can repeat the saving throw at the end of each of its turns, ending the effect on itself after it succeeds on three of these saves. If the creature is targeted by magic that ends a curse or restores 40 hit points or more, the tadpoles infesting the creature are killed instantly, ending the effect on the creature.",
-						"If a Humanoid is reduced to 0 hit points while infested, the creature is stable but remains {@condition unconscious} for {@dice 6d12} hours. When the period of unconsciousness ends, the creature transforms into a {@creature mind flayer} (see the Monster Manual) with all its hit points. Casting a wish spell on the {@condition unconscious} creature rids it of the infestation and prevents it from turning into a mind flayer."
+						"If a Humanoid is reduced to 0 hit points while infested, the creature is stable but remains {@condition unconscious} for {@dice 6d12} hours. When the period of unconsciousness ends, the creature transforms into a {@creature mind flayer} (see the Monster Manual) with all its hit points. Casting a {@spell wish} spell on the {@condition unconscious} creature rids it of the infestation and prevents it from turning into a mind flayer."
 					]
 				}
 			],
@@ -10768,7 +10985,9 @@
 			],
 			"source": "FTD",
 			"page": 197,
-			"size": "M",
+			"size": [
+				"M"
+			],
 			"type": {
 				"type": "dragon",
 				"tags": [
@@ -10905,7 +11124,7 @@
 									"items": [
 										{
 											"type": "item",
-											"name": "Change Shape.",
+											"name": "Change Shape",
 											"entries": [
 												"You can decide that a dragon acquires this action at a younger age than usual, particularly if you want to feature a dragon in Humanoid form in your campaign:",
 												"The dragon magically polymorphs into a humanoid or beast that has a challenge rating no higher than its own, or back into its true form. It reverts to its true form if it dies. Any equipment it is wearing or carrying is absorbed or borne by the new form (the dragon's choice).",
@@ -10914,7 +11133,7 @@
 										},
 										{
 											"type": "item",
-											"name": "Flyby,",
+											"name": "Flyby",
 											"entries": [
 												"The dragon is an agile flier, quick to fly out of enemies' reach.",
 												"The dragon doesn't provoke an opportunity attack when it flies out of an enemy's reach."
@@ -10922,7 +11141,7 @@
 										},
 										{
 											"type": "item",
-											"name": "Mimicry.",
+											"name": "Mimicry",
 											"entries": [
 												"Impersonating characters or their allies could be a fun trick for a crafty dragon.",
 												"The dragon can mimic any sounds it has heard, including voices. A creature that hears the sounds can tell they are imitations with a successful {@dc 12} Wisdom ({@skill Insight}) check."
@@ -10930,7 +11149,7 @@
 										},
 										{
 											"type": "item",
-											"name": "Rejuvenation.",
+											"name": "Rejuvenation",
 											"entries": [
 												"You might decide that dragons in your campaign, being an essential part of the Material Plane, are nearly impossible to destroy. A dragon's life essence might be preserved in the egg from which it first emerged, in its hoard, or in a cavernous hall at the center of the world, just as a lich's essence is hidden in a phylactery.",
 												"If it has an essence-preserving object, a destroyed dragon gains a new body in {@dice 1d10} days, regaining all its hit points and becoming active again. The new body appears within 5 feet of the object."
@@ -10938,14 +11157,14 @@
 										},
 										{
 											"type": "item",
-											"name": "Special Senses.",
+											"name": "Special Senses",
 											"entries": [
-												"Most dragons have {@sense blindsight} and {@sense darkvision}. You might upgrade {@sense blindsight} to {@sense truesight}, or you could give a dragon with a burrowing speed {@sense tremorsense}."
+												"Most dragons have {@sense blindsight} and {@sense darkvision}. You might upgrade {@sense blindsight} to {@sense truesight}, or you could give a dragon with a burrowing speed {@sense tremorsense|MM}."
 											]
 										},
 										{
 											"type": "item",
-											"name": "Tunneler.",
+											"name": "Tunneler",
 											"entries": [
 												"The dragon can burrow through solid rock at half its burrowing speed and leaves a tunnel in its wake."
 											]
@@ -10957,6 +11176,7 @@
 					]
 				}
 			],
+			"dragonAge": "wyrmling",
 			"senseTags": [
 				"B",
 				"D"
@@ -10991,7 +11211,9 @@
 			],
 			"source": "FTD",
 			"page": 201,
-			"size": "G",
+			"size": [
+				"G"
+			],
 			"type": {
 				"type": "dragon",
 				"tags": [
@@ -11205,7 +11427,7 @@
 									"items": [
 										{
 											"type": "item",
-											"name": "Change Shape.",
+											"name": "Change Shape",
 											"entries": [
 												"You can decide that a dragon acquires this action at a younger age than usual, particularly if you want to feature a dragon in Humanoid form in your campaign:",
 												"The dragon magically polymorphs into a humanoid or beast that has a challenge rating no higher than its own, or back into its true form. It reverts to its true form if it dies. Any equipment it is wearing or carrying is absorbed or borne by the new form (the dragon's choice).",
@@ -11214,7 +11436,7 @@
 										},
 										{
 											"type": "item",
-											"name": "Flyby,",
+											"name": "Flyby",
 											"entries": [
 												"The dragon is an agile flier, quick to fly out of enemies' reach.",
 												"The dragon doesn't provoke an opportunity attack when it flies out of an enemy's reach."
@@ -11222,7 +11444,7 @@
 										},
 										{
 											"type": "item",
-											"name": "Mimicry.",
+											"name": "Mimicry",
 											"entries": [
 												"Impersonating characters or their allies could be a fun trick for a crafty dragon.",
 												"The dragon can mimic any sounds it has heard, including voices. A creature that hears the sounds can tell they are imitations with a successful {@dc 15} Wisdom ({@skill Insight}) check."
@@ -11230,7 +11452,7 @@
 										},
 										{
 											"type": "item",
-											"name": "Rejuvenation.",
+											"name": "Rejuvenation",
 											"entries": [
 												"You might decide that dragons in your campaign, being an essential part of the Material Plane, are nearly impossible to destroy. A dragon's life essence might be preserved in the egg from which it first emerged, in its hoard, or in a cavernous hall at the center of the world, just as a lich's essence is hidden in a phylactery.",
 												"If it has an essence-preserving object, a destroyed dragon gains a new body in {@dice 1d10} days, regaining all its hit points and becoming active again. The new body appears within 5 feet of the object."
@@ -11238,14 +11460,14 @@
 										},
 										{
 											"type": "item",
-											"name": "Special Senses.",
+											"name": "Special Senses",
 											"entries": [
-												"Most dragons have {@sense blindsight} and {@sense darkvision}. You might upgrade {@sense blindsight} to {@sense truesight}, or you could give a dragon with a burrowing speed {@sense tremorsense}."
+												"Most dragons have {@sense blindsight} and {@sense darkvision}. You might upgrade {@sense blindsight} to {@sense truesight}, or you could give a dragon with a burrowing speed {@sense tremorsense|MM}."
 											]
 										},
 										{
 											"type": "item",
-											"name": "Tunneler.",
+											"name": "Tunneler",
 											"entries": [
 												"The dragon can burrow through solid rock at half its burrowing speed and leaves a tunnel in its wake."
 											]
@@ -11257,6 +11479,7 @@
 					]
 				}
 			],
+			"dragonAge": "greatwyrm",
 			"traitTags": [
 				"Legendary Resistances"
 			],
@@ -11291,13 +11514,16 @@
 				"prone",
 				"restrained"
 			],
+			"hasToken": true,
 			"hasFluff": true
 		},
 		{
 			"name": "Eyedrake",
 			"source": "FTD",
 			"page": 199,
-			"size": "L",
+			"size": [
+				"L"
+			],
 			"type": "aberration",
 			"alignment": [
 				"L",
@@ -11380,42 +11606,42 @@
 							"style": "list-hang-notitle",
 							"items": [
 								{
-									"name": "1: Freezing Ray.",
+									"name": "1: Freezing Ray",
 									"entries": [
 										"The target must make a {@dc 14} Constitution saving throw. On a failed save, the target takes 17 ({@damage 5d6}) cold damage, and its speed is halved until the end of its next turn. On a successful save, the target takes half as much damage with no additional effects."
 									],
 									"type": "item"
 								},
 								{
-									"name": "2: Debilitating Ray.",
+									"name": "2: Debilitating Ray",
 									"entries": [
 										"The target must succeed on a {@dc 14} Constitution saving throw or take 7 ({@damage 2d6}) thunder damage and become {@condition incapacitated} until the end of its next turn."
 									],
 									"type": "item"
 								},
 								{
-									"name": "3: Repulsion Ray.",
+									"name": "3: Repulsion Ray",
 									"entries": [
 										"The target must succeed on a {@dc 14} Strength saving throw or take 14 ({@damage 4d6}) force damage and be pushed up to 60 feet away from the eyedrake."
 									],
 									"type": "item"
 								},
 								{
-									"name": "4: Fire Ray.",
+									"name": "4: Fire Ray",
 									"entries": [
 										"The target must make a {@dc 14} Dexterity saving throw, taking 21 ({@damage 6d6}) fire damage on a failed save, or half as much damage on a successful one."
 									],
 									"type": "item"
 								},
 								{
-									"name": "5: Paralyzing Ray.",
+									"name": "5: Paralyzing Ray",
 									"entries": [
 										"The target must succeed on a {@dc 14} Constitution saving throw or be {@condition paralyzed} for 1 minute. The target can repeat the saving throw at the end of each of its turns, ending the effect on itself on a success."
 									],
 									"type": "item"
 								},
 								{
-									"name": "6: Death Ray.",
+									"name": "6: Death Ray",
 									"entries": [
 										"The target must make a {@dc 14} Dexterity saving throw, taking 28 ({@damage 8d6}) necrotic damage on a failed save, or half as much damage on a successful one. The target dies if the ray reduces it to 0 hit points."
 									],
@@ -11461,7 +11687,9 @@
 			"name": "Gem Stalker",
 			"source": "FTD",
 			"page": 202,
-			"size": "L",
+			"size": [
+				"L"
+			],
 			"type": "monstrosity",
 			"alignment": [
 				"N"
@@ -11615,7 +11843,9 @@
 			"name": "Ghost Dragon",
 			"source": "FTD",
 			"page": 203,
-			"size": "H",
+			"size": [
+				"H"
+			],
 			"type": "undead",
 			"alignment": [
 				"A"
@@ -11687,7 +11917,7 @@
 				{
 					"name": "Incorporeal Movement",
 					"entries": [
-						"The ghost dragon can move through other creatures and objects as if they were difficult terrain. It takes 5 ({@damage 1d10}) force damage if it ends its turn inside an object."
+						"The ghost dragon can move through other creatures and objects as if they were {@quickref difficult terrain||3}. It takes 5 ({@damage 1d10}) force damage if it ends its turn inside an object."
 					]
 				},
 				{
@@ -11770,7 +12000,9 @@
 			"name": "Giant Canary",
 			"source": "FTD",
 			"page": 23,
-			"size": "L",
+			"size": [
+				"L"
+			],
 			"type": "beast",
 			"alignment": [
 				"U"
@@ -11817,7 +12049,9 @@
 			],
 			"source": "FTD",
 			"page": 208,
-			"size": "G",
+			"size": [
+				"G"
+			],
 			"type": {
 				"type": "dragon",
 				"tags": [
@@ -11937,14 +12171,14 @@
 							"items": [
 								{
 									"type": "item",
-									"name": "Elemental Breath.",
+									"name": "Elemental Breath",
 									"entries": [
 										"The greatwyrm exhales elemental energy in a 300-foot cone. Each creature in that area must make a {@dc 25} Dexterity saving throw, taking 84 ({@damage 13d12}) fire damage on a failed save, or half as much damage on a successful one."
 									]
 								},
 								{
 									"type": "item",
-									"name": "Sapping Breath.",
+									"name": "Sapping Breath",
 									"entries": [
 										"The greatwyrm exhales gas in a 300-foot cone. Each creature in that area must make a {@dc 25} Constitution saving throw. On a failed save, the creature falls {@condition unconscious} for 1 minute. On a successful save, the creature has disadvantage on attack rolls and saving throws until the end of the greatwyrm's next turn. An {@condition unconscious} creature can repeat the saving throw at the end of each of its turns, ending the effect on itself on a success."
 									]
@@ -12031,7 +12265,7 @@
 									"items": [
 										{
 											"type": "item",
-											"name": "Change Shape.",
+											"name": "Change Shape",
 											"entries": [
 												"You can decide that a dragon acquires this action at a younger age than usual, particularly if you want to feature a dragon in Humanoid form in your campaign:",
 												"The dragon magically polymorphs into a humanoid or beast that has a challenge rating no higher than its own, or back into its true form. It reverts to its true form if it dies. Any equipment it is wearing or carrying is absorbed or borne by the new form (the dragon's choice).",
@@ -12040,7 +12274,7 @@
 										},
 										{
 											"type": "item",
-											"name": "Damage Absorption.",
+											"name": "Damage Absorption",
 											"entries": [
 												"You might decide that this dragon is not only unharmed by fire damage, but actually healed by it.",
 												"Whenever the dragon is subjected to fire damage, it takes no damage and instead regains a number of hit points equal to the fire damage dealt."
@@ -12048,7 +12282,7 @@
 										},
 										{
 											"type": "item",
-											"name": "Flyby,",
+											"name": "Flyby",
 											"entries": [
 												"The dragon is an agile flier, quick to fly out of enemies' reach.",
 												"The dragon doesn't provoke an opportunity attack when it flies out of an enemy's reach."
@@ -12056,7 +12290,7 @@
 										},
 										{
 											"type": "item",
-											"name": "Mimicry.",
+											"name": "Mimicry",
 											"entries": [
 												"Impersonating characters or their allies could be a fun trick for a crafty dragon.",
 												"The dragon can mimic any sounds it has heard, including voices. A creature that hears the sounds can tell they are imitations with a successful {@dc 18} Wisdom ({@skill Insight}) check."
@@ -12064,7 +12298,7 @@
 										},
 										{
 											"type": "item",
-											"name": "Rejuvenation.",
+											"name": "Rejuvenation",
 											"entries": [
 												"You might decide that dragons in your campaign, being an essential part of the Material Plane, are nearly impossible to destroy. A dragon's life essence might be preserved in the egg from which it first emerged, in its hoard, or in a cavernous hall at the center of the world, just as a lich's essence is hidden in a phylactery.",
 												"If it has an essence-preserving object, a destroyed dragon gains a new body in {@dice 1d10} days, regaining all its hit points and becoming active again. The new body appears within 5 feet of the object."
@@ -12072,14 +12306,14 @@
 										},
 										{
 											"type": "item",
-											"name": "Special Senses.",
+											"name": "Special Senses",
 											"entries": [
-												"Most dragons have {@sense blindsight} and {@sense darkvision}. You might upgrade {@sense blindsight} to {@sense truesight}, or you could give a dragon with a burrowing speed {@sense tremorsense}."
+												"Most dragons have {@sense blindsight} and {@sense darkvision}. You might upgrade {@sense blindsight} to {@sense truesight}, or you could give a dragon with a burrowing speed {@sense tremorsense|MM}."
 											]
 										},
 										{
 											"type": "item",
-											"name": "Tunneler.",
+											"name": "Tunneler",
 											"entries": [
 												"The dragon can burrow through solid rock at half its burrowing speed and leaves a tunnel in its wake."
 											]
@@ -12092,6 +12326,7 @@
 				}
 			],
 			"dragonCastingColor": "gold",
+			"dragonAge": "greatwyrm",
 			"traitTags": [
 				"Legendary Resistances"
 			],
@@ -12127,6 +12362,7 @@
 				"restrained",
 				"unconscious"
 			],
+			"hasToken": true,
 			"hasFluff": true
 		},
 		{
@@ -12136,7 +12372,9 @@
 			],
 			"source": "FTD",
 			"page": 168,
-			"size": "G",
+			"size": [
+				"G"
+			],
 			"type": {
 				"type": "dragon",
 				"tags": [
@@ -12329,7 +12567,7 @@
 									"items": [
 										{
 											"type": "item",
-											"name": "Flyby,",
+											"name": "Flyby",
 											"entries": [
 												"The dragon is an agile flier, quick to fly out of enemies' reach.",
 												"The dragon doesn't provoke an opportunity attack when it flies out of an enemy's reach."
@@ -12337,7 +12575,7 @@
 										},
 										{
 											"type": "item",
-											"name": "Mimicry.",
+											"name": "Mimicry",
 											"entries": [
 												"Impersonating characters or their allies could be a fun trick for a crafty dragon.",
 												"The dragon can mimic any sounds it has heard, including voices. A creature that hears the sounds can tell they are imitations with a successful {@dc 16} Wisdom ({@skill Insight}) check."
@@ -12345,7 +12583,7 @@
 										},
 										{
 											"type": "item",
-											"name": "Rejuvenation.",
+											"name": "Rejuvenation",
 											"entries": [
 												"You might decide that dragons in your campaign, being an essential part of the Material Plane, are nearly impossible to destroy. A dragon's life essence might be preserved in the egg from which it first emerged, in its hoard, or in a cavernous hall at the center of the world, just as a lich's essence is hidden in a phylactery.",
 												"If it has an essence-preserving object, a destroyed dragon gains a new body in {@dice 1d10} days, regaining all its hit points and becoming active again. The new body appears within 5 feet of the object."
@@ -12353,14 +12591,14 @@
 										},
 										{
 											"type": "item",
-											"name": "Special Senses.",
+											"name": "Special Senses",
 											"entries": [
-												"Most dragons have {@sense blindsight} and {@sense darkvision}. You might upgrade {@sense blindsight} to {@sense truesight}, or you could give a dragon with a burrowing speed {@sense tremorsense}."
+												"Most dragons have {@sense blindsight} and {@sense darkvision}. You might upgrade {@sense blindsight} to {@sense truesight}, or you could give a dragon with a burrowing speed {@sense tremorsense|MM}."
 											]
 										},
 										{
 											"type": "item",
-											"name": "Tunneler.",
+											"name": "Tunneler",
 											"entries": [
 												"The dragon can burrow through solid rock at half its burrowing speed and leaves a tunnel in its wake."
 											]
@@ -12373,6 +12611,7 @@
 				}
 			],
 			"dragonCastingColor": "green",
+			"dragonAge": "greatwyrm",
 			"traitTags": [
 				"Legendary Resistances"
 			],
@@ -12404,13 +12643,16 @@
 				"prone",
 				"restrained"
 			],
+			"hasToken": true,
 			"hasFluff": true
 		},
 		{
 			"name": "Hoard Mimic",
 			"source": "FTD",
 			"page": 204,
-			"size": "H",
+			"size": [
+				"H"
+			],
 			"type": "monstrosity",
 			"alignment": [
 				"N"
@@ -12535,7 +12777,9 @@
 			"name": "Hoard Scarab",
 			"source": "FTD",
 			"page": 205,
-			"size": "T",
+			"size": [
+				"T"
+			],
 			"type": "monstrosity",
 			"alignment": [
 				"U"
@@ -12589,7 +12833,7 @@
 				{
 					"name": "Scale Dust (1/Day)",
 					"entries": [
-						"The scarab releases magical glittering dust from its wings. Each creature within 5 feet of the scarab must succeed on a {@dc 13} Dexterity saving throw or be outlined in blue light for 10 minutes. While outlined in this way, a creature sheds dim light in a 10-foot radius and can't benefit from being {@condition invisible}. In addition, every Dragon within 1 mile of the creature becomes aware of it and can unerringly track the creature. Casting dispel magic on the creature ends the effect on it."
+						"The scarab releases magical glittering dust from its wings. Each creature within 5 feet of the scarab must succeed on a {@dc 13} Dexterity saving throw or be outlined in blue light for 10 minutes. While outlined in this way, a creature sheds dim light in a 10-foot radius and can't benefit from being {@condition invisible}. In addition, every Dragon within 1 mile of the creature becomes aware of it and can unerringly track the creature. Casting {@spell dispel magic} on the creature ends the effect on it."
 					]
 				}
 			],
@@ -12615,7 +12859,9 @@
 			"name": "Hollow Dragon",
 			"source": "FTD",
 			"page": 206,
-			"size": "H",
+			"size": [
+				"H"
+			],
 			"type": "undead",
 			"alignment": [
 				"A"
@@ -12781,7 +13027,9 @@
 			"name": "Liondrake",
 			"source": "FTD",
 			"page": 207,
-			"size": "L",
+			"size": [
+				"L"
+			],
 			"type": "monstrosity",
 			"alignment": [
 				"N"
@@ -12875,7 +13123,9 @@
 			"name": "Metallic Peacekeeper",
 			"source": "FTD",
 			"page": 210,
-			"size": "M",
+			"size": [
+				"M"
+			],
 			"type": "construct",
 			"alignment": [
 				"N",
@@ -12991,7 +13241,9 @@
 			"name": "Metallic Warbler",
 			"source": "FTD",
 			"page": 210,
-			"size": "T",
+			"size": [
+				"T"
+			],
 			"type": "construct",
 			"alignment": [
 				"N",
@@ -13100,7 +13352,9 @@
 			"name": "Moonstone Dragon Wyrmling",
 			"source": "FTD",
 			"page": 213,
-			"size": "M",
+			"size": [
+				"M"
+			],
 			"type": "dragon",
 			"alignment": [
 				"N"
@@ -13167,14 +13421,14 @@
 							"items": [
 								{
 									"type": "item",
-									"name": "Dream Breath.",
+									"name": "Dream Breath",
 									"entries": [
 										"The dragon exhales mist in a 90-foot cone. Each creature in that area must succeed on a {@dc 12} Constitution saving throw or fall {@condition unconscious} for 10 minutes. This effect ends for a creature if the creature takes damage or someone uses an action to wake it."
 									]
 								},
 								{
 									"type": "item",
-									"name": "Moonlight Breath.",
+									"name": "Moonlight Breath",
 									"entries": [
 										"The dragon exhales a beam of moonlight in a 30-foot line that is 5 feet wide. Each creature in that area must make a {@dc 12} Dexterity saving throw, taking 14 ({@damage 4d6}) radiant damage on a failed save, or half as much damage on a successful one."
 									]
@@ -13224,7 +13478,7 @@
 									"items": [
 										{
 											"type": "item",
-											"name": "Flyby,",
+											"name": "Flyby",
 											"entries": [
 												"The dragon is an agile flier, quick to fly out of enemies' reach.",
 												"The dragon doesn't provoke an opportunity attack when it flies out of an enemy's reach."
@@ -13232,7 +13486,7 @@
 										},
 										{
 											"type": "item",
-											"name": "Mimicry.",
+											"name": "Mimicry",
 											"entries": [
 												"Impersonating characters or their allies could be a fun trick for a crafty dragon.",
 												"The dragon can mimic any sounds it has heard, including voices. A creature that hears the sounds can tell they are imitations with a successful {@dc 11} Wisdom ({@skill Insight}) check."
@@ -13240,7 +13494,7 @@
 										},
 										{
 											"type": "item",
-											"name": "Rejuvenation.",
+											"name": "Rejuvenation",
 											"entries": [
 												"You might decide that dragons in your campaign, being an essential part of the Material Plane, are nearly impossible to destroy. A dragon's life essence might be preserved in the egg from which it first emerged, in its hoard, or in a cavernous hall at the center of the world, just as a lich's essence is hidden in a phylactery.",
 												"If it has an essence-preserving object, a destroyed dragon gains a new body in {@dice 1d10} days, regaining all its hit points and becoming active again. The new body appears within 5 feet of the object."
@@ -13248,9 +13502,9 @@
 										},
 										{
 											"type": "item",
-											"name": "Special Senses.",
+											"name": "Special Senses",
 											"entries": [
-												"Most dragons have {@sense blindsight} and {@sense darkvision}. You might upgrade {@sense blindsight} to {@sense truesight}, or you could give a dragon with a burrowing speed {@sense tremorsense}."
+												"Most dragons have {@sense blindsight} and {@sense darkvision}. You might upgrade {@sense blindsight} to {@sense truesight}, or you could give a dragon with a burrowing speed {@sense tremorsense|MM}."
 											]
 										}
 									]
@@ -13260,6 +13514,7 @@
 					]
 				}
 			],
+			"dragonAge": "wyrmling",
 			"senseTags": [
 				"B",
 				"D"
@@ -13293,7 +13548,9 @@
 			],
 			"source": "FTD",
 			"page": 168,
-			"size": "G",
+			"size": [
+				"G"
+			],
 			"type": {
 				"type": "dragon",
 				"tags": [
@@ -13486,7 +13743,7 @@
 									"items": [
 										{
 											"type": "item",
-											"name": "Damage Absorption.",
+											"name": "Damage Absorption",
 											"entries": [
 												"You might decide that this dragon is not only unharmed by fire damage, but actually healed by it.",
 												"Whenever the dragon is subjected to fire damage, it takes no damage and instead regains a number of hit points equal to the fire damage dealt."
@@ -13494,7 +13751,7 @@
 										},
 										{
 											"type": "item",
-											"name": "Flyby,",
+											"name": "Flyby",
 											"entries": [
 												"The dragon is an agile flier, quick to fly out of enemies' reach.",
 												"The dragon doesn't provoke an opportunity attack when it flies out of an enemy's reach."
@@ -13502,7 +13759,7 @@
 										},
 										{
 											"type": "item",
-											"name": "Mimicry.",
+											"name": "Mimicry",
 											"entries": [
 												"Impersonating characters or their allies could be a fun trick for a crafty dragon.",
 												"The dragon can mimic any sounds it has heard, including voices. A creature that hears the sounds can tell they are imitations with a successful {@dc 16} Wisdom ({@skill Insight}) check."
@@ -13510,7 +13767,7 @@
 										},
 										{
 											"type": "item",
-											"name": "Rejuvenation.",
+											"name": "Rejuvenation",
 											"entries": [
 												"You might decide that dragons in your campaign, being an essential part of the Material Plane, are nearly impossible to destroy. A dragon's life essence might be preserved in the egg from which it first emerged, in its hoard, or in a cavernous hall at the center of the world, just as a lich's essence is hidden in a phylactery.",
 												"If it has an essence-preserving object, a destroyed dragon gains a new body in {@dice 1d10} days, regaining all its hit points and becoming active again. The new body appears within 5 feet of the object."
@@ -13518,14 +13775,14 @@
 										},
 										{
 											"type": "item",
-											"name": "Special Senses.",
+											"name": "Special Senses",
 											"entries": [
-												"Most dragons have {@sense blindsight} and {@sense darkvision}. You might upgrade {@sense blindsight} to {@sense truesight}, or you could give a dragon with a burrowing speed {@sense tremorsense}."
+												"Most dragons have {@sense blindsight} and {@sense darkvision}. You might upgrade {@sense blindsight} to {@sense truesight}, or you could give a dragon with a burrowing speed {@sense tremorsense|MM}."
 											]
 										},
 										{
 											"type": "item",
-											"name": "Tunneler.",
+											"name": "Tunneler",
 											"entries": [
 												"The dragon can burrow through solid rock at half its burrowing speed and leaves a tunnel in its wake."
 											]
@@ -13538,6 +13795,7 @@
 				}
 			],
 			"dragonCastingColor": "red",
+			"dragonAge": "greatwyrm",
 			"traitTags": [
 				"Legendary Resistances"
 			],
@@ -13580,7 +13838,9 @@
 			],
 			"source": "FTD",
 			"page": 216,
-			"size": "M",
+			"size": [
+				"M"
+			],
 			"type": {
 				"type": "dragon",
 				"tags": [
@@ -13729,7 +13989,7 @@
 									"items": [
 										{
 											"type": "item",
-											"name": "Change Shape.",
+											"name": "Change Shape",
 											"entries": [
 												"You can decide that a dragon acquires this action at a younger age than usual, particularly if you want to feature a dragon in Humanoid form in your campaign:",
 												"The dragon magically polymorphs into a humanoid or beast that has a challenge rating no higher than its own, or back into its true form. It reverts to its true form if it dies. Any equipment it is wearing or carrying is absorbed or borne by the new form (the dragon's choice).",
@@ -13738,7 +13998,7 @@
 										},
 										{
 											"type": "item",
-											"name": "Flyby,",
+											"name": "Flyby",
 											"entries": [
 												"The dragon is an agile flier, quick to fly out of enemies' reach.",
 												"The dragon doesn't provoke an opportunity attack when it flies out of an enemy's reach."
@@ -13746,7 +14006,7 @@
 										},
 										{
 											"type": "item",
-											"name": "Mimicry.",
+											"name": "Mimicry",
 											"entries": [
 												"Impersonating characters or their allies could be a fun trick for a crafty dragon.",
 												"The dragon can mimic any sounds it has heard, including voices. A creature that hears the sounds can tell they are imitations with a successful {@dc 10} Wisdom ({@skill Insight}) check."
@@ -13754,7 +14014,7 @@
 										},
 										{
 											"type": "item",
-											"name": "Rejuvenation.",
+											"name": "Rejuvenation",
 											"entries": [
 												"You might decide that dragons in your campaign, being an essential part of the Material Plane, are nearly impossible to destroy. A dragon's life essence might be preserved in the egg from which it first emerged, in its hoard, or in a cavernous hall at the center of the world, just as a lich's essence is hidden in a phylactery.",
 												"If it has an essence-preserving object, a destroyed dragon gains a new body in {@dice 1d10} days, regaining all its hit points and becoming active again. The new body appears within 5 feet of the object."
@@ -13762,14 +14022,14 @@
 										},
 										{
 											"type": "item",
-											"name": "Special Senses.",
+											"name": "Special Senses",
 											"entries": [
-												"Most dragons have {@sense blindsight} and {@sense darkvision}. You might upgrade {@sense blindsight} to {@sense truesight}, or you could give a dragon with a burrowing speed {@sense tremorsense}."
+												"Most dragons have {@sense blindsight} and {@sense darkvision}. You might upgrade {@sense blindsight} to {@sense truesight}, or you could give a dragon with a burrowing speed {@sense tremorsense|MM}."
 											]
 										},
 										{
 											"type": "item",
-											"name": "Tunneler.",
+											"name": "Tunneler",
 											"entries": [
 												"The dragon can burrow through solid rock at half its burrowing speed and leaves a tunnel in its wake."
 											]
@@ -13781,6 +14041,7 @@
 					]
 				}
 			],
+			"dragonAge": "wyrmling",
 			"traitTags": [
 				"Spider Climb"
 			],
@@ -13820,7 +14081,9 @@
 			],
 			"source": "FTD",
 			"page": 201,
-			"size": "G",
+			"size": [
+				"G"
+			],
 			"type": {
 				"type": "dragon",
 				"tags": [
@@ -14034,7 +14297,7 @@
 									"items": [
 										{
 											"type": "item",
-											"name": "Change Shape.",
+											"name": "Change Shape",
 											"entries": [
 												"You can decide that a dragon acquires this action at a younger age than usual, particularly if you want to feature a dragon in Humanoid form in your campaign:",
 												"The dragon magically polymorphs into a humanoid or beast that has a challenge rating no higher than its own, or back into its true form. It reverts to its true form if it dies. Any equipment it is wearing or carrying is absorbed or borne by the new form (the dragon's choice).",
@@ -14043,7 +14306,7 @@
 										},
 										{
 											"type": "item",
-											"name": "Flyby,",
+											"name": "Flyby",
 											"entries": [
 												"The dragon is an agile flier, quick to fly out of enemies' reach.",
 												"The dragon doesn't provoke an opportunity attack when it flies out of an enemy's reach."
@@ -14051,7 +14314,7 @@
 										},
 										{
 											"type": "item",
-											"name": "Mimicry.",
+											"name": "Mimicry",
 											"entries": [
 												"Impersonating characters or their allies could be a fun trick for a crafty dragon.",
 												"The dragon can mimic any sounds it has heard, including voices. A creature that hears the sounds can tell they are imitations with a successful {@dc 15} Wisdom ({@skill Insight}) check."
@@ -14059,7 +14322,7 @@
 										},
 										{
 											"type": "item",
-											"name": "Rejuvenation.",
+											"name": "Rejuvenation",
 											"entries": [
 												"You might decide that dragons in your campaign, being an essential part of the Material Plane, are nearly impossible to destroy. A dragon's life essence might be preserved in the egg from which it first emerged, in its hoard, or in a cavernous hall at the center of the world, just as a lich's essence is hidden in a phylactery.",
 												"If it has an essence-preserving object, a destroyed dragon gains a new body in {@dice 1d10} days, regaining all its hit points and becoming active again. The new body appears within 5 feet of the object."
@@ -14067,14 +14330,14 @@
 										},
 										{
 											"type": "item",
-											"name": "Special Senses.",
+											"name": "Special Senses",
 											"entries": [
-												"Most dragons have {@sense blindsight} and {@sense darkvision}. You might upgrade {@sense blindsight} to {@sense truesight}, or you could give a dragon with a burrowing speed {@sense tremorsense}."
+												"Most dragons have {@sense blindsight} and {@sense darkvision}. You might upgrade {@sense blindsight} to {@sense truesight}, or you could give a dragon with a burrowing speed {@sense tremorsense|MM}."
 											]
 										},
 										{
 											"type": "item",
-											"name": "Tunneler.",
+											"name": "Tunneler",
 											"entries": [
 												"The dragon can burrow through solid rock at half its burrowing speed and leaves a tunnel in its wake."
 											]
@@ -14086,6 +14349,7 @@
 					]
 				}
 			],
+			"dragonAge": "greatwyrm",
 			"traitTags": [
 				"Legendary Resistances"
 			],
@@ -14131,7 +14395,9 @@
 			],
 			"source": "FTD",
 			"page": 208,
-			"size": "G",
+			"size": [
+				"G"
+			],
 			"type": {
 				"type": "dragon",
 				"tags": [
@@ -14251,14 +14517,14 @@
 							"items": [
 								{
 									"type": "item",
-									"name": "Elemental Breath.",
+									"name": "Elemental Breath",
 									"entries": [
 										"The greatwyrm exhales elemental energy in a 300-foot cone. Each creature in that area must make a {@dc 25} Dexterity saving throw, taking 84 ({@damage 13d12}) cold damage on a failed save, or half as much damage on a successful one."
 									]
 								},
 								{
 									"type": "item",
-									"name": "Sapping Breath.",
+									"name": "Sapping Breath",
 									"entries": [
 										"The greatwyrm exhales gas in a 300-foot cone. Each creature in that area must make a {@dc 25} Constitution saving throw. On a failed save, the creature falls {@condition unconscious} for 1 minute. On a successful save, the creature has disadvantage on attack rolls and saving throws until the end of the greatwyrm's next turn. An {@condition unconscious} creature can repeat the saving throw at the end of each of its turns, ending the effect on itself on a success."
 									]
@@ -14345,7 +14611,7 @@
 									"items": [
 										{
 											"type": "item",
-											"name": "Change Shape.",
+											"name": "Change Shape",
 											"entries": [
 												"You can decide that a dragon acquires this action at a younger age than usual, particularly if you want to feature a dragon in Humanoid form in your campaign:",
 												"The dragon magically polymorphs into a humanoid or beast that has a challenge rating no higher than its own, or back into its true form. It reverts to its true form if it dies. Any equipment it is wearing or carrying is absorbed or borne by the new form (the dragon's choice).",
@@ -14354,7 +14620,7 @@
 										},
 										{
 											"type": "item",
-											"name": "Flyby,",
+											"name": "Flyby",
 											"entries": [
 												"The dragon is an agile flier, quick to fly out of enemies' reach.",
 												"The dragon doesn't provoke an opportunity attack when it flies out of an enemy's reach."
@@ -14362,7 +14628,7 @@
 										},
 										{
 											"type": "item",
-											"name": "Mimicry.",
+											"name": "Mimicry",
 											"entries": [
 												"Impersonating characters or their allies could be a fun trick for a crafty dragon.",
 												"The dragon can mimic any sounds it has heard, including voices. A creature that hears the sounds can tell they are imitations with a successful {@dc 18} Wisdom ({@skill Insight}) check."
@@ -14370,7 +14636,7 @@
 										},
 										{
 											"type": "item",
-											"name": "Rejuvenation.",
+											"name": "Rejuvenation",
 											"entries": [
 												"You might decide that dragons in your campaign, being an essential part of the Material Plane, are nearly impossible to destroy. A dragon's life essence might be preserved in the egg from which it first emerged, in its hoard, or in a cavernous hall at the center of the world, just as a lich's essence is hidden in a phylactery.",
 												"If it has an essence-preserving object, a destroyed dragon gains a new body in {@dice 1d10} days, regaining all its hit points and becoming active again. The new body appears within 5 feet of the object."
@@ -14378,14 +14644,14 @@
 										},
 										{
 											"type": "item",
-											"name": "Special Senses.",
+											"name": "Special Senses",
 											"entries": [
-												"Most dragons have {@sense blindsight} and {@sense darkvision}. You might upgrade {@sense blindsight} to {@sense truesight}, or you could give a dragon with a burrowing speed {@sense tremorsense}."
+												"Most dragons have {@sense blindsight} and {@sense darkvision}. You might upgrade {@sense blindsight} to {@sense truesight}, or you could give a dragon with a burrowing speed {@sense tremorsense|MM}."
 											]
 										},
 										{
 											"type": "item",
-											"name": "Tunneler.",
+											"name": "Tunneler",
 											"entries": [
 												"The dragon can burrow through solid rock at half its burrowing speed and leaves a tunnel in its wake."
 											]
@@ -14398,6 +14664,7 @@
 				}
 			],
 			"dragonCastingColor": "silver",
+			"dragonAge": "greatwyrm",
 			"traitTags": [
 				"Legendary Resistances"
 			],
@@ -14441,7 +14708,9 @@
 			"name": "Swarm of Hoard Scarabs",
 			"source": "FTD",
 			"page": 205,
-			"size": "M",
+			"size": [
+				"M"
+			],
 			"type": {
 				"type": "monstrosity",
 				"swarmSize": "T"
@@ -14519,7 +14788,7 @@
 				{
 					"name": "Scale Dust (1/Day)",
 					"entries": [
-						"The swarm releases magical glittering dust from its wings. Each creature within 10 feet of the swarm must succeed on a {@dc 13} Dexterity saving throw or be outlined in blue light for 10 minutes. While outlined in this way, a creature sheds dim light in a 10-foot radius and can't benefit from being {@condition invisible}. In addition, every Dragon within 1 mile of the creature becomes aware of it and can unerringly track the creature. Casting dispel magic on the creature ends the effect on it."
+						"The swarm releases magical glittering dust from its wings. Each creature within 10 feet of the swarm must succeed on a {@dc 13} Dexterity saving throw or be outlined in blue light for 10 minutes. While outlined in this way, a creature sheds dim light in a 10-foot radius and can't benefit from being {@condition invisible}. In addition, every Dragon within 1 mile of the creature becomes aware of it and can unerringly track the creature. Casting {@spell dispel magic} on the creature ends the effect on it."
 					]
 				}
 			],
@@ -14548,7 +14817,9 @@
 			],
 			"source": "FTD",
 			"page": 223,
-			"size": "M",
+			"size": [
+				"M"
+			],
 			"type": {
 				"type": "dragon",
 				"tags": [
@@ -14684,7 +14955,7 @@
 									"items": [
 										{
 											"type": "item",
-											"name": "Change Shape.",
+											"name": "Change Shape",
 											"entries": [
 												"You can decide that a dragon acquires this action at a younger age than usual, particularly if you want to feature a dragon in Humanoid form in your campaign:",
 												"The dragon magically polymorphs into a humanoid or beast that has a challenge rating no higher than its own, or back into its true form. It reverts to its true form if it dies. Any equipment it is wearing or carrying is absorbed or borne by the new form (the dragon's choice).",
@@ -14693,7 +14964,7 @@
 										},
 										{
 											"type": "item",
-											"name": "Flyby,",
+											"name": "Flyby",
 											"entries": [
 												"The dragon is an agile flier, quick to fly out of enemies' reach.",
 												"The dragon doesn't provoke an opportunity attack when it flies out of an enemy's reach."
@@ -14701,7 +14972,7 @@
 										},
 										{
 											"type": "item",
-											"name": "Mimicry.",
+											"name": "Mimicry",
 											"entries": [
 												"Impersonating characters or their allies could be a fun trick for a crafty dragon.",
 												"The dragon can mimic any sounds it has heard, including voices. A creature that hears the sounds can tell they are imitations with a successful {@dc 10} Wisdom ({@skill Insight}) check."
@@ -14709,7 +14980,7 @@
 										},
 										{
 											"type": "item",
-											"name": "Rejuvenation.",
+											"name": "Rejuvenation",
 											"entries": [
 												"You might decide that dragons in your campaign, being an essential part of the Material Plane, are nearly impossible to destroy. A dragon's life essence might be preserved in the egg from which it first emerged, in its hoard, or in a cavernous hall at the center of the world, just as a lich's essence is hidden in a phylactery.",
 												"If it has an essence-preserving object, a destroyed dragon gains a new body in {@dice 1d10} days, regaining all its hit points and becoming active again. The new body appears within 5 feet of the object."
@@ -14717,9 +14988,9 @@
 										},
 										{
 											"type": "item",
-											"name": "Special Senses.",
+											"name": "Special Senses",
 											"entries": [
-												"Most dragons have {@sense blindsight} and {@sense darkvision}. You might upgrade {@sense blindsight} to {@sense truesight}, or you could give a dragon with a burrowing speed {@sense tremorsense}."
+												"Most dragons have {@sense blindsight} and {@sense darkvision}. You might upgrade {@sense blindsight} to {@sense truesight}, or you could give a dragon with a burrowing speed {@sense tremorsense|MM}."
 											]
 										}
 									]
@@ -14729,6 +15000,7 @@
 					]
 				}
 			],
+			"dragonAge": "wyrmling",
 			"traitTags": [
 				"Amphibious"
 			],
@@ -14764,7 +15036,9 @@
 			],
 			"source": "FTD",
 			"page": 201,
-			"size": "G",
+			"size": [
+				"G"
+			],
 			"type": {
 				"type": "dragon",
 				"tags": [
@@ -14978,7 +15252,7 @@
 									"items": [
 										{
 											"type": "item",
-											"name": "Change Shape.",
+											"name": "Change Shape",
 											"entries": [
 												"You can decide that a dragon acquires this action at a younger age than usual, particularly if you want to feature a dragon in Humanoid form in your campaign:",
 												"The dragon magically polymorphs into a humanoid or beast that has a challenge rating no higher than its own, or back into its true form. It reverts to its true form if it dies. Any equipment it is wearing or carrying is absorbed or borne by the new form (the dragon's choice).",
@@ -14987,7 +15261,7 @@
 										},
 										{
 											"type": "item",
-											"name": "Flyby,",
+											"name": "Flyby",
 											"entries": [
 												"The dragon is an agile flier, quick to fly out of enemies' reach.",
 												"The dragon doesn't provoke an opportunity attack when it flies out of an enemy's reach."
@@ -14995,7 +15269,7 @@
 										},
 										{
 											"type": "item",
-											"name": "Mimicry.",
+											"name": "Mimicry",
 											"entries": [
 												"Impersonating characters or their allies could be a fun trick for a crafty dragon.",
 												"The dragon can mimic any sounds it has heard, including voices. A creature that hears the sounds can tell they are imitations with a successful {@dc 15} Wisdom ({@skill Insight}) check."
@@ -15003,7 +15277,7 @@
 										},
 										{
 											"type": "item",
-											"name": "Rejuvenation.",
+											"name": "Rejuvenation",
 											"entries": [
 												"You might decide that dragons in your campaign, being an essential part of the Material Plane, are nearly impossible to destroy. A dragon's life essence might be preserved in the egg from which it first emerged, in its hoard, or in a cavernous hall at the center of the world, just as a lich's essence is hidden in a phylactery.",
 												"If it has an essence-preserving object, a destroyed dragon gains a new body in {@dice 1d10} days, regaining all its hit points and becoming active again. The new body appears within 5 feet of the object."
@@ -15011,14 +15285,14 @@
 										},
 										{
 											"type": "item",
-											"name": "Special Senses.",
+											"name": "Special Senses",
 											"entries": [
-												"Most dragons have {@sense blindsight} and {@sense darkvision}. You might upgrade {@sense blindsight} to {@sense truesight}, or you could give a dragon with a burrowing speed {@sense tremorsense}."
+												"Most dragons have {@sense blindsight} and {@sense darkvision}. You might upgrade {@sense blindsight} to {@sense truesight}, or you could give a dragon with a burrowing speed {@sense tremorsense|MM}."
 											]
 										},
 										{
 											"type": "item",
-											"name": "Tunneler.",
+											"name": "Tunneler",
 											"entries": [
 												"The dragon can burrow through solid rock at half its burrowing speed and leaves a tunnel in its wake."
 											]
@@ -15030,6 +15304,7 @@
 					]
 				}
 			],
+			"dragonAge": "greatwyrm",
 			"traitTags": [
 				"Legendary Resistances"
 			],
@@ -15064,6 +15339,7 @@
 				"prone",
 				"restrained"
 			],
+			"hasToken": true,
 			"hasFluff": true
 		},
 		{
@@ -15073,7 +15349,9 @@
 			],
 			"source": "FTD",
 			"page": 168,
-			"size": "G",
+			"size": [
+				"G"
+			],
 			"type": {
 				"type": "dragon",
 				"tags": [
@@ -15266,7 +15544,7 @@
 									"items": [
 										{
 											"type": "item",
-											"name": "Flyby,",
+											"name": "Flyby",
 											"entries": [
 												"The dragon is an agile flier, quick to fly out of enemies' reach.",
 												"The dragon doesn't provoke an opportunity attack when it flies out of an enemy's reach."
@@ -15274,7 +15552,7 @@
 										},
 										{
 											"type": "item",
-											"name": "Mimicry.",
+											"name": "Mimicry",
 											"entries": [
 												"Impersonating characters or their allies could be a fun trick for a crafty dragon.",
 												"The dragon can mimic any sounds it has heard, including voices. A creature that hears the sounds can tell they are imitations with a successful {@dc 16} Wisdom ({@skill Insight}) check."
@@ -15282,7 +15560,7 @@
 										},
 										{
 											"type": "item",
-											"name": "Rejuvenation.",
+											"name": "Rejuvenation",
 											"entries": [
 												"You might decide that dragons in your campaign, being an essential part of the Material Plane, are nearly impossible to destroy. A dragon's life essence might be preserved in the egg from which it first emerged, in its hoard, or in a cavernous hall at the center of the world, just as a lich's essence is hidden in a phylactery.",
 												"If it has an essence-preserving object, a destroyed dragon gains a new body in {@dice 1d10} days, regaining all its hit points and becoming active again. The new body appears within 5 feet of the object."
@@ -15290,14 +15568,14 @@
 										},
 										{
 											"type": "item",
-											"name": "Special Senses.",
+											"name": "Special Senses",
 											"entries": [
-												"Most dragons have {@sense blindsight} and {@sense darkvision}. You might upgrade {@sense blindsight} to {@sense truesight}, or you could give a dragon with a burrowing speed {@sense tremorsense}."
+												"Most dragons have {@sense blindsight} and {@sense darkvision}. You might upgrade {@sense blindsight} to {@sense truesight}, or you could give a dragon with a burrowing speed {@sense tremorsense|MM}."
 											]
 										},
 										{
 											"type": "item",
-											"name": "Tunneler.",
+											"name": "Tunneler",
 											"entries": [
 												"The dragon can burrow through solid rock at half its burrowing speed and leaves a tunnel in its wake."
 											]
@@ -15310,6 +15588,7 @@
 				}
 			],
 			"dragonCastingColor": "white",
+			"dragonAge": "greatwyrm",
 			"traitTags": [
 				"Legendary Resistances"
 			],
@@ -15341,6 +15620,7 @@
 				"prone",
 				"restrained"
 			],
+			"hasToken": true,
 			"hasFluff": true
 		},
 		{
@@ -15350,7 +15630,9 @@
 			],
 			"source": "FTD",
 			"page": 161,
-			"size": "L",
+			"size": [
+				"L"
+			],
 			"type": {
 				"type": "dragon",
 				"tags": [
@@ -15511,7 +15793,7 @@
 									"items": [
 										{
 											"type": "item",
-											"name": "Change Shape.",
+											"name": "Change Shape",
 											"entries": [
 												"You can decide that a dragon acquires this action at a younger age than usual, particularly if you want to feature a dragon in Humanoid form in your campaign:",
 												"The dragon magically polymorphs into a humanoid or beast that has a challenge rating no higher than its own, or back into its true form. It reverts to its true form if it dies. Any equipment it is wearing or carrying is absorbed or borne by the new form (the dragon's choice).",
@@ -15520,7 +15802,7 @@
 										},
 										{
 											"type": "item",
-											"name": "Flyby,",
+											"name": "Flyby",
 											"entries": [
 												"The dragon is an agile flier, quick to fly out of enemies' reach.",
 												"The dragon doesn't provoke an opportunity attack when it flies out of an enemy's reach."
@@ -15528,7 +15810,7 @@
 										},
 										{
 											"type": "item",
-											"name": "Mimicry.",
+											"name": "Mimicry",
 											"entries": [
 												"Impersonating characters or their allies could be a fun trick for a crafty dragon.",
 												"The dragon can mimic any sounds it has heard, including voices. A creature that hears the sounds can tell they are imitations with a successful {@dc 12} Wisdom ({@skill Insight}) check."
@@ -15536,7 +15818,7 @@
 										},
 										{
 											"type": "item",
-											"name": "Rejuvenation.",
+											"name": "Rejuvenation",
 											"entries": [
 												"You might decide that dragons in your campaign, being an essential part of the Material Plane, are nearly impossible to destroy. A dragon's life essence might be preserved in the egg from which it first emerged, in its hoard, or in a cavernous hall at the center of the world, just as a lich's essence is hidden in a phylactery.",
 												"If it has an essence-preserving object, a destroyed dragon gains a new body in {@dice 1d10} days, regaining all its hit points and becoming active again. The new body appears within 5 feet of the object."
@@ -15544,9 +15826,9 @@
 										},
 										{
 											"type": "item",
-											"name": "Special Senses.",
+											"name": "Special Senses",
 											"entries": [
-												"Most dragons have {@sense blindsight} and {@sense darkvision}. You might upgrade {@sense blindsight} to {@sense truesight}, or you could give a dragon with a burrowing speed {@sense tremorsense}."
+												"Most dragons have {@sense blindsight} and {@sense darkvision}. You might upgrade {@sense blindsight} to {@sense truesight}, or you could give a dragon with a burrowing speed {@sense tremorsense|MM}."
 											]
 										}
 									]
@@ -15556,6 +15838,7 @@
 					]
 				}
 			],
+			"dragonAge": "young",
 			"traitTags": [
 				"Amphibious"
 			],
@@ -15596,7 +15879,9 @@
 			],
 			"source": "FTD",
 			"page": 172,
-			"size": "L",
+			"size": [
+				"L"
+			],
 			"type": {
 				"type": "dragon",
 				"tags": [
@@ -15744,7 +16029,7 @@
 									"items": [
 										{
 											"type": "item",
-											"name": "Change Shape.",
+											"name": "Change Shape",
 											"entries": [
 												"You can decide that a dragon acquires this action at a younger age than usual, particularly if you want to feature a dragon in Humanoid form in your campaign:",
 												"The dragon magically polymorphs into a humanoid or beast that has a challenge rating no higher than its own, or back into its true form. It reverts to its true form if it dies. Any equipment it is wearing or carrying is absorbed or borne by the new form (the dragon's choice).",
@@ -15753,7 +16038,7 @@
 										},
 										{
 											"type": "item",
-											"name": "Flyby,",
+											"name": "Flyby",
 											"entries": [
 												"The dragon is an agile flier, quick to fly out of enemies' reach.",
 												"The dragon doesn't provoke an opportunity attack when it flies out of an enemy's reach."
@@ -15761,7 +16046,7 @@
 										},
 										{
 											"type": "item",
-											"name": "Mimicry.",
+											"name": "Mimicry",
 											"entries": [
 												"Impersonating characters or their allies could be a fun trick for a crafty dragon.",
 												"The dragon can mimic any sounds it has heard, including voices. A creature that hears the sounds can tell they are imitations with a successful {@dc 11} Wisdom ({@skill Insight}) check."
@@ -15769,7 +16054,7 @@
 										},
 										{
 											"type": "item",
-											"name": "Rejuvenation.",
+											"name": "Rejuvenation",
 											"entries": [
 												"You might decide that dragons in your campaign, being an essential part of the Material Plane, are nearly impossible to destroy. A dragon's life essence might be preserved in the egg from which it first emerged, in its hoard, or in a cavernous hall at the center of the world, just as a lich's essence is hidden in a phylactery.",
 												"If it has an essence-preserving object, a destroyed dragon gains a new body in {@dice 1d10} days, regaining all its hit points and becoming active again. The new body appears within 5 feet of the object."
@@ -15777,14 +16062,14 @@
 										},
 										{
 											"type": "item",
-											"name": "Special Senses.",
+											"name": "Special Senses",
 											"entries": [
-												"Most dragons have {@sense blindsight} and {@sense darkvision}. You might upgrade {@sense blindsight} to {@sense truesight}, or you could give a dragon with a burrowing speed {@sense tremorsense}."
+												"Most dragons have {@sense blindsight} and {@sense darkvision}. You might upgrade {@sense blindsight} to {@sense truesight}, or you could give a dragon with a burrowing speed {@sense tremorsense|MM}."
 											]
 										},
 										{
 											"type": "item",
-											"name": "Tunneler.",
+											"name": "Tunneler",
 											"entries": [
 												"The dragon can burrow through solid rock at half its burrowing speed and leaves a tunnel in its wake."
 											]
@@ -15796,6 +16081,7 @@
 					]
 				}
 			],
+			"dragonAge": "young",
 			"senseTags": [
 				"B",
 				"SD"
@@ -15834,7 +16120,9 @@
 			"name": "Young Deep Dragon",
 			"source": "FTD",
 			"page": 175,
-			"size": "L",
+			"size": [
+				"L"
+			],
 			"type": "dragon",
 			"alignment": [
 				"N",
@@ -15962,7 +16250,7 @@
 									"items": [
 										{
 											"type": "item",
-											"name": "Change Shape.",
+											"name": "Change Shape",
 											"entries": [
 												"You can decide that a dragon acquires this action at a younger age than usual, particularly if you want to feature a dragon in Humanoid form in your campaign:",
 												"The dragon magically polymorphs into a humanoid or beast that has a challenge rating no higher than its own, or back into its true form. It reverts to its true form if it dies. Any equipment it is wearing or carrying is absorbed or borne by the new form (the dragon's choice).",
@@ -15971,7 +16259,7 @@
 										},
 										{
 											"type": "item",
-											"name": "Flyby,",
+											"name": "Flyby",
 											"entries": [
 												"The dragon is an agile flier, quick to fly out of enemies' reach.",
 												"The dragon doesn't provoke an opportunity attack when it flies out of an enemy's reach."
@@ -15979,7 +16267,7 @@
 										},
 										{
 											"type": "item",
-											"name": "Mimicry.",
+											"name": "Mimicry",
 											"entries": [
 												"Impersonating characters or their allies could be a fun trick for a crafty dragon.",
 												"The dragon can mimic any sounds it has heard, including voices. A creature that hears the sounds can tell they are imitations with a successful {@dc 11} Wisdom ({@skill Insight}) check."
@@ -15987,7 +16275,7 @@
 										},
 										{
 											"type": "item",
-											"name": "Rejuvenation.",
+											"name": "Rejuvenation",
 											"entries": [
 												"You might decide that dragons in your campaign, being an essential part of the Material Plane, are nearly impossible to destroy. A dragon's life essence might be preserved in the egg from which it first emerged, in its hoard, or in a cavernous hall at the center of the world, just as a lich's essence is hidden in a phylactery.",
 												"If it has an essence-preserving object, a destroyed dragon gains a new body in {@dice 1d10} days, regaining all its hit points and becoming active again. The new body appears within 5 feet of the object."
@@ -15995,14 +16283,14 @@
 										},
 										{
 											"type": "item",
-											"name": "Special Senses.",
+											"name": "Special Senses",
 											"entries": [
-												"Most dragons have {@sense blindsight} and {@sense darkvision}. You might upgrade {@sense blindsight} to {@sense truesight}, or you could give a dragon with a burrowing speed {@sense tremorsense}."
+												"Most dragons have {@sense blindsight} and {@sense darkvision}. You might upgrade {@sense blindsight} to {@sense truesight}, or you could give a dragon with a burrowing speed {@sense tremorsense|MM}."
 											]
 										},
 										{
 											"type": "item",
-											"name": "Tunneler.",
+											"name": "Tunneler",
 											"entries": [
 												"The dragon can burrow through solid rock at half its burrowing speed and leaves a tunnel in its wake."
 											]
@@ -16015,6 +16303,7 @@
 				}
 			],
 			"dragonCastingColor": "deep",
+			"dragonAge": "young",
 			"senseTags": [
 				"B",
 				"SD"
@@ -16050,7 +16339,9 @@
 			"name": "Young Dragon Turtle",
 			"source": "FTD",
 			"page": 192,
-			"size": "H",
+			"size": [
+				"H"
+			],
 			"type": "dragon",
 			"alignment": [
 				"N"
@@ -16169,7 +16460,7 @@
 									"items": [
 										{
 											"type": "item",
-											"name": "Flyby,",
+											"name": "Flyby",
 											"entries": [
 												"The dragon is an agile flier, quick to fly out of enemies' reach.",
 												"The dragon doesn't provoke an opportunity attack when it flies out of an enemy's reach."
@@ -16177,7 +16468,7 @@
 										},
 										{
 											"type": "item",
-											"name": "Mimicry.",
+											"name": "Mimicry",
 											"entries": [
 												"Impersonating characters or their allies could be a fun trick for a crafty dragon.",
 												"The dragon can mimic any sounds it has heard, including voices. A creature that hears the sounds can tell they are imitations with a successful {@dc 9} Wisdom ({@skill Insight}) check."
@@ -16185,7 +16476,7 @@
 										},
 										{
 											"type": "item",
-											"name": "Rejuvenation.",
+											"name": "Rejuvenation",
 											"entries": [
 												"You might decide that dragons in your campaign, being an essential part of the Material Plane, are nearly impossible to destroy. A dragon's life essence might be preserved in the egg from which it first emerged, in its hoard, or in a cavernous hall at the center of the world, just as a lich's essence is hidden in a phylactery.",
 												"If it has an essence-preserving object, a destroyed dragon gains a new body in {@dice 1d10} days, regaining all its hit points and becoming active again. The new body appears within 5 feet of the object."
@@ -16193,9 +16484,9 @@
 										},
 										{
 											"type": "item",
-											"name": "Special Senses.",
+											"name": "Special Senses",
 											"entries": [
-												"Most dragons have {@sense blindsight} and {@sense darkvision}. You might upgrade {@sense blindsight} to {@sense truesight}, or you could give a dragon with a burrowing speed {@sense tremorsense}."
+												"Most dragons have {@sense blindsight} and {@sense darkvision}. You might upgrade {@sense blindsight} to {@sense truesight}, or you could give a dragon with a burrowing speed {@sense tremorsense|MM}."
 											]
 										}
 									]
@@ -16205,6 +16496,7 @@
 					]
 				}
 			],
+			"dragonAge": "young",
 			"traitTags": [
 				"Amphibious"
 			],
@@ -16240,7 +16532,9 @@
 			],
 			"source": "FTD",
 			"page": 197,
-			"size": "L",
+			"size": [
+				"L"
+			],
 			"type": {
 				"type": "dragon",
 				"tags": [
@@ -16397,7 +16691,7 @@
 									"items": [
 										{
 											"type": "item",
-											"name": "Change Shape.",
+											"name": "Change Shape",
 											"entries": [
 												"You can decide that a dragon acquires this action at a younger age than usual, particularly if you want to feature a dragon in Humanoid form in your campaign:",
 												"The dragon magically polymorphs into a humanoid or beast that has a challenge rating no higher than its own, or back into its true form. It reverts to its true form if it dies. Any equipment it is wearing or carrying is absorbed or borne by the new form (the dragon's choice).",
@@ -16406,7 +16700,7 @@
 										},
 										{
 											"type": "item",
-											"name": "Flyby,",
+											"name": "Flyby",
 											"entries": [
 												"The dragon is an agile flier, quick to fly out of enemies' reach.",
 												"The dragon doesn't provoke an opportunity attack when it flies out of an enemy's reach."
@@ -16414,7 +16708,7 @@
 										},
 										{
 											"type": "item",
-											"name": "Mimicry.",
+											"name": "Mimicry",
 											"entries": [
 												"Impersonating characters or their allies could be a fun trick for a crafty dragon.",
 												"The dragon can mimic any sounds it has heard, including voices. A creature that hears the sounds can tell they are imitations with a successful {@dc 14} Wisdom ({@skill Insight}) check."
@@ -16422,7 +16716,7 @@
 										},
 										{
 											"type": "item",
-											"name": "Rejuvenation.",
+											"name": "Rejuvenation",
 											"entries": [
 												"You might decide that dragons in your campaign, being an essential part of the Material Plane, are nearly impossible to destroy. A dragon's life essence might be preserved in the egg from which it first emerged, in its hoard, or in a cavernous hall at the center of the world, just as a lich's essence is hidden in a phylactery.",
 												"If it has an essence-preserving object, a destroyed dragon gains a new body in {@dice 1d10} days, regaining all its hit points and becoming active again. The new body appears within 5 feet of the object."
@@ -16430,14 +16724,14 @@
 										},
 										{
 											"type": "item",
-											"name": "Special Senses.",
+											"name": "Special Senses",
 											"entries": [
-												"Most dragons have {@sense blindsight} and {@sense darkvision}. You might upgrade {@sense blindsight} to {@sense truesight}, or you could give a dragon with a burrowing speed {@sense tremorsense}."
+												"Most dragons have {@sense blindsight} and {@sense darkvision}. You might upgrade {@sense blindsight} to {@sense truesight}, or you could give a dragon with a burrowing speed {@sense tremorsense|MM}."
 											]
 										},
 										{
 											"type": "item",
-											"name": "Tunneler.",
+											"name": "Tunneler",
 											"entries": [
 												"The dragon can burrow through solid rock at half its burrowing speed and leaves a tunnel in its wake."
 											]
@@ -16449,6 +16743,7 @@
 					]
 				}
 			],
+			"dragonAge": "young",
 			"senseTags": [
 				"B",
 				"SD"
@@ -16486,7 +16781,9 @@
 			"name": "Young Moonstone Dragon",
 			"source": "FTD",
 			"page": 213,
-			"size": "L",
+			"size": [
+				"L"
+			],
 			"type": "dragon",
 			"alignment": [
 				"N"
@@ -16584,14 +16881,14 @@
 							"items": [
 								{
 									"type": "item",
-									"name": "Dream Breath.",
+									"name": "Dream Breath",
 									"entries": [
 										"The dragon exhales mist in a 90-foot cone. Each creature in that area must succeed on a {@dc 14} Constitution saving throw or fall {@condition unconscious} for 10 minutes. This effect ends for a creature if the creature takes damage or someone uses an action to wake it."
 									]
 								},
 								{
 									"type": "item",
-									"name": "Moonlight Breath.",
+									"name": "Moonlight Breath",
 									"entries": [
 										"The dragon exhales a beam of moonlight in a 60-foot line that is 5 feet wide. Each creature in that area must make a {@dc 14} Dexterity saving throw, taking 38 ({@damage 7d10}) radiant damage on a failed save, or half as much damage on a successful one."
 									]
@@ -16641,7 +16938,7 @@
 									"items": [
 										{
 											"type": "item",
-											"name": "Flyby,",
+											"name": "Flyby",
 											"entries": [
 												"The dragon is an agile flier, quick to fly out of enemies' reach.",
 												"The dragon doesn't provoke an opportunity attack when it flies out of an enemy's reach."
@@ -16649,7 +16946,7 @@
 										},
 										{
 											"type": "item",
-											"name": "Mimicry.",
+											"name": "Mimicry",
 											"entries": [
 												"Impersonating characters or their allies could be a fun trick for a crafty dragon.",
 												"The dragon can mimic any sounds it has heard, including voices. A creature that hears the sounds can tell they are imitations with a successful {@dc 12} Wisdom ({@skill Insight}) check."
@@ -16657,7 +16954,7 @@
 										},
 										{
 											"type": "item",
-											"name": "Rejuvenation.",
+											"name": "Rejuvenation",
 											"entries": [
 												"You might decide that dragons in your campaign, being an essential part of the Material Plane, are nearly impossible to destroy. A dragon's life essence might be preserved in the egg from which it first emerged, in its hoard, or in a cavernous hall at the center of the world, just as a lich's essence is hidden in a phylactery.",
 												"If it has an essence-preserving object, a destroyed dragon gains a new body in {@dice 1d10} days, regaining all its hit points and becoming active again. The new body appears within 5 feet of the object."
@@ -16665,9 +16962,9 @@
 										},
 										{
 											"type": "item",
-											"name": "Special Senses.",
+											"name": "Special Senses",
 											"entries": [
-												"Most dragons have {@sense blindsight} and {@sense darkvision}. You might upgrade {@sense blindsight} to {@sense truesight}, or you could give a dragon with a burrowing speed {@sense tremorsense}."
+												"Most dragons have {@sense blindsight} and {@sense darkvision}. You might upgrade {@sense blindsight} to {@sense truesight}, or you could give a dragon with a burrowing speed {@sense tremorsense|MM}."
 											]
 										}
 									]
@@ -16677,6 +16974,7 @@
 					]
 				}
 			],
+			"dragonAge": "young",
 			"senseTags": [
 				"B",
 				"SD"
@@ -16714,7 +17012,9 @@
 			],
 			"source": "FTD",
 			"page": 216,
-			"size": "L",
+			"size": [
+				"L"
+			],
 			"type": {
 				"type": "dragon",
 				"tags": [
@@ -16877,7 +17177,7 @@
 									"items": [
 										{
 											"type": "item",
-											"name": "Change Shape.",
+											"name": "Change Shape",
 											"entries": [
 												"You can decide that a dragon acquires this action at a younger age than usual, particularly if you want to feature a dragon in Humanoid form in your campaign:",
 												"The dragon magically polymorphs into a humanoid or beast that has a challenge rating no higher than its own, or back into its true form. It reverts to its true form if it dies. Any equipment it is wearing or carrying is absorbed or borne by the new form (the dragon's choice).",
@@ -16886,7 +17186,7 @@
 										},
 										{
 											"type": "item",
-											"name": "Flyby,",
+											"name": "Flyby",
 											"entries": [
 												"The dragon is an agile flier, quick to fly out of enemies' reach.",
 												"The dragon doesn't provoke an opportunity attack when it flies out of an enemy's reach."
@@ -16894,7 +17194,7 @@
 										},
 										{
 											"type": "item",
-											"name": "Mimicry.",
+											"name": "Mimicry",
 											"entries": [
 												"Impersonating characters or their allies could be a fun trick for a crafty dragon.",
 												"The dragon can mimic any sounds it has heard, including voices. A creature that hears the sounds can tell they are imitations with a successful {@dc 11} Wisdom ({@skill Insight}) check."
@@ -16902,7 +17202,7 @@
 										},
 										{
 											"type": "item",
-											"name": "Rejuvenation.",
+											"name": "Rejuvenation",
 											"entries": [
 												"You might decide that dragons in your campaign, being an essential part of the Material Plane, are nearly impossible to destroy. A dragon's life essence might be preserved in the egg from which it first emerged, in its hoard, or in a cavernous hall at the center of the world, just as a lich's essence is hidden in a phylactery.",
 												"If it has an essence-preserving object, a destroyed dragon gains a new body in {@dice 1d10} days, regaining all its hit points and becoming active again. The new body appears within 5 feet of the object."
@@ -16910,14 +17210,14 @@
 										},
 										{
 											"type": "item",
-											"name": "Special Senses.",
+											"name": "Special Senses",
 											"entries": [
-												"Most dragons have {@sense blindsight} and {@sense darkvision}. You might upgrade {@sense blindsight} to {@sense truesight}, or you could give a dragon with a burrowing speed {@sense tremorsense}."
+												"Most dragons have {@sense blindsight} and {@sense darkvision}. You might upgrade {@sense blindsight} to {@sense truesight}, or you could give a dragon with a burrowing speed {@sense tremorsense|MM}."
 											]
 										},
 										{
 											"type": "item",
-											"name": "Tunneler.",
+											"name": "Tunneler",
 											"entries": [
 												"The dragon can burrow through solid rock at half its burrowing speed and leaves a tunnel in its wake."
 											]
@@ -16929,6 +17229,7 @@
 					]
 				}
 			],
+			"dragonAge": "young",
 			"traitTags": [
 				"Spider Climb"
 			],
@@ -16949,6 +17250,10 @@
 				"P",
 				"S",
 				"T"
+			],
+			"damageTagsSpell": [
+				"B",
+				"Y"
 			],
 			"spellcastingTags": [
 				"P"
@@ -16973,7 +17278,9 @@
 			"name": "Young Sea Serpent",
 			"source": "FTD",
 			"page": 219,
-			"size": "H",
+			"size": [
+				"H"
+			],
 			"type": "dragon",
 			"alignment": [
 				"N"
@@ -17023,6 +17330,12 @@
 			"cr": "8",
 			"trait": [
 				{
+					"name": "Amphibious",
+					"entries": [
+						"The sea serpent can breathe air and water."
+					]
+				},
+				{
 					"name": "Siege Monster",
 					"entries": [
 						"The sea serpent deals double damage to objects and structures."
@@ -17061,7 +17374,9 @@
 					]
 				}
 			],
+			"dragonAge": "young",
 			"traitTags": [
+				"Amphibious",
 				"Siege Monster"
 			],
 			"senseTags": [
@@ -17101,7 +17416,9 @@
 			],
 			"source": "FTD",
 			"page": 223,
-			"size": "L",
+			"size": [
+				"L"
+			],
 			"type": {
 				"type": "dragon",
 				"tags": [
@@ -17252,7 +17569,7 @@
 									"items": [
 										{
 											"type": "item",
-											"name": "Change Shape.",
+											"name": "Change Shape",
 											"entries": [
 												"You can decide that a dragon acquires this action at a younger age than usual, particularly if you want to feature a dragon in Humanoid form in your campaign:",
 												"The dragon magically polymorphs into a humanoid or beast that has a challenge rating no higher than its own, or back into its true form. It reverts to its true form if it dies. Any equipment it is wearing or carrying is absorbed or borne by the new form (the dragon's choice).",
@@ -17261,7 +17578,7 @@
 										},
 										{
 											"type": "item",
-											"name": "Flyby,",
+											"name": "Flyby",
 											"entries": [
 												"The dragon is an agile flier, quick to fly out of enemies' reach.",
 												"The dragon doesn't provoke an opportunity attack when it flies out of an enemy's reach."
@@ -17269,7 +17586,7 @@
 										},
 										{
 											"type": "item",
-											"name": "Mimicry.",
+											"name": "Mimicry",
 											"entries": [
 												"Impersonating characters or their allies could be a fun trick for a crafty dragon.",
 												"The dragon can mimic any sounds it has heard, including voices. A creature that hears the sounds can tell they are imitations with a successful {@dc 11} Wisdom ({@skill Insight}) check."
@@ -17277,7 +17594,7 @@
 										},
 										{
 											"type": "item",
-											"name": "Rejuvenation.",
+											"name": "Rejuvenation",
 											"entries": [
 												"You might decide that dragons in your campaign, being an essential part of the Material Plane, are nearly impossible to destroy. A dragon's life essence might be preserved in the egg from which it first emerged, in its hoard, or in a cavernous hall at the center of the world, just as a lich's essence is hidden in a phylactery.",
 												"If it has an essence-preserving object, a destroyed dragon gains a new body in {@dice 1d10} days, regaining all its hit points and becoming active again. The new body appears within 5 feet of the object."
@@ -17285,9 +17602,9 @@
 										},
 										{
 											"type": "item",
-											"name": "Special Senses.",
+											"name": "Special Senses",
 											"entries": [
-												"Most dragons have {@sense blindsight} and {@sense darkvision}. You might upgrade {@sense blindsight} to {@sense truesight}, or you could give a dragon with a burrowing speed {@sense tremorsense}."
+												"Most dragons have {@sense blindsight} and {@sense darkvision}. You might upgrade {@sense blindsight} to {@sense truesight}, or you could give a dragon with a burrowing speed {@sense tremorsense|MM}."
 											]
 										}
 									]
@@ -17297,6 +17614,7 @@
 					]
 				}
 			],
+			"dragonAge": "young",
 			"traitTags": [
 				"Amphibious"
 			],

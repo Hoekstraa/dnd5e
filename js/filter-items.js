@@ -1,7 +1,7 @@
 "use strict";
 
 class PageFilterEquipment extends PageFilter {
-	constructor () {
+	constructor ({filterOpts = null} = {}) {
 		super();
 
 		this._typeFilter = new Filter({
@@ -15,8 +15,21 @@ class PageFilterEquipment extends PageFilter {
 			items: ["Basic", "Generic Variant", "Specific Variant", "Other"],
 			deselFn: (it) => it === "Specific Variant",
 			itemSortFn: null,
+			...(filterOpts?.["Category"] || {}),
 		});
-		this._costFilter = new RangeFilter({header: "Cost", min: 0, max: 100, isAllowGreater: true, suffix: " gp"});
+		this._costFilter = new RangeFilter({
+			header: "Cost",
+			isLabelled: true,
+			isAllowGreater: true,
+			labelSortFn: null,
+			labels: [
+				0,
+				...[...new Array(9)].map((_, i) => i + 1),
+				...[...new Array(9)].map((_, i) => 10 * (i + 1)),
+				...[...new Array(100)].map((_, i) => 100 * (i + 1)),
+			],
+			labelDisplayFn: it => !it ? "None" : Parser.getDisplayCurrency(CurrencyUtil.doSimplifyCoins({cp: it})),
+		});
 		this._weightFilter = new RangeFilter({header: "Weight", min: 0, max: 100, isAllowGreater: true, suffix: " lb."});
 		this._focusFilter = new Filter({header: "Spellcasting Focus", items: [...Parser.ITEM_SPELLCASTING_FOCUS_CLASSES]});
 		this._damageTypeFilter = new Filter({header: "Weapon Damage Type", displayFn: it => Parser.dmgTypeToFull(it).uppercaseFirst(), itemSortFn: (a, b) => SortUtil.ascSortLower(Parser.dmgTypeToFull(a), Parser.dmgTypeToFull(b))});
@@ -35,6 +48,7 @@ class PageFilterEquipment extends PageFilter {
 		if (item.basicRules) item._fMisc.push("Basic Rules");
 		if (item.hasFluff) item._fMisc.push("Has Info");
 		if (item.hasFluffImages) item._fMisc.push("Has Images");
+		if (item.miscTags) item._fMisc.push(...item.miscTags.map(Parser.itemMiscTagToFull));
 
 		if (item.focus || item.name === "Thieves' Tools" || item.type === "INS" || item.type === "SCF" || item.type === "AT") {
 			item._fFocus = item.focus ? item.focus === true ? [...Parser.ITEM_SPELLCASTING_FOCUS_CLASSES] : [...item.focus] : [];
@@ -60,7 +74,7 @@ class PageFilterEquipment extends PageFilter {
 			}
 		}
 
-		item._fValue = (item.value || 0) / 100;
+		item._fValue = Math.round(item.value || 0);
 	}
 
 	addToFilters (item, isExcluded) {
@@ -71,6 +85,7 @@ class PageFilterEquipment extends PageFilter {
 		this._propertyFilter.addItem(item._fProperties);
 		this._damageTypeFilter.addItem(item.dmgType);
 		this._poisonTypeFilter.addItem(item.poisonTypes);
+		this._miscFilter.addItem(item._fMisc);
 	}
 
 	async _pPopulateBoxOptions (opts) {
@@ -173,8 +188,8 @@ class PageFilterItems extends PageFilterEquipment {
 	}
 
 	// endregion
-	constructor () {
-		super();
+	constructor (opts) {
+		super(opts);
 
 		this._tierFilter = new Filter({header: "Tier", items: ["none", "minor", "major"], itemSortFn: null, displayFn: StrUtil.toTitleCase});
 		this._attachedSpellsFilter = new Filter({header: "Attached Spells", displayFn: (it) => it.split("|")[0].toTitleCase(), itemSortFn: SortUtil.ascSortLower});
@@ -312,13 +327,14 @@ class ModalFilterItems extends ModalFilter {
 	 * @param opts.namespace
 	 * @param [opts.isRadio]
 	 * @param [opts.allData]
+	 * @param [opts.pageFilterOpts] Options to be passed to the underlying items page filter.
 	 */
 	constructor (opts) {
 		opts = opts || {};
 		super({
 			...opts,
 			modalTitle: `Item${opts.isRadio ? "" : "s"}`,
-			pageFilter: new PageFilterItems(),
+			pageFilter: new PageFilterItems(opts?.pageFilterOpts),
 		});
 	}
 
@@ -336,7 +352,7 @@ class ModalFilterItems extends ModalFilter {
 	}
 
 	async _pLoadAllData () {
-		const brew = await BrewUtil.pAddBrewData();
+		const brew = await BrewUtil2.pGetBrewProcessed();
 		const fromData = await Renderer.item.pBuildList({isAddGroups: true});
 		const fromBrew = await Renderer.item.pGetItemsFromHomebrew(brew);
 		return [...fromData, ...fromBrew];
@@ -349,22 +365,22 @@ class ModalFilterItems extends ModalFilter {
 		pageFilter.mutateAndAddToFilters(item);
 
 		const eleRow = document.createElement("div");
-		eleRow.className = "px-0 w-100 flex-col no-shrink";
+		eleRow.className = "px-0 w-100 ve-flex-col no-shrink";
 
 		const hash = UrlUtil.URL_TO_HASH_BUILDER[UrlUtil.PG_ITEMS](item);
 		const source = Parser.sourceJsonToAbv(item.source);
 		const type = item._typeListText.join(", ");
 
-		eleRow.innerHTML = `<div class="w-100 flex-vh-center lst--border no-select lst__wrp-cells">
-			<div class="col-0-5 pl-0 flex-vh-center">${this._isRadio ? `<input type="radio" name="radio" class="no-events">` : `<input type="checkbox" class="no-events">`}</div>
+		eleRow.innerHTML = `<div class="w-100 ve-flex-vh-center lst--border no-select lst__wrp-cells">
+			<div class="col-0-5 pl-0 ve-flex-vh-center">${this._isRadio ? `<input type="radio" name="radio" class="no-events">` : `<input type="checkbox" class="no-events">`}</div>
 
-			<div class="col-0-5 px-1 flex-vh-center">
+			<div class="col-0-5 px-1 ve-flex-vh-center">
 				<div class="ui-list__btn-inline px-2" title="Toggle Preview (SHIFT to Toggle Info Preview)">[+]</div>
 			</div>
 
 			<div class="col-5 ${this._getNameStyle()}">${item.name}</div>
 			<div class="col-5">${type.uppercaseFirst()}</div>
-			<div class="col-1 text-center ${Parser.sourceJsonToColor(item.source)} pr-0" title="${Parser.sourceJsonToFull(item.source)}" ${BrewUtil.sourceJsonToStyle(item.source)}>${source}</div>
+			<div class="col-1 text-center ${Parser.sourceJsonToColor(item.source)} pr-0" title="${Parser.sourceJsonToFull(item.source)}" ${BrewUtil2.sourceJsonToStyle(item.source)}>${source}</div>
 		</div>`;
 
 		const btnShowHidePreview = eleRow.firstElementChild.children[1].firstElementChild;

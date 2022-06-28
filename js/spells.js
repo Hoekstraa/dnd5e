@@ -24,6 +24,37 @@ class SpellsPage extends ListPageMultiSource {
 				popTblGetNumShown: (opts) => this._bookView_popTblGetNumShown(opts),
 			},
 
+			tableViewOptions: {
+				title: "Spells",
+				colTransforms: {
+					name: UtilsTableview.COL_TRANSFORM_NAME,
+					source: UtilsTableview.COL_TRANSFORM_SOURCE,
+					level: {name: "Level", transform: (it) => Parser.spLevelToFull(it)},
+					time: {name: "Casting Time", transform: (it) => PageFilterSpells.getTblTimeStr(it[0])},
+					duration: {name: "Duration", transform: (it) => Parser.spDurationToFull(it)},
+					_school: {
+						name: "School",
+						transform: (sp) => {
+							const ptMeta = Parser.spMetaToArr(sp.meta);
+							return `<span class="sp__school-${sp.school}" ${Parser.spSchoolAbvToStyle(sp.school)}>${Parser.spSchoolAndSubschoolsAbvsToFull(sp.school, sp.subschools)}</span>${ptMeta.length ? ` (${ptMeta.join(", ")})` : ""}`;
+						},
+					},
+					range: {name: "Range", transform: (it) => Parser.spRangeToFull(it)},
+					_components: {name: "Components", transform: (sp) => Parser.spComponentsToFull(sp.components, sp.level, {isPlainText: true})},
+					_classes: {
+						name: "Classes",
+						transform: (sp) => {
+							const fromClassList = Renderer.spell.getCombinedClasses(sp, "fromClassList");
+							return Parser.spMainClassesToFull(fromClassList);
+						},
+					},
+					entries: {name: "Text", transform: (it) => Renderer.get().render({type: "entries", entries: it}, 1), flex: 3},
+					entriesHigherLevel: {name: "At Higher Levels", transform: (it) => Renderer.get().render({type: "entries", entries: (it || [])}, 1), flex: 2},
+				},
+				filter: {generator: ListUtil.basicFilterGenerator},
+				sorter: (a, b) => SortUtil.ascSort(a.name, b.name) || SortUtil.ascSort(a.source, b.source),
+			},
+
 			bindPopoutButtonOptions: {
 				handlerGenerator: SpellsPage.popoutHandlerGenerator.bind(SpellsPage),
 				title: "Popout Window (SHIFT for Source Data; CTRL for Markdown Render)",
@@ -45,8 +76,6 @@ class SpellsPage extends ListPageMultiSource {
 			jsonDir: "data/spells/",
 		});
 
-		this._seenHashes = new Set();
-
 		this._lastFilterValues = null;
 		this._subclassLookup = {};
 	}
@@ -56,7 +85,7 @@ class SpellsPage extends ListPageMultiSource {
 			.sort((a, b) => SortUtil.ascSortLower(a.name, b.name));
 
 		const renderSpell = (stack, sp) => {
-			stack.push(`<div class="bkmv__wrp-item"><table class="stats stats--book stats--bkmv"><tbody>`);
+			stack.push(`<div class="bkmv__wrp-item"><table class="w-100 stats stats--book stats--bkmv"><tbody>`);
 			stack.push(Renderer.spell.getCompactRenderedString(sp));
 			stack.push(`</tbody></table></div>`);
 		};
@@ -79,7 +108,7 @@ class SpellsPage extends ListPageMultiSource {
 			});
 		if (lastOrder != null) $selSortMode.val(lastOrder);
 
-		$$`<div class="flex-vh-center ml-3"><div class="mr-2 no-wrap">Sort order:</div>${$selSortMode}</div>`.appendTo($wrpControls);
+		$$`<div class="ve-flex-vh-center ml-3"><div class="mr-2 no-wrap">Sort order:</div>${$selSortMode}</div>`.appendTo($wrpControls);
 
 		// region Markdown
 		// TODO refactor this and bestiary markdown section
@@ -118,7 +147,7 @@ class SpellsPage extends ListPageMultiSource {
 		const $btnDownloadMarkdownSettings = $(`<button class="btn btn-default btn-sm px-2" title="Markdown Settings"><span class="glyphicon glyphicon-cog"/></button>`)
 			.click(async () => RendererMarkdown.pShowSettingsModal());
 
-		$$`<div class="flex-v-center btn-group ml-3">
+		$$`<div class="ve-flex-v-center btn-group ml-3">
 					${$btnDownloadMarkdown}
 					${$btnCopyMarkdown}
 					${$btnDownloadMarkdownSettings}
@@ -131,7 +160,7 @@ class SpellsPage extends ListPageMultiSource {
 				const atLvl = toShow.filter(sp => sp.level === i);
 				if (atLvl.length) {
 					stack.push(`<div class="w-100 h-100 bkmv__no-breaks">`);
-					stack.push(`<div class="bkmv__spacer-name flex-v-center no-shrink">${Parser.spLevelToFullLevelText(i)}</div>`);
+					stack.push(`<div class="bkmv__spacer-name ve-flex-v-center no-shrink">${Parser.spLevelToFullLevelText(i)}</div>`);
 					atLvl.forEach(sp => renderSpell(stack, sp));
 					stack.push(`</div>`);
 				}
@@ -166,7 +195,7 @@ class SpellsPage extends ListPageMultiSource {
 
 	getListItem (spell, spI) {
 		const hash = UrlUtil.autoEncodeHash(spell);
-		if (!spell.uniqueId && this._seenHashes.has(hash)) return null;
+		if (this._seenHashes.has(hash)) return null;
 		this._seenHashes.add(hash);
 
 		const isExcluded = ExcludeUtil.isExcluded(hash, "spell", spell.source);
@@ -181,7 +210,7 @@ class SpellsPage extends ListPageMultiSource {
 
 		const eleLi = e_({
 			tag: "div",
-			clazz: `lst__row flex-col ${isExcluded ? "lst__row--blacklisted" : ""}`,
+			clazz: `lst__row ve-flex-col ${isExcluded ? "lst__row--blacklisted" : ""}`,
 			click: (evt) => this._list.doSelect(listItem, evt),
 			contextmenu: (evt) => ListUtil.openContextMenu(evt, this._list, listItem),
 			children: [
@@ -205,7 +234,7 @@ class SpellsPage extends ListPageMultiSource {
 						e_({
 							tag: "span",
 							clazz: `col-1-7 text-center ${Parser.sourceJsonToColor(spell.source)} pr-0`,
-							style: BrewUtil.sourceJsonToStylePart(spell.source),
+							style: BrewUtil2.sourceJsonToStylePart(spell.source),
 							title: `${Parser.sourceJsonToFull(spell.source)}${Renderer.utils.getSourceSubText(spell)}`,
 							text: source,
 						}),
@@ -230,7 +259,6 @@ class SpellsPage extends ListPageMultiSource {
 				normalisedRange: spell._normalisedRange,
 			},
 			{
-				uniqueId: spell.uniqueId ? spell.uniqueId : spI,
 				isExcluded,
 			},
 		);
@@ -254,7 +282,7 @@ class SpellsPage extends ListPageMultiSource {
 		const concentration = spell._isConc ? "×" : "";
 		const range = Parser.spRangeToFull(spell.range);
 
-		const $ele = $(`<div class="lst__row lst__row--sublist flex-col">
+		const $ele = $(`<div class="lst__row lst__row--sublist ve-flex-col">
 			<a href="#${UrlUtil.autoEncodeHash(spell)}" title="${spell.name}" class="lst--border lst__row-inner">
 				<span class="bold col-3-2 pl-0">${spell.name}</span>
 				<span class="capitalise col-1-5 text-center">${PageFilterSpells.getTblLevelStr(spell)}</span>
@@ -377,46 +405,8 @@ class SpellsPage extends ListPageMultiSource {
 		};
 	}
 
-	async _pOnLoad_pPreHashInit () {
-		ListUtil.bindShowTableButton(
-			"btn-show-table",
-			"Spells",
-			this._dataList,
-			{
-				name: {name: "Name", transform: true},
-				source: {name: "Source", transform: (it) => `<span class="${Parser.sourceJsonToColor(it)}" title="${Parser.sourceJsonToFull(it)}" ${BrewUtil.sourceJsonToStyle(it.source)}>${Parser.sourceJsonToAbv(it)}</span>`},
-				level: {name: "Level", transform: (it) => Parser.spLevelToFull(it)},
-				time: {name: "Casting Time", transform: (it) => PageFilterSpells.getTblTimeStr(it[0])},
-				duration: {name: "Duration", transform: (it) => Parser.spDurationToFull(it)},
-				_school: {name: "School", transform: (sp) => `<span class="sp__school-${sp.school}" ${Parser.spSchoolAbvToStyle(sp.school)}>${Parser.spSchoolAndSubschoolsAbvsToFull(sp.school, sp.subschools)}</span>`},
-				range: {name: "Range", transform: (it) => Parser.spRangeToFull(it)},
-				_components: {name: "Components", transform: (sp) => Parser.spComponentsToFull(sp.components, sp.level, {isPlainText: true})},
-				_classes: {
-					name: "Classes",
-					transform: (sp) => {
-						const fromClassList = Renderer.spell.getCombinedClasses(sp, "fromClassList");
-						return Parser.spMainClassesToFull(fromClassList);
-					},
-				},
-				entries: {name: "Text", transform: (it) => Renderer.get().render({type: "entries", entries: it}, 1), flex: 3},
-				entriesHigherLevel: {name: "At Higher Levels", transform: (it) => Renderer.get().render({type: "entries", entries: (it || [])}, 1), flex: 2},
-			},
-			{generator: ListUtil.basicFilterGenerator},
-			(a, b) => SortUtil.ascSort(a.name, b.name) || SortUtil.ascSort(a.source, b.source),
-		);
-	}
-
-	_pHandleBrew (homebrew) {
-		try {
-			DataUtil.class.mergeHomebrewSubclassLookup(this._subclassLookup, homebrew);
-			this._addData(homebrew);
-		} catch (e) {
-			BrewUtil.pPurgeBrew(e);
-		}
-	}
-
 	async _pOnLoad_pPreDataAdd () {
-		const homebrew = await BrewUtil.pAddBrewData();
+		const homebrew = await BrewUtil2.pGetBrewProcessed();
 		Renderer.spell.populateHomebrewLookup(homebrew);
 	}
 

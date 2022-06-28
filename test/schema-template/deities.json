@@ -1,7 +1,7 @@
 {
 	"$schema": "http://json-schema.org/draft-07/schema#",
 	"$id": "deities.json",
-	"version": "1.2.1",
+	"version": "1.2.3",
 	"type": "object",
 
 	"definitions": {
@@ -81,6 +81,9 @@
 					"customProperties": {
 						"description": "For homebrew use only; a key-value dict of the form: `\"Typical Worshipers\": \"Half-elf Bards\"`",
 						"type": "object"
+					},
+					"foundryImg": {
+						"$ref": "util.json#/definitions/foundryImg"
 					}
 				},
 				"source": {
@@ -92,9 +95,7 @@
 						"$ref": "entry.json"
 					}
 				},
-				"page": {
-					"type": "integer"
-				},
+				"page": {"$ref": "util.json#/definitions/page"},
 				"additionalSources": {
 					"$ref": "util.json#/definitions/additionalSources"
 				},
@@ -114,7 +115,8 @@
 					"$ref": "util.json#/definitions/basicRules"
 				},
 				"customExtensionOf": {
-					"type": "string"
+					"type": "string",
+					"description": "A UID of an existing deity that this deity extends. e.g. \"Bahgtru|Orc|SCAG\""
 				},
 				"piety": {"type": "boolean"}
 			},

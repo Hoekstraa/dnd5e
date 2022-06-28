@@ -1,44 +1,85 @@
 {
 	"$schema": "http://json-schema.org/draft-07/schema#",
 	"$id": "items-base.json",
-	"version": "1.4.7",
+	"version": "1.4.13",
 	"definitions": {
-		"itemLookup": {
+		"itemLookupArray": {
 			"type": "array",
 			"uniqueItems": true,
-			"items": {
-				"type": "object",
-				"properties": {
-					"abbreviation": {
-						"type": "string"
-					},
-					"source": {
-						"type": "string"
-					},
-					"page": {
-						"type": "integer"
-					},
-					"name": {
-						"type": "string"
-					},
-					"entries": {
-						"type": "array",
-						"items": {
-							"$ref": "entry.json"
-						}
-					},
-					"template": {
-						"$comment": "Note that this is not used on item types.",
-						"type": "string"
-					}
+			"items": {"$ref": "#/definitions/itemLookup"}
+		},
+		"itemLookupBase": {
+			"type": "object",
+			"properties": {
+				"abbreviation": {
+					"type": "string"
 				},
+				"source": {
+					"type": "string"
+				},
+				"page": {"$ref": "util.json#/definitions/page"},
+				"name": {
+					"type": "string"
+				},
+				"template": {
+					"$comment": "Note that this is not used on item types.",
+					"type": "string"
+				}
+			},
+			"$$ifSite": {
 				"required": [
 					"abbreviation",
 					"source",
 					"page"
-				],
-				"additionalProperties": false
-			}
+				]
+			},
+			"$$ifBrew": {
+				"required": [
+					"abbreviation",
+					"source"
+				]
+			},
+			"additionalProperties": false
+		},
+		"itemLookup": {
+			"anyOf": [
+				{
+					"type": "object",
+					"$$merge": [
+						{
+							"$ref": "#/definitions/itemLookupBase"
+						},
+						{
+							"properties": {
+								"entries": {
+									"type": "array",
+									"items": {
+										"$ref": "entry.json"
+									}
+								}
+							}
+						}
+					]
+				},
+				{
+					"type": "object",
+					"$$merge": [
+						{
+							"$ref": "#/definitions/itemLookupBase"
+						},
+						{
+							"properties": {
+								"entriesTemplate": {
+									"type": "array",
+									"items": {
+										"$ref": "entry.json"
+									}
+								}
+							}
+						}
+					]
+				}
+			]
 		}
 	},
 	"type": "object",
@@ -61,9 +102,7 @@
 					"source": {
 						"type": "string"
 					},
-					"page": {
-						"type": "integer"
-					},
+					"page": {"$ref": "util.json#/definitions/page"},
 					"ac": {
 						"type": "integer"
 					},
@@ -159,6 +198,9 @@
 							"enum": ["weapon", "equipment", "consumable", "tool", "loot", "class", "spell", "feat", "backpack"]
 						},
 						"foundryData": {"$ref": "util.json#/definitions/foundryDataObject"},
+						"foundryFlags": {"$ref": "util.json#/definitions/foundryFlagsObject"},
+						"foundryEffects": {"$ref": "util.json#/definitions/foundryEffectsArray"},
+						"foundryImg": {"$ref": "util.json#/definitions/foundryImg"},
 						"fluff": {
 							"$ref": "shared-items.json#/definitions/fluff"
 						}
@@ -260,10 +302,10 @@
 			}
 		},
 		"itemProperty": {
-			"$ref": "#/definitions/itemLookup"
+			"$ref": "#/definitions/itemLookupArray"
 		},
 		"itemType": {
-			"$ref": "#/definitions/itemLookup"
+			"$ref": "#/definitions/itemLookupArray"
 		},
 		"itemEntry": {
 			"type": "array",

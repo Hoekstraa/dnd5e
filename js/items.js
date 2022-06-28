@@ -38,7 +38,7 @@ class ItemsPage extends ListPage {
 		if (item._fIsMundane) {
 			const eleLi = e_({
 				tag: "div",
-				clazz: `lst__row flex-col ${isExcluded ? "lst__row--blacklisted" : ""}`,
+				clazz: `lst__row ve-flex-col ${isExcluded ? "lst__row--blacklisted" : ""}`,
 				click: (evt) => this._mundaneList.doSelect(listItem, evt),
 				contextmenu: (evt) => ListUtil.openContextMenu(evt, this._mundaneList, listItem),
 				children: [
@@ -54,7 +54,7 @@ class ItemsPage extends ListPage {
 							e_({
 								tag: "span",
 								clazz: `col-1 text-center ${Parser.sourceJsonToColor(item.source)} pr-0`,
-								style: BrewUtil.sourceJsonToStylePart(item.source),
+								style: BrewUtil2.sourceJsonToStylePart(item.source),
 								title: `${Parser.sourceJsonToFull(item.source)}${Renderer.utils.getSourceSubText(item)}`,
 								text: source,
 							}),
@@ -75,7 +75,6 @@ class ItemsPage extends ListPage {
 					weight: Parser.weightValueToNumber(item.weight),
 				},
 				{
-					uniqueId: item.uniqueId ? item.uniqueId : itI,
 					isExcluded,
 				},
 			);
@@ -84,7 +83,7 @@ class ItemsPage extends ListPage {
 		} else {
 			const eleLi = e_({
 				tag: "div",
-				clazz: `lst__row flex-col ${isExcluded ? "lst__row--blacklisted" : ""}`,
+				clazz: `lst__row ve-flex-col ${isExcluded ? "lst__row--blacklisted" : ""}`,
 				click: (evt) => this._magicList.doSelect(listItem, evt),
 				contextmenu: (evt) => ListUtil.openContextMenu(evt, this._magicList, listItem),
 				children: [
@@ -101,7 +100,7 @@ class ItemsPage extends ListPage {
 							e_({
 								tag: "span",
 								clazz: `col-1 text-center ${Parser.sourceJsonToColor(item.source)} pr-0`,
-								style: BrewUtil.sourceJsonToStylePart(item.source),
+								style: BrewUtil2.sourceJsonToStylePart(item.source),
 								title: `${Parser.sourceJsonToFull(item.source)}${Renderer.utils.getSourceSubText(item)}`,
 								text: source,
 							}),
@@ -122,7 +121,6 @@ class ItemsPage extends ListPage {
 					attunement: item._attunementCategory !== VeCt.STR_NO_ATTUNEMENT,
 					weight: Parser.weightValueToNumber(item.weight),
 				},
-				{uniqueId: item.uniqueId ? item.uniqueId : itI},
 			);
 
 			return {magic: listItem};
@@ -131,12 +129,12 @@ class ItemsPage extends ListPage {
 
 	handleFilterChange () {
 		const f = this._pageFilter.filterBox.getValues();
-		function listFilter (li) {
+		const listFilter = li => {
 			const it = this._dataList[li.ix];
 			return this._pageFilter.toDisplay(f, it);
-		}
-		this._mundaneList.filter(listFilter.bind(this));
-		this._magicList.filter(listFilter.bind(this));
+		};
+		this._mundaneList.filter(listFilter);
+		this._magicList.filter(listFilter);
 		FilterBox.selectFirstVisible(this._dataList);
 	}
 
@@ -144,7 +142,7 @@ class ItemsPage extends ListPage {
 		const hash = UrlUtil.autoEncodeHash(item);
 
 		const $dispCount = $(`<span class="text-center col-2 pr-0">${count}</span>`);
-		const $ele = $$`<div class="lst__row lst__row--sublist flex-col">
+		const $ele = $$`<div class="lst__row lst__row--sublist ve-flex-col">
 			<a href="#${hash}" class="lst--border lst__row-inner">
 				<span class="bold col-6 pl-0">${item.name}</span>
 				<span class="text-center col-2">${item.weight ? `${item.weight} lb${item.weight > 1 ? "s" : ""}.` : "\u2014"}</span>
@@ -264,7 +262,7 @@ class ItemsPage extends ListPage {
 				switch (this._sublistCurrencyDisplayMode) {
 					case modes[1]: return Parser.itemValueToFull({value});
 					case modes[2]: {
-						return value ? `${Parser.DEFAULT_CURRENCY_CONVERSION_TABLE.find(it => it.coin === "gp").mult * value} gp` : "";
+						return value ? `${Number((Parser.DEFAULT_CURRENCY_CONVERSION_TABLE.find(it => it.coin === "gp").mult * value).toFixed(2))} gp` : "";
 					}
 					default:
 					case modes[0]: {
@@ -298,6 +296,8 @@ class ItemsPage extends ListPage {
 
 	async pOnLoad () {
 		this._$pgContent = $(`#pagecontent`);
+
+		await BrewUtil2.pInit();
 
 		window.loadHash = this.doLoadHash.bind(this);
 		window.loadSubHash = this.pDoLoadSubHash.bind(this);
@@ -345,9 +345,9 @@ class ItemsPage extends ListPage {
 		const $outVisibleResults = $(`.lst__wrp-search-visible`);
 		const $wrpListMundane = $(`.itm__wrp-list--mundane`);
 		const $wrpListMagic = $(`.itm__wrp-list--magic`);
+		const $elesMundane = $(`.ele-mundane`);
+		const $elesMagic = $(`.ele-magic`);
 		this._mundaneList.on("updated", () => {
-			const $elesMundane = $(`.ele-mundane`);
-
 			// Force-show the mundane list if there are no items on display
 			if (this._magicList.visibleItems.length) $elesMundane.toggleVe(!!this._mundaneList.visibleItems.length);
 			else $elesMundane.showVe();
@@ -361,9 +361,6 @@ class ItemsPage extends ListPage {
 			$wrpListMundane.toggleClass(`itm__wrp-list--empty`, this._mundaneList.visibleItems.length === 0);
 		});
 		this._magicList.on("updated", () => {
-			const $elesMundane = $(`.ele-mundane`);
-			const $elesMagic = $(`.ele-magic`);
-
 			$elesMagic.toggleVe(!!this._magicList.visibleItems.length);
 			// Force-show the mundane list if there are no items on display
 			if (!this._magicList.visibleItems.length) $elesMundane.showVe();
@@ -397,12 +394,13 @@ class ItemsPage extends ListPage {
 		ListUtil.initGenericAddable();
 
 		this._addItems(data);
-		BrewUtil.pAddBrewData()
+		BrewUtil2.pGetBrewProcessed()
 			.then(this._pHandleBrew.bind(this))
-			.then(() => BrewUtil.bind({lists: [this._mundaneList, this._magicList], pHandleBrew: this._pHandleBrew.bind(this)}))
 			.then(async () => {
-				BrewUtil.makeBrewButton("manage-brew");
-				BrewUtil.bind({lists: [this._mundaneList, this._magicList], filterBox: this._pageFilter.filterBox, sourceFilter: this._pageFilter.sourceFilter});
+				this._pageFilter.trimState();
+
+				ManageBrewUi.bindBtnOpen($(`#manage-brew`));
+
 				await ListUtil.pLoadState();
 				RollerUtil.addListRollButton();
 				ListUtil.addListShowHide();
@@ -412,9 +410,9 @@ class ItemsPage extends ListPage {
 					"Items",
 					this._dataList,
 					{
-						name: {name: "Name", transform: true},
-						source: {name: "Source", transform: (it) => `<span class="${Parser.sourceJsonToColor(it)}" title="${Parser.sourceJsonToFull(it)}" ${BrewUtil.sourceJsonToStyle(it.source)}>${Parser.sourceJsonToAbv(it)}</span>`},
-						rarity: {name: "Rarity", transform: true},
+						name: UtilsTableview.COL_TRANSFORM_NAME,
+						source: UtilsTableview.COL_TRANSFORM_SOURCE,
+						rarity: {name: "Rarity"},
 						_type: {name: "Type", transform: it => [it._typeHtml || "", it._subTypeHtml || ""].filter(Boolean).join(", ")},
 						_attunement: {name: "Attunement", transform: it => it._attunement ? it._attunement.slice(1, it._attunement.length - 1) : ""},
 						_properties: {name: "Properties", transform: it => Renderer.item.getDamageAndPropertiesText(it).filter(Boolean).join(", ")},
@@ -480,20 +478,6 @@ class ItemsPage extends ListPage {
 			upload: true,
 		});
 	}
-
-	// region TODO(Future) Homebrew deletion; refactor
-	getSpecificVariantsByBaseItemBrewUid (uniqueId) {
-		const item = this._dataList.find(it => it.uniqueId === uniqueId);
-		if (!item) return [];
-		return this._dataList.filter(it => it._baseName === item.name && (it._baseSource || it.source) === item.source);
-	}
-
-	getSpecificVariantsByGenericVariantBrewUid (uniqueId) {
-		const item = this._dataList.find(it => it.uniqueId === uniqueId);
-		if (!item) return [];
-		return item.variants.map(it => it.specificVariant);
-	}
-	// endregion
 }
 
 const itemsPage = new ItemsPage();

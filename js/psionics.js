@@ -40,8 +40,8 @@ class PsionicsPage extends ListPage {
 			tableViewOptions: {
 				title: "Psionics",
 				colTransforms: {
-					name: {name: "Name", transform: true},
-					source: {name: "Source", transform: (it) => `<span class="${Parser.sourceJsonToColor(it)}" title="${Parser.sourceJsonToFull(it)}" ${BrewUtil.sourceJsonToStyle(it.source)}>${Parser.sourceJsonToAbv(it)}</span>`},
+					name: UtilsTableview.COL_TRANSFORM_NAME,
+					source: UtilsTableview.COL_TRANSFORM_SOURCE,
 					_text: {name: "Text", transform: (it) => Renderer.psionic.getBodyText(it, Renderer.get()), flex: 3},
 				},
 				filter: {generator: ListUtil.basicFilterGenerator},
@@ -54,7 +54,7 @@ class PsionicsPage extends ListPage {
 		this._pageFilter.mutateAndAddToFilters(p, isExcluded);
 
 		const eleLi = document.createElement("div");
-		eleLi.className = `lst__row flex-col ${isExcluded ? "lst__row--blacklisted" : ""}`;
+		eleLi.className = `lst__row ve-flex-col ${isExcluded ? "lst__row--blacklisted" : ""}`;
 
 		const source = Parser.sourceJsonToAbv(p.source);
 		const hash = UrlUtil.autoEncodeHash(p);
@@ -64,7 +64,7 @@ class PsionicsPage extends ListPage {
 			<span class="bold col-6 pl-0">${p.name}</span>
 			<span class="col-2 text-center">${typeMeta.short}</span>
 			<span class="col-2 text-center ${p._fOrder === VeCt.STR_NONE ? "list-entry-none" : ""}">${p._fOrder}</span>
-			<span class="col-2 text-center pr-0" title="${Parser.sourceJsonToFull(p.source)}" ${BrewUtil.sourceJsonToStyle(p.source)}>${source}</span>
+			<span class="col-2 text-center pr-0" title="${Parser.sourceJsonToFull(p.source)}" ${BrewUtil2.sourceJsonToStyle(p.source)}>${source}</span>
 		</a>`;
 
 		const listItem = new ListItem(
@@ -79,7 +79,6 @@ class PsionicsPage extends ListPage {
 				searchModeList: getHiddenModeList(p),
 			},
 			{
-				uniqueId: p.uniqueId ? p.uniqueId : psI,
 				isExcluded,
 			},
 		);
@@ -100,7 +99,7 @@ class PsionicsPage extends ListPage {
 		const hash = UrlUtil.autoEncodeHash(p);
 		const typeMeta = Parser.psiTypeToMeta(p.type);
 
-		const $ele = $(`<div class="lst__row lst__row--sublist flex-col">
+		const $ele = $(`<div class="lst__row lst__row--sublist ve-flex-col">
 			<a href="#${hash}" class="lst--border lst__row-inner">
 				<span class="bold col-6 pl-0">${p.name}</span>
 				<span class="col-3">${typeMeta.short}</span>

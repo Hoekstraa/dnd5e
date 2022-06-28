@@ -1,7 +1,7 @@
 {
 	"$schema": "http://json-schema.org/draft-07/schema#",
 	"$id": "spells.json",
-	"version": "1.7.2",
+	"version": "1.7.8",
 	"title": "Spells",
 	"type": "object",
 	"definitions": {
@@ -281,7 +281,7 @@
 					"type": "string"
 				},
 				"page": {
-					"type": "integer"
+					"$ref": "../util.json#/definitions/page"
 				},
 				"additionalSources": {
 					"$ref": "../util.json#/definitions/additionalSources"
@@ -389,15 +389,18 @@
 				},
 				"miscTags": {
 					"type": "array",
-					"description": "FMV: Forced Movement\n HL: Healing\n MAC: Modifies AC\n PRM: Permanent Effects\n SCL: Scaling Effects\n  SMN: Summons Creature\n SGT: Requires Sight\n THP: Grants Temporary Hit Points\n TP: Teleportation",
+					"description": "FMV: Forced Movement\n HL: Healing\n LGT: Creates Light\n LGTS: Creates Sunlight\n MAC: Modifies AC\n PRM: Permanent Effects\n RO: Rollable Effects\n SCL: Scaling Effects\n  SMN: Summons Creature\n SGT: Requires Sight\n THP: Grants Temporary Hit Points\n TP: Teleportation",
 					"uniqueItems": true,
 					"items": {
 						"type": "string",
 						"enum": [
 							"FMV",
 							"HL",
+							"LGT",
+							"LGTS",
 							"MAC",
 							"PRM",
+							"RO",
 							"SCL",
 							"SMN",
 							"SGT",
@@ -436,64 +439,6 @@
 				},
 				"hasFluffImages": {
 					"type": "boolean"
-				},
-				"_copy": {
-					"type": "object",
-					"properties": {
-						"name": {
-							"type": "string"
-						},
-						"source": {
-							"type": "string"
-						},
-						"pantheon": {
-							"description": "Used in deity data",
-							"type": "string"
-						},
-						"shortName": {
-							"description": "Used in subclass data",
-							"type": "string"
-						},
-						"className": {
-							"description": "Used in subclass data",
-							"type": "string"
-						},
-						"classSource": {
-							"description": "Used in subclass data",
-							"type": "string"
-						},
-						"_mod": {
-							"$ref": "../util.json#/definitions/_modObject"
-						},
-						"_trait": {
-							"type": "object",
-							"properties": {
-								"name": {
-									"type": "string"
-								},
-								"source": {
-									"type": "string"
-								}
-							},
-							"required": [
-								"name",
-								"source"
-							]
-						},
-						"_preserve": {
-							"type": "object",
-							"patternProperties": {
-								".*": {
-									"type": "boolean"
-								}
-							}
-						}
-					},
-					"required": [
-						"name",
-						"source"
-					],
-					"additionalProperties": false
 				}
 			},
 			"additionalProperties": false
@@ -776,7 +721,7 @@
 							"type": "string"
 						},
 						"page": {
-							"type": "integer"
+							"$ref": "../util.json#/definitions/page"
 						},
 						"additionalSources": {
 							"$ref": "../util.json#/definitions/additionalSources"
@@ -884,15 +829,18 @@
 						},
 						"miscTags": {
 							"type": "array",
-							"description": "FMV: Forced Movement\n HL: Healing\n MAC: Modifies AC\n PRM: Permanent Effects\n SCL: Scaling Effects\n  SMN: Summons Creature\n SGT: Requires Sight\n THP: Grants Temporary Hit Points\n TP: Teleportation",
+							"description": "FMV: Forced Movement\n HL: Healing\n LGT: Creates Light\n LGTS: Creates Sunlight\n MAC: Modifies AC\n PRM: Permanent Effects\n RO: Rollable Effects\n SCL: Scaling Effects\n  SMN: Summons Creature\n SGT: Requires Sight\n THP: Grants Temporary Hit Points\n TP: Teleportation",
 							"uniqueItems": true,
 							"items": {
 								"type": "string",
 								"enum": [
 									"FMV",
 									"HL",
+									"LGT",
+									"LGTS",
 									"MAC",
 									"PRM",
+									"RO",
 									"SCL",
 									"SMN",
 									"SGT",
@@ -931,64 +879,6 @@
 						},
 						"hasFluffImages": {
 							"type": "boolean"
-						},
-						"_copy": {
-							"type": "object",
-							"properties": {
-								"name": {
-									"type": "string"
-								},
-								"source": {
-									"type": "string"
-								},
-								"pantheon": {
-									"description": "Used in deity data",
-									"type": "string"
-								},
-								"shortName": {
-									"description": "Used in subclass data",
-									"type": "string"
-								},
-								"className": {
-									"description": "Used in subclass data",
-									"type": "string"
-								},
-								"classSource": {
-									"description": "Used in subclass data",
-									"type": "string"
-								},
-								"_mod": {
-									"$ref": "../util.json#/definitions/_modObject"
-								},
-								"_trait": {
-									"type": "object",
-									"properties": {
-										"name": {
-											"type": "string"
-										},
-										"source": {
-											"type": "string"
-										}
-									},
-									"required": [
-										"name",
-										"source"
-									]
-								},
-								"_preserve": {
-									"type": "object",
-									"patternProperties": {
-										".*": {
-											"type": "boolean"
-										}
-									}
-								}
-							},
-							"required": [
-								"name",
-								"source"
-							],
-							"additionalProperties": false
 						}
 					},
 					"additionalProperties": false,
@@ -1279,7 +1169,7 @@
 							"type": "string"
 						},
 						"page": {
-							"type": "integer"
+							"$ref": "../util.json#/definitions/page"
 						},
 						"additionalSources": {
 							"$ref": "../util.json#/definitions/additionalSources"
@@ -1387,15 +1277,18 @@
 						},
 						"miscTags": {
 							"type": "array",
-							"description": "FMV: Forced Movement\n HL: Healing\n MAC: Modifies AC\n PRM: Permanent Effects\n SCL: Scaling Effects\n  SMN: Summons Creature\n SGT: Requires Sight\n THP: Grants Temporary Hit Points\n TP: Teleportation",
+							"description": "FMV: Forced Movement\n HL: Healing\n LGT: Creates Light\n LGTS: Creates Sunlight\n MAC: Modifies AC\n PRM: Permanent Effects\n RO: Rollable Effects\n SCL: Scaling Effects\n  SMN: Summons Creature\n SGT: Requires Sight\n THP: Grants Temporary Hit Points\n TP: Teleportation",
 							"uniqueItems": true,
 							"items": {
 								"type": "string",
 								"enum": [
 									"FMV",
 									"HL",
+									"LGT",
+									"LGTS",
 									"MAC",
 									"PRM",
+									"RO",
 									"SCL",
 									"SMN",
 									"SGT",
@@ -1508,7 +1401,15 @@
 					"type": "integer"
 				},
 				"unit": {
-					"type": "string"
+					"type": "string",
+					"enum": [
+						"action",
+						"bonus",
+						"reaction",
+						"round",
+						"minute",
+						"hour"
+					]
 				},
 				"condition": {
 					"type": "string"

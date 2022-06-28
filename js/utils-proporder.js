@@ -1,6 +1,5 @@
 "use strict";
 
-// TODO add deep sorting, e.g. "_copy" sections should be sorted
 class PropOrder {
 	/**
 	 * @param obj
@@ -114,9 +113,12 @@ PropOrder._MONSTER = [
 
 	"srd",
 	"basicRules",
+	"additionalSources",
 	"otherSources",
+	"reprintedAs",
 
 	"summonedBySpell",
+	"summonedBySpellLevel",
 	"summonedByClass",
 
 	"_isCopy",
@@ -165,8 +167,13 @@ PropOrder._MONSTER = [
 	"spellcasting",
 	"trait",
 	"actionNote",
+	"actionHeader",
 	"action",
+	"bonusNote",
+	"bonusHeader",
 	"bonus",
+	"reactionNote",
+	"reactionHeader",
 	"reaction",
 	"legendaryHeader",
 	"legendaryActions",
@@ -180,6 +187,7 @@ PropOrder._MONSTER = [
 	"fluff",
 	"familiar",
 	"dragonCastingColor",
+	"dragonAge",
 
 	"tokenUrl",
 	"soundClip",
@@ -191,6 +199,8 @@ PropOrder._MONSTER = [
 	new PropOrder._ArrayKey("actionTags", {fnSort: SortUtil.ascSortLower}),
 	new PropOrder._ArrayKey("languageTags", {fnSort: SortUtil.ascSortLower}),
 	new PropOrder._ArrayKey("damageTags", {fnSort: SortUtil.ascSortLower}),
+	new PropOrder._ArrayKey("damageTagsLegendary", {fnSort: SortUtil.ascSortLower}),
+	new PropOrder._ArrayKey("damageTagsSpell", {fnSort: SortUtil.ascSortLower}),
 	new PropOrder._ArrayKey("spellcastingTags", {fnSort: SortUtil.ascSortLower}),
 	new PropOrder._ArrayKey("miscTags", {fnSort: SortUtil.ascSortLower}),
 	new PropOrder._ArrayKey("conditionInflict", {fnSort: SortUtil.ascSortLower}),
@@ -347,12 +357,16 @@ PropOrder._BACKGROUND = [
 		],
 	}),
 
+	"feats",
+
 	"skillProficiencies",
 	"languageProficiencies",
 	"toolProficiencies",
 	"startingEquipment",
 
 	"additionalSpells",
+
+	"fromFeature",
 
 	"entries",
 
@@ -494,6 +508,8 @@ PropOrder._SUBCLASS = [
 
 	"additionalSpells",
 
+	"optionalfeatureProgression",
+
 	"subclassTableGroups",
 	"subclassFeatures",
 ];
@@ -519,6 +535,9 @@ PropOrder._CLASS_FEATURE = [
 
 	"header",
 	"type",
+
+	"consumes",
+
 	"entries",
 ];
 PropOrder._SUBCLASS_FEATURE = [
@@ -542,6 +561,9 @@ PropOrder._SUBCLASS_FEATURE = [
 
 	"header",
 	"type",
+
+	"consumes",
+
 	"entries",
 ];
 PropOrder._LANGUAGE = [
@@ -609,6 +631,9 @@ PropOrder._CULT = [
 	"page",
 	"srd",
 	"basicRules",
+	"additionalSources",
+	"otherSources",
+	"reprintedAs",
 
 	"type",
 
@@ -625,6 +650,9 @@ PropOrder._BOON = [
 	"page",
 	"srd",
 	"basicRules",
+	"additionalSources",
+	"otherSources",
+	"reprintedAs",
 
 	"type",
 
@@ -656,6 +684,7 @@ PropOrder._DEITY = [
 			new PropOrder._ObjectKey("_mod", {
 				fnGetOrder: () => PropOrder._DEITY__COPY_MOD,
 			}),
+			"_preserve",
 		],
 	}),
 
@@ -695,15 +724,23 @@ PropOrder._FEAT = [
 	"prerequisite",
 	"ability",
 
-	new PropOrder._ArrayKey("proficiencyTags", {fnSort: SortUtil.ascSortLower}),
 	"skillProficiencies",
 	"languageProficiencies",
 	"toolProficiencies",
 	"weaponProficiencies",
 	"armorProficiencies",
 	"skillToolLanguageProficiencies",
+	"savingThrowProficiencies",
+	"expertise",
+
+	"immune",
+	"resist",
+	"vulnerable",
+	"conditionImmune",
 
 	"additionalSpells",
+
+	"optionalfeatureProgression",
 
 	"entries",
 ];
@@ -810,6 +847,7 @@ PropOrder._ITEM = [
 			new PropOrder._ObjectKey("_mod", {
 				fnGetOrder: () => PropOrder._ITEM__COPY_MOD,
 			}),
+			"_preserve",
 		],
 	}),
 
@@ -934,6 +972,10 @@ PropOrder._ITEM = [
 	"spellScrollLevel",
 	"lootTables",
 
+	"seeAlsoVehicle",
+
+	"miscTags",
+
 	"hasFluff",
 	"hasFluffImages",
 ];
@@ -1022,7 +1064,13 @@ PropOrder._OPTIONALFEATURE = [
 	"weaponProficiencies",
 	"armorProficiencies",
 
+	"senses",
+
 	"additionalSpells",
+
+	"optionalfeatureProgression",
+
+	"consumes",
 
 	"entries",
 ];
@@ -1066,16 +1114,13 @@ PropOrder._VARIANTRULE = [
 	"type",
 	"entries",
 ];
-PropOrder._RACE = [
-	"name",
-	"alias",
-
-	"source",
+PropOrder._RACE_SUBRACE = [
 	"page",
 	"srd",
 	"basicRules",
 	"additionalSources",
 	"otherSources",
+	"reprintedAs",
 
 	new PropOrder._ObjectKey("_copy", {
 		order: [
@@ -1090,8 +1135,9 @@ PropOrder._RACE = [
 
 	"lineage",
 	"creatureTypes",
+	"creatureTypeTags",
 
-	"size",
+	new PropOrder._ArrayKey("size", {fnSort: SortUtil.ascSortSize}),
 	"speed",
 	"ability",
 
@@ -1099,6 +1145,7 @@ PropOrder._RACE = [
 	"age",
 
 	"darkvision",
+	"blindsight",
 	"feats",
 
 	new PropOrder._ArrayKey("traitTags", {fnSort: SortUtil.ascSortLower}),
@@ -1120,11 +1167,6 @@ PropOrder._RACE = [
 
 	"entries",
 
-	new PropOrder._ArrayKey("subraces", {
-		fnGetOrder: () => PropOrder._RACE,
-		fnSort: (a, b) => SortUtil.ascSortLower(a.name || "", b.name || "") || SortUtil.ascSortLower(a.source || "", b.source || ""),
-	}),
-
 	"overwrite",
 
 	"hasFluff",
@@ -1144,10 +1186,29 @@ PropOrder._RACE = [
 		fnSort: (a, b) => SortUtil.ascSortLower(a.name || "", b.name || "") || SortUtil.ascSortLower(a.source || "", b.source || ""),
 	}),
 ];
+PropOrder._RACE = [
+	"name",
+	"alias",
+
+	"source",
+
+	...PropOrder._RACE_SUBRACE,
+];
 PropOrder._RACE__COPY_MOD = [
 	"*",
 	"_",
 	...PropOrder._RACE,
+];
+PropOrder._SUBRACE = [
+	"name",
+	"alias",
+
+	"source",
+
+	"raceName",
+	"raceSource",
+
+	...PropOrder._RACE_SUBRACE,
 ];
 PropOrder._TABLE = [
 	"name",
@@ -1198,6 +1259,9 @@ PropOrder._HAZARD = [
 	"page",
 	"srd",
 	"basicRules",
+	"additionalSources",
+	"otherSources",
+	"reprintedAs",
 
 	"trapHazType",
 
@@ -1218,6 +1282,7 @@ PropOrder._RECIPE = [
 	"makes",
 	"serves",
 	"ingredients",
+	"equipment",
 	"instructions",
 	"noteCook",
 
@@ -1234,12 +1299,34 @@ PropOrder._CHAROPTION = [
 	"source",
 	"page",
 
+	"prerequisite",
+
 	"optionType",
 
 	"entries",
 
 	"hasFluff",
 	"hasFluffImages",
+];
+PropOrder._SKILL = [
+	"name",
+
+	"source",
+	"page",
+	"srd",
+	"basicRules",
+
+	"entries",
+];
+PropOrder._SENSE = [
+	"name",
+
+	"source",
+	"page",
+	"srd",
+	"basicRules",
+
+	"entries",
 ];
 
 PropOrder._PROP_TO_LIST = {
@@ -1284,6 +1371,7 @@ PropOrder._PROP_TO_LIST = {
 	"variantrule": PropOrder._VARIANTRULE,
 	"spellFluff": PropOrder._GENERIC_FLUFF,
 	"race": PropOrder._RACE,
+	"subrace": PropOrder._SUBRACE,
 	"table": PropOrder._TABLE,
 	"trap": PropOrder._TRAP,
 	"hazard": PropOrder._HAZARD,
@@ -1291,6 +1379,8 @@ PropOrder._PROP_TO_LIST = {
 	"recipeFluff": PropOrder._GENERIC_FLUFF,
 	"charoption": PropOrder._CHAROPTION,
 	"charoptionFluff": PropOrder._GENERIC_FLUFF,
+	"skill": PropOrder._SKILL,
+	"sense": PropOrder._SENSE,
 };
 
 if (typeof module !== "undefined") {

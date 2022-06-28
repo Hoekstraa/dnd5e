@@ -22,7 +22,9 @@
 			"isNpc": true,
 			"source": "WDH",
 			"page": 193,
-			"size": "M",
+			"size": [
+				"M"
+			],
 			"type": {
 				"type": "humanoid",
 				"tags": [
@@ -151,7 +153,9 @@
 			"isNpc": true,
 			"source": "WDH",
 			"page": 193,
-			"size": "M",
+			"size": [
+				"M"
+			],
 			"type": {
 				"type": "humanoid",
 				"tags": [
@@ -280,6 +284,10 @@
 			"damageTags": [
 				"B"
 			],
+			"damageTagsSpell": [
+				"F",
+				"O"
+			],
 			"spellcastingTags": [
 				"CW"
 			],
@@ -374,7 +382,9 @@
 			"name": "Awakened Rat",
 			"source": "WDH",
 			"page": 102,
-			"size": "T",
+			"size": [
+				"T"
+			],
 			"type": "beast",
 			"alignment": [
 				"U"
@@ -445,7 +455,9 @@
 			"isNpc": true,
 			"source": "WDH",
 			"page": 195,
-			"size": "M",
+			"size": [
+				"M"
+			],
 			"type": {
 				"type": "humanoid",
 				"tags": [
@@ -587,7 +599,9 @@
 			"isNpc": true,
 			"source": "WDH",
 			"page": 112,
-			"size": "S",
+			"size": [
+				"S"
+			],
 			"type": {
 				"type": "humanoid",
 				"tags": [
@@ -649,7 +663,9 @@
 			"isNpc": true,
 			"source": "WDH",
 			"page": 196,
-			"size": "M",
+			"size": [
+				"M"
+			],
 			"type": {
 				"type": "humanoid",
 				"tags": [
@@ -664,7 +680,7 @@
 				{
 					"ac": 16,
 					"from": [
-						"{@item studded leather armor|phb}"
+						"{@item studded leather armor|phb|studded leather}"
 					]
 				}
 			],
@@ -822,7 +838,9 @@
 			"isNpc": true,
 			"source": "WDH",
 			"page": 199,
-			"size": "M",
+			"size": [
+				"M"
+			],
 			"type": {
 				"type": "humanoid",
 				"tags": [
@@ -970,6 +988,9 @@
 			"damageTags": [
 				"P"
 			],
+			"damageTagsSpell": [
+				"Y"
+			],
 			"spellcastingTags": [
 				"CB"
 			],
@@ -1017,7 +1038,9 @@
 			"name": "Dining Table Mimic",
 			"source": "WDH",
 			"page": 122,
-			"size": "L",
+			"size": [
+				"L"
+			],
 			"type": {
 				"type": "monstrosity",
 				"tags": [
@@ -1135,7 +1158,9 @@
 			"name": "Drow Gunslinger",
 			"source": "WDH",
 			"page": 201,
-			"size": "M",
+			"size": [
+				"M"
+			],
 			"type": {
 				"type": "humanoid",
 				"tags": [
@@ -1149,7 +1174,7 @@
 				{
 					"ac": 18,
 					"from": [
-						"{@item studded leather armor|phb}",
+						"{@item studded leather armor|phb|studded leather}",
 						"{@item shield|phb}"
 					]
 				}
@@ -1278,7 +1303,9 @@
 			"isNpc": true,
 			"source": "WDH",
 			"page": 203,
-			"size": "M",
+			"size": [
+				"M"
+			],
 			"type": {
 				"type": "humanoid",
 				"tags": [
@@ -1387,7 +1414,9 @@
 			"isNpc": true,
 			"source": "WDH",
 			"page": 115,
-			"size": "S",
+			"size": [
+				"S"
+			],
 			"type": {
 				"type": "humanoid",
 				"tags": [
@@ -1478,6 +1507,9 @@
 				"C",
 				"P"
 			],
+			"damageTagsSpell": [
+				"F"
+			],
 			"spellcastingTags": [
 				"I"
 			],
@@ -1509,7 +1541,9 @@
 			"name": "Engineer",
 			"source": "WDH",
 			"page": 141,
-			"size": "S",
+			"size": [
+				"S"
+			],
 			"type": {
 				"type": "humanoid",
 				"tags": [
@@ -1604,6 +1638,9 @@
 			"damageTags": [
 				"P"
 			],
+			"damageTagsSpell": [
+				"F"
+			],
 			"spellcastingTags": [
 				"CW"
 			],
@@ -1618,7 +1655,9 @@
 			"isNpc": true,
 			"source": "WDH",
 			"page": 32,
-			"size": "M",
+			"size": [
+				"M"
+			],
 			"type": {
 				"type": "humanoid",
 				"tags": [
@@ -1732,6 +1771,10 @@
 			"damageTags": [
 				"B"
 			],
+			"damageTagsSpell": [
+				"F",
+				"T"
+			],
 			"spellcastingTags": [
 				"CD"
 			],
@@ -1804,6 +1847,8 @@
 				"N",
 				"G"
 			],
+			"int": 7,
+			"cha": 13,
 			"hasToken": true
 		},
 		{
@@ -1813,7 +1858,9 @@
 			],
 			"source": "WDH",
 			"page": 152,
-			"size": "S",
+			"size": [
+				"S"
+			],
 			"type": "construct",
 			"alignment": [
 				"U"
@@ -1869,7 +1916,7 @@
 				{
 					"name": "Antimagic Susceptibility",
 					"entries": [
-						"The staff is {@condition incapacitated} while in the area of an antimagic field. If targeted by dispel magic, the staff must succeed on a Constitution saving throw against the caster's spell save DC or fall {@condition unconscious} for 1 minute."
+						"The staff is {@condition incapacitated} while in the area of an {@spell antimagic field}. If targeted by {@spell dispel magic}, the staff must succeed on a Constitution saving throw against the caster's spell save DC or fall {@condition unconscious} for 1 minute."
 					]
 				},
 				{
@@ -1906,7 +1953,9 @@
 			"name": "Griffon Cavalry Rider",
 			"source": "WDH",
 			"page": 197,
-			"size": "M",
+			"size": [
+				"M"
+			],
 			"type": {
 				"type": "humanoid",
 				"tags": [
@@ -1963,7 +2012,7 @@
 				{
 					"name": "Feather Fall",
 					"entries": [
-						"The rider wears a magic ring with which it can cast the feather fall spell on itself once as a reaction to falling. After the spell is cast, the ring becomes nonmagical."
+						"The rider wears a magic ring with which it can cast the {@spell feather fall} spell on itself once as a reaction to falling. After the spell is cast, the ring becomes nonmagical."
 					]
 				}
 			],
@@ -2028,7 +2077,9 @@
 			"isNpc": true,
 			"source": "WDH",
 			"page": 29,
-			"size": "M",
+			"size": [
+				"M"
+			],
 			"type": {
 				"type": "humanoid",
 				"tags": [
@@ -2120,6 +2171,9 @@
 			"damageTags": [
 				"P"
 			],
+			"damageTagsSpell": [
+				"F"
+			],
 			"spellcastingTags": [
 				"CW"
 			],
@@ -2169,7 +2223,9 @@
 			"isNamedCreature": true,
 			"source": "WDH",
 			"page": 204,
-			"size": "M",
+			"size": [
+				"M"
+			],
 			"type": {
 				"type": "humanoid",
 				"tags": [
@@ -2365,6 +2421,9 @@
 				"N",
 				"P"
 			],
+			"damageTagsSpell": [
+				"R"
+			],
 			"spellcastingTags": [
 				"CC"
 			],
@@ -2389,7 +2448,9 @@
 			"isNpc": true,
 			"source": "WDH",
 			"page": 205,
-			"size": "M",
+			"size": [
+				"M"
+			],
 			"type": {
 				"type": "humanoid",
 				"tags": [
@@ -2493,7 +2554,9 @@
 			"isNpc": true,
 			"source": "WDH",
 			"page": 199,
-			"size": "M",
+			"size": [
+				"M"
+			],
 			"type": {
 				"type": "humanoid",
 				"tags": [
@@ -2652,6 +2715,12 @@
 			"damageTags": [
 				"B"
 			],
+			"damageTagsSpell": [
+				"F",
+				"N",
+				"O",
+				"R"
+			],
 			"spellcastingTags": [
 				"CC"
 			],
@@ -2672,7 +2741,9 @@
 			"isNpc": true,
 			"source": "WDH",
 			"page": 205,
-			"size": "M",
+			"size": [
+				"M"
+			],
 			"type": {
 				"type": "humanoid",
 				"tags": [
@@ -2784,7 +2855,9 @@
 			"isNpc": true,
 			"source": "WDH",
 			"page": 116,
-			"size": "M",
+			"size": [
+				"M"
+			],
 			"type": {
 				"type": "humanoid",
 				"tags": [
@@ -2911,6 +2984,11 @@
 			"damageTags": [
 				"P"
 			],
+			"damageTagsSpell": [
+				"N",
+				"O",
+				"R"
+			],
 			"spellcastingTags": [
 				"CC",
 				"I"
@@ -2931,7 +3009,9 @@
 			"isNamedCreature": true,
 			"source": "WDH",
 			"page": 206,
-			"size": "M",
+			"size": [
+				"M"
+			],
 			"type": {
 				"type": "humanoid",
 				"tags": [
@@ -3132,7 +3212,9 @@
 			"isNpc": true,
 			"source": "WDH",
 			"page": 63,
-			"size": "S",
+			"size": [
+				"S"
+			],
 			"type": {
 				"type": "humanoid",
 				"tags": [
@@ -3166,7 +3248,9 @@
 			"isNpc": true,
 			"source": "WDH",
 			"page": 158,
-			"size": "M",
+			"size": [
+				"M"
+			],
 			"type": {
 				"type": "humanoid",
 				"tags": [
@@ -3298,6 +3382,12 @@
 			"damageTags": [
 				"P"
 			],
+			"damageTagsSpell": [
+				"B",
+				"C",
+				"F",
+				"O"
+			],
 			"spellcastingTags": [
 				"CW"
 			],
@@ -3312,7 +3402,9 @@
 			"isNpc": true,
 			"source": "WDH",
 			"page": 89,
-			"size": "M",
+			"size": [
+				"M"
+			],
 			"type": {
 				"type": "humanoid",
 				"tags": [
@@ -3444,6 +3536,10 @@
 			"damageTags": [
 				"P"
 			],
+			"damageTagsSpell": [
+				"T",
+				"Y"
+			],
 			"spellcastingTags": [
 				"CB"
 			],
@@ -3488,7 +3584,9 @@
 			"isNpc": true,
 			"source": "WDH",
 			"page": 152,
-			"size": "M",
+			"size": [
+				"M"
+			],
 			"type": "elemental",
 			"alignment": [
 				"L",
@@ -3598,7 +3696,9 @@
 			"isNpc": true,
 			"source": "WDH",
 			"page": 207,
-			"size": "M",
+			"size": [
+				"M"
+			],
 			"type": {
 				"type": "humanoid",
 				"tags": [
@@ -3830,6 +3930,15 @@
 				"O",
 				"S"
 			],
+			"damageTagsSpell": [
+				"A",
+				"C",
+				"F",
+				"I",
+				"L",
+				"O",
+				"Y"
+			],
 			"spellcastingTags": [
 				"CW"
 			],
@@ -3858,7 +3967,9 @@
 			"isNpc": true,
 			"source": "WDH",
 			"page": 116,
-			"size": "M",
+			"size": [
+				"M"
+			],
 			"type": {
 				"type": "humanoid",
 				"tags": [
@@ -3985,6 +4096,11 @@
 			"damageTags": [
 				"P"
 			],
+			"damageTagsSpell": [
+				"N",
+				"O",
+				"R"
+			],
 			"spellcastingTags": [
 				"CC",
 				"I"
@@ -4004,7 +4120,9 @@
 			"isNpc": true,
 			"source": "WDH",
 			"page": 85,
-			"size": "S",
+			"size": [
+				"S"
+			],
 			"type": {
 				"type": "humanoid",
 				"tags": [
@@ -4138,6 +4256,13 @@
 			"damageTags": [
 				"P"
 			],
+			"damageTagsSpell": [
+				"B",
+				"C",
+				"F",
+				"N",
+				"O"
+			],
 			"spellcastingTags": [
 				"CW"
 			],
@@ -4152,7 +4277,9 @@
 			"isNpc": true,
 			"source": "WDH",
 			"page": 82,
-			"size": "M",
+			"size": [
+				"M"
+			],
 			"type": {
 				"type": "humanoid",
 				"tags": [
@@ -4244,7 +4371,9 @@
 			"isNpc": true,
 			"source": "WDH",
 			"page": 149,
-			"size": "S",
+			"size": [
+				"S"
+			],
 			"type": {
 				"type": "humanoid",
 				"tags": [
@@ -4378,6 +4507,12 @@
 			"damageTags": [
 				"P"
 			],
+			"damageTagsSpell": [
+				"B",
+				"C",
+				"F",
+				"O"
+			],
 			"spellcastingTags": [
 				"CW"
 			],
@@ -4395,7 +4530,9 @@
 			"isNpc": true,
 			"source": "WDH",
 			"page": 209,
-			"size": "M",
+			"size": [
+				"M"
+			],
 			"type": {
 				"type": "humanoid",
 				"tags": [
@@ -4588,6 +4725,15 @@
 				"B",
 				"O"
 			],
+			"damageTagsSpell": [
+				"B",
+				"C",
+				"F",
+				"L",
+				"N",
+				"O",
+				"Y"
+			],
 			"spellcastingTags": [
 				"CW"
 			],
@@ -4603,7 +4749,9 @@
 			"isNpc": true,
 			"source": "WDH",
 			"page": 208,
-			"size": "M",
+			"size": [
+				"M"
+			],
 			"type": {
 				"type": "humanoid",
 				"tags": [
@@ -4738,6 +4886,13 @@
 			"damageTags": [
 				"B"
 			],
+			"damageTagsSpell": [
+				"B",
+				"C",
+				"F",
+				"L",
+				"O"
+			],
 			"spellcastingTags": [
 				"CW"
 			],
@@ -4781,7 +4936,9 @@
 			"isNpc": true,
 			"source": "WDH",
 			"page": 37,
-			"size": "L",
+			"size": [
+				"L"
+			],
 			"type": "beast",
 			"alignment": [
 				"U"
@@ -4831,7 +4988,9 @@
 			"name": "Mechanical Bird",
 			"source": "WDH",
 			"page": 46,
-			"size": "T",
+			"size": [
+				"T"
+			],
 			"type": "construct",
 			"alignment": [
 				"N"
@@ -4880,7 +5039,9 @@
 			"isNpc": true,
 			"source": "WDH",
 			"page": 36,
-			"size": "M",
+			"size": [
+				"M"
+			],
 			"type": {
 				"type": "humanoid",
 				"tags": [
@@ -4989,6 +5150,10 @@
 			"damageTags": [
 				"B"
 			],
+			"damageTagsSpell": [
+				"F",
+				"T"
+			],
 			"spellcastingTags": [
 				"CD"
 			],
@@ -5006,7 +5171,9 @@
 			"isNpc": true,
 			"source": "WDH",
 			"page": 210,
-			"size": "M",
+			"size": [
+				"M"
+			],
 			"type": {
 				"type": "humanoid",
 				"tags": [
@@ -5113,7 +5280,9 @@
 			"isNpc": true,
 			"source": "WDH",
 			"page": 211,
-			"size": "M",
+			"size": [
+				"M"
+			],
 			"type": {
 				"type": "humanoid",
 				"tags": [
@@ -5259,7 +5428,7 @@
 						"items": {
 							"name": "Special Equipment",
 							"entries": [
-								"Nar'l carries a vial containing three doses of eyescratch, a contact poison. A creature that comes into contact with the poison must succeed on a {@dc 14} Constitution saving throw or be {@condition poisoned} for 1 hour and {@condition blinded} while {@condition poisoned} in this way. A lesser restoration spell or similar magic ends the effect."
+								"Nar'l carries a vial containing three doses of eyescratch, a contact poison. A creature that comes into contact with the poison must succeed on a {@dc 14} Constitution saving throw or be {@condition poisoned} for 1 hour and {@condition blinded} while {@condition poisoned} in this way. A {@spell lesser restoration} spell or similar magic ends the effect."
 							]
 						}
 					}
@@ -5274,7 +5443,9 @@
 			"isNpc": true,
 			"source": "WDH",
 			"page": 63,
-			"size": "S",
+			"size": [
+				"S"
+			],
 			"type": {
 				"type": "humanoid",
 				"tags": [
@@ -5326,7 +5497,9 @@
 			"name": "Nimblewright",
 			"source": "WDH",
 			"page": 212,
-			"size": "M",
+			"size": [
+				"M"
+			],
 			"type": "construct",
 			"alignment": [
 				"U"
@@ -5400,7 +5573,7 @@
 				{
 					"name": "Repairable",
 					"entries": [
-						"As long as it has at least 1 hit point remaining, the nimblewright regains 1 hit point when a mending spell is cast on it."
+						"As long as it has at least 1 hit point remaining, the nimblewright regains 1 hit point when a {@spell mending} spell is cast on it."
 					]
 				},
 				{
@@ -5467,7 +5640,9 @@
 			"isNpc": true,
 			"source": "WDH",
 			"page": 213,
-			"size": "M",
+			"size": [
+				"M"
+			],
 			"type": {
 				"type": "humanoid",
 				"tags": [
@@ -5614,7 +5789,9 @@
 			"isNpc": true,
 			"source": "WDH",
 			"page": 66,
-			"size": "H",
+			"size": [
+				"H"
+			],
 			"type": "beast",
 			"alignment": [
 				"C",
@@ -5698,7 +5875,9 @@
 			"isNpc": true,
 			"source": "WDH",
 			"page": 213,
-			"size": "M",
+			"size": [
+				"M"
+			],
 			"type": {
 				"type": "humanoid",
 				"tags": [
@@ -5799,7 +5978,9 @@
 			"isNpc": true,
 			"source": "WDH",
 			"page": 214,
-			"size": "M",
+			"size": [
+				"M"
+			],
 			"type": {
 				"type": "humanoid",
 				"tags": [
@@ -5890,7 +6071,9 @@
 			"name": "Panopticus Wizard",
 			"source": "WDH",
 			"page": 106,
-			"size": "M",
+			"size": [
+				"M"
+			],
 			"type": {
 				"type": "humanoid",
 				"tags": [
@@ -5978,6 +6161,9 @@
 			"damageTags": [
 				"P"
 			],
+			"damageTagsSpell": [
+				"F"
+			],
 			"spellcastingTags": [
 				"CW"
 			],
@@ -5992,7 +6178,9 @@
 			"isNpc": true,
 			"source": "WDH",
 			"page": 214,
-			"size": "M",
+			"size": [
+				"M"
+			],
 			"type": {
 				"type": "humanoid",
 				"tags": [
@@ -6134,7 +6322,7 @@
 				{
 					"name": "Arcane Ward",
 					"entries": [
-						"Remallia has a magical ward that has 30 hit points. Whenever she takes damage, the ward takes the damage instead. If the ward is reduced to 0 hit points, Remallia takes any remaining damage. When Remallia casts an abjuration spell of 1st level or higher, the ward regains a number of hit points equal to twice the level of the spell. This applies to any of the following spells she casts: alarm. mage armor, shield, arcane lock, counterspell, dispel magic, banishment, stoneskin, globe of invulnerability and symbol"
+						"Remallia has a magical ward that has 30 hit points. Whenever she takes damage, the ward takes the damage instead. If the ward is reduced to 0 hit points, Remallia takes any remaining damage. When Remallia casts an abjuration spell of 1st level or higher, the ward regains a number of hit points equal to twice the level of the spell. This applies to any of the following spells she casts: {@spell alarm}, {@spell mage armor}, {@spell shield}, {@spell arcane lock}, {@spell counterspell}, {@spell dispel magic}, {@spell banishment}, {@spell stoneskin}, {@spell globe of invulnerability} and {@spell symbol}."
 					]
 				}
 			],
@@ -6162,6 +6350,12 @@
 			"damageTags": [
 				"P"
 			],
+			"damageTagsSpell": [
+				"C",
+				"F",
+				"N",
+				"O"
+			],
 			"spellcastingTags": [
 				"CW"
 			],
@@ -6185,7 +6379,9 @@
 			"isNpc": true,
 			"source": "WDH",
 			"page": 215,
-			"size": "M",
+			"size": [
+				"M"
+			],
 			"type": {
 				"type": "humanoid",
 				"tags": [
@@ -6285,7 +6481,9 @@
 			"isNpc": true,
 			"source": "WDH",
 			"page": 33,
-			"size": "M",
+			"size": [
+				"M"
+			],
 			"type": {
 				"type": "humanoid",
 				"tags": [
@@ -6417,6 +6615,12 @@
 			"damageTags": [
 				"P"
 			],
+			"damageTagsSpell": [
+				"B",
+				"C",
+				"F",
+				"O"
+			],
 			"spellcastingTags": [
 				"CW"
 			],
@@ -6432,7 +6636,9 @@
 			"isNpc": true,
 			"source": "WDH",
 			"page": 216,
-			"size": "M",
+			"size": [
+				"M"
+			],
 			"type": {
 				"type": "humanoid",
 				"tags": [
@@ -6563,7 +6769,9 @@
 			"name": "Shard Shunner",
 			"source": "WDH",
 			"page": 42,
-			"size": "S",
+			"size": [
+				"S"
+			],
 			"type": {
 				"type": "humanoid",
 				"tags": [
@@ -6699,7 +6907,9 @@
 			"isNpc": true,
 			"source": "WDH",
 			"page": 200,
-			"size": "S",
+			"size": [
+				"S"
+			],
 			"type": {
 				"type": "humanoid",
 				"tags": [
@@ -6836,6 +7046,12 @@
 			"damageTags": [
 				"P"
 			],
+			"damageTagsSpell": [
+				"B",
+				"C",
+				"F",
+				"O"
+			],
 			"spellcastingTags": [
 				"CW"
 			],
@@ -6851,7 +7067,9 @@
 			"isNpc": true,
 			"source": "WDH",
 			"page": 202,
-			"size": "M",
+			"size": [
+				"M"
+			],
 			"type": {
 				"type": "humanoid",
 				"tags": [
@@ -6866,7 +7084,7 @@
 				{
 					"ac": 18,
 					"from": [
-						"{@item studded leather armor|phb}",
+						"{@item studded leather armor|phb|studded leather}",
 						"{@item shield|phb}"
 					]
 				}
@@ -7007,7 +7225,9 @@
 			"isNpc": true,
 			"source": "WDH",
 			"page": 63,
-			"size": "S",
+			"size": [
+				"S"
+			],
 			"type": {
 				"type": "humanoid",
 				"tags": [
@@ -7040,7 +7260,9 @@
 			"name": "Swarm of Books",
 			"source": "WDH",
 			"page": 156,
-			"size": "M",
+			"size": [
+				"M"
+			],
 			"type": {
 				"type": "construct",
 				"swarmSize": "T"
@@ -7117,7 +7339,9 @@
 			"name": "Swarm of Mechanical Spiders",
 			"source": "WDH",
 			"page": 143,
-			"size": "M",
+			"size": [
+				"M"
+			],
 			"type": {
 				"type": "construct",
 				"swarmSize": "T"
@@ -7234,7 +7458,9 @@
 			"isNpc": true,
 			"source": "WDH",
 			"page": 220,
-			"size": "T",
+			"size": [
+				"T"
+			],
 			"type": "beast",
 			"alignment": [
 				"U"
@@ -7297,7 +7523,9 @@
 			"isNpc": true,
 			"source": "WDH",
 			"page": 32,
-			"size": "M",
+			"size": [
+				"M"
+			],
 			"type": {
 				"type": "humanoid",
 				"tags": [
@@ -7373,7 +7601,9 @@
 			"isNpc": true,
 			"source": "WDH",
 			"page": 200,
-			"size": "M",
+			"size": [
+				"M"
+			],
 			"type": {
 				"type": "humanoid",
 				"tags": [
@@ -7482,7 +7712,9 @@
 			"isNpc": true,
 			"source": "WDH",
 			"page": 115,
-			"size": "S",
+			"size": [
+				"S"
+			],
 			"type": {
 				"type": "humanoid",
 				"tags": [
@@ -7522,7 +7754,9 @@
 			"isNpc": true,
 			"source": "WDH",
 			"page": 216,
-			"size": "M",
+			"size": [
+				"M"
+			],
 			"type": {
 				"type": "humanoid",
 				"tags": [
@@ -7599,7 +7833,9 @@
 			"isNpc": true,
 			"source": "WDH",
 			"page": 89,
-			"size": "M",
+			"size": [
+				"M"
+			],
 			"type": {
 				"type": "humanoid",
 				"tags": [
@@ -7688,7 +7924,9 @@
 			"isNpc": true,
 			"source": "WDH",
 			"page": 116,
-			"size": "M",
+			"size": [
+				"M"
+			],
 			"type": {
 				"type": "humanoid",
 				"tags": [
@@ -7815,6 +8053,11 @@
 			"damageTags": [
 				"P"
 			],
+			"damageTagsSpell": [
+				"N",
+				"O",
+				"R"
+			],
 			"spellcastingTags": [
 				"CC",
 				"I"
@@ -7834,7 +8077,9 @@
 			"isNpc": true,
 			"source": "WDH",
 			"page": 216,
-			"size": "M",
+			"size": [
+				"M"
+			],
 			"type": {
 				"type": "humanoid",
 				"tags": [
@@ -7852,7 +8097,7 @@
 				{
 					"ac": 15,
 					"from": [
-						"{@item studded leather armor|phb}"
+						"{@item studded leather armor|phb|studded leather}"
 					]
 				}
 			],
@@ -7958,7 +8203,9 @@
 			"isNpc": true,
 			"source": "WDH",
 			"page": 217,
-			"size": "M",
+			"size": [
+				"M"
+			],
 			"type": {
 				"type": "humanoid",
 				"tags": [
@@ -8142,6 +8389,17 @@
 			"damageTags": [
 				"O"
 			],
+			"damageTagsSpell": [
+				"A",
+				"B",
+				"C",
+				"F",
+				"I",
+				"L",
+				"O",
+				"T",
+				"Y"
+			],
 			"spellcastingTags": [
 				"CW"
 			],
@@ -8157,7 +8415,9 @@
 			"isNpc": true,
 			"source": "WDH",
 			"page": 47,
-			"size": "M",
+			"size": [
+				"M"
+			],
 			"type": {
 				"type": "humanoid",
 				"tags": [
@@ -8272,6 +8532,11 @@
 				"B",
 				"R"
 			],
+			"damageTagsSpell": [
+				"N",
+				"O",
+				"R"
+			],
 			"spellcastingTags": [
 				"CC"
 			],
@@ -8287,7 +8552,9 @@
 			"isNpc": true,
 			"source": "WDH",
 			"page": 218,
-			"size": "M",
+			"size": [
+				"M"
+			],
 			"type": {
 				"type": "humanoid",
 				"tags": [
@@ -8499,6 +8766,13 @@
 			"damageTags": [
 				"P"
 			],
+			"damageTagsSpell": [
+				"B",
+				"F",
+				"O",
+				"P",
+				"R"
+			],
 			"spellcastingTags": [
 				"CC"
 			],
@@ -8542,7 +8816,9 @@
 			"name": "Walking Statue of Waterdeep",
 			"source": "WDH",
 			"page": 219,
-			"size": "G",
+			"size": [
+				"G"
+			],
 			"type": "construct",
 			"alignment": [
 				"U"
@@ -8724,7 +9000,9 @@
 			"isNpc": true,
 			"source": "WDH",
 			"page": 20,
-			"size": "M",
+			"size": [
+				"M"
+			],
 			"type": {
 				"type": "humanoid",
 				"tags": [
@@ -8838,7 +9116,9 @@
 			"isNpc": true,
 			"source": "WDH",
 			"page": 220,
-			"size": "M",
+			"size": [
+				"M"
+			],
 			"type": {
 				"type": "humanoid",
 				"tags": [
@@ -8922,7 +9202,9 @@
 			"isNpc": true,
 			"source": "WDH",
 			"page": 150,
-			"size": "M",
+			"size": [
+				"M"
+			],
 			"type": {
 				"type": "humanoid",
 				"tags": [
@@ -9029,7 +9311,9 @@
 			"name": "Zhent Martial Arts Adept",
 			"source": "WDH",
 			"page": 160,
-			"size": "S",
+			"size": [
+				"S"
+			],
 			"type": {
 				"type": "humanoid",
 				"tags": [
@@ -9154,7 +9438,9 @@
 			"isNpc": true,
 			"source": "WDH",
 			"page": 201,
-			"size": "M",
+			"size": [
+				"M"
+			],
 			"type": {
 				"type": "humanoid",
 				"tags": [
@@ -9277,6 +9563,10 @@
 			"damageTags": [
 				"P",
 				"S"
+			],
+			"damageTagsSpell": [
+				"R",
+				"T"
 			],
 			"spellcastingTags": [
 				"CP"

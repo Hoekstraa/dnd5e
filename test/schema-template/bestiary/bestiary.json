@@ -1,6 +1,6 @@
 {
 	"$schema": "http://json-schema.org/draft-07/schema#",
-	"version": "1.20.0",
+	"version": "1.21.6",
 	"title": "Bestiary Schema",
 	"$id": "bestiary.json",
 	"type": "object",
@@ -112,7 +112,11 @@
 					"type": "integer"
 				},
 				"size": {
-					"$ref": "../util.json#/definitions/size"
+					"type": "array",
+					"items": {
+						"$ref": "../util.json#/definitions/size"
+					},
+					"uniqueItems": true
 				},
 				"sizeNote": {
 					"type": "string"
@@ -176,6 +180,9 @@
 				},
 				"otherSources": {
 					"$ref": "../util.json#/definitions/otherSources"
+				},
+				"reprintedAs": {
+					"$ref": "../util.json#/definitions/reprintedAs"
 				},
 				"alignment": {
 					"type": "array",
@@ -459,6 +466,12 @@
 				"actionNote": {
 					"type": "string"
 				},
+				"actionHeader": {
+					"type": "array",
+					"items": {
+						"$ref": "../entry.json"
+					}
+				},
 				"action": {
 					"oneOf": [
 						{
@@ -488,6 +501,15 @@
 						}
 					]
 				},
+				"bonusNote": {
+					"type": "string"
+				},
+				"bonusHeader": {
+					"type": "array",
+					"items": {
+						"$ref": "../entry.json"
+					}
+				},
 				"bonus": {
 					"type": "array",
 					"items": {
@@ -508,6 +530,15 @@
 							"entries"
 						],
 						"additionalProperties": false
+					}
+				},
+				"reactionNote": {
+					"type": "string"
+				},
+				"reactionHeader": {
+					"type": "array",
+					"items": {
+						"$ref": "../entry.json"
 					}
 				},
 				"reaction": {
@@ -611,9 +642,7 @@
 					"type": "array",
 					"items": {"$ref": "#/definitions/entryVariantBestiary"}
 				},
-				"page": {
-					"type": "integer"
-				},
+				"page": {"$ref": "../util.json#/definitions/page"},
 				"familiar": {
 					"type": "boolean"
 				},
@@ -639,9 +668,7 @@
 									"source": {
 										"type": "string"
 									},
-									"page": {
-										"type": "integer"
-									}
+									"page": {"$ref": "../util.json#/definitions/page"}
 								},
 								"required": ["name", "source"]
 							},
@@ -654,6 +681,7 @@
 											"type": "string"
 										}
 									},
+									"required": ["tokenUrl"],
 									"additionalProperties": false
 								}
 							}
@@ -712,6 +740,9 @@
 								}
 							}
 						]
+					},
+					"foundryImg": {
+						"$ref": "../util.json#/definitions/foundryImg"
 					}
 				},
 				"isNamedCreature": {
@@ -749,7 +780,26 @@
 				},
 				"dragonCastingColor": {
 					"type": "string",
-					"enum": ["black", "blue", "green", "red", "white", "brass", "bronze", "copper", "gold", "silver", "deep"]
+					"$$ifSiteElse_key": {
+						"keySite": "enum",
+						"keyBrew": "examples",
+						"value": ["black", "blue", "green", "red", "white", "brass", "bronze", "copper", "gold", "silver", "deep"]
+					}
+				},
+				"dragonAge": {
+					"type": "string",
+					"$$ifSiteElse_key": {
+						"keySite": "enum",
+						"keyBrew": "examples",
+						"value": [
+							"young",
+							"adult",
+							"wyrmling",
+							"greatwyrm",
+							"ancient",
+							"aspect"
+						]
+					}
 				},
 				"traitTags": {
 					"type": "array",
@@ -790,6 +840,7 @@
 							"Spell Immunity",
 							"Spider Climb",
 							"Sunlight Sensitivity",
+							"Tree Stride",
 							"Turn Immunity",
 							"Turn Resistance",
 							"Undead Fortitude",
@@ -847,11 +898,23 @@
 						"$ref": "../util.json#/definitions/dataDamageTags"
 					}
 				},
+				"damageTagsSpell": {
+					"type": "array",
+					"items": {
+						"$ref": "../util.json#/definitions/dataDamageTags"
+					}
+				},
+				"damageTagsLegendary": {
+					"type": "array",
+					"items": {
+						"$ref": "../util.json#/definitions/dataDamageTags"
+					}
+				},
 				"miscTags": {
 					"type": "array",
 					"items": {
-						"description": "AOE: Has Areas of Effect\n MW: Has Weapon Attacks, Melee\n RW: Has Weapon Attacks, Ranged\n RCH: Has Reach Attacks\n RNG: Has Ranged Weapons\n THW: Has Thrown Weapons",
-						"enum": ["AOE", "MW", "RW", "RCH", "RNG", "THW"]
+						"description": "AOE: Has Areas of Effect\n HPR: Has HP Reduction\n MW: Has Weapon Attacks, Melee\n RW: Has Weapon Attacks, Ranged\n RCH: Has Reach Attacks\n RNG: Has Ranged Weapons\n THW: Has Thrown Weapons",
+						"enum": ["AOE", "HPR", "MW", "RW", "RCH", "RNG", "THW"]
 					}
 				},
 				"conditionInflict": {
@@ -879,6 +942,10 @@
 				"summonedBySpell": {
 					"description": "The spell used to summon this creature; specifically for TCE-esque summon spells.",
 					"type": "string"
+				},
+				"summonedBySpellLevel": {
+					"description": "The level of the spell used to summon this creature; specifically for TCE-esque summon spells.",
+					"type": "integer"
 				},
 				"summonedByClass": {
 					"description": "The class which can summon this creature; e.g. for those granted by some TCE class features.",
@@ -981,7 +1048,7 @@
 					"properties": {
 						"name": {"type": "string"},
 						"source": {"type": "string"},
-						"page": {"type": "integer"}
+						"page": {"$ref": "../util.json#/definitions/page"}
 					},
 					"required": ["name", "source"]
 				}
@@ -994,24 +1061,16 @@
 					"type": "object",
 					"$$merge": [
 						{"$ref": "../entry.json#/definitions/entryVariant"},
-						{
-							"allOf": [
-								{"$ref": "#/definitions/variantToken"},
-								{"$ref": "#/definitions/variantVersion"}
-							]
-						}
+						{"$ref": "#/definitions/variantToken"},
+						{"$ref": "#/definitions/variantVersion"}
 					]
 				},
 				{
 					"type": "object",
 					"$$merge": [
 						{"$ref": "../entry.json#/definitions/entryInset"},
-						{
-							"allOf": [
-								{"$ref": "#/definitions/variantToken"},
-								{"$ref": "#/definitions/variantVersion"}
-							]
-						}
+						{"$ref": "#/definitions/variantToken"},
+						{"$ref": "#/definitions/variantVersion"}
 					]
 				}
 			]

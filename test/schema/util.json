@@ -3,7 +3,7 @@
 	"$id": "util.json",
 	"title": "Util",
 	"description": "Utility definitions to be used in other schemas.",
-	"version": "1.11.2",
+	"version": "1.11.21",
 	"definitions": {
 		"metaBlock": {
 			"type": "object",
@@ -30,6 +30,9 @@
 				}
 			}
 		},
+		"page": {
+			"type": "integer"
+		},
 		"otherSources": {
 			"type": "array",
 			"items": {
@@ -39,7 +42,7 @@
 						"type": "string"
 					},
 					"page": {
-						"type": "integer"
+						"$ref": "#/definitions/page"
 					}
 				},
 				"required": [
@@ -57,7 +60,7 @@
 						"type": "string"
 					},
 					"page": {
-						"type": "integer"
+						"$ref": "#/definitions/page"
 					}
 				},
 				"required": [
@@ -65,6 +68,71 @@
 				],
 				"additionalProperties": false
 			}
+		},
+		"reprintedAs": {
+			"type": "array",
+			"items": {
+				"oneOf": [
+					{
+						"description": "A UID, e.g. \"longsword|phb\"",
+						"type": "string"
+					},
+					{
+						"type": "object",
+						"properties": {
+							"uid": {
+								"description": "A UID, e.g. \"longsword|phb\"",
+								"type": "string"
+							},
+							"tag": {
+								"description": "A tag used in the renderer, e.g. \"creature\"",
+								"type": "string"
+							}
+						},
+						"additionalProperties": false,
+						"required": [
+							"tag",
+							"uid"
+						]
+					}
+				]
+			}
+		},
+		"tagNameStats": {
+			"type": "string",
+			"enum": [
+				"spell",
+				"item",
+				"creature",
+				"condition",
+				"disease",
+				"status",
+				"background",
+				"race",
+				"optfeature",
+				"reward",
+				"feat",
+				"psionic",
+				"object",
+				"cult",
+				"boon",
+				"trap",
+				"hazard",
+				"deity",
+				"variantrule",
+				"charoption",
+				"vehicle",
+				"vehupgrade",
+				"class",
+				"action",
+				"language",
+				"classFeature",
+				"subclassFeature",
+				"table",
+				"recipe",
+				"skill",
+				"sense"
+			]
 		},
 		"languageNameLower": {
 			"type": "string",
@@ -293,7 +361,17 @@
 							"from": {
 								"type": "array",
 								"items": {
-									"$ref": "#/definitions/toolNameLower"
+									"anyOf": [
+										{
+											"$ref": "#/definitions/toolNameLower"
+										},
+										{
+											"type": "string",
+											"enum": [
+												"anyArtisansTool"
+											]
+										}
+									]
 								}
 							},
 							"count": {
@@ -1055,6 +1133,20 @@
 				}
 			}
 		},
+		"additionalFeatsArray": {
+			"type": "array",
+			"items": {
+				"type": "object",
+				"properties": {
+					"any": {
+						"type": "integer"
+					}
+				},
+				"additionalProperties": {
+					"type": "boolean"
+				}
+			}
+		},
 		"proficiencyTag": {
 			"type": "string",
 			"enum": [
@@ -1064,12 +1156,6 @@
 				"Tool Proficiency",
 				"Language Proficiency"
 			]
-		},
-		"proficiencyTags": {
-			"type": "array",
-			"items": {
-				"$ref": "#/definitions/proficiencyTag"
-			}
 		},
 		"_speedVal": {
 			"oneOf": [
@@ -1091,6 +1177,9 @@
 				},
 				{
 					"type": "integer"
+				},
+				{
+					"const": true
 				}
 			]
 		},
@@ -1353,6 +1442,25 @@
 							"additionalProperties": false
 						}
 					},
+					"background": {
+						"type": "array",
+						"items": {
+							"type": "object",
+							"properties": {
+								"name": {
+									"type": "string"
+								},
+								"displayEntry": {
+									"description": "Optional long-form name to be used in the rendered entity.",
+									"type": "string"
+								}
+							},
+							"required": [
+								"name"
+							],
+							"additionalProperties": false
+						}
+					},
 					"ability": {
 						"type": "array",
 						"items": {
@@ -1413,6 +1521,16 @@
 							},
 							"additionalProperties": false
 						}
+					},
+					"alignment": {
+						"type": "array",
+						"items": {
+							"$ref": "util.json#/definitions/alignment"
+						}
+					},
+					"note": {
+						"description": "An additional note that accompanies the proficiencies, but is not part of them.",
+						"type": "string"
 					}
 				},
 				"additionalProperties": false
@@ -1845,6 +1963,87 @@
 				]
 			}
 		},
+		"resourcesArray": {
+			"type": "array",
+			"items": {
+				"type": "object",
+				"properties": {
+					"name": {
+						"type": "string"
+					},
+					"type": {
+						"type": "string"
+					},
+					"recharge": {
+						"type": "string"
+					},
+					"count": {
+						"type": [
+							"integer",
+							"string"
+						]
+					},
+					"number": {
+						"type": [
+							"integer",
+							"string"
+						]
+					},
+					"faces": {
+						"type": [
+							"integer",
+							"string"
+						]
+					}
+				},
+				"required": [
+					"name",
+					"type"
+				]
+			}
+		},
+		"sensesArray": {
+			"type": "array",
+			"items": {
+				"type": "object",
+				"propertyNames": {
+					"enum": [
+						"blindsight",
+						"darkvision",
+						"tremorsense",
+						"truesight"
+					]
+				},
+				"additionalProperties": {
+					"type": "integer"
+				},
+				"minProperties": 1
+			}
+		},
+		"consumesObject": {
+			"type": "object",
+			"properties": {
+				"name": {
+					"type": "string",
+					"enum": [
+						"Superiority Dice",
+						"Ki",
+						"Channel Divinity",
+						"Psionic Energy Dice",
+						"Wild Shape",
+						"Sorcery Points",
+						"Arcane Shot"
+					]
+				},
+				"amount": {
+					"type": "integer"
+				}
+			},
+			"required": [
+				"name"
+			],
+			"additionalProperties": false
+		},
 		"dataDamageTags": {
 			"type": "string",
 			"description": "A: Acid\n B: Bludgeoning\n C: Cold\n F: Fire\n O: Force\n L: Lightning\n N: Necrotic\n P: Piercing\n I: Poison\n Y: Psychic\n R: Radiant\n S: Slashing\n T: Thunder",
@@ -1891,70 +2090,13 @@
 					"items": {
 						"$ref": "entry.json"
 					}
-				},
-				"_copy": {
-					"type": "object",
-					"properties": {
-						"name": {
-							"type": "string"
-						},
-						"source": {
-							"type": "string"
-						},
-						"pantheon": {
-							"description": "Used in deity data",
-							"type": "string"
-						},
-						"shortName": {
-							"description": "Used in subclass data",
-							"type": "string"
-						},
-						"className": {
-							"description": "Used in subclass data",
-							"type": "string"
-						},
-						"classSource": {
-							"description": "Used in subclass data",
-							"type": "string"
-						},
-						"_mod": {
-							"$ref": "#/definitions/_modObject"
-						},
-						"_trait": {
-							"type": "object",
-							"properties": {
-								"name": {
-									"type": "string"
-								},
-								"source": {
-									"type": "string"
-								}
-							},
-							"required": [
-								"name",
-								"source"
-							]
-						},
-						"_preserve": {
-							"type": "object",
-							"patternProperties": {
-								".*": {
-									"type": "boolean"
-								}
-							}
-						}
-					},
-					"required": [
-						"name",
-						"source"
-					],
-					"additionalProperties": false
 				}
 			},
 			"additionalProperties": false
 		},
 		"genericFluffArray": {
 			"type": "array",
+			"uniqueItems": true,
 			"items": {
 				"anyOf": [
 					{
@@ -1984,64 +2126,6 @@
 								"items": {
 									"$ref": "entry.json"
 								}
-							},
-							"_copy": {
-								"type": "object",
-								"properties": {
-									"name": {
-										"type": "string"
-									},
-									"source": {
-										"type": "string"
-									},
-									"pantheon": {
-										"description": "Used in deity data",
-										"type": "string"
-									},
-									"shortName": {
-										"description": "Used in subclass data",
-										"type": "string"
-									},
-									"className": {
-										"description": "Used in subclass data",
-										"type": "string"
-									},
-									"classSource": {
-										"description": "Used in subclass data",
-										"type": "string"
-									},
-									"_mod": {
-										"$ref": "#/definitions/_modObject"
-									},
-									"_trait": {
-										"type": "object",
-										"properties": {
-											"name": {
-												"type": "string"
-											},
-											"source": {
-												"type": "string"
-											}
-										},
-										"required": [
-											"name",
-											"source"
-										]
-									},
-									"_preserve": {
-										"type": "object",
-										"patternProperties": {
-											".*": {
-												"type": "boolean"
-											}
-										}
-									}
-								},
-								"required": [
-									"name",
-									"source"
-								],
-								"additionalProperties": false
 							}
 						},
 						"additionalProperties": false,
@@ -2621,6 +2705,139 @@
 						"saves"
 					],
 					"additionalProperties": false
+				},
+				{
+					"type": "object",
+					"properties": {
+						"mode": {
+							"const": "addSenses"
+						},
+						"senses": {
+							"anyOf": [
+								{
+									"type": "object"
+								},
+								{
+									"type": "array"
+								}
+							]
+						}
+					},
+					"required": [
+						"mode",
+						"senses"
+					],
+					"additionalProperties": false
+				},
+				{
+					"type": "object",
+					"properties": {
+						"mode": {
+							"const": "scalarAddProp"
+						},
+						"prop": {
+							"type": "string"
+						},
+						"scalar": {
+							"type": "number"
+						}
+					},
+					"required": [
+						"mode",
+						"scalar",
+						"prop"
+					],
+					"additionalProperties": false
+				},
+				{
+					"type": "object",
+					"properties": {
+						"mode": {
+							"const": "scalarMultProp"
+						},
+						"prop": {
+							"type": "string"
+						},
+						"scalar": {
+							"type": "number"
+						},
+						"floor": {
+							"type": "boolean"
+						}
+					},
+					"required": [
+						"mode",
+						"scalar",
+						"prop"
+					],
+					"additionalProperties": false
+				},
+				{
+					"type": "object",
+					"properties": {
+						"mode": {
+							"const": "scalarAddHit"
+						},
+						"scalar": {
+							"type": "number"
+						}
+					},
+					"required": [
+						"mode",
+						"scalar"
+					],
+					"additionalProperties": false
+				},
+				{
+					"type": "object",
+					"properties": {
+						"mode": {
+							"const": "scalarAddDc"
+						},
+						"scalar": {
+							"type": "number"
+						}
+					},
+					"required": [
+						"mode",
+						"scalar"
+					],
+					"additionalProperties": false
+				},
+				{
+					"type": "object",
+					"properties": {
+						"mode": {
+							"const": "maxSize"
+						},
+						"max": {
+							"type": "string"
+						}
+					},
+					"required": [
+						"mode",
+						"max"
+					],
+					"additionalProperties": false
+				},
+				{
+					"type": "object",
+					"properties": {
+						"mode": {
+							"const": "scalarMultXp"
+						},
+						"scalar": {
+							"type": "number"
+						},
+						"floor": {
+							"type": "boolean"
+						}
+					},
+					"required": [
+						"mode",
+						"scalar"
+					],
+					"additionalProperties": false
 				}
 			]
 		},
@@ -2959,6 +3176,32 @@
 							"choose"
 						],
 						"additionalProperties": false
+					},
+					{
+						"type": "object",
+						"properties": {
+							"choose": {
+								"type": "object",
+								"properties": {
+									"from": {
+										"description": "An array of spell UIDs to be chosen from.",
+										"type": "array",
+										"items": {
+											"type": "string"
+										},
+										"uniqueItems": true
+									},
+									"count": {
+										"type": "integer"
+									}
+								},
+								"additionalProperties": false
+							}
+						},
+						"required": [
+							"choose"
+						],
+						"additionalProperties": false
 					}
 				]
 			}
@@ -3209,8 +3452,113 @@
 				}
 			}
 		},
+		"adventureBookData": {
+			"type": "array",
+			"items": {
+				"$ref": "entry.json"
+			}
+		},
+		"optionalfeatureProgression": {
+			"type": "array",
+			"items": {
+				"type": "object",
+				"properties": {
+					"name": {
+						"type": "string"
+					},
+					"featureType": {
+						"type": "array",
+						"items": {
+							"$ref": "#/definitions/dataOptionalfeatureType"
+						},
+						"uniqueItems": true
+					},
+					"progression": {
+						"oneOf": [
+							{
+								"type": "array",
+								"description": "Features gained when the total count of features increases according to level.",
+								"items": {
+									"type": "integer"
+								},
+								"minItems": 20,
+								"maxItems": 20
+							},
+							{
+								"type": "object",
+								"description": "Features gained at the exact levels specified.",
+								"patternProperties": {
+									"^\\d+$": {
+										"type": "integer"
+									}
+								},
+								"additionalProperties": false
+							},
+							{
+								"type": "object",
+								"description": "Features gained at the level this feature is gained.",
+								"properties": {
+									"*": {
+										"type": "integer"
+									}
+								},
+								"additionalProperties": false
+							}
+						]
+					},
+					"required": {
+						"oneOf": [
+							{
+								"type": "array",
+								"items": {
+									"type": "array",
+									"items": {
+										"type": "string"
+									}
+								},
+								"minItems": 20,
+								"maxItems": 20
+							},
+							{
+								"type": "object",
+								"patternProperties": {
+									"^\\d+$": {
+										"type": "array",
+										"items": {
+											"type": "string"
+										}
+									}
+								},
+								"additionalProperties": false
+							}
+						]
+					}
+				},
+				"required": [
+					"name",
+					"featureType",
+					"progression"
+				]
+			}
+		},
 		"foundryDataObject": {
 			"type": "object"
+		},
+		"foundryFlagsObject": {
+			"type": "object"
+		},
+		"foundryAdvancementObject": {
+			"type": "object"
+		},
+		"foundryAdvancementsArray": {
+			"type": "array",
+			"items": {
+				"$ref": "#/definitions/foundryAdvancementObject"
+			},
+			"uniqueItems": true
+		},
+		"foundryImg": {
+			"type": "string"
 		},
 		"foundrySubEntitiesObject": {
 			"description": "A 5etools-data-like object of additional entities to import.",
@@ -3255,8 +3603,16 @@
 			],
 			"additionalProperties": false
 		},
+		"foundryEffectsArray": {
+			"type": "array",
+			"items": {
+				"$ref": "#/definitions/foundryEffectObject"
+			},
+			"uniqueItems": true
+		},
 		"foundrySideDataGenericArray": {
 			"type": "array",
+			"uniqueItems": true,
 			"items": {
 				"type": "object",
 				"properties": {
@@ -3285,6 +3641,7 @@
 		},
 		"foundrySideDataGenericFeatureArray": {
 			"type": "array",
+			"uniqueItems": true,
 			"items": {
 				"type": "object",
 				"properties": {
@@ -3299,6 +3656,9 @@
 						"items": {
 							"$ref": "entry.json"
 						}
+					},
+					"isIgnored": {
+						"const": true
 					},
 					"data": {
 						"$ref": "#/definitions/foundryDataObject"

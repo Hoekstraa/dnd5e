@@ -18,10 +18,12 @@ class TablePage {
 	}
 
 	async pInit () {
+		await BrewUtil2.pInit();
+
 		window.addEventListener("hashchange", this._handleHashChange.bind(this));
 		window.loadHash = this._doLoadHash.bind(this);
 
-		ExcludeUtil.pInitialise(); // don't await, as this is only used for search
+		ExcludeUtil.pInitialise().then(null); // don't await, as this is only used for search
 		this._dataList = (await DataUtil.loadJSON(this._jsonUrl))[this._dataProp];
 		this._list = ListUtil.initList({listClass: this._listClass, isUseJquery: true, isBindFindHotkey: true});
 		ListUtil.setOptions({primaryLists: [this._list]});
@@ -72,11 +74,11 @@ class TablePage {
 	}
 
 	_$getContentsBlock (i, meta) {
-		const $out = $(`<div class="flex-col w-100"></div>`);
+		const $out = $(`<div class="ve-flex-col w-100"></div>`);
 		let stack = "";
 		meta.tables.forEach((table, j) => {
 			const tableName = this._fnGetTableName(meta, table);
-			stack += `<div class="lst__row flex-col"><a id="${i},${j}" class="lst--border lst__row-inner" href="#${this._fnGetTableHash(meta, table)}" title="${tableName}">${tableName}</a></div>`;
+			stack += `<div class="lst__row ve-flex-col"><a id="${i},${j}" class="lst--border lst__row-inner" href="#${this._fnGetTableHash(meta, table)}" title="${tableName}">${tableName}</a></div>`;
 		});
 		$out.fastSetHtml(stack);
 		return $out;
@@ -99,7 +101,7 @@ class TablePage {
 		let htmlText = `
 		<tr>
 			<td colspan="6">
-				<table class="stripe-odd-table">
+				<table class="w-100 stripe-odd-table">
 					<caption>${tableName}</caption>
 					<thead>
 						<tr>

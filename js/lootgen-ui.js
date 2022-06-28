@@ -4,16 +4,29 @@ class LootGenUi extends BaseComponent {
 	constructor ({spells, items, ClsLootGenOutput}) {
 		super();
 
-		TabUiUtil.decorate(this);
-
-		this.__meta = {};
-		this._meta = this._getProxy("meta", this.__meta);
+		TabUiUtil.decorate(this, {isInitMeta: true});
 
 		this._ClsLootGenOutput = ClsLootGenOutput || LootGenOutput;
+
+		this._modalFilterSpells = new ModalFilterSpells({namespace: "LootGenUi.spells", allData: spells});
+		this._modalFilterItems = new ModalFilterItems({
+			namespace: "LootGenUi.items",
+			allData: items,
+			pageFilterOpts: {
+				filterOpts: {
+					"Category": {
+						deselFn: (it) => it === "Generic Variant",
+					},
+				},
+			},
+		});
 
 		this._data = null;
 		this._dataSpells = spells;
 		this._dataItems = items;
+
+		this._dataSpellsFiltered = [...spells];
+		this._dataItemsFiltered = [...items];
 
 		this._lt_tableMetas = null;
 
@@ -40,7 +53,18 @@ class LootGenUi extends BaseComponent {
 	addHookAll (hookProp, hook) { return this._addHookAll(hookProp, hook); }
 
 	async pInit () {
+		await this._modalFilterSpells.pPreloadHidden();
+		await this._modalFilterItems.pPreloadHidden();
+
+		await this._modalFilterSpells.pPopulateHiddenWrapper();
+		await this._modalFilterItems.pPopulateHiddenWrapper();
+
 		this._data = await DataUtil.loadJSON(`${Renderer.get().baseUrl}data/loot.json`);
+
+		await this._pInit_pBindFilterHooks();
+	}
+
+	async _pInit_pBindFilterHooks () {
 		const tablesMagicItems = await ["A", "B", "C", "D", "E", "F", "G", "H", "I"]
 			.pMap(async letter => {
 				return {
@@ -48,6 +72,26 @@ class LootGenUi extends BaseComponent {
 					tableEntry: await Renderer.hover.pCacheAndGet(UrlUtil.PG_TABLES, SRC_DMG, UrlUtil.URL_TO_HASH_BUILDER[UrlUtil.PG_TABLES]({name: `Magic Item Table ${letter}`, source: SRC_DMG})),
 				};
 			});
+
+		const hkFilterChangeSpells = () => this._handleFilterChangeSpells();
+		this._modalFilterSpells.pageFilter.filterBox.on(FilterBox.EVNT_VALCHANGE, hkFilterChangeSpells);
+		hkFilterChangeSpells();
+
+		const hkFilterChangeItems = () => this._handleFilterChangeItems({tablesMagicItems});
+		this._modalFilterItems.pageFilter.filterBox.on(FilterBox.EVNT_VALCHANGE, hkFilterChangeItems);
+		hkFilterChangeItems();
+	}
+
+	_handleFilterChangeSpells () {
+		const f = this._modalFilterSpells.pageFilter.filterBox.getValues();
+		this._dataSpellsFiltered = this._dataSpells.filter(it => this._modalFilterSpells.pageFilter.toDisplay(f, it));
+
+		this._state.pulseSpellsFiltered = !this._state.pulseSpellsFiltered;
+	}
+
+	_handleFilterChangeItems ({tablesMagicItems}) {
+		const f = this._modalFilterItems.pageFilter.filterBox.getValues();
+		this._dataItemsFiltered = this._dataItems.filter(it => this._modalFilterItems.pageFilter.toDisplay(f, it));
 
 		const xgeTables = this._getXgeFauxTables();
 
@@ -69,13 +113,15 @@ class LootGenUi extends BaseComponent {
 
 		this._pl_xgeTableLookup = {};
 		xgeTables.forEach(({tier, rarity, table}) => MiscUtil.set(this._pl_xgeTableLookup, tier, rarity, table));
+
+		this._state.pulseItemsFiltered = !this._state.pulseItemsFiltered;
 	}
 
 	/** Create fake tables for the XGE rules */
 	_getXgeFauxTables () {
 		const byTier = {};
 
-		this._dataItems
+		this._dataItemsFiltered
 			.forEach(item => {
 				const tier = item.tier || "other";
 				const rarity = item.rarity || (Renderer.item.isMundane(item) ? "unknown" : "unknown (magic)");
@@ -131,15 +177,6 @@ class LootGenUi extends BaseComponent {
 
 		const {$stgLhs: $stgLhs_, $stgRhs: $stgRhs_} = this._render_$getStages({$stg, $stgLhs, $stgRhs});
 
-		const menuOthers = ContextUtil.getMenu([
-			new ContextUtil.Action(
-				"Gems/Art Objects Generator",
-				() => {
-					this._setActiveTab({tab: tabMetaGemsArtObjects});
-				},
-			),
-		]);
-
 		const iptTabMetas = [
 			new TabUiUtil.TabMeta({name: "Random Treasure by CR", hasBorder: true, hasBackground: true}),
 			new TabUiUtil.TabMeta({name: "Loot Tables", hasBorder: true, hasBackground: true}),
@@ -153,20 +190,21 @@ class LootGenUi extends BaseComponent {
 						html: `<span class="glyphicon glyphicon-option-vertical"></span>`,
 						title: "Other Generators",
 						type: "default",
-						pFnClick: evt => ContextUtil.pOpenMenu(evt, menuOthers),
+						pFnClick: null, // This is assigned later
 					},
 				],
 			}),
 		];
 
 		const tabMetas = this._renderTabs(iptTabMetas, {$parent: $stgLhs_});
-		const [tabMetaFindTreasure, tabMetaLootTables, tabMetaPartyLoot, tabMetaDragonHoard, tabMetaGemsArtObjects] = tabMetas;
+		const [tabMetaFindTreasure, tabMetaLootTables, tabMetaPartyLoot, tabMetaDragonHoard, tabMetaGemsArtObjects, tabMetaOptions] = tabMetas;
 
 		this._render_tabFindTreasure({tabMeta: tabMetaFindTreasure});
 		this._render_tabLootTables({tabMeta: tabMetaLootTables});
 		this._render_tabPartyLoot({tabMeta: tabMetaPartyLoot});
 		this._render_tabDragonHoard({tabMeta: tabMetaDragonHoard});
 		this._render_tabGemsArtObjects({tabMeta: tabMetaGemsArtObjects});
+		this._render_tabOptions({tabMeta: tabMetaOptions, tabMetaGemsArtObjects});
 
 		this._render_output({$wrp: $stgRhs_});
 	}
@@ -180,10 +218,10 @@ class LootGenUi extends BaseComponent {
 	_render_$getStages ({$stg, $stgLhs, $stgRhs}) {
 		if (!$stg) return {$stgLhs, $stgRhs};
 
-		$stgLhs = $(`<div class="flex w-50 h-100"></div>`);
-		$stgRhs = $(`<div class="flex-col w-50 h-100"></div>`);
+		$stgLhs = $(`<div class="ve-flex w-50 h-100"></div>`);
+		$stgRhs = $(`<div class="ve-flex-col w-50 h-100"></div>`);
 
-		$$`<div class="flex w-100 h-100">
+		$$`<div class="ve-flex w-100 h-100">
 			${$stgLhs}
 			<div class="vr-2 h-100"></div>
 			${$stgRhs}
@@ -210,7 +248,7 @@ class LootGenUi extends BaseComponent {
 		const $btnClear = $(`<button class="btn btn-danger btn-xs">Clear Output</button>`)
 			.click(() => this._doClearOutput());
 
-		$$`<div class="flex-col py-2 px-3">
+		$$`<div class="ve-flex-col py-2 px-3">
 			<label class="split-v-center mb-2">
 				<div class="mr-2 w-66 no-shrink">Challenge Rating</div>
 				${$selChallenge}
@@ -221,7 +259,7 @@ class LootGenUi extends BaseComponent {
 				${$cbIsHoard}
 			</label>
 
-			<div class="flex-v-center mb-2">
+			<div class="ve-flex-v-center mb-2">
 				${$btnRoll}
 				${$btnClear}
 			</div>
@@ -243,8 +281,10 @@ class LootGenUi extends BaseComponent {
 		const rowRoll = RollerUtil.randomise(100);
 		const row = tableMeta.table.find(it => rowRoll >= it.min && rowRoll <= it.max);
 
-		const coins = Object.entries(row.coins)
-			.mergeMap(([type, formula]) => ({[type]: Renderer.dice.parseRandomise2(formula)}));
+		const coins = this._getConvertedCoins(
+			Object.entries(row.coins)
+				.mergeMap(([type, formula]) => ({[type]: Renderer.dice.parseRandomise2(formula)})),
+		);
 
 		const lootOutput = new this._ClsLootGenOutput({
 			type: `Individual Treasure: ${LootGenUi._CHALLENGE_RATING_RANGES[this._state.ft_challenge]}`,
@@ -260,8 +300,10 @@ class LootGenUi extends BaseComponent {
 		const rowRoll = RollerUtil.randomise(100);
 		const row = tableMeta.table.find(it => rowRoll >= it.min && rowRoll <= it.max);
 
-		const coins = Object.entries(tableMeta.coins || {})
-			.mergeMap(([type, formula]) => ({[type]: Renderer.dice.parseRandomise2(formula)}));
+		const coins = this._getConvertedCoins(
+			Object.entries(tableMeta.coins || {})
+				.mergeMap(([type, formula]) => ({[type]: Renderer.dice.parseRandomise2(formula)})),
+		);
 
 		const gems = this._doHandleClickRollLoot_hoard_gemsArtObjects({row, prop: "gems"});
 		const artObjects = this._doHandleClickRollLoot_hoard_gemsArtObjects({row, prop: "artObjects"});
@@ -330,7 +372,7 @@ class LootGenUi extends BaseComponent {
 			await ([...new Array(count)].pSerialAwaitMap(async () => {
 				const lootItem = await LootGenMagicItem.pGetMagicItemRoll({
 					lootGenMagicItems: breakdown,
-					spells: this._dataSpells,
+					spells: this._dataSpellsFiltered,
 					magicItemTable,
 					itemsAltChoose,
 					itemsAltChooseDisplayText,
@@ -360,7 +402,7 @@ class LootGenUi extends BaseComponent {
 
 	_doHandleClickRollLoot_hoard_getAltChooseList ({typeAltChoose}) {
 		if (!typeAltChoose) return null;
-		return this._dataItems.filter(it => it.type !== "GV" && Object.entries(typeAltChoose).every(([k, v]) => it[k] === v));
+		return this._dataItemsFiltered.filter(it => it.type !== "GV" && Object.entries(typeAltChoose).every(([k, v]) => it[k] === v));
 	}
 
 	_doHandleClickRollLoot_hoard_getAltChooseDisplayText ({typeAltChoose}) {
@@ -372,11 +414,16 @@ class LootGenUi extends BaseComponent {
 	}
 
 	_render_tabLootTables ({tabMeta}) {
-		const $selTable = ComponentUiUtil.$getSelEnum(
+		let cacheTableMetas = [...this._lt_tableMetas];
+
+		const getSelTableValues = () => this._lt_tableMetas.map((_, i) => i);
+
+		const {$sel: $selTable, setValues: setSelTableValues} = ComponentUiUtil.$getSelEnum(
 			this,
 			"lt_ixTable",
 			{
-				values: this._lt_tableMetas.map((_, i) => i),
+				asMeta: true,
+				values: getSelTableValues(),
 				fnDisplay: ix => this._lt_tableMetas[ix] == null
 					? `\u2014`
 					: this._lt_tableMetas[ix].tier
@@ -384,6 +431,26 @@ class LootGenUi extends BaseComponent {
 						: this._lt_tableMetas[ix].tableEntry.caption,
 			},
 		);
+
+		const hkPulseItem = () => {
+			const curVal = cacheTableMetas[this._state.lt_ixTable];
+			cacheTableMetas = [...this._lt_tableMetas];
+
+			const values = getSelTableValues();
+			setSelTableValues(values);
+
+			if (
+				!values.includes(this._state.lt_ixTable)
+				|| !curVal
+				|| !curVal.tier || !curVal.rarity
+			) return this._state.lt_ixTable = 0;
+
+			// Try to restore the previous selection (as it may have moved due to the array resizing)
+			const ix = this._lt_tableMetas.findIndex(it => it && it.tier === curVal.tier && it.rarity === curVal.rarity);
+			if (~ix) this._state.lt_ixTable = ix;
+			else this._state.lt_ixTable = 0;
+		};
+		this._addHookBase("pulseItemsFiltered", hkPulseItem);
 
 		const $btnRoll = $(`<button class="btn btn-default btn-xs mr-2">Roll Loot</button>`)
 			.click(() => this._lt_pDoHandleClickRollLoot());
@@ -394,7 +461,7 @@ class LootGenUi extends BaseComponent {
 		const $hrHelp = $(`<hr class="hr-3">`);
 		const $dispHelp = $(`<div class="ve-small italic"></div>`);
 		const $hrTable = $(`<hr class="hr-3">`);
-		const $dispTable = $(`<div class="flex-col w-100"></div>`);
+		const $dispTable = $(`<div class="ve-flex-col w-100"></div>`);
 
 		const hkTable = () => {
 			const tableMeta = this._lt_tableMetas[this._state.lt_ixTable];
@@ -414,13 +481,13 @@ class LootGenUi extends BaseComponent {
 		this._addHookBase("lt_ixTable", hkTable);
 		hkTable();
 
-		$$`<div class="flex-col py-2 px-3">
+		$$`<div class="ve-flex-col py-2 px-3">
 			<label class="split-v-center mb-3">
 				<div class="mr-2 w-66 no-shrink">Table</div>
 				${$selTable}
 			</label>
 
-			<div class="flex-v-center mb-2">
+			<div class="ve-flex-v-center mb-2">
 				${$btnRoll}
 				${$btnClear}
 			</div>
@@ -450,7 +517,7 @@ class LootGenUi extends BaseComponent {
 		const breakdown = [];
 		const lootItem = await LootGenMagicItem.pGetMagicItemRoll({
 			lootGenMagicItems: breakdown,
-			spells: this._dataSpells,
+			spells: this._dataSpellsFiltered,
 			magicItemTable: tableMeta.table,
 		});
 		breakdown.push(lootItem);
@@ -479,7 +546,7 @@ class LootGenUi extends BaseComponent {
 			},
 		);
 
-		const $stgDefault = $$`<div class="flex-col w-100">
+		const $stgDefault = $$`<div class="ve-flex-col w-100">
 			<label class="split-v-center mb-2">
 				<div class="mr-2 w-66 no-shrink">Character Level</div>
 				${$selCharLevel}
@@ -497,8 +564,8 @@ class LootGenUi extends BaseComponent {
 			},
 		);
 
-		const $stgExactLevel = $$`<div class="flex-col w-100">
-			<div class="flex-col mb-2">
+		const $stgExactLevel = $$`<div class="ve-flex-col w-100">
+			<div class="ve-flex-col mb-2">
 				<div class="mb-2">Character Level</div>
 				${$sliderLevel}
 			</div>
@@ -520,7 +587,7 @@ class LootGenUi extends BaseComponent {
 		this._addHookBase("pl_isExactLevel", hkIsExactLevel);
 		hkIsExactLevel();
 
-		$$`<div class="flex-col py-2 px-3">
+		$$`<div class="ve-flex-col py-2 px-3">
 			<p>
 				Generates a set of magical items for a party, based on the tables and rules in ${this.constructor._er(`{@book Xanathar's Guide to Everything|XGE|2|awarding magic items}`)}, pages 135-136.
 			</p>
@@ -541,7 +608,7 @@ class LootGenUi extends BaseComponent {
 				${$cbIsExactLevel}
 			</label>
 
-			<div class="flex-v-center mb-2">
+			<div class="ve-flex-v-center mb-2">
 				${$btnRoll}
 				${$btnClear}
 			</div>
@@ -555,12 +622,12 @@ class LootGenUi extends BaseComponent {
 		for (const [tier, byRarity] of Object.entries(template)) {
 			const breakdown = [];
 			for (const [rarity, cntItems] of Object.entries(byRarity)) {
-				const tableMeta = this._pl_xgeTableLookup[tier][rarity];
+				const tableMeta = this._pl_xgeTableLookup[tier]?.[rarity];
 
 				for (let i = 0; i < cntItems; ++i) {
 					const lootItem = await LootGenMagicItem.pGetMagicItemRoll({
 						lootGenMagicItems: breakdown,
-						spells: this._dataSpells,
+						spells: this._dataSpellsFiltered,
 						magicItemTable: tableMeta,
 					});
 					breakdown.push(lootItem);
@@ -674,7 +741,7 @@ class LootGenUi extends BaseComponent {
 		const $btnClear = $(`<button class="btn btn-danger btn-xs">Clear Output</button>`)
 			.click(() => this._doClearOutput());
 
-		$$`<div class="flex-col py-2 px-3">
+		$$`<div class="ve-flex-col py-2 px-3">
 			<label class="split-v-center mb-2">
 				<div class="mr-2 w-66 no-shrink">Dragon Age</div>
 				${$selDragonAge}
@@ -685,7 +752,7 @@ class LootGenUi extends BaseComponent {
 				${$cbIsPreferRandomMagicItems}
 			</label>
 
-			<div class="flex-v-center mb-2">
+			<div class="ve-flex-v-center mb-2">
 				${$btnRoll}
 				${$btnClear}
 			</div>
@@ -702,8 +769,10 @@ class LootGenUi extends BaseComponent {
 		// const rowRoll = RollerUtil.randomise(100);
 		// const row = tableMeta.table.find(it => rowRoll >= it.min && rowRoll <= it.max);
 
-		const coins = Object.entries(tableMeta.coins || {})
-			.mergeMap(([type, formula]) => ({[type]: Renderer.dice.parseRandomise2(formula)}));
+		const coins = this._getConvertedCoins(
+			Object.entries(tableMeta.coins || {})
+				.mergeMap(([type, formula]) => ({[type]: Renderer.dice.parseRandomise2(formula)})),
+		);
 
 		const dragonMundaneItems = this._dh_doHandleClickRollLoot_mundaneItems({dragonMundaneItems: tableMeta.dragonMundaneItems});
 
@@ -763,7 +832,7 @@ class LootGenUi extends BaseComponent {
 		const $btnClear = $(`<button class="btn btn-danger btn-xs">Clear Output</button>`)
 			.click(() => this._doClearOutput());
 
-		$$`<div class="flex-col py-2 px-3">
+		$$`<div class="ve-flex-col py-2 px-3">
 			<h4 class="mt-1 mb-3">Gem/Art Object Generator</h4>
 
 			<label class="split-v-center mb-3">
@@ -781,7 +850,7 @@ class LootGenUi extends BaseComponent {
 				${$iptTargetGoldAmount}
 			</label>
 
-			<div class="flex-v-center mb-2">
+			<div class="ve-flex-v-center mb-2">
 				${$btnRoll}
 				${$btnClear}
 			</div>
@@ -855,14 +924,149 @@ class LootGenUi extends BaseComponent {
 		this._doAddOutput({lootOutput});
 	}
 
-	_render_output ({$wrp}) {
-		this._$wrpOutputRows = $(`<div class="w-100 h-100 flex-col overflow-y-auto smooth-scroll"></div>`);
+	_render_tabOptions ({tabMeta, tabMetaGemsArtObjects}) {
+		const menuOthers = ContextUtil.getMenu([
+			new ContextUtil.Action(
+				"Gems/Art Objects Generator",
+				() => {
+					this._setActiveTab({tab: tabMetaGemsArtObjects});
+				},
+			),
+			null,
+			new ContextUtil.Action(
+				"Set Random Item Filters",
+				() => {
+					this._modalFilterItems.handleHiddenOpenButtonClick();
+				},
+				{
+					title: `Set the filtering parameters used to determine which items can be randomly rolled for some results. Note that this does not, for example, remove these items from standard loot tables.`,
+					fnActionAlt: async (evt) => {
+						this._modalFilterItems.handleHiddenResetButtonClick(evt);
+						JqueryUtil.doToast(`Reset${evt.shiftKey ? " all" : ""}!`);
+					},
+					textAlt: `<span class="glyphicon glyphicon-refresh"></span>`,
+					titleAlt: FilterBox.TITLE_BTN_RESET,
+				},
+			),
+			new ContextUtil.Action(
+				"Set Random Spell Filters",
+				() => {
+					this._modalFilterSpells.handleHiddenOpenButtonClick();
+				},
+				{
+					title: `Set the filtering parameters used to determine which spells can be randomly rolled for some results.`,
+					fnActionAlt: async (evt) => {
+						this._modalFilterSpells.handleHiddenResetButtonClick(evt);
+						JqueryUtil.doToast(`Reset${evt.shiftKey ? " all" : ""}!`);
+					},
+					textAlt: `<span class="glyphicon glyphicon-refresh"></span>`,
+					titleAlt: FilterBox.TITLE_BTN_RESET,
+				},
+			),
+			null,
+			new ContextUtil.Action(
+				"Settings",
+				() => {
+					this._opts_doOpenSettings();
+				},
+			),
+		]);
 
-		$$`<div class="flex-col w-100 h-100">
+		// Update the tab button on-click
+		tabMeta.buttons[0].pFnClick = evt => ContextUtil.pOpenMenu(evt, menuOthers);
+
+		const hkIsActive = () => {
+			const tab = this._getActiveTab();
+			tabMeta.$btns[0].toggleClass("active", !!tab.isHeadHidden);
+		};
+		this._addHookActiveTab(hkIsActive);
+		hkIsActive();
+	}
+
+	_opts_doOpenSettings () {
+		const {$modalInner} = UiUtil.getShowModal({title: "Settings"});
+
+		const $rowsCurrency = Parser.COIN_ABVS
+			.map(it => {
+				const {propIsAllowed} = this._getPropsCoins(it);
+
+				const $cb = ComponentUiUtil.$getCbBool(this, propIsAllowed);
+
+				return $$`<label class="split-v-center stripe-odd--faint">
+					<div class="no-wrap mr-2">${Parser.coinAbvToFull(it).toTitleCase()}</div>
+					${$cb}
+				</label>`;
+			});
+
+		$$($modalInner)`
+			<div class="mb-1" title="Disabled currencies will be converted to equivalent amounts of another currency.">Allowed Currencies:</div>
+			<div class="pl-4 ve-flex-col">
+				${$rowsCurrency}
+			</div>
+		`;
+	}
+
+	_render_output ({$wrp}) {
+		this._$wrpOutputRows = $(`<div class="w-100 h-100 ve-flex-col overflow-y-auto smooth-scroll"></div>`);
+
+		$$`<div class="ve-flex-col w-100 h-100">
 			<h4 class="my-0"><i>Output</i></h4>
 			${this._$wrpOutputRows}
 		</div>`
 			.appendTo($wrp);
+	}
+
+	_getPropsCoins (coin) {
+		return {
+			propIsAllowed: `isAllowCurrency${coin.uppercaseFirst()}`,
+		};
+	}
+
+	_getConvertedCoins (coins) {
+		if (!coins) return coins;
+
+		if (Parser.COIN_ABVS.every(it => this._state[this._getPropsCoins(it).propIsAllowed])) return coins;
+
+		if (Parser.COIN_ABVS.every(it => !this._state[this._getPropsCoins(it).propIsAllowed])) {
+			JqueryUtil.doToast({content: "All currencies are disabled! Generated currency has been discarded.", type: "warning"});
+			return {};
+		}
+
+		coins = MiscUtil.copy(coins);
+		let coinsRemoved = {};
+
+		Parser.COIN_ABVS
+			.forEach(it => {
+				const {propIsAllowed} = this._getPropsCoins(it);
+				if (this._state[propIsAllowed]) return;
+				if (!coins[it]) return;
+
+				coinsRemoved[it] = coins[it];
+				delete coins[it];
+			});
+
+		if (!Object.keys(coinsRemoved).length) return coins;
+
+		coinsRemoved = {cp: CurrencyUtil.getAsCopper(coinsRemoved)};
+
+		const conversionTableFiltered = MiscUtil.copy(Parser.FULL_CURRENCY_CONVERSION_TABLE)
+			.filter(({coin}) => this._state[this._getPropsCoins(coin).propIsAllowed]);
+		if (!conversionTableFiltered.some(it => it.isFallback)) conversionTableFiltered[0].isFallback = true;
+
+		// If we have filtered out copper, upgrade our copper amount to the nearest currency
+		if (!conversionTableFiltered.some(it => it.coin === "cp")) {
+			const conv = conversionTableFiltered[0];
+			coinsRemoved = {[conv.coin]: coinsRemoved.cp * conv.mult};
+		}
+
+		const coinsRemovedSimplified = CurrencyUtil.doSimplifyCoins(coinsRemoved, {currencyConversionTable: conversionTableFiltered});
+
+		Object.entries(coinsRemovedSimplified).forEach(([coin, count]) => {
+			if (!count) return;
+			coins[coin] = (coins[coin] || 0) + count;
+		});
+
+		return coins;
 	}
 
 	_doAddOutput ({lootOutput}) {
@@ -878,6 +1082,17 @@ class LootGenUi extends BaseComponent {
 	_getDefaultState () {
 		return {
 			...super._getDefaultState(),
+
+			// region Shared
+			pulseSpellsFiltered: false,
+			pulseItemsFiltered: false,
+
+			isAllowCurrencyCp: true,
+			isAllowCurrencySp: true,
+			isAllowCurrencyEp: true,
+			isAllowCurrencyGp: true,
+			isAllowCurrencyPp: true,
+			// endregion
 
 			// region Find Treasure
 			ft_challenge: 0,
@@ -913,10 +1128,10 @@ class LootGenUi extends BaseComponent {
 	}
 }
 LootGenUi._CHALLENGE_RATING_RANGES = {
-	0: "1\u20134",
+	0: "0\u20134",
 	5: "5\u201310",
 	11: "11\u201316",
-	17: "17\u201320",
+	17: "17+",
 };
 LootGenUi._PARTY_LOOT_LEVEL_RANGES = {
 	4: "1\u20134",
@@ -1027,13 +1242,23 @@ class LootGenOutput {
 		this._artObjects = artObjects;
 		this._magicItemsByTable = magicItemsByTable;
 		this._dragonMundaneItems = dragonMundaneItems;
+
+		this._datetimeGenerated = Date.now();
 	}
 
 	_$getEleTitleSplit () {
-		return !IS_VTT && ExtensionUtil.ACTIVE
+		const $btnRivet = !IS_VTT && ExtensionUtil.ACTIVE
 			? $(`<button title="Send to Foundry (SHIFT for Temporary Import)" class="btn btn-xs btn-default"><span class="glyphicon glyphicon-send"></span></button>`)
 				.click(evt => this._pDoSendToFoundry({isTemp: !!evt.shiftKey}))
 			: null;
+
+		const $btnDownload = $(`<button title="Download JSON" class="btn btn-xs btn-default"><span class="glyphicon glyphicon-download glyphicon--top-2p"></span></button>`)
+			.click(() => this._pDoSaveAsJson());
+
+		return $$`<div class="btn-group">
+			${$btnRivet}
+			${$btnDownload}
+		</div>`;
 	}
 
 	render ($parent) {
@@ -1044,16 +1269,19 @@ class LootGenOutput {
 			${$eleTitleSplit}
 		</h4>`;
 
-		this._$wrp = $$`<div class="flex-col lootg__wrp-output py-3 px-2 my-2 mr-1">
+		const $parts = [
+			this._render_$getPtValueSummary(),
+			this._render_$getPtCoins(),
+			...this._render_$getPtGemsArtObjects({loot: this._gems, name: "gemstones"}),
+			...this._render_$getPtGemsArtObjects({loot: this._artObjects, name: "art objects"}),
+			this._render_$getPtDragonMundaneItems(),
+			...this._render_$getPtMagicItems(),
+		].filter(Boolean);
+
+		this._$wrp = $$`<div class="ve-flex-col lootg__wrp-output py-3 px-2 my-2 mr-1">
 			${$dispTitle}
-			<ul>
-				${this._render_$getPtValueSummary()}
-				${this._render_$getPtCoins()}
-				${this._render_$getPtGemsArtObjects({loot: this._gems, name: "gemstones"})}
-				${this._render_$getPtGemsArtObjects({loot: this._artObjects, name: "art objects"})}
-				${this._render_$getPtDragonMundaneItems()}
-				${this._render_$getPtMagicItems()}
-			</ul>
+			${$parts.length ? $$`<ul>${$parts}</ul>` : null}
+			${!$parts.length ? `<div class="ve-muted help-subtle italic" title="${LootGenMagicItemNull.TOOLTIP_NOTHING.qq()}">(No loot!)</div>` : null}
 		</div>`
 			.prependTo($parent);
 
@@ -1061,7 +1289,7 @@ class LootGenOutput {
 			.attr("draggable", true)
 			.on("dragstart", evt => {
 				const meta = {
-					type: "ve-Loot",
+					type: VeCt.DRAG_TYPE_LOOT,
 					data: dropData,
 				};
 				evt.originalEvent.dataTransfer.setData("application/json", JSON.stringify(meta));
@@ -1073,14 +1301,20 @@ class LootGenOutput {
 		this._pGetFoundryForm().then(it => dropData = it);
 	}
 
-	async _pDoSendToFoundry ({isTemp}) {
+	async _pDoSendToFoundry ({isTemp} = {}) {
 		const toSend = await this._pGetFoundryForm();
 		if (isTemp) toSend.isTemp = isTemp;
-		if (toSend.currency || toSend.entityInfos) await ExtensionUtil.pDoSend({type: "5etools.lootgen.loot", data: toSend});
+		if (toSend.currency || toSend.entityInfos) return ExtensionUtil.pDoSend({type: "5etools.lootgen.loot", data: toSend});
+		JqueryUtil.doToast({content: `Nothing to send!`, type: "warning"});
+	}
+
+	async _pDoSaveAsJson () {
+		const serialized = await this._pGetFoundryForm();
+		await DataUtil.userDownload("loot", serialized);
 	}
 
 	async _pGetFoundryForm () {
-		const toSend = {name: this._name};
+		const toSend = {name: this._name, type: this._type, dateTimeGenerated: this._datetimeGenerated};
 
 		if (this._coins) toSend.currency = this._coins;
 
@@ -1091,7 +1325,9 @@ class LootGenOutput {
 		if (this._magicItemsByTable?.length) {
 			for (const magicItemsByTable of this._magicItemsByTable) {
 				for (const lootItem of magicItemsByTable.breakdown) {
-					const {page, entity, options} = lootItem.getExtensionExportMeta();
+					const exportMeta = lootItem.getExtensionExportMeta();
+					if (!exportMeta) continue;
+					const {page, entity, options} = exportMeta;
 					entityInfos.push({
 						page,
 						entity,
@@ -1222,7 +1458,7 @@ class LootGenOutput {
 	}
 
 	_render_$getPtGemsArtObjects ({loot, name}) {
-		if (!loot?.length) return null;
+		if (!loot?.length) return [];
 
 		return loot.map(lt => {
 			return $$`
@@ -1235,7 +1471,7 @@ class LootGenOutput {
 	}
 
 	_render_$getPtMagicItems () {
-		if (!this._magicItemsByTable?.length) return null;
+		if (!this._magicItemsByTable?.length) return [];
 
 		return [...this._magicItemsByTable]
 			.sort(({tier: tierA, type: typeA}, {tier: tierB, type: typeB}) => this.constructor._ascSortTier(tierB, tierA) || SortUtil.ascSortLower(typeA || "", typeB || ""))
@@ -1246,6 +1482,8 @@ class LootGenOutput {
 
 					magicItems.breakdown
 						.forEach(lootItem => {
+							if (!lootItem.item) return;
+
 							const tgt = MiscUtil.getOrSet(byRarity, lootItem.item.rarity, []);
 							tgt.push(lootItem);
 						});
@@ -1258,6 +1496,8 @@ class LootGenOutput {
 								<ul>${lootItems.map(it => it.$getRender())}</ul>
 							`;
 						});
+
+					if (!$ulsByRarity.length) return null;
 
 					return $$`
 						<li>${magicItems.tier.toTitleCase()} items:</li>
@@ -1352,9 +1592,9 @@ class LootGenMagicItem extends BaseComponent {
 		if (isItemsAltChooseRoll) {
 			const item = RollerUtil.rollOnArray(itemsAltChoose);
 
-			const baseEntry = `{@item ${item.name}|${item.source}}`;
+			const baseEntry = item ? `{@item ${item.name}|${item.source}}` : `<span class="help-subtle" title="${LootGenMagicItemNull.TOOLTIP_NOTHING.qq()}">(no item)</span>`;
 
-			if (item.spellScrollLevel != null) {
+			if (item?.spellScrollLevel != null) {
 				return new LootGenMagicItemSpellScroll({
 					lootGenMagicItems,
 					spells,
@@ -1383,6 +1623,18 @@ class LootGenMagicItem extends BaseComponent {
 			});
 		}
 
+		if (!magicItemTable?.table) {
+			return new LootGenMagicItemNull({
+				lootGenMagicItems,
+				spells,
+				magicItemTable,
+				itemsAltChoose,
+				itemsAltChooseDisplayText,
+				isItemsAltChooseRoll,
+				fnGetIsPreferAltChoose,
+			});
+		}
+
 		const rowRoll = RollerUtil.randomise(magicItemTable.diceType ?? 100);
 		const row = magicItemTable.table.find(it => rowRoll >= it.min && rowRoll <= (it.max ?? it.min));
 
@@ -1404,7 +1656,7 @@ class LootGenMagicItem extends BaseComponent {
 		}
 
 		if (row.choose?.fromGeneric) {
-			const subItems = (await row.choose?.fromGeneric.pMap(nameOrUid => this._pGetMagicItemRoll_pGetItem({nameOrUid})))
+			const subItems = (await row.choose.fromGeneric.pMap(nameOrUid => this._pGetMagicItemRoll_pGetItem({nameOrUid})))
 				.map(it => it.variants.map(({specificVariant}) => specificVariant))
 				.flat();
 
@@ -1424,7 +1676,7 @@ class LootGenMagicItem extends BaseComponent {
 		}
 
 		if (row.choose?.fromGroup) {
-			const subItems = (await ((await row.choose?.fromGroup.pMap(nameOrUid => this._pGetMagicItemRoll_pGetItem({nameOrUid})))
+			const subItems = (await ((await row.choose.fromGroup.pMap(nameOrUid => this._pGetMagicItemRoll_pGetItem({nameOrUid})))
 				.pMap(it => it.items.pMap(x => this._pGetMagicItemRoll_pGetItem({nameOrUid: x})))))
 				.flat();
 
@@ -1580,6 +1832,8 @@ class LootGenMagicItem extends BaseComponent {
 	}
 
 	_$getBtnReroll () {
+		if (!this._magicItemTable && !this._itemsAltChoose) return null;
+
 		const isAltModeDefault = this._fnGetIsPreferAltChoose && this._fnGetIsPreferAltChoose();
 		const title = this._itemsAltChoose
 			? isAltModeDefault ? `SHIFT to roll on Magic Item Table ${this._magicItemTable.type}` : `SHIFT to roll ${Parser.getArticle(this._itemsAltChooseDisplayText)} ${this._itemsAltChooseDisplayText} item`
@@ -1601,7 +1855,7 @@ class LootGenMagicItem extends BaseComponent {
 		const $btnReroll = this._$getBtnReroll();
 
 		return $$`<li class="split-v-center">
-			<div class="flex-v-center flex-wrap pr-3">
+			<div class="ve-flex-v-center ve-flex-wrap pr-3">
 				${$dispBaseEntry}
 				${$dispRoll}
 			</div>
@@ -1636,6 +1890,18 @@ class LootGenMagicItem extends BaseComponent {
 	}
 }
 
+class LootGenMagicItemNull extends LootGenMagicItem {
+	static TOOLTIP_NOTHING = `Failed to generate a result! This is normally due to all potential matches being filtered out. You may want to adjust your filters to be more permissive.`;
+
+	getExtensionExportMeta () { return null; }
+
+	_$getRender () {
+		return $$`<li class="split-v-center">
+			<div class="ve-flex-v-center ve-flex-wrap ve-muted help-subtle" title="${this.constructor.TOOLTIP_NOTHING.qq()}">&mdash;</div>
+		</li>`;
+	}
+}
+
 class LootGenMagicItemSpellScroll extends LootGenMagicItem {
 	constructor (
 		{
@@ -1651,6 +1917,8 @@ class LootGenMagicItemSpellScroll extends LootGenMagicItem {
 	}
 
 	getExtensionExportMeta () {
+		if (this._state.spell == null) return null;
+
 		return {
 			page: UrlUtil.PG_SPELLS,
 			entity: this._state.spell,
@@ -1671,16 +1939,19 @@ class LootGenMagicItemSpellScroll extends LootGenMagicItem {
 			});
 
 		const $dispSpell = $(`<div></div>`);
-		const hkSpell = () => $dispSpell.html(Renderer.get().render(`{@spell ${this._state.spell.name}|${this._state.spell.source}}`));
+		const hkSpell = () => {
+			if (!this._state.spell) return $dispSpell.html(`<span class="help-subtle" title="${LootGenMagicItemNull.TOOLTIP_NOTHING.qq()}">(no spell)</span>`);
+			$dispSpell.html(Renderer.get().render(`{@spell ${this._state.spell.name}|${this._state.spell.source}}`));
+		};
 		this._addHookBase("spell", hkSpell);
 		hkSpell();
 
 		const $btnReroll = this._$getBtnReroll();
 
 		return $$`<li class="split-v-center">
-			<div class="flex-v-center flex-wrap pr-3">
+			<div class="ve-flex-v-center ve-flex-wrap pr-3">
 				${$dispBaseEntry}
-				<div class="flex-v-center italic mr-2">
+				<div class="ve-flex-v-center italic mr-2">
 					<span>(</span>
 					${$btnRerollSpell}
 					${$dispSpell}
@@ -1732,9 +2003,9 @@ class LootGenMagicItemSubItems extends LootGenMagicItem {
 		const $btnReroll = this._$getBtnReroll();
 
 		return $$`<li class="split-v-center">
-			<div class="flex-v-center flex-wrap pr-3">
+			<div class="ve-flex-v-center ve-flex-wrap pr-3">
 				${$dispBaseEntry}
-				<div class="flex-v-center italic mr-2">
+				<div class="ve-flex-v-center italic mr-2">
 					<span>(</span>
 					${$btnRerollSubItem}
 					${$dispSubItem}
@@ -1786,7 +2057,7 @@ class LootGenMagicItemTable extends LootGenMagicItem {
 
 		const $btnReroll = this._$getBtnReroll();
 
-		const $btnRerollSub = $(`<span class="roller render-roller ve-small self-flex-end">[reroll]</span>`)
+		const $btnRerollSub = $(`<span class="roller render-roller ve-small ve-self-flex-end">[reroll]</span>`)
 			.mousedown(evt => evt.preventDefault())
 			.click(async () => {
 				const {subRowRoll, subRow, subItem} = await LootGenMagicItemTable.pGetSubRollMeta({
@@ -1800,16 +2071,16 @@ class LootGenMagicItemTable extends LootGenMagicItem {
 				this._state.tableRoll = subRowRoll;
 			});
 
-		return $$`<li class="flex-col">
+		return $$`<li class="ve-flex-col">
 			<div class="split-v-center">
-				<div class="flex-v-center flex-wrap pr-3">
+				<div class="ve-flex-v-center ve-flex-wrap pr-3">
 					${$dispBaseEntry}
 					${$dispRoll}
 				</div>
 				${$btnReroll}
 			</div>
 			<div class="split-v-center pl-2">
-				<div class="flex-v-center flex-wrap pr-3">
+				<div class="ve-flex-v-center ve-flex-wrap pr-3">
 					<span class="ml-1 mr-2">&rarr;</span>
 					${$dispTableEntry}
 					${$dispTableRoll}

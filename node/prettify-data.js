@@ -79,6 +79,8 @@ function getFnListSort (prop) {
 		case "charoptionFluff":
 		case "recipe":
 		case "recipeFluff":
+		case "sense":
+		case "skill":
 			return (a, b) => SortUtil.ascSortLower(a.name, b.name) || SortUtil.ascSortLower(a.source, b.source);
 		case "deity":
 			return (a, b) => SortUtil.ascSortLower(a.name, b.name) || SortUtil.ascSortLower(a.source, b.source) || SortUtil.ascSortLower(a.pantheon, b.pantheon);
@@ -98,6 +100,10 @@ function getFnListSort (prop) {
 			|| SortUtil.ascSort(a.level, b.level)
 			|| SortUtil.ascSort(a.header || 0, b.header || 0)
 			|| SortUtil.ascSortLower(a.name, b.name)
+			|| SortUtil.ascSortLower(a.source, b.source);
+		case "subrace": return (a, b) => SortUtil.ascSortLower(a.raceName, b.raceName)
+			|| SortUtil.ascSortLower(a.raceSource, b.raceSource)
+			|| SortUtil.ascSortLower(a.name || "", b.name || "")
 			|| SortUtil.ascSortLower(a.source, b.source);
 		case "adventure": return (a, b) => SortUtil.ascSortAdventure(a, b);
 		case "book": return (a, b) => SortUtil.ascSortBook(a, b);

@@ -7,7 +7,7 @@ if (IS_NODE) require("./parser.js");
 
 // in deployment, `IS_DEPLOYED = "<version number>";` should be set below.
 IS_DEPLOYED = undefined;
-VERSION_NUMBER = /* 5ETOOLS_VERSION__OPEN */"1.145.1"/* 5ETOOLS_VERSION__CLOSE */;
+VERSION_NUMBER = /* 5ETOOLS_VERSION__OPEN */"1.160.1"/* 5ETOOLS_VERSION__CLOSE */;
 DEPLOYED_STATIC_ROOT = ""; // "https://static.5etools.com/"; // FIXME re-enable this when we have a CDN again
 // for the roll20 script to set
 IS_VTT = false;
@@ -51,7 +51,14 @@ VeCt = {
 
 	SYM_UI_SKIP: Symbol("uiSkip"),
 
+	SYM_WALKER_BREAK: Symbol("walkerBreak"),
+
+	SYM_UTIL_TIMEOUT: Symbol("timeout"),
+
 	LOC_ORIGIN_CANCER: "https://5e.tools",
+
+	URL_BREW: `https://github.com/TheGiddyLimit/homebrew`,
+	URL_ROOT_BREW: `https://raw.githubusercontent.com/TheGiddyLimit/homebrew/master/`, // N.b. must end with a slash
 
 	STR_NO_ATTUNEMENT: "No Attunement Required",
 
@@ -62,7 +69,10 @@ VeCt = {
 	LEVEL_MAX: 20,
 
 	ENTDATA_TABLE_INCLUDE: "tableInclude",
-	ENTDATA_ITEM_MERGED_ENTRY_TAG: "item.mergedEntryTag",
+	ENTDATA_ITEM_MERGED_ENTRY_TAG: "item__mergedEntryTag",
+
+	DRAG_TYPE_IMPORT: "ve-Import",
+	DRAG_TYPE_LOOT: "ve-Loot",
 };
 
 // STRING ==============================================================================================================
@@ -81,7 +91,7 @@ String.prototype.lowercaseFirst = String.prototype.lowercaseFirst || function ()
 };
 
 String.prototype.toTitleCase = String.prototype.toTitleCase || function () {
-	let str = this.replace(/([^\W_]+[^\s-/]*) */g, m0 => m0.charAt(0).toUpperCase() + m0.substr(1).toLowerCase());
+	let str = this.replace(/([^\W_]+[^-\u2014\s/]*) */g, m0 => m0.charAt(0).toUpperCase() + m0.substr(1).toLowerCase());
 
 	// Require space surrounded, as title-case requires a full word on either side
 	StrUtil._TITLE_LOWER_WORDS_RE = StrUtil._TITLE_LOWER_WORDS_RE || StrUtil.TITLE_LOWER_WORDS.map(it => new RegExp(`\\s${it}\\s`, "gi"));
@@ -275,7 +285,7 @@ StrUtil = {
 		return string.uppercaseFirst();
 	},
 	// Certain minor words should be left lowercase unless they are the first or last words in the string
-	TITLE_LOWER_WORDS: ["a", "an", "the", "and", "but", "or", "for", "nor", "as", "at", "by", "for", "from", "in", "into", "near", "of", "on", "onto", "to", "with", "over"],
+	TITLE_LOWER_WORDS: ["a", "an", "the", "and", "but", "or", "for", "nor", "as", "at", "by", "for", "from", "in", "into", "near", "of", "on", "onto", "to", "with", "over", "von"],
 	// Certain words such as initialisms or acronyms should be left uppercase
 	TITLE_UPPER_WORDS: ["Id", "Tv", "Dm", "Ok", "Npc", "Pc", "Tpk"],
 
@@ -304,21 +314,49 @@ StrUtil = {
 };
 
 CleanUtil = {
-	getCleanJson (data, minify = false) {
+	getCleanJson (data, {isMinify = false, isFast = true} = {}) {
 		data = MiscUtil.copy(data);
-		data = MiscUtil.getWalker().walk(data, {string: (str) => CleanUtil.getCleanString(str)});
-		let str = minify ? JSON.stringify(data) : `${JSON.stringify(data, null, "\t")}\n`;
+		data = MiscUtil.getWalker().walk(data, {string: (str) => CleanUtil.getCleanString(str, {isFast})});
+		let str = isMinify ? JSON.stringify(data) : `${JSON.stringify(data, null, "\t")}\n`;
 		return str.replace(CleanUtil.STR_REPLACEMENTS_REGEX, (match) => CleanUtil.STR_REPLACEMENTS[match]);
 	},
 
-	getCleanString (str) {
-		return str
+	getCleanString (str, {isFast = true} = {}) {
+		str = str
 			.replace(CleanUtil.SHARED_REPLACEMENTS_REGEX, (match) => CleanUtil.SHARED_REPLACEMENTS[match])
 			.replace(CleanUtil._SOFT_HYPHEN_REMOVE_REGEX, "")
-			.replace(CleanUtil._ELLIPSIS_COLLAPSE_REGEX, "$1")
-			.replace(CleanUtil._DASH_COLLAPSE_REGEX, "$1")
-			.replace(CleanUtil._TAG_DASH_EXPAND_REGEX, "$1 $2")
 		;
+
+		if (isFast) return str;
+
+		const ptrStack = {_: ""};
+		CleanUtil._getCleanString_walkerStringHandler(ptrStack, 0, str);
+		return ptrStack._;
+	},
+
+	_getCleanString_walkerStringHandler (ptrStack, tagCount, str) {
+		const tagSplit = Renderer.splitByTags(str);
+		const len = tagSplit.length;
+		for (let i = 0; i < len; ++i) {
+			const s = tagSplit[i];
+			if (!s) continue;
+			if (s.startsWith("{@")) {
+				const [tag, text] = Renderer.splitFirstSpace(s.slice(1, -1));
+
+				ptrStack._ += `{${tag}${text.length ? " " : ""}`;
+				this._getCleanString_walkerStringHandler(ptrStack, tagCount + 1, text);
+				ptrStack._ += `}`;
+			} else {
+				// avoid tagging things wrapped in existing tags
+				if (tagCount) {
+					ptrStack._ += s;
+				} else {
+					ptrStack._ += s
+						.replace(CleanUtil._DASH_COLLAPSE_REGEX, "$1")
+						.replace(CleanUtil._ELLIPSIS_COLLAPSE_REGEX, "$1");
+				}
+			}
+		}
 	},
 };
 CleanUtil.SHARED_REPLACEMENTS = {
@@ -350,13 +388,22 @@ CleanUtil.STR_REPLACEMENTS = {
 };
 CleanUtil.SHARED_REPLACEMENTS_REGEX = new RegExp(Object.keys(CleanUtil.SHARED_REPLACEMENTS).join("|"), "g");
 CleanUtil.STR_REPLACEMENTS_REGEX = new RegExp(Object.keys(CleanUtil.STR_REPLACEMENTS).join("|"), "g");
-CleanUtil._SOFT_HYPHEN_REMOVE_REGEX = /\u00AD/g;
+CleanUtil._SOFT_HYPHEN_REMOVE_REGEX = /\u00AD *\r?\n?\r?/g;
 CleanUtil._ELLIPSIS_COLLAPSE_REGEX = /\s*(\.\s*\.\s*\.)/g;
 CleanUtil._DASH_COLLAPSE_REGEX = /[ ]*([\u2014\u2013])[ ]*/g;
-CleanUtil._TAG_DASH_EXPAND_REGEX = /({@[a-zA-Z])([\u2014\u2013])/g;
 
 // SOURCES =============================================================================================================
 SourceUtil = {
+	ADV_BOOK_GROUPS: [
+		{group: "core", displayName: "Core"},
+		{group: "supplement", displayName: "Supplements"},
+		{group: "setting", displayName: "Settings"},
+		{group: "supplement-alt", displayName: "Extras"},
+		{group: "homebrew", displayName: "Homebrew"},
+		{group: "screen", displayName: "Screens"},
+		{group: "other", displayName: "Miscellaneous"},
+	],
+
 	_subclassReprintLookup: {},
 	async pInitSubclassReprintLookup () {
 		SourceUtil._subclassReprintLookup = await DataUtil.loadJSON(`${Renderer.get().baseUrl}data/generated/gendata-subclass-lookup.json`);
@@ -381,16 +428,18 @@ SourceUtil = {
 	},
 
 	isNonstandardSource (source) {
-		return source != null && !BrewUtil.hasSourceJson(source) && SourceUtil._isNonstandardSourceWiz(source);
+		return source != null
+			&& (typeof BrewUtil2 !== "undefined" && !BrewUtil2.hasSourceJson(source))
+			&& SourceUtil.isNonstandardSourceWotc(source);
 	},
 
-	_isNonstandardSourceWiz (source) {
-		return source.startsWith(SRC_UA_PREFIX) || source.startsWith(SRC_PS_PREFIX) || source.startsWith(SRC_AL_PREFIX) || Parser.SOURCES_NON_STANDARD_WOTC.has(source);
+	isNonstandardSourceWotc (source) {
+		return source.startsWith(SRC_UA_PREFIX) || source.startsWith(SRC_PS_PREFIX) || source.startsWith(SRC_AL_PREFIX) || source.startsWith(SRC_MCVX_PREFIX) || Parser.SOURCES_NON_STANDARD_WOTC.has(source);
 	},
 
 	getFilterGroup (source) {
 		if (source instanceof FilterItem) source = source.item;
-		if (BrewUtil.hasSourceJson(source)) return 2;
+		if (BrewUtil2.hasSourceJson(source)) return 2;
 		return Number(SourceUtil.isNonstandardSource(source));
 	},
 
@@ -399,13 +448,22 @@ SourceUtil = {
 		source = source.toLowerCase();
 
 		// TODO this could be made to work with homebrew
-		let docPage;
-		if (Parser.SOURCES_AVAILABLE_DOCS_BOOK[source]) docPage = UrlUtil.PG_BOOK;
-		else if (Parser.SOURCES_AVAILABLE_DOCS_ADVENTURE[source]) docPage = UrlUtil.PG_ADVENTURE;
+		let docPage, mappedSource;
+		if (Parser.SOURCES_AVAILABLE_DOCS_BOOK[source]) {
+			docPage = UrlUtil.PG_BOOK;
+			mappedSource = Parser.SOURCES_AVAILABLE_DOCS_BOOK[source];
+		} else if (Parser.SOURCES_AVAILABLE_DOCS_ADVENTURE[source]) {
+			docPage = UrlUtil.PG_ADVENTURE;
+			mappedSource = Parser.SOURCES_AVAILABLE_DOCS_ADVENTURE[source];
+		}
 		if (!docPage) return null;
 
-		return `${docPage}#${[source, page ? `page:${page}` : null].filter(Boolean).join(HASH_PART_SEP)}`;
+		mappedSource = mappedSource.toLowerCase();
+
+		return `${docPage}#${[mappedSource, page ? `page:${page}` : null].filter(Boolean).join(HASH_PART_SEP)}`;
 	},
+
+	getEntitySource (it) { return it.source || it.inherits?.source; },
 };
 
 // CURRENCY ============================================================================================================
@@ -692,9 +750,12 @@ JqueryUtil = {
 
 	_ACTIVE_TOAST: [],
 	/**
-	 * @param {Object|string} options
+	 * @param {{content: jQuery|string, type?: string, autoHideTime?: number} | string} options The options for the toast.
 	 * @param {(jQuery|string)} options.content Toast contents. Supports jQuery objects.
 	 * @param {string} options.type Toast type. Can be any Bootstrap alert type ("success", "info", "warning", or "danger").
+	 * @param {number} options.autoHideTime The time in ms before the toast will be automatically hidden.
+	 * Defaults to 5000 ms.
+	 * @param {boolean} options.isAutoHide
 	 */
 	doToast (options) {
 		if (typeof window === "undefined") return;
@@ -706,6 +767,9 @@ JqueryUtil = {
 			};
 		}
 		options.type = options.type || "info";
+
+		options.isAutoHide = options.isAutoHide ?? true;
+		options.autoHideTime = options.autoHideTime ?? 5000;
 
 		const doCleanup = ($toast) => {
 			$toast.removeClass("toast--animate");
@@ -731,7 +795,11 @@ JqueryUtil = {
 			});
 
 		setTimeout(() => $toast.addClass(`toast--animate`), 5);
-		setTimeout(() => doCleanup($toast), 5000);
+		if (options.isAutoHide) {
+			setTimeout(() => {
+				doCleanup($toast);
+			}, options.autoHideTime);
+		}
 
 		if (JqueryUtil._ACTIVE_TOAST.length) {
 			JqueryUtil._ACTIVE_TOAST.forEach($oldToast => {
@@ -742,6 +810,12 @@ JqueryUtil = {
 		}
 
 		JqueryUtil._ACTIVE_TOAST.push($toast);
+	},
+
+	isMobile () {
+		if (navigator?.userAgentData?.mobile) return true;
+		// Equivalent to `$width-screen-sm`
+		return window.matchMedia("(max-width: 768px)").matches;
 	},
 };
 
@@ -758,12 +832,15 @@ ElementUtil = {
 		mousedown,
 		mouseup,
 		mousemove,
+		keydown,
 		html,
 		text,
+		txt,
 		ele,
 		children,
 		outer,
 
+		id,
 		name,
 		title,
 		val,
@@ -781,14 +858,16 @@ ElementUtil = {
 		if (mousedown) ele.addEventListener("mousedown", mousedown);
 		if (mouseup) ele.addEventListener("mouseup", mouseup);
 		if (mousemove) ele.addEventListener("mousemove", mousemove);
+		if (keydown) ele.addEventListener("keydown", keydown);
 		if (html != null) ele.innerHTML = html;
-		if (text != null) ele.textContent = text;
+		if (text != null || txt != null) ele.textContent = text;
+		if (id != null) ele.setAttribute("id", id);
 		if (name != null) ele.setAttribute("name", name);
 		if (title != null) ele.setAttribute("title", title);
 		if (href != null) ele.setAttribute("href", href);
 		if (val != null) ele.setAttribute("value", val);
 		if (type != null) ele.setAttribute("type", type);
-		if (attrs != null) { for (const k in attrs) { ele.setAttribute(k, attrs[k]); } }
+		if (attrs != null) { for (const k in attrs) { if (attrs[k] === undefined) continue; ele.setAttribute(k, attrs[k]); } }
 		if (children) for (let i = 0, len = children.length; i < len; ++i) if (children[i] != null) ele.append(children[i]);
 
 		ele.appends = ele.appends || ElementUtil._appends.bind(ele);
@@ -805,6 +884,7 @@ ElementUtil = {
 		ele.attr = ele.attr || ElementUtil._attr.bind(ele);
 		ele.val = ele.val || ElementUtil._val.bind(ele);
 		ele.html = ele.html || ElementUtil._html.bind(ele);
+		ele.txt = ele.txt || ElementUtil._txt.bind(ele);
 		ele.tooltip = ele.tooltip || ElementUtil._tooltip.bind(ele);
 		ele.onClick = ele.onClick || ElementUtil._onClick.bind(ele);
 		ele.onContextmenu = ele.onContextmenu || ElementUtil._onContextmenu.bind(ele);
@@ -876,7 +956,14 @@ ElementUtil = {
 	},
 
 	_html (html) {
+		if (html === undefined) return this.innerHTML;
 		this.innerHTML = html;
+		return this;
+	},
+
+	_txt (txt) {
+		if (txt === undefined) return this.innerText;
+		this.innerText = txt;
 		return this;
 	},
 
@@ -975,7 +1062,8 @@ MiscUtil = {
 	COLOR_BLOODIED: "#f7a100",
 	COLOR_DEFEATED: "#cc0000",
 
-	copy (obj) {
+	copy (obj, safe = false) {
+		if (safe && obj === undefined) return undefined; // Generally use "unsafe," as this helps identify bugs.
 		return JSON.parse(JSON.stringify(obj));
 	},
 
@@ -1038,13 +1126,37 @@ MiscUtil = {
 		return existing || MiscUtil.set(object, ...pathAndVal);
 	},
 
+	getThenSetCopy (object1, object2, ...path) {
+		const val = MiscUtil.get(object1, ...path);
+		return MiscUtil.set(object2, ...path, MiscUtil.copy(val, true));
+	},
+
 	delete (object, ...path) {
-		if (object == null) return null;
+		if (object == null) return object;
 		for (let i = 0; i < path.length - 1; ++i) {
 			object = object[path[i]];
 			if (object == null) return object;
 		}
 		return delete object[path.last()];
+	},
+
+	/** Delete a prop from a nested object, then all now-empty objects backwards from that point. */
+	deleteObjectPath (object, ...path) {
+		const stack = [object];
+
+		if (object == null) return object;
+		for (let i = 0; i < path.length - 1; ++i) {
+			object = object[path[i]];
+			stack.push(object);
+			if (object === undefined) return object;
+		}
+		const out = delete object[path.last()];
+
+		for (let i = path.length - 1; i > 0; --i) {
+			if (!Object.keys(stack[i]).length) delete stack[i - 1][path[i - 1]];
+		}
+
+		return out;
 	},
 
 	merge (obj1, obj2) {
@@ -1347,7 +1459,7 @@ MiscUtil = {
 		return new Promise(resolve => setTimeout(() => resolve(resolveAs), msecs));
 	},
 
-	GENERIC_WALKER_ENTRIES_KEY_BLACKLIST: new Set(["caption", "type", "colLabels", "name", "colStyles", "style", "shortName", "subclassShortName"]),
+	GENERIC_WALKER_ENTRIES_KEY_BLACKLIST: new Set(["caption", "type", "colLabels", "name", "colStyles", "style", "shortName", "subclassShortName", "id", "path"]),
 
 	/**
 	 * @param [opts]
@@ -1359,72 +1471,63 @@ MiscUtil = {
 	 * @param [opts.isAllowDeleteStrings] (Unimplemented) // TODO
 	 * @param [opts.isDepthFirst] If array/object recursion should occur before array/object primitive handling.
 	 * @param [opts.isNoModification] If the walker should not attempt to modify the data.
+	 * @param [opts.isBreakOnReturn] If the walker should fast-exist on any handler returning a value.
 	 */
 	getWalker (opts) {
 		opts = opts || {};
+
+		if (opts.isBreakOnReturn && !opts.isNoModification) throw new Error(`"isBreakOnReturn" may only be used in "isNoModification" mode!`);
+
 		const keyBlacklist = opts.keyBlacklist || new Set();
 
-		const fn = (obj, primitiveHandlers, lastKey, stack) => {
-			if (obj == null) {
-				if (primitiveHandlers.null) return MiscUtil._getWalker_applyHandlers({opts, handlers: primitiveHandlers.null, obj, lastKey, stack});
-				return obj;
+		const getMappedPrimitive = (obj, primitiveHandlers, lastKey, stack, prop, propPre, propPost) => {
+			if (primitiveHandlers[propPre]) MiscUtil._getWalker_runHandlers({handlers: primitiveHandlers[propPre], obj, lastKey, stack});
+			if (primitiveHandlers[prop]) {
+				const out = MiscUtil._getWalker_applyHandlers({opts, handlers: primitiveHandlers[prop], obj, lastKey, stack});
+				if (out === VeCt.SYM_WALKER_BREAK) return out;
+				if (!opts.isNoModification) obj = out;
 			}
+			if (primitiveHandlers[propPost]) MiscUtil._getWalker_runHandlers({handlers: primitiveHandlers[propPost], obj, lastKey, stack});
+			return obj;
+		};
 
-			const doObjectRecurse = () => {
-				Object.keys(obj).forEach(k => {
-					const v = obj[k];
-					if (!keyBlacklist.has(k)) {
-						const out = fn(v, primitiveHandlers, k, stack);
-						if (!opts.isNoModification) obj[k] = out;
-					}
-				});
-			};
+		const doObjectRecurse = (obj, primitiveHandlers, stack) => {
+			const didBreak = Object.keys(obj).some(k => {
+				const v = obj[k];
+				if (keyBlacklist.has(k)) return;
+
+				const out = fn(v, primitiveHandlers, k, stack);
+				if (out === VeCt.SYM_WALKER_BREAK) return true;
+				if (!opts.isNoModification) obj[k] = out;
+			});
+			if (didBreak) return VeCt.SYM_WALKER_BREAK;
+		};
+
+		const fn = (obj, primitiveHandlers, lastKey, stack) => {
+			if (obj === null) return getMappedPrimitive(obj, primitiveHandlers, lastKey, stack, "null", "preNull", "postNull");
 
 			const to = typeof obj;
 			switch (to) {
-				case undefined:
-					if (primitiveHandlers.preUndefined) MiscUtil._getWalker_runHandlers({handlers: primitiveHandlers.preUndefined, obj, lastKey, stack});
-					if (primitiveHandlers.undefined) {
-						const out = MiscUtil._getWalker_applyHandlers({opts, handlers: primitiveHandlers.undefined, obj, lastKey, stack});
-						if (!opts.isNoModification) obj = out;
-					}
-					if (primitiveHandlers.postUndefined) MiscUtil._getWalker_runHandlers({handlers: primitiveHandlers.postUndefined, obj, lastKey, stack});
-					return obj;
-				case "boolean":
-					if (primitiveHandlers.preBoolean) MiscUtil._getWalker_runHandlers({handlers: primitiveHandlers.preBoolean, obj, lastKey, stack});
-					if (primitiveHandlers.boolean) {
-						const out = MiscUtil._getWalker_applyHandlers({opts, handlers: primitiveHandlers.boolean, obj, lastKey, stack});
-						if (!opts.isNoModification) obj = out;
-					}
-					if (primitiveHandlers.postBoolean) MiscUtil._getWalker_runHandlers({handlers: primitiveHandlers.postBoolean, obj, lastKey, stack});
-					return obj;
-				case "number":
-					if (primitiveHandlers.preNumber) MiscUtil._getWalker_runHandlers({handlers: primitiveHandlers.preNumber, obj, lastKey, stack});
-					if (primitiveHandlers.number) {
-						const out = MiscUtil._getWalker_applyHandlers({opts, handlers: primitiveHandlers.number, obj, lastKey, stack});
-						if (!opts.isNoModification) obj = out;
-					}
-					if (primitiveHandlers.postNumber) MiscUtil._getWalker_runHandlers({handlers: primitiveHandlers.postNumber, obj, lastKey, stack});
-					return obj;
-				case "string":
-					if (primitiveHandlers.preString) MiscUtil._getWalker_runHandlers({handlers: primitiveHandlers.preString, obj, lastKey, stack});
-					if (primitiveHandlers.string) {
-						const out = MiscUtil._getWalker_applyHandlers({opts, handlers: primitiveHandlers.string, obj, lastKey, stack});
-						if (!opts.isNoModification) obj = out;
-					}
-					if (primitiveHandlers.postString) MiscUtil._getWalker_runHandlers({handlers: primitiveHandlers.postString, obj, lastKey, stack});
-					return obj;
+				case "undefined": return getMappedPrimitive(obj, primitiveHandlers, lastKey, stack, "undefined", "preUndefined", "postUndefined");
+				case "boolean": return getMappedPrimitive(obj, primitiveHandlers, lastKey, stack, "boolean", "preBoolean", "postBoolean");
+				case "number": return getMappedPrimitive(obj, primitiveHandlers, lastKey, stack, "number", "preNumber", "postNumber");
+				case "string": return getMappedPrimitive(obj, primitiveHandlers, lastKey, stack, "string", "preString", "postString");
 				case "object": {
 					if (obj instanceof Array) {
 						if (primitiveHandlers.preArray) MiscUtil._getWalker_runHandlers({handlers: primitiveHandlers.preArray, obj, lastKey, stack});
 						if (opts.isDepthFirst) {
 							if (stack) stack.push(obj);
-							const out = obj.map(it => fn(it, primitiveHandlers, lastKey, stack));
+							const out = new Array(obj.length);
+							for (let i = 0, len = out.length; i < len; ++i) {
+								out[i] = fn(obj[i], primitiveHandlers, lastKey, stack);
+								if (out[i] === VeCt.SYM_WALKER_BREAK) return out[i];
+							}
 							if (!opts.isNoModification) obj = out;
 							if (stack) stack.pop();
 
 							if (primitiveHandlers.array) {
 								const out = MiscUtil._getWalker_applyHandlers({opts, handlers: primitiveHandlers.array, obj, lastKey, stack});
+								if (out === VeCt.SYM_WALKER_BREAK) return out;
 								if (!opts.isNoModification) obj = out;
 							}
 							if (obj == null) {
@@ -1433,10 +1536,15 @@ MiscUtil = {
 						} else {
 							if (primitiveHandlers.array) {
 								const out = MiscUtil._getWalker_applyHandlers({opts, handlers: primitiveHandlers.array, obj, lastKey, stack});
+								if (out === VeCt.SYM_WALKER_BREAK) return out;
 								if (!opts.isNoModification) obj = out;
 							}
 							if (obj != null) {
-								const out = obj.map(it => fn(it, primitiveHandlers, lastKey, stack));
+								const out = new Array(obj.length);
+								for (let i = 0, len = out.length; i < len; ++i) {
+									out[i] = fn(obj[i], primitiveHandlers, lastKey, stack);
+									if (out[i] === VeCt.SYM_WALKER_BREAK) return out[i];
+								}
 								if (!opts.isNoModification) obj = out;
 							} else {
 								if (!opts.isAllowDeleteArrays) throw new Error(`Array handler(s) returned null!`);
@@ -1448,11 +1556,13 @@ MiscUtil = {
 						if (primitiveHandlers.preObject) MiscUtil._getWalker_runHandlers({handlers: primitiveHandlers.preObject, obj, lastKey, stack});
 						if (opts.isDepthFirst) {
 							if (stack) stack.push(obj);
-							doObjectRecurse();
+							const flag = doObjectRecurse(obj, primitiveHandlers, stack);
+							if (flag === VeCt.SYM_WALKER_BREAK) return flag;
 							if (stack) stack.pop();
 
 							if (primitiveHandlers.object) {
 								const out = MiscUtil._getWalker_applyHandlers({opts, handlers: primitiveHandlers.object, obj, lastKey, stack});
+								if (out === VeCt.SYM_WALKER_BREAK) return out;
 								if (!opts.isNoModification) obj = out;
 							}
 							if (obj == null) {
@@ -1461,12 +1571,14 @@ MiscUtil = {
 						} else {
 							if (primitiveHandlers.object) {
 								const out = MiscUtil._getWalker_applyHandlers({opts, handlers: primitiveHandlers.object, obj, lastKey, stack});
+								if (out === VeCt.SYM_WALKER_BREAK) return out;
 								if (!opts.isNoModification) obj = out;
 							}
 							if (obj == null) {
 								if (!opts.isAllowDeleteObjects) throw new Error(`Object handler(s) returned null!`);
 							} else {
-								doObjectRecurse();
+								const flag = doObjectRecurse(obj, primitiveHandlers, stack);
+								if (flag === VeCt.SYM_WALKER_BREAK) return flag;
 							}
 						}
 						if (primitiveHandlers.postObject) MiscUtil._getWalker_runHandlers({handlers: primitiveHandlers.postObject, obj, lastKey, stack});
@@ -1482,10 +1594,12 @@ MiscUtil = {
 
 	_getWalker_applyHandlers ({opts, handlers, obj, lastKey, stack}) {
 		handlers = handlers instanceof Array ? handlers : [handlers];
-		handlers.forEach(h => {
+		const didBreak = handlers.some(h => {
 			const out = h(obj, lastKey, stack);
+			if (opts.isBreakOnReturn && out) return true;
 			if (!opts.isNoModification) obj = out;
 		});
+		if (didBreak) return VeCt.SYM_WALKER_BREAK;
 		return obj;
 	},
 
@@ -1495,6 +1609,7 @@ MiscUtil = {
 	},
 
 	/**
+	 * TODO refresh to match sync version
 	 * @param [opts]
 	 * @param [opts.keyBlacklist]
 	 * @param [opts.isAllowDeleteObjects] If returning `undefined` from an object handler should be treated as a delete.
@@ -1647,16 +1762,29 @@ MiscUtil = {
 EventUtil = {
 	_mouseX: 0,
 	_mouseY: 0,
+	_isUsingTouch: false,
 
 	init () {
 		document.addEventListener("mousemove", evt => {
 			EventUtil._mouseX = evt.clientX;
 			EventUtil._mouseY = evt.clientY;
 		});
+		document.addEventListener("touchstart", () => {
+			EventUtil._isUsingTouch = true;
+		});
 	},
 
 	getClientX (evt) { return evt.touches && evt.touches.length ? evt.touches[0].clientX : evt.clientX; },
 	getClientY (evt) { return evt.touches && evt.touches.length ? evt.touches[0].clientY : evt.clientY; },
+
+	getOffsetY (evt) {
+		if (!evt.touches?.length) return evt.offsetY;
+
+		const bounds = evt.target.getBoundingClientRect();
+		return evt.targetTouches[0].clientY - bounds.y;
+	},
+
+	isUsingTouch () { return !!EventUtil._isUsingTouch; },
 
 	isInInput (evt) {
 		return evt.target.nodeName === "INPUT" || evt.target.nodeName === "TEXTAREA"
@@ -1701,6 +1829,8 @@ ContextUtil = {
 	},
 
 	deleteMenu (menu) {
+		if (!menu) return;
+
 		menu.remove();
 		const ix = ContextUtil._menus.findIndex(it => it === menu);
 		if (~ix) ContextUtil._menus.splice(ix, 1);
@@ -1740,12 +1870,21 @@ ContextUtil = {
 			this._userData = userData;
 
 			this._$ele
+				// Show as transparent/non-clickable first, so we can get an accurate width/height
 				.css({
-					position: "absolute",
+					left: 0,
+					top: 0,
+					opacity: 0,
+					pointerEvents: "none",
+				})
+				.showVe()
+				// Use the accurate width/height to set the final position, and remove our temp styling
+				.css({
 					left: this._getMenuPosition(evt, "x"),
 					top: this._getMenuPosition(evt, "y"),
-				})
-				.showVe();
+					opacity: "",
+					pointerEvents: "",
+				});
 
 			return this._pResult;
 		};
@@ -1757,7 +1896,7 @@ ContextUtil = {
 			const $elesAction = this._actions.map(it => {
 				if (it == null) return $(`<div class="my-1 w-100 ui-ctx__divider"></div>`);
 
-				const $row = $$`<div class="py-1 px-5 ui-ctx__row ${it.isDisabled ? "disabled" : ""} ${it.style || ""}">${it.text}</div>`
+				const $btnAction = $(`<div class="w-100 min-w-0 ui-ctx__btn py-1 pl-5 ${it.fnActionAlt ? "" : "pr-5"}" ${it.isDisabled ? "disabled" : ""}>${it.text}</div>`)
 					.click(async evt => {
 						if (it.isDisabled) return;
 
@@ -1769,22 +1908,36 @@ ContextUtil = {
 						const result = await it.fnAction(evt, this._userData);
 						if (this._resolveResult) this._resolveResult(result);
 					});
-				if (it.title) $row.title(it.title);
+				if (it.title) $btnAction.title(it.title);
 
-				return $row;
+				const $btnActionAlt = it.fnActionAlt ? $(`<div class="ui-ctx__btn ml-1 bl-1 py-1 px-4" ${it.isDisabled ? "disabled" : ""}>${it.textAlt ?? `<span class="glyphicon glyphicon-cog"></span>`}</div>`)
+					.click(async evt => {
+						if (it.isDisabled) return;
+
+						evt.preventDefault();
+						evt.stopPropagation();
+
+						this.close();
+
+						const result = await it.fnActionAlt(evt, this._userData);
+						if (this._resolveResult) this._resolveResult(result);
+					}) : null;
+				if (it.titleAlt && $btnActionAlt) $btnActionAlt.title(it.titleAlt);
+
+				return $$`<div class="ui-ctx__row ve-flex-v-center ${it.style || ""}">${$btnAction}${$btnActionAlt}</div>`;
 			});
 
-			this._$ele = $$`<div class="flex-col ui-ctx__wrp py-2">${$elesAction}</div>`
+			this._$ele = $$`<div class="ve-flex-col ui-ctx__wrp py-2 absolute">${$elesAction}</div>`
 				.hideVe()
 				.appendTo(document.body);
 		};
 
 		this._getMenuPosition = function (evt, axis) {
-			const {fnMenuSize, propMousePos, fnWindowSize, fnScrollDir} = axis === "x"
-				? {fnMenuSize: "width", propMousePos: "clientX", fnWindowSize: "width", fnScrollDir: "scrollLeft"}
-				: {fnMenuSize: "height", propMousePos: "clientY", fnWindowSize: "height", fnScrollDir: "scrollTop"};
+			const {fnMenuSize, fnGetEventPos, fnWindowSize, fnScrollDir} = axis === "x"
+				? {fnMenuSize: "width", fnGetEventPos: "getClientX", fnWindowSize: "width", fnScrollDir: "scrollLeft"}
+				: {fnMenuSize: "height", fnGetEventPos: "getClientY", fnWindowSize: "height", fnScrollDir: "scrollTop"};
 
-			const posMouse = evt[propMousePos];
+			const posMouse = EventUtil[fnGetEventPos](evt);
 			const szWin = $(window)[fnWindowSize]();
 			const posScroll = $(window)[fnScrollDir]();
 			let position = posMouse + posScroll;
@@ -1802,6 +1955,9 @@ ContextUtil = {
 	 * @param [opts.isDisabled] If this action is disabled.
 	 * @param [opts.title] Help (title) text.
 	 * @param [opts.style] Additional CSS classes to add (e.g. `ctx-danger`).
+	 * @param [opts.fnActionAlt] Alternate action, which can be accessed by clicking a secondary "settings"-esque button.
+	 * @param [opts.textAlt] Text for the alt-action button
+	 * @param [opts.titleAlt] Title for the alt-action button
 	 */
 	Action: function (text, fnAction, opts) {
 		opts = opts || {};
@@ -1812,6 +1968,10 @@ ContextUtil = {
 		this.isDisabled = opts.isDisabled;
 		this.title = opts.title;
 		this.style = opts.style;
+
+		this.fnActionAlt = opts.fnActionAlt;
+		this.textAlt = opts.textAlt;
+		this.titleAlt = opts.titleAlt;
 	},
 };
 
@@ -1853,16 +2013,16 @@ UrlUtil = {
 	 * All internal URL construction should pass through here, to ensure `static.5etools.com` is used when required.
 	 *
 	 * @param href the link
+	 * @param isBustCache If a cache-busting parameter should always be added.
 	 */
-	link (href) {
-		function addGetParam (curr) {
-			if (href.includes("?")) return `${curr}&v=${VERSION_NUMBER}`;
-			else return `${curr}?v=${VERSION_NUMBER}`;
-		}
-
-		if (!IS_VTT && IS_DEPLOYED) return addGetParam(`${DEPLOYED_STATIC_ROOT}${href}`);
-		else if (IS_DEPLOYED) return addGetParam(href);
+	link (href, {isBustCache = false} = {}) {
+		if (isBustCache) return UrlUtil._link_getWithParam(href, {param: `t=${Date.now()}`});
 		return href;
+	},
+
+	_link_getWithParam (href, {param = `v=${VERSION_NUMBER}`} = {}) {
+		if (href.includes("?")) return `${href}&${param}`;
+		return `${href}?${param}`;
 	},
 
 	unpackSubHash (subHash, unencode) {
@@ -1908,6 +2068,12 @@ UrlUtil = {
 			.on("click", async evt => {
 				let url = window.location.href;
 
+				if (evt.ctrlKey) {
+					await MiscUtil.pCopyTextToClipboard(filterBox.getFilterTag());
+					JqueryUtil.showCopiedEffect($btn);
+					return;
+				}
+
 				const parts = filterBox.getSubHashes({isAddSearchTerm: true});
 				parts.unshift(url);
 
@@ -1920,8 +2086,10 @@ UrlUtil = {
 				await MiscUtil.pCopyTextToClipboard(parts.join(HASH_PART_SEP));
 				JqueryUtil.showCopiedEffect($btn);
 			})
-			.title("Get Link to Filters (SHIFT adds List)");
+			.title("Get link to filters (shift adds list; CTRL copies @filter tag)");
 	},
+
+	getFilename (url) { return url.slice(url.lastIndexOf("/") + 1); },
 
 	mini: {
 		compress (primitive) {
@@ -1954,13 +2122,13 @@ UrlUtil = {
 			(cls.classFeatures || []).forEach((lvlFeatureList, ixLvl) => {
 				lvlFeatureList
 					// don't add "you gain a subclass feature" or ASI's
-					.filter(feature => !feature.gainSubclassFeature
+					.filter(feature => (!feature.gainSubclassFeature || feature.gainSubclassFeatureHasContent)
 						&& feature.name !== "Ability Score Improvement"
 						&& feature.name !== "Proficiency Versatility")
 					.forEach((feature, ixFeature) => {
 						const name = Renderer.findName(feature);
 						if (!name) { // tolerate missing names in homebrew
-							if (BrewUtil.hasSourceJson(cls.source)) return;
+							if (BrewUtil2.hasSourceJson(cls.source)) return;
 							else throw new Error("Class feature had no name!");
 						}
 						out.push({
@@ -1989,7 +2157,7 @@ UrlUtil = {
 
 					const name = Renderer.findName(feature);
 					if (!name) { // tolerate missing names in homebrew
-						if (BrewUtil.hasSourceJson(sc.source)) return;
+						if (BrewUtil2.hasSourceJson(sc.source)) return;
 						else throw new Error("Subclass feature had no name!");
 					}
 					out.push({
@@ -2083,36 +2251,83 @@ UrlUtil.PG_CHANGELOG = "changelog.html";
 UrlUtil.PG_CHAR_CREATION_OPTIONS = "charcreationoptions.html";
 UrlUtil.PG_RECIPES = "recipes.html";
 UrlUtil.PG_CLASS_SUBCLASS_FEATURES = "classfeatures.html";
+UrlUtil.PG_MAPS = "maps.html";
+UrlUtil.PG_SEARCH = "search.html";
+
+UrlUtil.URL_TO_HASH_GENERIC = (it) => UrlUtil.encodeForHash([it.name, it.source]);
 
 UrlUtil.URL_TO_HASH_BUILDER = {};
-UrlUtil.URL_TO_HASH_BUILDER[UrlUtil.PG_BESTIARY] = (it) => UrlUtil.encodeForHash([it.name, it.source]);
-UrlUtil.URL_TO_HASH_BUILDER[UrlUtil.PG_SPELLS] = (it) => UrlUtil.encodeForHash([it.name, it.source]);
-UrlUtil.URL_TO_HASH_BUILDER[UrlUtil.PG_BACKGROUNDS] = (it) => UrlUtil.encodeForHash([it.name, it.source]);
-UrlUtil.URL_TO_HASH_BUILDER[UrlUtil.PG_ITEMS] = (it) => UrlUtil.encodeForHash([it.name, it.source]);
-UrlUtil.URL_TO_HASH_BUILDER[UrlUtil.PG_CLASSES] = (it) => UrlUtil.encodeForHash([it.name, it.source]);
-UrlUtil.URL_TO_HASH_BUILDER[UrlUtil.PG_CONDITIONS_DISEASES] = (it) => UrlUtil.encodeForHash([it.name, it.source]);
-UrlUtil.URL_TO_HASH_BUILDER[UrlUtil.PG_FEATS] = (it) => UrlUtil.encodeForHash([it.name, it.source]);
-UrlUtil.URL_TO_HASH_BUILDER[UrlUtil.PG_OPT_FEATURES] = (it) => UrlUtil.encodeForHash([it.name, it.source]);
-UrlUtil.URL_TO_HASH_BUILDER[UrlUtil.PG_PSIONICS] = (it) => UrlUtil.encodeForHash([it.name, it.source]);
-UrlUtil.URL_TO_HASH_BUILDER[UrlUtil.PG_RACES] = (it) => UrlUtil.encodeForHash([it.name, it.source]);
-UrlUtil.URL_TO_HASH_BUILDER[UrlUtil.PG_REWARDS] = (it) => UrlUtil.encodeForHash([it.name, it.source]);
-UrlUtil.URL_TO_HASH_BUILDER[UrlUtil.PG_VARIANTRULES] = (it) => UrlUtil.encodeForHash([it.name, it.source]);
+UrlUtil.URL_TO_HASH_BUILDER[UrlUtil.PG_BESTIARY] = UrlUtil.URL_TO_HASH_GENERIC;
+UrlUtil.URL_TO_HASH_BUILDER[UrlUtil.PG_SPELLS] = UrlUtil.URL_TO_HASH_GENERIC;
+UrlUtil.URL_TO_HASH_BUILDER[UrlUtil.PG_BACKGROUNDS] = UrlUtil.URL_TO_HASH_GENERIC;
+UrlUtil.URL_TO_HASH_BUILDER[UrlUtil.PG_ITEMS] = UrlUtil.URL_TO_HASH_GENERIC;
+UrlUtil.URL_TO_HASH_BUILDER[UrlUtil.PG_CLASSES] = UrlUtil.URL_TO_HASH_GENERIC;
+UrlUtil.URL_TO_HASH_BUILDER[UrlUtil.PG_CONDITIONS_DISEASES] = UrlUtil.URL_TO_HASH_GENERIC;
+UrlUtil.URL_TO_HASH_BUILDER[UrlUtil.PG_FEATS] = UrlUtil.URL_TO_HASH_GENERIC;
+UrlUtil.URL_TO_HASH_BUILDER[UrlUtil.PG_OPT_FEATURES] = UrlUtil.URL_TO_HASH_GENERIC;
+UrlUtil.URL_TO_HASH_BUILDER[UrlUtil.PG_PSIONICS] = UrlUtil.URL_TO_HASH_GENERIC;
+UrlUtil.URL_TO_HASH_BUILDER[UrlUtil.PG_RACES] = UrlUtil.URL_TO_HASH_GENERIC;
+UrlUtil.URL_TO_HASH_BUILDER[UrlUtil.PG_REWARDS] = UrlUtil.URL_TO_HASH_GENERIC;
+UrlUtil.URL_TO_HASH_BUILDER[UrlUtil.PG_VARIANTRULES] = UrlUtil.URL_TO_HASH_GENERIC;
 UrlUtil.URL_TO_HASH_BUILDER[UrlUtil.PG_ADVENTURE] = (it) => UrlUtil.encodeForHash(it.id);
 UrlUtil.URL_TO_HASH_BUILDER[UrlUtil.PG_ADVENTURES] = UrlUtil.URL_TO_HASH_BUILDER[UrlUtil.PG_ADVENTURE];
 UrlUtil.URL_TO_HASH_BUILDER[UrlUtil.PG_BOOK] = (it) => UrlUtil.encodeForHash(it.id);
 UrlUtil.URL_TO_HASH_BUILDER[UrlUtil.PG_BOOKS] = UrlUtil.URL_TO_HASH_BUILDER[UrlUtil.PG_BOOK];
 UrlUtil.URL_TO_HASH_BUILDER[UrlUtil.PG_DEITIES] = (it) => UrlUtil.encodeForHash([it.name, it.pantheon, it.source]);
-UrlUtil.URL_TO_HASH_BUILDER[UrlUtil.PG_CULTS_BOONS] = (it) => UrlUtil.encodeForHash([it.name, it.source]);
-UrlUtil.URL_TO_HASH_BUILDER[UrlUtil.PG_OBJECTS] = (it) => UrlUtil.encodeForHash([it.name, it.source]);
-UrlUtil.URL_TO_HASH_BUILDER[UrlUtil.PG_TRAPS_HAZARDS] = (it) => UrlUtil.encodeForHash([it.name, it.source]);
-UrlUtil.URL_TO_HASH_BUILDER[UrlUtil.PG_TABLES] = (it) => UrlUtil.encodeForHash([it.name, it.source]);
-UrlUtil.URL_TO_HASH_BUILDER[UrlUtil.PG_VEHICLES] = (it) => UrlUtil.encodeForHash([it.name, it.source]);
-UrlUtil.URL_TO_HASH_BUILDER[UrlUtil.PG_ACTIONS] = (it) => UrlUtil.encodeForHash([it.name, it.source]);
-UrlUtil.URL_TO_HASH_BUILDER[UrlUtil.PG_LANGUAGES] = (it) => UrlUtil.encodeForHash([it.name, it.source]);
-UrlUtil.URL_TO_HASH_BUILDER[UrlUtil.PG_CHAR_CREATION_OPTIONS] = (it) => UrlUtil.encodeForHash([it.name, it.source]);
+UrlUtil.URL_TO_HASH_BUILDER[UrlUtil.PG_CULTS_BOONS] = UrlUtil.URL_TO_HASH_GENERIC;
+UrlUtil.URL_TO_HASH_BUILDER[UrlUtil.PG_OBJECTS] = UrlUtil.URL_TO_HASH_GENERIC;
+UrlUtil.URL_TO_HASH_BUILDER[UrlUtil.PG_TRAPS_HAZARDS] = UrlUtil.URL_TO_HASH_GENERIC;
+UrlUtil.URL_TO_HASH_BUILDER[UrlUtil.PG_TABLES] = UrlUtil.URL_TO_HASH_GENERIC;
+UrlUtil.URL_TO_HASH_BUILDER[UrlUtil.PG_VEHICLES] = UrlUtil.URL_TO_HASH_GENERIC;
+UrlUtil.URL_TO_HASH_BUILDER[UrlUtil.PG_ACTIONS] = UrlUtil.URL_TO_HASH_GENERIC;
+UrlUtil.URL_TO_HASH_BUILDER[UrlUtil.PG_LANGUAGES] = UrlUtil.URL_TO_HASH_GENERIC;
+UrlUtil.URL_TO_HASH_BUILDER[UrlUtil.PG_CHAR_CREATION_OPTIONS] = UrlUtil.URL_TO_HASH_GENERIC;
 UrlUtil.URL_TO_HASH_BUILDER[UrlUtil.PG_RECIPES] = (it) => `${UrlUtil.encodeForHash([it.name, it.source])}${it._scaleFactor ? `${HASH_PART_SEP}${VeCt.HASH_SCALED}${HASH_SUB_KV_SEP}${it._scaleFactor}` : ""}`;
 UrlUtil.URL_TO_HASH_BUILDER[UrlUtil.PG_CLASS_SUBCLASS_FEATURES] = (it) => (it.__prop === "subclassFeature" || it.subclassSource) ? UrlUtil.URL_TO_HASH_BUILDER["subclassFeature"](it) : UrlUtil.URL_TO_HASH_BUILDER["classFeature"](it);
+UrlUtil.URL_TO_HASH_BUILDER[UrlUtil.PG_QUICKREF] = ({name, ixChapter, ixHeader}) => {
+	const hashParts = ["bookref-quick", ixChapter, UrlUtil.encodeForHash(name.toLowerCase())];
+	if (ixHeader) hashParts.push(ixHeader);
+	return hashParts.join(HASH_PART_SEP);
+};
+
 // region Fake pages (props)
+UrlUtil.URL_TO_HASH_BUILDER["monster"] = UrlUtil.URL_TO_HASH_BUILDER[UrlUtil.PG_BESTIARY];
+UrlUtil.URL_TO_HASH_BUILDER["spell"] = UrlUtil.URL_TO_HASH_BUILDER[UrlUtil.PG_SPELLS];
+UrlUtil.URL_TO_HASH_BUILDER["background"] = UrlUtil.URL_TO_HASH_BUILDER[UrlUtil.PG_BACKGROUNDS];
+UrlUtil.URL_TO_HASH_BUILDER["item"] = UrlUtil.URL_TO_HASH_BUILDER[UrlUtil.PG_ITEMS];
+UrlUtil.URL_TO_HASH_BUILDER["itemGroup"] = UrlUtil.URL_TO_HASH_BUILDER[UrlUtil.PG_ITEMS];
+UrlUtil.URL_TO_HASH_BUILDER["baseitem"] = UrlUtil.URL_TO_HASH_BUILDER[UrlUtil.PG_ITEMS];
+UrlUtil.URL_TO_HASH_BUILDER["variant"] = UrlUtil.URL_TO_HASH_BUILDER[UrlUtil.PG_ITEMS];
+UrlUtil.URL_TO_HASH_BUILDER["class"] = UrlUtil.URL_TO_HASH_BUILDER[UrlUtil.PG_CLASSES];
+UrlUtil.URL_TO_HASH_BUILDER["condition"] = UrlUtil.URL_TO_HASH_BUILDER[UrlUtil.PG_CONDITIONS_DISEASES];
+UrlUtil.URL_TO_HASH_BUILDER["disease"] = UrlUtil.URL_TO_HASH_BUILDER[UrlUtil.PG_CONDITIONS_DISEASES];
+UrlUtil.URL_TO_HASH_BUILDER["status"] = UrlUtil.URL_TO_HASH_BUILDER[UrlUtil.PG_CONDITIONS_DISEASES];
+UrlUtil.URL_TO_HASH_BUILDER["feat"] = UrlUtil.URL_TO_HASH_BUILDER[UrlUtil.PG_FEATS];
+UrlUtil.URL_TO_HASH_BUILDER["optionalfeature"] = UrlUtil.URL_TO_HASH_BUILDER[UrlUtil.PG_OPT_FEATURES];
+UrlUtil.URL_TO_HASH_BUILDER["psionic"] = UrlUtil.URL_TO_HASH_BUILDER[UrlUtil.PG_PSIONICS];
+UrlUtil.URL_TO_HASH_BUILDER["race"] = UrlUtil.URL_TO_HASH_BUILDER[UrlUtil.PG_RACES];
+UrlUtil.URL_TO_HASH_BUILDER["subrace"] = (it) => UrlUtil.URL_TO_HASH_BUILDER[UrlUtil.PG_RACES]({name: `${it.name} (${it.raceName})`, source: it.source});
+UrlUtil.URL_TO_HASH_BUILDER["reward"] = UrlUtil.URL_TO_HASH_BUILDER[UrlUtil.PG_REWARDS];
+UrlUtil.URL_TO_HASH_BUILDER["variantrule"] = UrlUtil.URL_TO_HASH_BUILDER[UrlUtil.PG_VARIANTRULES];
+UrlUtil.URL_TO_HASH_BUILDER["adventure"] = UrlUtil.URL_TO_HASH_BUILDER[UrlUtil.PG_ADVENTURES];
+UrlUtil.URL_TO_HASH_BUILDER["adventureData"] = UrlUtil.URL_TO_HASH_BUILDER[UrlUtil.PG_ADVENTURES];
+UrlUtil.URL_TO_HASH_BUILDER["book"] = UrlUtil.URL_TO_HASH_BUILDER[UrlUtil.PG_BOOKS];
+UrlUtil.URL_TO_HASH_BUILDER["bookData"] = UrlUtil.URL_TO_HASH_BUILDER[UrlUtil.PG_BOOKS];
+UrlUtil.URL_TO_HASH_BUILDER["deity"] = UrlUtil.URL_TO_HASH_BUILDER[UrlUtil.PG_DEITIES];
+UrlUtil.URL_TO_HASH_BUILDER["cult"] = UrlUtil.URL_TO_HASH_BUILDER[UrlUtil.PG_CULTS_BOONS];
+UrlUtil.URL_TO_HASH_BUILDER["boon"] = UrlUtil.URL_TO_HASH_BUILDER[UrlUtil.PG_CULTS_BOONS];
+UrlUtil.URL_TO_HASH_BUILDER["object"] = UrlUtil.URL_TO_HASH_BUILDER[UrlUtil.PG_OBJECTS];
+UrlUtil.URL_TO_HASH_BUILDER["trap"] = UrlUtil.URL_TO_HASH_BUILDER[UrlUtil.PG_TRAPS_HAZARDS];
+UrlUtil.URL_TO_HASH_BUILDER["hazard"] = UrlUtil.URL_TO_HASH_BUILDER[UrlUtil.PG_TRAPS_HAZARDS];
+UrlUtil.URL_TO_HASH_BUILDER["table"] = UrlUtil.URL_TO_HASH_BUILDER[UrlUtil.PG_TABLES];
+UrlUtil.URL_TO_HASH_BUILDER["tableGroup"] = UrlUtil.URL_TO_HASH_BUILDER[UrlUtil.PG_TABLES];
+UrlUtil.URL_TO_HASH_BUILDER["vehicle"] = UrlUtil.URL_TO_HASH_BUILDER[UrlUtil.PG_VEHICLES];
+UrlUtil.URL_TO_HASH_BUILDER["vehicleUpgrade"] = UrlUtil.URL_TO_HASH_BUILDER[UrlUtil.PG_VEHICLES];
+UrlUtil.URL_TO_HASH_BUILDER["action"] = UrlUtil.URL_TO_HASH_BUILDER[UrlUtil.PG_ACTIONS];
+UrlUtil.URL_TO_HASH_BUILDER["language"] = UrlUtil.URL_TO_HASH_BUILDER[UrlUtil.PG_LANGUAGES];
+UrlUtil.URL_TO_HASH_BUILDER["charoption"] = UrlUtil.URL_TO_HASH_BUILDER[UrlUtil.PG_CHAR_CREATION_OPTIONS];
+UrlUtil.URL_TO_HASH_BUILDER["recipe"] = UrlUtil.URL_TO_HASH_BUILDER[UrlUtil.PG_RECIPES];
+
 UrlUtil.URL_TO_HASH_BUILDER["subclass"] = it => {
 	const hashParts = [
 		UrlUtil.URL_TO_HASH_BUILDER[UrlUtil.PG_CLASSES]({name: it.className, source: it.classSource}),
@@ -2122,10 +2337,13 @@ UrlUtil.URL_TO_HASH_BUILDER["subclass"] = it => {
 };
 UrlUtil.URL_TO_HASH_BUILDER["classFeature"] = (it) => UrlUtil.encodeForHash([it.name, it.className, it.classSource, it.level, it.source]);
 UrlUtil.URL_TO_HASH_BUILDER["subclassFeature"] = (it) => UrlUtil.encodeForHash([it.name, it.className, it.classSource, it.subclassShortName, it.subclassSource, it.level, it.source]);
-UrlUtil.URL_TO_HASH_BUILDER["legendaryGroup"] = (it) => UrlUtil.encodeForHash([it.name, it.source]);
-UrlUtil.URL_TO_HASH_BUILDER["legendarygroup"] = UrlUtil.URL_TO_HASH_BUILDER["legendaryGroup"];
-UrlUtil.URL_TO_HASH_BUILDER["itemEntry"] = (it) => UrlUtil.encodeForHash([it.name, it.source]);
-UrlUtil.URL_TO_HASH_BUILDER["itementry"] = UrlUtil.URL_TO_HASH_BUILDER["itemEntry"];
+UrlUtil.URL_TO_HASH_BUILDER["legendaryGroup"] = UrlUtil.URL_TO_HASH_GENERIC;
+UrlUtil.URL_TO_HASH_BUILDER["itemEntry"] = UrlUtil.URL_TO_HASH_GENERIC;
+Object.keys(UrlUtil.URL_TO_HASH_BUILDER)
+	.filter(k => !k.endsWith(".html") && k.toLowerCase() !== k)
+	.forEach(k => UrlUtil.URL_TO_HASH_BUILDER[k.toLowerCase()] = UrlUtil.URL_TO_HASH_BUILDER[k]);
+UrlUtil.URL_TO_HASH_BUILDER["skill"] = UrlUtil.URL_TO_HASH_GENERIC;
+UrlUtil.URL_TO_HASH_BUILDER["sense"] = UrlUtil.URL_TO_HASH_GENERIC;
 // endregion
 
 UrlUtil.PG_TO_NAME = {};
@@ -2168,6 +2386,7 @@ UrlUtil.PG_TO_NAME[UrlUtil.PG_CHANGELOG] = "Changelog";
 UrlUtil.PG_TO_NAME[UrlUtil.PG_CHAR_CREATION_OPTIONS] = "Other Character Creation Options";
 UrlUtil.PG_TO_NAME[UrlUtil.PG_RECIPES] = "Recipes";
 UrlUtil.PG_TO_NAME[UrlUtil.PG_CLASS_SUBCLASS_FEATURES] = "Class & Subclass Features";
+UrlUtil.PG_TO_NAME[UrlUtil.PG_MAPS] = "Maps";
 
 UrlUtil.CAT_TO_PAGE = {};
 UrlUtil.CAT_TO_PAGE[Parser.CAT_ID_CREATURE] = UrlUtil.PG_BESTIARY;
@@ -2219,10 +2438,15 @@ UrlUtil.CAT_TO_PAGE[Parser.CAT_ID_PAGE] = null;
 UrlUtil.CAT_TO_PAGE[Parser.CAT_ID_LEGENDARY_GROUP] = null;
 UrlUtil.CAT_TO_PAGE[Parser.CAT_ID_CHAR_CREATION_OPTIONS] = UrlUtil.PG_CHAR_CREATION_OPTIONS;
 UrlUtil.CAT_TO_PAGE[Parser.CAT_ID_RECIPES] = UrlUtil.PG_RECIPES;
+UrlUtil.CAT_TO_PAGE[Parser.CAT_ID_STATUS] = UrlUtil.PG_CONDITIONS_DISEASES;
+UrlUtil.CAT_TO_PAGE[Parser.CAT_ID_SKILLS] = "skill";
+UrlUtil.CAT_TO_PAGE[Parser.CAT_ID_SENSES] = "sense";
 
 UrlUtil.CAT_TO_HOVER_PAGE = {};
 UrlUtil.CAT_TO_HOVER_PAGE[Parser.CAT_ID_CLASS_FEATURE] = "classfeature";
 UrlUtil.CAT_TO_HOVER_PAGE[Parser.CAT_ID_SUBCLASS_FEATURE] = "subclassfeature";
+UrlUtil.CAT_TO_HOVER_PAGE[Parser.CAT_ID_SKILLS] = "skill";
+UrlUtil.CAT_TO_HOVER_PAGE[Parser.CAT_ID_SENSES] = "sense";
 
 UrlUtil.HASH_START_CREATURE_SCALED = `${VeCt.HASH_SCALED}${HASH_SUB_KV_SEP}`;
 UrlUtil.HASH_START_CREATURE_SCALED_SPELL_SUMMON = `${VeCt.HASH_SCALED_SPELL_SUMMON}${HASH_SUB_KV_SEP}`;
@@ -2331,8 +2555,8 @@ SortUtil = {
 		if (a.sort == null && b.sort != null) return 1;
 
 		if (!a.name && !b.name) return 0;
-		const aClean = a.name.toLowerCase().trim();
-		const bClean = b.name.toLowerCase().trim();
+		const aClean = Renderer.stripTags(a.name).toLowerCase().trim();
+		const bClean = Renderer.stripTags(b.name).toLowerCase().trim();
 
 		const isOnlyA = a.name.endsWith(" Only)");
 		const isOnlyB = b.name.endsWith(" Only)");
@@ -2377,46 +2601,75 @@ SortUtil = {
 		return aSpecial && bSpecial ? 0 : aSpecial ? 1 : bSpecial ? -1 : Parser.ABIL_ABVS.indexOf(a) - Parser.ABIL_ABVS.indexOf(b);
 	},
 
+	ascSortSize (a, b) { return Parser.SIZE_ABVS.indexOf(a) - Parser.SIZE_ABVS.indexOf(b); },
+
 	initBtnSortHandlers ($wrpBtnsSort, list) {
-		let $dispCaretInitial = null;
-		const $dispCarets = [];
+		let dispCaretInitial = null;
 
-		$wrpBtnsSort.find(".sort").each((i, e) => {
-			const $btnSort = $(e);
-			const $dispCaret = SortUtil._initBtnSortHandlers_getAddCaret($btnSort);
+		const dispCarets = [...$wrpBtnsSort[0].querySelectorAll(`[data-sort]`)]
+			.map(btnSort => {
+				const dispCaret = e_({
+					tag: "span",
+					clazz: "lst__caret",
+				})
+					.appendTo(btnSort);
 
-			$dispCarets.push($dispCaret);
+				const btnSortField = btnSort.dataset.sort;
 
-			if ($btnSort.data("sort") === list.sortBy) $dispCaretInitial = $dispCaret;
+				if (btnSortField === list.sortBy) dispCaretInitial = dispCaret;
 
-			$btnSort.click(evt => {
-				evt.stopPropagation();
-				const direction = list.sortDir === "asc" ? "desc" : "asc";
-				SortUtil._initBtnSortHandlers_showCaret({$dispCarets, $dispCaret, direction});
-				list.sort($btnSort.data("sort"), direction);
+				e_({
+					ele: btnSort,
+					click: evt => {
+						evt.stopPropagation();
+						const direction = list.sortDir === "asc" ? "desc" : "asc";
+						SortUtil._initBtnSortHandlers_showCaret({dispCarets, dispCaret, direction});
+						list.sort(btnSortField, direction);
+					},
+				});
+
+				return dispCaret;
 			});
-		});
 
-		$dispCaretInitial = $dispCaretInitial || $dispCarets[0]; // Fall back on displaying the first caret
+		dispCaretInitial = dispCaretInitial || dispCarets[0]; // Fall back on displaying the first caret
 
-		SortUtil._initBtnSortHandlers_showCaret({$dispCaret: $dispCaretInitial, $dispCarets, direction: list.sortDir});
-	},
-
-	_initBtnSortHandlers_getAddCaret ($btnSort) {
-		const $existing = $btnSort.find(`.lst__caret`);
-		if ($existing.length) return $existing;
-		return $(`<span class="lst__caret"></span>`).appendTo($btnSort);
+		SortUtil._initBtnSortHandlers_showCaret({dispCaret: dispCaretInitial, dispCarets, direction: list.sortDir});
 	},
 
 	_initBtnSortHandlers_showCaret (
 		{
-			$dispCaret,
-			$dispCarets,
+			dispCaret,
+			dispCarets,
 			direction,
 		},
 	) {
-		$dispCarets.forEach($it => $it.removeClass("lst__caret--active"));
-		$dispCaret.addClass("lst__caret--active").toggleClass("lst__caret--reverse", direction === "asc");
+		dispCarets.forEach($it => $it.removeClass("lst__caret--active"));
+		dispCaret.addClass("lst__caret--active").toggleClass("lst__caret--reverse", direction === "asc");
+	},
+
+	/** Add more list sort on-clicks to existing sort buttons. */
+	initBtnSortHandlersAdditional ($wrpBtnsSort, list) {
+		[...$wrpBtnsSort[0].querySelectorAll(".sort")]
+			.map(btnSort => {
+				const btnSortField = btnSort.dataset.sort;
+
+				e_({
+					ele: btnSort,
+					click: evt => {
+						evt.stopPropagation();
+						const direction = list.sortDir === "asc" ? "desc" : "asc";
+						list.sort(btnSortField, direction);
+					},
+				});
+			});
+	},
+
+	ascSortSourceGroup (a, b) {
+		const grpA = a.group || "other";
+		const grpB = b.group || "other";
+		const ixA = SourceUtil.ADV_BOOK_GROUPS.findIndex(it => it.group === grpA);
+		const ixB = SourceUtil.ADV_BOOK_GROUPS.findIndex(it => it.group === grpB);
+		return SortUtil.ascSort(ixA, ixB);
 	},
 
 	ascSortAdventure (a, b) {
@@ -2449,58 +2702,95 @@ DataUtil = {
 	_merging: {},
 	_merged: {},
 
-	async _pLoad (url) {
-		if (DataUtil._loading[url]) {
-			await DataUtil._loading[url];
-			return DataUtil._loaded[url];
+	async _pLoad ({url, id, isBustCache = false}) {
+		if (DataUtil._loading[id] && !isBustCache) {
+			await DataUtil._loading[id];
+			return DataUtil._loaded[id];
 		}
 
-		DataUtil._loading[url] = new Promise((resolve, reject) => {
+		DataUtil._loading[id] = new Promise((resolve, reject) => {
 			const request = new XMLHttpRequest();
+
 			request.open("GET", url, true);
+			/*
+			// These would be nice to have, but kill CORS when e.g. hitting GitHub `raw.`s.
+			// This may be why `fetch` dies horribly here, too. Prefer `XMLHttpRequest` for now, as it seems to have a
+			//   higher innate tolerance to CORS nonsense.
+			if (isBustCache) request.setRequestHeader("Cache-Control", "no-cache, no-store");
+			request.setRequestHeader("Content-Type", "application/json");
+			request.setRequestHeader("Referrer-Policy", "no-referrer");
+			 */
 			request.overrideMimeType("application/json");
+
 			request.onload = function () {
 				try {
-					DataUtil._loaded[url] = JSON.parse(this.response);
+					DataUtil._loaded[id] = JSON.parse(this.response);
 					resolve();
 				} catch (e) {
 					reject(new Error(`Could not parse JSON from ${url}: ${e.message}`));
 				}
 			};
 			request.onerror = (e) => reject(new Error(`Error during JSON request: ${e.target.status}`));
+
 			request.send();
 		});
 
-		await DataUtil._loading[url];
-		return DataUtil._loaded[url];
+		await DataUtil._loading[id];
+		return DataUtil._loaded[id];
 	},
 
-	async loadJSON (url, ...otherData) {
-		const procUrl = UrlUtil.link(url);
+	_mutAddProps (data) {
+		if (data && typeof data === "object") {
+			for (const k in data) {
+				if (data[k] instanceof Array) {
+					for (let i = 0, len = data[k].length; i < len; ++i) {
+						data[k][i].__prop = k;
+					}
+				}
+			}
+		}
+	},
 
-		let ident = procUrl;
+	async loadJSON (url) {
+		return DataUtil._loadJson(url, {isDoDataMerge: true});
+	},
+
+	async loadRawJSON (url, {isBustCache} = {}) {
+		return DataUtil._loadJson(url, {isBustCache});
+	},
+
+	async _loadJson (url, {isDoDataMerge = false, isBustCache = false} = {}) {
+		const procUrl = UrlUtil.link(url, {isBustCache});
+
 		let data;
 		try {
-			data = await DataUtil._pLoad(procUrl);
+			data = await DataUtil._pLoad({url: procUrl, id: url, isBustCache});
 		} catch (e) {
 			setTimeout(() => { throw e; });
 		}
 
 		// Fallback to the un-processed URL
-		if (!data) {
-			ident = url;
-			data = await DataUtil._pLoad(url);
-		}
+		if (!data) data = await DataUtil._pLoad({url: url, id: url, isBustCache});
 
-		await DataUtil.pDoMetaMerge(ident, data);
+		if (isDoDataMerge) await DataUtil.pDoMetaMerge(url, data);
 
 		return data;
 	},
 
 	async pDoMetaMerge (ident, data, options) {
+		DataUtil._mutAddProps(data);
 		DataUtil._merging[ident] = DataUtil._merging[ident] || DataUtil._pDoMetaMerge(ident, data, options);
 		await DataUtil._merging[ident];
-		return DataUtil._merged[ident];
+		const out = DataUtil._merged[ident];
+
+		// Cache the result, but immediately flush it.
+		//   We do this because the cache is both a cache and a locking mechanism.
+		if (options?.isSkipMetaMergeCache) {
+			delete DataUtil._merging[ident];
+			delete DataUtil._merged[ident];
+		}
+
+		return out;
 	},
 
 	_pDoMetaMerge_handleCopyProp (prop, arr, entry, options) {
@@ -2578,6 +2868,8 @@ DataUtil = {
 			delete data._meta.otherSources;
 		}
 
+		if (data._meta && !Object.keys(data._meta).length) delete data._meta;
+
 		const props = Object.keys(data);
 		for (const prop of props) {
 			if (!data[prop] || !(data[prop] instanceof Array) || !data[prop].length) continue;
@@ -2604,9 +2896,9 @@ DataUtil = {
 		return `${toCsv(headers)}\n${rows.map(r => toCsv(r)).join("\n")}`;
 	},
 
-	userDownload (filename, data, {fileType = null, isSipAdditionalMetadata = false, propVersion = "siteVersion", valVersion = VERSION_NUMBER} = {}) {
+	userDownload (filename, data, {fileType = null, isSkipAdditionalMetadata = false, propVersion = "siteVersion", valVersion = VERSION_NUMBER} = {}) {
 		filename = `${filename}.json`;
-		if (isSipAdditionalMetadata || data instanceof Array) return DataUtil._userDownload(filename, JSON.stringify(data, null, "\t"), "text/json");
+		if (isSkipAdditionalMetadata || data instanceof Array) return DataUtil._userDownload(filename, JSON.stringify(data, null, "\t"), "text/json");
 
 		data = {[propVersion]: valVersion, ...data};
 		if (fileType != null) data = {fileType, ...data};
@@ -2629,43 +2921,55 @@ DataUtil = {
 	/** Always returns an array of files, even in "single" mode. */
 	pUserUpload ({isMultiple = false, expectedFileType = null, propVersion = "siteVersion"} = {}) {
 		return new Promise(resolve => {
-			const $iptAdd = $(`<input type="file" ${isMultiple ? "multiple" : ""} accept=".json" style="position: fixed; top: -100px; left: -100px; display: none;">`).on("change", (evt) => {
-				const input = evt.target;
+			const $iptAdd = $(`<input type="file" ${isMultiple ? "multiple" : ""} class="ve-hidden" accept=".json">`)
+				.on("change", (evt) => {
+					const input = evt.target;
 
-				const reader = new FileReader();
-				let readIndex = 0;
-				const out = [];
-				const errs = [];
-				reader.onload = async () => {
-					const name = input.files[readIndex - 1].name;
-					const text = reader.result;
+					const reader = new FileReader();
+					let readIndex = 0;
+					const out = [];
+					const errs = [];
 
-					try {
-						const json = JSON.parse(text);
+					reader.onload = async () => {
+						const name = input.files[readIndex - 1].name;
+						const text = reader.result;
 
-						const isSkipFile = expectedFileType != null && json.fileType && json.fileType !== expectedFileType && !(await InputUiUtil.pGetUserBoolean({
-							textYes: "Yes",
-							textNo: "Cancel",
-							title: "File Type Mismatch",
-							htmlDescription: `The file "${name}" has the type "${json.fileType}" when the expected file type was "${expectedFileType}".<br>Are you sure you want to upload this file?`,
-						}));
+						try {
+							const json = JSON.parse(text);
 
-						if (!isSkipFile) {
-							delete json.fileType;
-							delete json[propVersion];
+							const isSkipFile = expectedFileType != null && json.fileType && json.fileType !== expectedFileType && !(await InputUiUtil.pGetUserBoolean({
+								textYes: "Yes",
+								textNo: "Cancel",
+								title: "File Type Mismatch",
+								htmlDescription: `The file "${name}" has the type "${json.fileType}" when the expected file type was "${expectedFileType}".<br>Are you sure you want to upload this file?`,
+							}));
 
-							out.push(json);
+							if (!isSkipFile) {
+								delete json.fileType;
+								delete json[propVersion];
+
+								out.push({name, json});
+							}
+						} catch (e) {
+							errs.push({filename: name, message: e.message});
 						}
-					} catch (e) {
-						errs.push({filename: name, message: e.message});
-					}
 
-					if (input.files[readIndex]) reader.readAsText(input.files[readIndex++]);
-					else resolve({jsons: out, errors: errs});
-				};
+						if (input.files[readIndex]) {
+							reader.readAsText(input.files[readIndex++]);
+							return;
+						}
 
-				reader.readAsText(input.files[readIndex++]);
-			}).appendTo(document.body);
+						resolve({
+							files: out,
+							errors: errs,
+							jsons: out.map(({json}) => json),
+						});
+					};
+
+					reader.readAsText(input.files[readIndex++]);
+				})
+				.appendTo(document.body);
+
 			$iptAdd.click();
 		});
 	},
@@ -2680,27 +2984,33 @@ DataUtil = {
 		});
 	},
 
-	cleanJson (cpy) {
+	cleanJson (cpy, {isDeleteUniqueId = true} = {}) {
+		if (!cpy) return cpy;
 		cpy.name = cpy._displayName || cpy.name;
-		delete cpy.uniqueId;
+		if (isDeleteUniqueId) delete cpy.uniqueId;
 		DataUtil.__cleanJsonObject(cpy);
 		return cpy;
 	},
 
+	_CLEAN_JSON_ALLOWED_UNDER_KEYS: [
+		"_copy",
+		"_versions",
+		"_version",
+	],
 	__cleanJsonObject (obj) {
 		if (obj == null) return obj;
-		if (typeof obj === "object") {
-			if (obj instanceof Array) {
-				obj.forEach(it => DataUtil.__cleanJsonObject(it));
-			} else {
-				Object.entries(obj).forEach(([k, v]) => {
-					if (k === "_versions" || k === "_version") return;
-					// TODO(Future) use "__" prefix for temp data, instead of "_"
-					if ((k.startsWith("_") && k !== "_") || k === "customHashId") delete obj[k];
-					else DataUtil.__cleanJsonObject(v);
-				});
-			}
+		if (typeof obj !== "object") return obj;
+
+		if (obj instanceof Array) {
+			return obj.forEach(it => DataUtil.__cleanJsonObject(it));
 		}
+
+		Object.entries(obj).forEach(([k, v]) => {
+			if (DataUtil._CLEAN_JSON_ALLOWED_UNDER_KEYS.includes(k)) return;
+			// TODO(Future) use "__" prefix for temp data, instead of "_"
+			if ((k.startsWith("_") && k !== "_") || k === "customHashId") delete obj[k];
+			else DataUtil.__cleanJsonObject(v);
+		});
 	},
 
 	_MULTI_SOURCE_PROP_TO_DIR: {
@@ -2771,6 +3081,18 @@ DataUtil = {
 	// TODO(Future) Note that a case-insensitive variant of this is built into the renderer, which could be factored out
 	//   to this level if required.
 	async pLoadBrewBySource (source, {isSilent = true} = {}) {
+		const brewUrl = await DataUtil._pLoadAddBrewBySource_pGetUrl({source, isSilent});
+		if (!brewUrl) return null;
+		return DataUtil.loadJSON(brewUrl);
+	},
+
+	async pAddBrewBySource (source, {isSilent = true} = {}) {
+		const brewUrl = await DataUtil._pLoadAddBrewBySource_pGetUrl({source, isSilent});
+		if (!brewUrl) return null;
+		return BrewUtil2.pAddBrewFromUrl(brewUrl);
+	},
+
+	async _pLoadAddBrewBySource_pGetUrl ({source, isSilent = true}) {
 		const brewIndex = await DataUtil.brew.pLoadSourceIndex();
 		if (!brewIndex[source]) {
 			if (isSilent) return null;
@@ -2778,9 +3100,7 @@ DataUtil = {
 		}
 
 		const urlRoot = await StorageUtil.pGet(`HOMEBREW_CUSTOM_REPO_URL`);
-		const brewUrl = DataUtil.brew.getFileUrl(brewIndex[source], urlRoot);
-		await BrewUtil.pDoHandleBrewJson((await DataUtil.loadJSON(brewUrl)), UrlUtil.getCurrentPage());
-		return DataUtil.loadJSON(brewUrl);
+		return DataUtil.brew.getFileUrl(brewIndex[source], urlRoot);
 	},
 
 	// region Dbg
@@ -2794,6 +3114,7 @@ DataUtil = {
 			page: true,
 			otherSources: true,
 			srd: true,
+			basicRules: true,
 			hasFluff: true,
 			hasFluffImages: true,
 			hasToken: true,
@@ -2822,6 +3143,28 @@ DataUtil = {
 				displayText,
 				others,
 			};
+		},
+
+		packUid (ent, tag) {
+			// <name>|<source>
+			const sourceDefault = Parser.getTagSource(tag);
+			return [
+				ent.name,
+				(ent.source || "").toLowerCase() === sourceDefault.toLowerCase() ? "" : ent.source,
+			].join("|").replace(/\|+$/, ""); // Trim trailing pipes
+		},
+
+		getNormalizedUid (uid, tag) {
+			const {name, source} = DataUtil.generic.unpackUid(uid, tag, {isLower: true});
+			return [name, source].join("|");
+		},
+
+		getUid (ent, {isMaintainCase = false} = {}) {
+			const {name, source} = ent;
+			if (!name || !source) throw new Error(`Entity did not have a name and source!`);
+			const out = [name, source].join("|");
+			if (isMaintainCase) return out;
+			return out.toLowerCase();
 		},
 
 		async _pMergeCopy (impl, page, entryList, entry, options) {
@@ -3026,7 +3369,7 @@ DataUtil = {
 			function doMod_insertArr (modInfo, prop) {
 				doEnsureArray(modInfo, "items");
 				if (!copyTo[prop]) throw new Error(`${msgPtFailed} Could not find "${prop}" array`);
-				copyTo[prop].splice(modInfo.index, 0, ...modInfo.items);
+				copyTo[prop].splice(~modInfo.index ? modInfo.index : copyTo[prop].length, 0, ...modInfo.items);
 			}
 
 			function doMod_removeArr (modInfo, prop) {
@@ -3252,14 +3595,21 @@ DataUtil = {
 
 			function doMod_scalarAddDc (modInfo, prop) {
 				if (!copyTo[prop]) return;
-				copyTo[prop] = JSON.parse(JSON.stringify(copyTo[prop]).replace(/{@dc (\d+)}/g, (m0, m1) => `{@dc ${Number(m1) + modInfo.scalar}}`));
+				copyTo[prop] = JSON.parse(JSON.stringify(copyTo[prop]).replace(/{@dc (\d+)(?:\|[^}]+)?}/g, (m0, m1) => `{@dc ${Number(m1) + modInfo.scalar}}`));
 			}
 
 			function doMod_maxSize (modInfo) {
-				const ixCur = Parser.SIZE_ABVS.indexOf(copyTo.size);
+				const sizes = [...copyTo.size].sort(SortUtil.ascSortSize);
+
+				const ixsCur = sizes.map(it => Parser.SIZE_ABVS.indexOf(it));
 				const ixMax = Parser.SIZE_ABVS.indexOf(modInfo.max);
-				if (ixCur < 0 || ixMax < 0) throw new Error(`${msgPtFailed} Unhandled size!`);
-				copyTo.size = Parser.SIZE_ABVS[Math.min(ixCur, ixMax)];
+
+				if (!~ixMax || ixsCur.some(ix => !~ix)) throw new Error(`${msgPtFailed} Unhandled size!`);
+
+				const ixsNxt = ixsCur.filter(ix => ix <= ixMax);
+				if (!ixsNxt.length) ixsNxt.push(ixMax);
+
+				copyTo.size = ixsNxt.map(ix => Parser.SIZE_ABVS[ix]);
 			}
 
 			function doMod_scalarMultXp (modInfo) {
@@ -3459,9 +3809,10 @@ DataUtil = {
 	},
 
 	proxy: {
-		getVersions (prop, ent) {
-			return (DataUtil[prop]?.getVersions || DataUtil.generic.getVersions)(ent);
-		},
+		getVersions (prop, ent) { return (DataUtil[prop]?.getVersions || DataUtil.generic.getVersions)(ent); },
+		unpackUid (prop, uid, tag, opts) { return (DataUtil[prop]?.unpackUid || DataUtil.generic.unpackUid)(uid, tag, opts); },
+		getNormalizedUid (prop, uid, tag, opts) { return (DataUtil[prop]?.getNormalizedUid || DataUtil.generic.getNormalizedUid)(uid, tag, opts); },
+		getUid (prop, ent, opts) { return (DataUtil[prop]?.getUid || DataUtil.generic.getUid)(ent, opts); },
 	},
 
 	monster: {
@@ -3472,6 +3823,7 @@ DataUtil = {
 			altArt: true,
 			variant: true,
 			dragonCastingColor: true,
+			familiar: true,
 		},
 		_mergeCache: {},
 		async pMergeCopy (monList, mon, options) {
@@ -3569,27 +3921,6 @@ DataUtil = {
 				(DataUtil.monster.metaGroupMap[it.source] =
 					DataUtil.monster.metaGroupMap[it.source] || {})[it.name] = it;
 			});
-		},
-
-		async pPostProcess (data) {
-			if (!data?.monster?.length) return;
-
-			// Load "summoned by spell" info
-			for (const mon of data.monster) {
-				if (!mon.summonedBySpell) continue;
-				let [name, source] = mon.summonedBySpell.split("|");
-				source = source || SRC_PHB;
-				const hash = UrlUtil.URL_TO_HASH_BUILDER[UrlUtil.PG_SPELLS]({name, source});
-
-				let spell = null;
-				if (data.spell?.length) spell = data.spell.find(sp => UrlUtil.URL_TO_HASH_BUILDER[UrlUtil.PG_SPELLS](sp) === hash);
-				if (!spell) spell = await Renderer.hover.pCacheAndGetHash(UrlUtil.PG_SPELLS, hash);
-				if (!spell) {
-					setTimeout(() => { throw new Error(`Could not load "${mon.name} (${mon.source})" "summonedBySpell" "${mon.summonedBySpell}"`); });
-					continue;
-				}
-				mon._summonedBySpell_levelBase = spell.level;
-			}
 		},
 	},
 
@@ -3693,6 +4024,16 @@ DataUtil = {
 		getDataUrl () { return `${Renderer.get().baseUrl}data/backgrounds.json`; },
 	},
 
+	backgroundFluff: {
+		_MERGE_REQUIRES_PRESERVE: {},
+		_mergeCache: {},
+		async pMergeCopy (flfList, flf, options) {
+			return DataUtil.generic._pMergeCopy(DataUtil.backgroundFluff, UrlUtil.PG_BACKGROUNDS, flfList, flf, options);
+		},
+
+		getDataUrl () { return `${Renderer.get().baseUrl}data/fluff-backgrounds.json`; },
+	},
+
 	optionalfeature: {
 		_MERGE_REQUIRES_PRESERVE: {},
 		_mergeCache: {},
@@ -3704,9 +4045,7 @@ DataUtil = {
 	},
 
 	race: {
-		_MERGE_REQUIRES_PRESERVE: {
-			subraces: true,
-		},
+		_MERGE_REQUIRES_PRESERVE: {},
 		_mergeCache: {},
 		async pMergeCopy (raceList, race, options) {
 			return DataUtil.generic._pMergeCopy(DataUtil.race, UrlUtil.PG_RACES, raceList, race, options);
@@ -3717,21 +4056,67 @@ DataUtil = {
 		async loadJSON ({isAddBaseRaces = false} = {}) {
 			if (!DataUtil.race._pIsLoadings[isAddBaseRaces]) {
 				DataUtil.race._pIsLoadings[isAddBaseRaces] = (async () => {
-					const rawRaceData = await DataUtil.loadJSON(`${Renderer.get().baseUrl}data/races.json`);
-					const raceData = Renderer.race.mergeSubraces(rawRaceData.race, {isAddBaseRaces});
-					raceData.forEach(it => it.__prop = "race");
-					DataUtil.race._loadCache[isAddBaseRaces] = {race: raceData};
+					DataUtil.race._loadCache[isAddBaseRaces] = DataUtil.race.getPostProcessedSiteJson(
+						await DataUtil.loadJSON(`${Renderer.get().baseUrl}data/races.json`),
+						{isAddBaseRaces},
+					);
 				})();
 			}
 			await DataUtil.race._pIsLoadings[isAddBaseRaces];
 			return DataUtil.race._loadCache[isAddBaseRaces];
 		},
 
+		async loadRawJSON () {
+			return DataUtil.loadJSON(`${Renderer.get().baseUrl}data/races.json`);
+		},
+
+		getPostProcessedSiteJson (rawRaceData, {isAddBaseRaces = false} = {}) {
+			rawRaceData = MiscUtil.copy(rawRaceData);
+			(rawRaceData.subrace || []).forEach(sr => {
+				const r = rawRaceData.race.find(it => it.name === sr.raceName && it.source === sr.raceSource);
+				if (!r) return JqueryUtil.doToast({content: `Failed to find race "${sr.raceName}" (${sr.raceSource})`, type: "danger"});
+				const cpySr = MiscUtil.copy(sr);
+				delete cpySr.raceName;
+				delete cpySr.raceSource;
+				(r.subraces = r.subraces || []).push(sr);
+			});
+			delete rawRaceData.subrace;
+			const raceData = Renderer.race.mergeSubraces(rawRaceData.race, {isAddBaseRaces});
+			raceData.forEach(it => it.__prop = "race");
+			return {race: raceData};
+		},
+
 		async loadBrew ({isAddBaseRaces = true} = {}) {
-			const brew = await BrewUtil.pAddBrewData();
-			let fromBrew = MiscUtil.copy(brew.race || []);
-			fromBrew = Renderer.race.mergeSubraces(fromBrew, {isAddBaseRaces});
-			return {race: fromBrew};
+			const rawSite = await DataUtil.race.loadRawJSON();
+			const brew = await BrewUtil2.pGetBrewProcessed();
+			return DataUtil.race.getPostProcessedBrewJson(rawSite, brew, {isAddBaseRaces});
+		},
+
+		getPostProcessedBrewJson (rawSite, brew, {isAddBaseRaces = false} = {}) {
+			rawSite = MiscUtil.copy(rawSite);
+			brew = MiscUtil.copy(brew);
+
+			const rawSiteUsed = [];
+			(brew.subrace || []).forEach(sr => {
+				const rSite = rawSite.race.find(it => it.name === sr.raceName && it.source === sr.raceSource);
+				const rBrew = (brew.race || []).find(it => it.name === sr.raceName && it.source === sr.raceSource);
+				if (!rSite && !rBrew) return JqueryUtil.doToast({content: `Failed to find race "${sr.raceName}" (${sr.raceSource})`, type: "danger"});
+				const rTgt = rSite || rBrew;
+				const cpySr = MiscUtil.copy(sr);
+				delete cpySr.raceName;
+				delete cpySr.raceSource;
+				(rTgt.subraces = rTgt.subraces || []).push(sr);
+				if (rSite && !rawSiteUsed.includes(rSite)) rawSiteUsed.push(rSite);
+			});
+			delete brew.subrace;
+
+			const raceDataBrew = Renderer.race.mergeSubraces(brew.race || [], {isAddBaseRaces});
+			// Never add base races from site races when building brew race list
+			const raceDataSite = Renderer.race.mergeSubraces(rawSiteUsed, {isAddBaseRaces: false});
+
+			const out = [...raceDataBrew, ...raceDataSite];
+			out.forEach(it => it.__prop = "race");
+			return {race: out};
 		},
 	},
 
@@ -3759,7 +4144,7 @@ DataUtil = {
 		async loadJSON () {
 			if (DataUtil.class._loadedJson) return DataUtil.class._loadedJson;
 
-			DataUtil.class._pLoadingJson = (async () => {
+			DataUtil.class._pLoadingJson = DataUtil.class._pLoadingJson || (async () => {
 				const index = await DataUtil.loadJSON(`${Renderer.get().baseUrl}data/class/index.json`);
 
 				const allData = (
@@ -3782,7 +4167,7 @@ DataUtil = {
 		async loadRawJSON () {
 			if (DataUtil.class._loadedRawJson) return DataUtil.class._loadedRawJson;
 
-			DataUtil.class._pLoadingRawJson = (async () => {
+			DataUtil.class._pLoadingRawJson = DataUtil.class._pLoadingRawJson || (async () => {
 				const index = await DataUtil.loadJSON(`${Renderer.get().baseUrl}data/class/index.json`);
 				const allData = await Promise.all(Object.values(index).map(it => DataUtil.loadJSON(`${Renderer.get().baseUrl}data/class/${it}`)));
 
@@ -3796,6 +4181,17 @@ DataUtil = {
 			await DataUtil.class._pLoadingRawJson;
 
 			return DataUtil.class._loadedRawJson;
+		},
+
+		packUidSubclass (it) {
+			// <name>|<className>|<classSource>|<source>
+			const sourceDefault = Parser.getTagSource("subclass");
+			return [
+				it.name,
+				it.className,
+				(it.classSource || "").toLowerCase() === sourceDefault.toLowerCase() ? "" : it.classSource,
+				(it.source || "").toLowerCase() === sourceDefault.toLowerCase() ? "" : it.source,
+			].join("|").replace(/\|+$/, ""); // Trim trailing pipes
 		},
 
 		/**
@@ -3899,7 +4295,7 @@ DataUtil = {
 			const byLevel = {}; // Build a map of `level: [classFeature]`
 			for (const classFeatureRef of (cls.classFeatures || [])) {
 				const uid = classFeatureRef.classFeature ? classFeatureRef.classFeature : classFeatureRef;
-				const {name, className, classSource, level, source} = DataUtil.class.unpackUidClassFeature(uid);
+				const {name, className, classSource, level, source, displayText} = DataUtil.class.unpackUidClassFeature(uid);
 				if (!name || !className || !level || isNaN(level)) continue; // skip over broken links
 
 				if (source === SRC_5ETOOLS_TMP) continue; // Skip over temp/nonexistent links
@@ -3916,7 +4312,11 @@ DataUtil = {
 					continue;
 				}
 
+				if (displayText) classFeature._displayName = displayText;
+				if (classFeatureRef.tableDisplayName) classFeature._displayNameTable = classFeatureRef.tableDisplayName;
+
 				if (classFeatureRef.gainSubclassFeature) classFeature.gainSubclassFeature = true;
+				if (classFeatureRef.gainSubclassFeatureHasContent) classFeature.gainSubclassFeatureHasContent = true;
 
 				if (cls.otherSources && cls.source === classFeature.source) classFeature.otherSources = MiscUtil.copy(cls.otherSources);
 
@@ -3946,8 +4346,11 @@ DataUtil = {
 
 			for (const subclassFeatureRef of (sc.subclassFeatures || [])) {
 				const uid = subclassFeatureRef.subclassFeature ? subclassFeatureRef.subclassFeature : subclassFeatureRef;
-				const {name, className, classSource, subclassShortName, subclassSource, level, source} = DataUtil.class.unpackUidSubclassFeature(uid);
+				const {name, className, classSource, subclassShortName, subclassSource, level, source, displayText} = DataUtil.class.unpackUidSubclassFeature(uid);
 				if (!name || !className || !subclassShortName || !level || isNaN(level)) continue; // skip over broken links
+
+				if (source === SRC_5ETOOLS_TMP) continue; // Skip over temp/nonexistent links
+
 				const hash = UrlUtil.URL_TO_HASH_BUILDER["subclassFeature"]({name, className, classSource, subclassShortName, subclassSource, level, source});
 
 				// Skip blacklisted
@@ -3959,6 +4362,8 @@ DataUtil = {
 					JqueryUtil.doToast({type: "danger", content: `Failed to find <code>subclassFeature</code> <code>${uid}</code>`});
 					continue;
 				}
+
+				if (displayText) subclassFeature._displayName = displayText;
 
 				if (sc.otherSources && sc.source === subclassFeature.source) subclassFeature.otherSources = MiscUtil.copy(sc.otherSources);
 
@@ -3983,22 +4388,10 @@ DataUtil = {
 			DataUtil.class._CACHE_SUBCLASS_LOOKUP_PROMISE = DataUtil.class._CACHE_SUBCLASS_LOOKUP_PROMISE || (async () => {
 				const subclassLookup = {};
 				Object.assign(subclassLookup, await DataUtil.loadJSON(`${Renderer.get().baseUrl}data/generated/gendata-subclass-lookup.json`));
-				const homebrew = await BrewUtil.pAddBrewData();
-				DataUtil.class.mergeHomebrewSubclassLookup(subclassLookup, homebrew);
 				DataUtil.class._CACHE_SUBCLASS_LOOKUP = subclassLookup;
 			})();
 			await DataUtil.class._CACHE_SUBCLASS_LOOKUP_PROMISE;
 			return DataUtil.class._CACHE_SUBCLASS_LOOKUP;
-		},
-
-		mergeHomebrewSubclassLookup (subclassLookup, homebrew) {
-			(homebrew.subclass || [])
-				.forEach(sc => {
-					const clSrc = sc.classSource || SRC_PHB;
-					sc.shortName = sc.shortName || sc.name;
-					const target = MiscUtil.getOrSet(subclassLookup, clSrc, sc.className, {});
-					MiscUtil.set(target, sc.source, sc.shortName, {name: sc.name});
-				});
 		},
 		// endregion
 	},
@@ -4053,6 +4446,8 @@ DataUtil = {
 				laterPrinting.push(src);
 			});
 			data.deity.forEach(g => g._isEnhanced = true);
+
+			return data;
 		},
 
 		loadJSON: async function () {
@@ -4062,6 +4457,16 @@ DataUtil = {
 		},
 
 		getDataUrl () { return `${Renderer.get().baseUrl}data/deities.json`; },
+
+		packUidDeity (it) {
+			// <name>|<pantheon>|<source>
+			const sourceDefault = Parser.getTagSource("deity");
+			return [
+				it.name,
+				(it.pantheon || "").toLowerCase() === "forgotten realms" ? "" : it.pantheon,
+				(it.source || "").toLowerCase() === sourceDefault.toLowerCase() ? "" : it.source,
+			].join("|").replace(/\|+$/, ""); // Trim trailing pipes
+		},
 	},
 
 	table: {
@@ -4207,7 +4612,7 @@ DataUtil = {
 		},
 
 		async loadBrew () {
-			const brew = await BrewUtil.pAddBrewData();
+			const brew = await BrewUtil2.pGetBrewProcessed();
 			DataUtil.recipe.postProcessData(brew);
 			return brew;
 		},
@@ -4222,13 +4627,36 @@ DataUtil = {
 		},
 	},
 
+	quickreference: {
+		/**
+		 * @param uid
+		 * @param [opts]
+		 * @param [opts.isLower] If the returned values should be lowercase.
+		 */
+		unpackUid (uid, opts) {
+			opts = opts || {};
+			if (opts.isLower) uid = uid.toLowerCase();
+			let [name, source, ixChapter, ixHeader, displayText] = uid.split("|").map(it => it.trim());
+			source = source || (opts.isLower ? SRC_PHB.toLowerCase() : SRC_PHB);
+			ixChapter = Number(ixChapter || 0);
+			return {
+				name,
+				ixChapter,
+				ixHeader,
+				source,
+				displayText,
+			};
+		},
+	},
+
 	brew: {
 		_getCleanUrlRoot (urlRoot) {
 			if (urlRoot && urlRoot.trim()) {
 				urlRoot = urlRoot.trim();
 				if (!urlRoot.endsWith("/")) urlRoot = `${urlRoot}/`;
-			} else urlRoot = `https://raw.githubusercontent.com/TheGiddyLimit/homebrew/master/`;
-			return urlRoot;
+				return urlRoot;
+			}
+			return VeCt.URL_ROOT_BREW;
 		},
 
 		async pLoadTimestamps (urlRoot) {
@@ -4339,7 +4767,6 @@ RollerUtil = {
 
 	getColRollType (colLabel) {
 		if (typeof colLabel !== "string") return false;
-		if (/^{@dice [^}]+}$/.test(colLabel.trim())) return true;
 		colLabel = Renderer.stripTags(colLabel);
 
 		if (Renderer.dice.lang.getTree3(colLabel)) return RollerUtil.ROLL_COL_STANDARD;
@@ -4348,7 +4775,7 @@ RollerUtil = {
 		colLabel = colLabel.replace(RollerUtil._REGEX_ROLLABLE_COL_LABEL, "$1");
 		if (Renderer.dice.lang.getTree3(colLabel)) return RollerUtil.ROLL_COL_VARIABLE;
 
-		return 0;
+		return RollerUtil.ROLL_COL_NONE;
 	},
 
 	getFullRollCol (lbl) {
@@ -4375,162 +4802,232 @@ RollerUtil.ROLL_COL_VARIABLE = 2;
 
 // STORAGE =============================================================================================================
 // Dependency: localforage
-StorageUtil = {
-	_init: false,
-	_initAsync: false,
-	_fakeStorage: {},
-	_fakeStorageAsync: {},
+function StorageUtilBase () {
+	this._META_KEY = "_STORAGE_META_STORAGE";
 
-	_getSyncStorage () {
-		if (StorageUtil._init) {
-			if (StorageUtil.__fakeStorage) return StorageUtil._fakeStorage;
-			else return window.localStorage;
-		}
+	this._fakeStorageBacking = {};
+	this._fakeStorageBackingAsync = {};
 
-		StorageUtil._init = true;
-		try {
-			window.localStorage.setItem("_test_storage", true);
-			return window.localStorage;
-		} catch (e) {
-			// if the user has disabled cookies, build a fake version
-			StorageUtil.__fakeStorage = true;
-			StorageUtil._fakeStorage = {
-				isSyncFake: true,
-				getItem: k => StorageUtil.__fakeStorage[k],
-				removeItem: k => delete StorageUtil.__fakeStorage[k],
-				setItem: (k, v) => StorageUtil.__fakeStorage[k] = v,
-			};
-			return StorageUtil._fakeStorage;
-		}
-	},
-
-	async _getAsyncStorage () {
-		if (StorageUtil._initAsync) {
-			if (StorageUtil.__fakeStorageAsync) return StorageUtil._fakeStorageAsync;
-			else return localforage;
-		}
-
-		const getInitFakeStorage = () => {
-			StorageUtil.__fakeStorageAsync = {};
-			StorageUtil._fakeStorageAsync = {
-				pIsAsyncFake: true,
-				async setItem (k, v) { StorageUtil.__fakeStorageAsync[k] = v; },
-				async getItem (k) { return StorageUtil.__fakeStorageAsync[k]; },
-				async removeItem (k) { delete StorageUtil.__fakeStorageAsync[k]; },
-			};
-			return StorageUtil._fakeStorageAsync;
+	this._getFakeStorageSync = function () {
+		return {
+			isSyncFake: true,
+			getItem: k => this._fakeStorageBacking[k],
+			removeItem: k => delete this._fakeStorageBacking[k],
+			setItem: (k, v) => this._fakeStorageBacking[k] = v,
 		};
+	};
 
-		if (typeof window !== "undefined") {
-			try {
-				// check if IndexedDB is available (i.e. not in Firefox private browsing)
-				await new Promise((resolve, reject) => {
-					const request = window.indexedDB.open("_test_db", 1);
-					request.onerror = reject;
-					request.onsuccess = resolve;
-				});
-				await localforage.setItem("_storage_check", true);
-				return localforage;
-			} catch (e) {
-				return getInitFakeStorage();
-			} finally {
-				StorageUtil._initAsync = true;
-			}
-		} else return getInitFakeStorage();
-	},
+	this._getFakeStorageAsync = function () {
+		return {
+			pIsAsyncFake: true,
+			setItem: async (k, v) => this._fakeStorageBackingAsync[k] = v,
+			getItem: async (k) => this._fakeStorageBackingAsync[k],
+			removeItem: async (k) => delete this._fakeStorageBackingAsync[k],
+		};
+	};
+
+	this._getSyncStorage = function () { throw new Error(`Unimplemented!`); };
+	this._getAsyncStorage = async function () { throw new Error(`Unimplemented!`); };
+
+	this.getPageKey = function (key, page) { return `${key}_${page || UrlUtil.getCurrentPage()}`; };
 
 	// region Synchronous
-	syncGet (key) {
-		const rawOut = StorageUtil._getSyncStorage().getItem(key);
+	this.syncGet = function (key) {
+		const rawOut = this._getSyncStorage().getItem(key);
 		if (rawOut && rawOut !== "undefined" && rawOut !== "null") return JSON.parse(rawOut);
 		return null;
-	},
+	};
 
-	syncSet (key, value) {
-		StorageUtil._getSyncStorage().setItem(key, JSON.stringify(value));
-		StorageUtil._syncTrackKey(key);
-	},
+	this.syncSet = function (key, value) {
+		this._getSyncStorage().setItem(key, JSON.stringify(value));
+		this._syncTrackKey(key);
+	};
 
-	syncRemove (key) {
-		StorageUtil._getSyncStorage().removeItem(key);
-		StorageUtil._syncTrackKey(key, true);
-	},
+	this.syncRemove = function (key) {
+		this._getSyncStorage().removeItem(key);
+		this._syncTrackKey(key, true);
+	};
 
-	syncGetForPage (key) { return StorageUtil.syncGet(`${key}_${UrlUtil.getCurrentPage()}`); },
-	syncSetForPage (key, value) { StorageUtil.syncSet(`${key}_${UrlUtil.getCurrentPage()}`, value); },
+	this.syncGetForPage = function (key) { return this.syncGet(`${key}_${UrlUtil.getCurrentPage()}`); };
+	this.syncSetForPage = function (key, value) { this.syncSet(`${key}_${UrlUtil.getCurrentPage()}`, value); };
 
-	isSyncFake () {
-		return !!StorageUtil._getSyncStorage().isSyncFake;
-	},
+	this.isSyncFake = function () {
+		return !!this._getSyncStorage().isSyncFake;
+	};
 
-	_syncTrackKey (key, isRemove) {
-		const meta = StorageUtil.syncGet(StorageUtil._META_KEY) || {};
+	this._syncTrackKey = function (key, isRemove) {
+		const meta = this.syncGet(this._META_KEY) || {};
 		if (isRemove) delete meta[key];
 		else meta[key] = 1;
-		StorageUtil._getSyncStorage().setItem(StorageUtil._META_KEY, JSON.stringify(meta));
-	},
+		this._getSyncStorage().setItem(this._META_KEY, JSON.stringify(meta));
+	};
 
-	syncGetDump () {
+	this.syncGetDump = function () {
 		const out = {};
-		const meta = StorageUtil.syncGet(StorageUtil._META_KEY) || {};
-		Object.entries(meta).filter(([key, isPresent]) => isPresent).forEach(([key]) => out[key] = StorageUtil.syncGet(key));
+		this._syncGetPresentKeys().forEach(key => out[key] = this.syncGet(key));
 		return out;
-	},
+	};
 
-	syncSetFromDump (dump) {
-		Object.entries(dump).forEach(([k, v]) => StorageUtil.syncSet(k, v));
-	},
+	this._syncGetPresentKeys = function () {
+		const meta = this.syncGet(this._META_KEY) || {};
+		return Object.entries(meta).filter(([, isPresent]) => isPresent).map(([key]) => key);
+	};
+
+	this.syncSetFromDump = function (dump) {
+		const keysToRemove = new Set(this._syncGetPresentKeys());
+		Object.entries(dump).map(([k, v]) => {
+			keysToRemove.delete(k);
+			return this.syncSet(k, v);
+		});
+		[...keysToRemove].map(k => this.syncRemove(k));
+	};
 	// endregion
 
 	// region Asynchronous
-	async pIsAsyncFake () {
-		const storage = await StorageUtil._getAsyncStorage();
+	this.pIsAsyncFake = async function () {
+		const storage = await this._getAsyncStorage();
 		return !!storage.pIsAsyncFake;
-	},
+	};
 
-	async pSet (key, value) {
-		StorageUtil._pTrackKey(key);
-		const storage = await StorageUtil._getAsyncStorage();
+	this.pSet = async function (key, value) {
+		this._pTrackKey(key).then(null);
+		const storage = await this._getAsyncStorage();
 		return storage.setItem(key, value);
-	},
+	};
 
-	async pGet (key) {
-		const storage = await StorageUtil._getAsyncStorage();
+	this.pGet = async function (key) {
+		const storage = await this._getAsyncStorage();
 		return storage.getItem(key);
-	},
+	};
 
-	async pRemove (key) {
-		StorageUtil._pTrackKey(key, true);
-		const storage = await StorageUtil._getAsyncStorage();
+	this.pRemove = async function (key) {
+		this._pTrackKey(key, true).then(null);
+		const storage = await this._getAsyncStorage();
 		return storage.removeItem(key);
-	},
+	};
 
-	getPageKey (key, page) { return `${key}_${page || UrlUtil.getCurrentPage()}`; },
-	async pGetForPage (key) { return StorageUtil.pGet(StorageUtil.getPageKey(key)); },
-	async pSetForPage (key, value) { return StorageUtil.pSet(StorageUtil.getPageKey(key), value); },
-	async pRemoveForPage (key) { return StorageUtil.pRemove(StorageUtil.getPageKey(key)); },
+	this.pGetForPage = async function (key) { return this.pGet(this.getPageKey(key)); };
+	this.pSetForPage = async function (key, value) { return this.pSet(this.getPageKey(key), value); };
+	this.pRemoveForPage = async function (key) { return this.pRemove(this.getPageKey(key)); };
 
-	async _pTrackKey (key, isRemove) {
-		const storage = await StorageUtil._getAsyncStorage();
-		const meta = (await StorageUtil.pGet(StorageUtil._META_KEY)) || {};
+	this._pTrackKey = async function (key, isRemove) {
+		const storage = await this._getAsyncStorage();
+		const meta = (await this.pGet(this._META_KEY)) || {};
 		if (isRemove) delete meta[key];
 		else meta[key] = 1;
-		return storage.setItem(StorageUtil._META_KEY, meta);
-	},
+		return storage.setItem(this._META_KEY, meta);
+	};
 
-	async pGetDump () {
+	this.pGetDump = async function () {
 		const out = {};
-		const meta = (await StorageUtil.pGet(StorageUtil._META_KEY)) || {};
-		await Promise.all(Object.entries(meta).filter(([key, isPresent]) => isPresent).map(async ([key]) => out[key] = await StorageUtil.pGet(key)));
+		await Promise.all(
+			(await this._pGetPresentKeys()).map(async (key) => out[key] = await this.pGet(key)),
+		);
 		return out;
-	},
+	};
 
-	async pSetFromDump (dump) {
-		return Promise.all(Object.entries(dump).map(([k, v]) => StorageUtil.pSet(k, v)));
-	},
+	this._pGetPresentKeys = async function () {
+		const meta = (await this.pGet(this._META_KEY)) || {};
+		return Object.entries(meta).filter(([, isPresent]) => isPresent).map(([key]) => key);
+	};
+
+	this.pSetFromDump = async function (dump) {
+		const keysToRemove = new Set(await this._pGetPresentKeys());
+		await Promise.all(
+			Object.entries(dump).map(([k, v]) => {
+				keysToRemove.delete(k);
+				return this.pSet(k, v);
+			}),
+		);
+		await Promise.all(
+			[...keysToRemove].map(k => this.pRemove(k)),
+		);
+	};
 	// endregion
-};
-StorageUtil._META_KEY = "_STORAGE_META_STORAGE";
+}
+
+function StorageUtilMemory () {
+	StorageUtilBase.call(this);
+
+	this._fakeStorage = null;
+	this._fakeStorageAsync = null;
+
+	this._getSyncStorage = function () {
+		this._fakeStorage = this._fakeStorage || this._getFakeStorageSync();
+		return this._fakeStorage;
+	};
+
+	this._getAsyncStorage = async function () {
+		this._fakeStorageAsync = this._fakeStorageAsync || this._getFakeStorageAsync();
+		return this._fakeStorageAsync;
+	};
+}
+
+function StorageUtilBacked () {
+	StorageUtilBase.call(this);
+
+	this._isInit = false;
+	this._isInitAsync = false;
+	this._fakeStorage = null;
+	this._fakeStorageAsync = null;
+
+	this._initSyncStorage = function () {
+		if (this._isInit) return;
+
+		if (typeof window === "undefined") {
+			this._fakeStorage = this._getFakeStorageSync();
+			this._isInit = true;
+			return;
+		}
+
+		try {
+			window.localStorage.setItem("_test_storage", true);
+		} catch (e) {
+			// if the user has disabled cookies, build a fake version
+			this._fakeStorage = this._getFakeStorageSync();
+		}
+
+		this._isInit = true;
+	};
+
+	this._getSyncStorage = function () {
+		this._initSyncStorage();
+		if (this._fakeStorage) return this._fakeStorage;
+		return window.localStorage;
+	};
+
+	this._initAsyncStorage = async function () {
+		if (this._isInitAsync) return;
+
+		if (typeof window === "undefined") {
+			this._fakeStorageAsync = this._getFakeStorageAsync();
+			this._isInitAsync = true;
+			return;
+		}
+
+		try {
+			// check if IndexedDB is available (i.e. not in Firefox private browsing)
+			await new Promise((resolve, reject) => {
+				const request = window.indexedDB.open("_test_db", 1);
+				request.onerror = reject;
+				request.onsuccess = resolve;
+			});
+			await localforage.setItem("_storage_check", true);
+		} catch (e) {
+			this._fakeStorageAsync = this._getFakeStorageAsync();
+		}
+
+		this._isInitAsync = true;
+	};
+
+	this._getAsyncStorage = async function () {
+		await this._initAsyncStorage();
+		if (this._fakeStorageAsync) return this._fakeStorageAsync;
+		else return localforage;
+	};
+}
+
+StorageUtil = new StorageUtilBacked();
 
 // TODO transition cookie-like storage items over to this
 SessionStorageUtil = {
@@ -4587,1465 +5084,6 @@ SessionStorageUtil = {
 
 	remove (key) {
 		SessionStorageUtil.getStorage().removeItem(key);
-	},
-};
-
-// HOMEBREW ============================================================================================================
-BrewUtil = {
-	_PAGE: null, // Allow the current page to be forcibly specified externally
-
-	homebrew: null,
-	homebrewMeta: null,
-	_lists: null,
-	_sourceCache: null,
-	_filterBox: null,
-	_sourceFilter: null,
-	_pHandleBrew: null,
-	_lockHandleBrewJson: null,
-
-	/**
-	 * @param options Options object.
-	 * @param [options.list] List.
-	 * @param [options.lists] Lists.
-	 * @param [options.filterBox] Filter box.
-	 * @param [options.sourceFilter] Source filter.
-	 * @param [options.pHandleBrew] Brew handling function.
-	 */
-	bind (options) {
-		// provide ref to List.js instance
-		if (options.list) BrewUtil._lists = [options.list];
-		else if (options.lists) BrewUtil._lists = options.lists;
-		// provide ref to FilterBox and Filter instance
-		if (options.filterBox) BrewUtil._filterBox = options.filterBox;
-		if (options.sourceFilter) BrewUtil._sourceFilter = options.sourceFilter;
-		// allow external source for handleBrew
-		if (options.pHandleBrew !== undefined) this._pHandleBrew = options.pHandleBrew;
-	},
-
-	async pAddBrewData () {
-		if (BrewUtil.homebrew) {
-			return BrewUtil.homebrew;
-		} else {
-			try {
-				const homebrew = await StorageUtil.pGet(VeCt.STORAGE_HOMEBREW) || {};
-				BrewUtil.homebrewMeta = StorageUtil.syncGet(VeCt.STORAGE_HOMEBREW_META) || {sources: []};
-				BrewUtil.homebrewMeta.sources = BrewUtil.homebrewMeta.sources || [];
-
-				await this._pAddLocalBrewData(homebrew);
-
-				BrewUtil._mutMakeBrewCompatible(homebrew);
-
-				BrewUtil.homebrew = homebrew;
-
-				BrewUtil._resetSourceCache();
-
-				return BrewUtil.homebrew;
-			} catch (e) {
-				BrewUtil.pPurgeBrew(e);
-			}
-		}
-	},
-
-	_mutMakeBrewCompatible (homebrew) {
-		let hasOldSubclasses = false;
-
-		if (homebrew.class) {
-			homebrew.class.forEach(cls => {
-				if (cls.subclasses) {
-					hasOldSubclasses = true;
-					cls.subclasses.forEach(sc => {
-						sc.className = sc.className || cls.name;
-						sc.classSource = sc.classSource || cls.source;
-						(homebrew.subclass = homebrew.subclass || []).push(sc);
-					});
-					delete cls.subclasses;
-				}
-			});
-		}
-
-		if (hasOldSubclasses) {
-			JqueryUtil.doToast({type: "warning", content: `Converted legacy homebrew subclasses\u2014you should re-load your class homebrews, as this backwards compatibility will be removed in future!`});
-		}
-	},
-
-	async pPurgeBrew (error) {
-		JqueryUtil.doToast({
-			content: "Error when loading homebrew! Purged homebrew data. (See the log for more information.)",
-			type: "danger",
-		});
-		await StorageUtil.pRemove(VeCt.STORAGE_HOMEBREW);
-		StorageUtil.syncRemove(VeCt.STORAGE_HOMEBREW_META);
-		BrewUtil.homebrew = null;
-		window.location.hash = "";
-		BrewUtil.homebrew = {};
-		BrewUtil.homebrewMeta = {sources: []};
-		if (error) setTimeout(() => { throw error; });
-	},
-
-	async _pAddLocalBrewData (homebrew) {
-		if (IS_VTT || IS_DEPLOYED || typeof window === "undefined") return;
-
-		// auto-load from `homebrew/`, for custom versions of the site
-		const indexLocal = await DataUtil.loadJSON(`${Renderer.get().baseUrl}${VeCt.JSON_HOMEBREW_INDEX}`);
-		if (!indexLocal?.toImport?.length) return;
-
-		const page = BrewUtil._PAGE || UrlUtil.getCurrentPage();
-		const allData = await Promise.all(indexLocal.toImport.map(it => DataUtil.loadJSON(`homebrew/${it}`)));
-		for (const d of allData) await BrewUtil._pDoHandleBrewJson(d, page, {isLocalPreload: true, homebrew});
-	},
-
-	/**
-	 * @param $appendTo Parent element
-	 * @param [opts] Options object
-	 * @param [opts.isModal]
-	 * @param [opts.isShowAll]
-	 */
-	async _pRenderBrewScreen ($appendTo, opts) {
-		opts = opts || {};
-
-		const page = BrewUtil._PAGE || UrlUtil.getCurrentPage();
-
-		const $brewList = $(`<div class="manbrew__current_brew flex-col h-100 mt-1"></div>`);
-
-		await BrewUtil._pRenderBrewScreen_pRefreshBrewList($brewList);
-
-		const $btnLoadFromFile = $(`<button class="btn btn-default btn-sm mr-2">Upload File</button>`)
-			.click(async () => {
-				const {jsons, errors} = await DataUtil.pUserUpload({isMultiple: true});
-
-				DataUtil.doHandleFileLoadErrorsGeneric(errors);
-
-				for (const json of jsons) {
-					await DataUtil.pDoMetaMerge(CryptUtil.uid(), json);
-
-					await BrewUtil.pDoHandleBrewJson(json, page, BrewUtil._pRenderBrewScreen_pRefreshBrewList.bind(this, $brewList));
-				}
-			});
-
-		const $btnLoadFromUrl = $(`<button class="btn btn-default btn-sm mr-2">Load from URL</button>`)
-			.click(async () => {
-				const enteredUrl = await InputUiUtil.pGetUserString({title: "Homebrew URL"});
-				if (!enteredUrl || !enteredUrl.trim()) return;
-
-				let parsedUrl;
-				try {
-					parsedUrl = new URL(enteredUrl);
-				} catch (e) {
-					JqueryUtil.doToast({
-						content: `The provided URL does not appear to be valid.`,
-						type: "danger",
-					});
-					return;
-				}
-				BrewUtil.addBrewRemote(null, parsedUrl.href).catch(err => {
-					JqueryUtil.doToast({
-						content: "Could not load homebrew from the provided URL.",
-						type: "danger",
-					});
-					setTimeout(() => { throw err; });
-				});
-			});
-
-		const $btnGet = $(`<button class="btn btn-info btn-sm">Get Homebrew</button>`)
-			.click(() => BrewUtil._pHandleClickBtnGet(opts));
-
-		const $btnCustomUrl = $(`<button class="btn btn-info btn-sm px-2" title="Set Custom Repository URL"><span class="glyphicon glyphicon-cog"></span></button>`)
-			.click(async () => {
-				const customBrewUtl = await StorageUtil.pGet(`HOMEBREW_CUSTOM_REPO_URL`);
-
-				const nxtUrl = await InputUiUtil.pGetUserString({
-					title: "Homebrew Repository URL (Blank for Default)",
-					default: customBrewUtl,
-				});
-
-				if (nxtUrl == null) await StorageUtil.pRemove(`HOMEBREW_CUSTOM_REPO_URL`);
-				else await StorageUtil.pSet(`HOMEBREW_CUSTOM_REPO_URL`, nxtUrl);
-			});
-
-		const $btnDelAll = opts.isModal ? null : BrewUtil._$getBtnDeleteAll();
-
-		const $wrpBtns = $$`<div class="flex-vh-center no-shrink mobile__flex-col">
-			<div class="flex-v-center mobile__mb-2">
-				<div class="flex-v-center btn-group mr-2">
-					${$btnGet}
-					${$btnCustomUrl}
-				</div>
-				${$btnLoadFromFile}
-				${$btnLoadFromUrl}
-			</div>
-			<div class="flex-v-center">
-				<a href="https://github.com/TheGiddyLimit/homebrew" class="flex-v-center" target="_blank" rel="noopener noreferrer"><button class="btn btn-default btn-sm">Browse Source Repository</button></a>
-				${$btnDelAll}
-			</div>
-		</div>`;
-
-		if (opts.isModal) {
-			$$($appendTo)`
-			${$brewList}
-			${$wrpBtns.addClass("mb-2")}`;
-		} else {
-			$$($appendTo)`
-			${$wrpBtns.addClass("mb-3")}
-			${$brewList}`;
-		}
-
-		BrewUtil.addBrewRemote = async ($ele, jsonUrl, doUnescape) => {
-			let cached;
-			if ($ele) {
-				cached = $ele.html();
-				$ele.text("Loading...");
-			}
-			if (doUnescape) jsonUrl = jsonUrl.unescapeQuotes();
-			const data = await DataUtil.loadJSON(`${jsonUrl}?${(new Date()).getTime()}`);
-			await BrewUtil.pDoHandleBrewJson(data, page, BrewUtil._pRenderBrewScreen_pRefreshBrewList.bind(this, $brewList));
-			if ($ele) {
-				$ele.text("Done!");
-				setTimeout(() => $ele.html(cached), VeCt.DUR_INLINE_NOTIFY);
-			}
-		};
-	},
-
-	async _pHandleClickBtnGet (opts) {
-		const $btnToggleDisplayNonPageBrews = opts.isModal ? $(`<button class="btn btn-default btn-xs mr-2 ${opts.isShowAll ? "" : "active"}" disabled title="Hides homebrews which do not contain content relevant to this page.">Hide Unrelated</button>`) : null;
-
-		const $btnAll = $(`<button class="btn btn-default btn-xs" disabled title="(Excluding samples)">Add All</button>`);
-
-		const $wrpRows = $$`<div class="list"><div class="lst__row flex-col"><div class="lst__wrp-cells lst--border lst__row-inner flex w-100"><span style="font-style: italic;">Loading...</span></div></div></div>`;
-
-		const $iptSearch = $(`<input type="search" class="search manbrew__search form-control w-100" placeholder="Find homebrew...">`)
-			.keydown(evt => {
-				switch (evt.which) {
-					case 13: { // enter
-						return $wrpRows.find(`.lst__row`).first().find(`.manbrew__load_from_url`).click();
-					}
-					case 40: { // down
-						const firstItem = list.visibleItems[0];
-						if (firstItem) firstItem.ele.focus();
-					}
-				}
-			});
-
-		const {$modalInner, doClose} = UiUtil.getShowModal({
-			isHeight100: true,
-			title: `Get Homebrew`,
-			isUncappedHeight: true,
-			isWidth100: true,
-			overlayColor: "transparent",
-			isHeaderBorder: true,
-		});
-
-		$$($modalInner)`
-		<div class="mt-1"><i>A list of homebrew available in the public repository. Click a name to load the homebrew, or view the source directly.<br>
-		Contributions are welcome; see the <a href="https://github.com/TheGiddyLimit/homebrew/blob/master/README.md" target="_blank" rel="noopener noreferrer">README</a>, or stop by our <a href="https://discord.gg/5etools" target="_blank" rel="noopener noreferrer">Discord</a>.</i></div>
-		<hr class="hr-1">
-		<div class="flex-h-right mb-1">${$btnToggleDisplayNonPageBrews}${$btnAll}</div>
-		${$iptSearch}
-		<div class="filtertools manbrew__filtertools btn-group input-group input-group--bottom flex no-shrink">
-			<button class="col-4 sort btn btn-default btn-xs" data-sort="name">Name</button>
-			<button class="col-3 sort btn btn-default btn-xs" data-sort="author">Author</button>
-			<button class="col-1-2 sort btn btn-default btn-xs" data-sort="category">Category</button>
-			<button class="col-1-4 sort btn btn-default btn-xs" data-sort="modified">Modified</button>
-			<button class="col-1-4 sort btn btn-default btn-xs" data-sort="added">Added</button>
-			<button class="sort btn btn-default btn-xs ve-grow" disabled>Source</button>
-		</div>
-		${$wrpRows}`;
-
-		// populate list
-		let dataList;
-		function fnSort (a, b, o) {
-			a = dataList[a.ix];
-			b = dataList[b.ix];
-
-			if (o.sortBy === "name") return byName();
-			if (o.sortBy === "author") return orFallback(SortUtil.ascSortLower, "_brewAuthor");
-			if (o.sortBy === "category") return orFallback(SortUtil.ascSortLower, "_brewCat");
-			if (o.sortBy === "added") return orFallback(SortUtil.ascSort, "_brewAdded");
-			if (o.sortBy === "modified") return orFallback(SortUtil.ascSort, "_brewModified");
-
-			function byName () { return SortUtil.ascSortLower(a._brewName, b._brewName); }
-			function orFallback (func, prop) { return func(a[prop], b[prop]) || byName(); }
-		}
-
-		const urlRoot = await StorageUtil.pGet(`HOMEBREW_CUSTOM_REPO_URL`);
-		const [timestamps, propIndex, nameIndex] = await Promise.all([
-			DataUtil.brew.pLoadTimestamps(urlRoot),
-			DataUtil.brew.pLoadPropIndex(urlRoot),
-			DataUtil.brew.pLoadNameIndex(urlRoot),
-		]);
-		const props = opts.isShowAll ? BrewUtil.getPageProps(UrlUtil.PG_MANAGE_BREW) : BrewUtil.getPageProps();
-
-		const seenPaths = new Set();
-
-		dataList = [];
-		props.forEach(prop => {
-			Object.entries(propIndex[prop] || {})
-				.forEach(([path, dir]) => {
-					if (seenPaths.has(path)) return;
-					seenPaths.add(path);
-					dataList.push({
-						download_url: DataUtil.brew.getFileUrl(path, urlRoot),
-						path,
-						name: path.slice(path.indexOf("/") + 1),
-						_cat: BrewUtil.dirToProp(dir),
-					});
-				});
-		});
-
-		dataList.forEach(it => {
-			const cleanFilename = it.name.trim().replace(/\.json$/, "");
-			const spl = cleanFilename.split(";").map(it => it.trim());
-			if (spl.length > 1) {
-				it._brewName = spl[1];
-				it._brewAuthor = spl[0];
-			} else {
-				it._brewName = cleanFilename;
-				it._brewAuthor = "";
-			}
-		});
-		dataList.sort((a, b) => SortUtil.ascSortLower(a._brewName, b._brewName));
-
-		const list = new List({
-			$iptSearch,
-			$wrpList: $wrpRows,
-			fnSort,
-			isUseJquery: true,
-			isFuzzy: true,
-		});
-		SortUtil.initBtnSortHandlers($modalInner.find(".manbrew__filtertools"), list);
-
-		dataList.forEach((it, i) => {
-			it._brewAdded = (timestamps[it.path] || {}).a || 0;
-			it._brewModified = (timestamps[it.path] || {}).m || 0;
-			it._brewInternalSources = (nameIndex[it.name]) || [];
-			it._brewCat = BrewUtil._pRenderBrewScreen_getDisplayCat(BrewUtil.dirToProp(it._cat));
-
-			const timestampAdded = it._brewAdded ? DatetimeUtil.getDateStr(new Date(it._brewAdded * 1000), true) : "";
-			const timestampModified = it._brewModified ? DatetimeUtil.getDateStr(new Date(it._brewModified * 1000), true) : "";
-
-			const $btnAdd = $(`<span class="col-4 bold manbrew__load_from_url pl-0 clickable"></span>`)
-				.text(it._brewName)
-				.click(() => BrewUtil.addBrewRemote($btnAdd, it.download_url || "", true));
-
-			const $row = $$`<div class="lst__row lst__row-inner not-clickable lst--border lst__row--focusable" tabindex="1">
-				<div class="lst__wrp-cells flex w-100">
-					${$btnAdd}
-					<span class="col-3">${it._brewAuthor}</span>
-					<span class="col-1-2 text-center">${it._brewCat}</span>
-					<span class="col-1-4 text-center">${timestampModified}</span>
-					<span class="col-1-4 text-center">${timestampAdded}</span>
-					<span class="col-1 manbrew__source text-center pr-0"><a href="${it.download_url}" target="_blank" rel="noopener noreferrer">View Raw</a></span>
-				</div>
-			</div>`;
-
-			$row.keydown(evt => {
-				switch (evt.which) {
-					case 13: { // enter
-						return $btnAdd.click();
-					}
-					case 38: { // up
-						const ixCur = list.visibleItems.indexOf(listItem);
-						if (~ixCur) {
-							const prevItem = list.visibleItems[ixCur - 1];
-							if (prevItem) prevItem.ele.focus();
-						} else {
-							const firstItem = list.visibleItems[0];
-							if (firstItem) firstItem.ele.focus();
-						}
-						return;
-					}
-					case 40: { // down
-						const ixCur = list.visibleItems.indexOf(listItem);
-						if (~ixCur) {
-							const nxtItem = list.visibleItems[ixCur + 1];
-							if (nxtItem) nxtItem.ele.focus();
-						} else {
-							const lastItem = list.visibleItems.last();
-							if (lastItem) lastItem.ele.focus();
-						}
-					}
-				}
-			});
-
-			const listItem = new ListItem(
-				i,
-				$row,
-				it._brewName,
-				{
-					author: it._brewAuthor,
-					category: it._brewCat,
-					// Used for search
-					internalSources: it._brewInternalSources,
-				},
-				{
-					$btnAdd,
-					isSample: it._brewAuthor.toLowerCase().startsWith("sample -"),
-					added: timestampAdded,
-					modified: timestampAdded,
-				},
-			);
-			list.addItem(listItem);
-		});
-
-		list.init();
-
-		$btnAll
-			.prop("disabled", false)
-			.click(async () => {
-				const toAdd = list.visibleItems.filter(it => !it.data.isSample);
-				if (toAdd.length > 10 && !await InputUiUtil.pGetUserBoolean({title: "Are you sure?", htmlDescription: `<div>You area about to load ${toAdd.length} homebrew files.<br>Loading large quantities of homebrew can lead to performance and stability issues.</div>`, textYes: "Continue"})) return;
-				toAdd.forEach(it => it.data.$btnAdd.click());
-			});
-
-		if ($btnToggleDisplayNonPageBrews) {
-			$btnToggleDisplayNonPageBrews
-				.prop("disabled", false)
-				.click(() => {
-					$btnToggleDisplayNonPageBrews.toggleClass("active");
-					doClose();
-					BrewUtil._pHandleClickBtnGet({
-						...opts,
-						isShowAll: !$btnToggleDisplayNonPageBrews.hasClass("active"),
-					});
-				});
-		}
-
-		$iptSearch.focus();
-	},
-
-	_$getBtnDeleteAll (isModal) {
-		return $(`<button class="btn ${isModal ? "btn-xs" : "btn-sm ml-2"} btn-danger">Delete All</button>`)
-			.click(async () => {
-				if (!window.confirm("Are you sure?")) return;
-				await StorageUtil.pSet(VeCt.STORAGE_HOMEBREW, {});
-				StorageUtil.syncSet(VeCt.STORAGE_HOMEBREW_META, {});
-				window.location.hash = "";
-				location.reload();
-			});
-	},
-
-	async _pCleanSaveBrew () {
-		const cpy = MiscUtil.copy(BrewUtil.homebrew || {});
-		BrewUtil._STORABLE.forEach(prop => {
-			(cpy[prop] || []).forEach(ent => {
-				Object.keys(ent).filter(k => k.startsWith("_")).forEach(k => delete ent[k]);
-			});
-		});
-		await StorageUtil.pSet(VeCt.STORAGE_HOMEBREW, cpy);
-	},
-
-	async _pRenderBrewScreen_pDeleteSource ($brewList, source, doConfirm, isAllSources) {
-		if (doConfirm && !window.confirm(`Are you sure you want to remove all homebrew${!isAllSources ? ` with${source ? ` source "${Parser.sourceJsonToFull(source)}"` : `out a source`}` : ""}?`)) return;
-
-		const vetoolsSourceSet = new Set(BrewUtil._getActiveVetoolsSources().map(it => it.json));
-		const isMatchingSource = (itSrc) => isAllSources || (itSrc === source || (source === undefined && !vetoolsSourceSet.has(itSrc) && !BrewUtil.hasSourceJson(itSrc)));
-
-		await Promise.all(BrewUtil._getBrewCategories().map(async k => {
-			const cat = BrewUtil.homebrew[k];
-			const pDeleteFn = BrewUtil._getPDeleteFunction(k);
-			const toDel = [];
-			cat.filter(it => isMatchingSource(it.source || it.inherits?.source)).forEach(it => toDel.push(it.uniqueId));
-			await Promise.all(toDel.map(async uId => pDeleteFn(uId)));
-		}));
-		if (BrewUtil._lists) BrewUtil._lists.forEach(l => l.update());
-		BrewUtil._persistHomebrewDebounced();
-		BrewUtil.removeJsonSource(source);
-		// remove the source from the filters and re-render the filter box
-		if (BrewUtil._sourceFilter) BrewUtil._sourceFilter.removeItem(source);
-		if (BrewUtil._filterBox) BrewUtil._filterBox.render();
-		await BrewUtil._pRenderBrewScreen_pRefreshBrewList($brewList);
-		window.location.hash = "";
-		if (BrewUtil._filterBox) BrewUtil._filterBox.fireChangeEvent();
-	},
-
-	async _pRenderBrewScreen_pRefreshBrewList ($brewList) {
-		function showSourceManager (source, showAll) {
-			const $wrpBtnDel = $(`<div class="flex-v-center"></div>`);
-
-			const {$modalInner, doClose} = UiUtil.getShowModal({
-				isHeight100: true,
-				title: `View/Manage ${source ? `Source Contents: ${Parser.sourceJsonToFull(source)}` : showAll ? "Entries from All Sources" : `Entries with No Source`}`,
-				isUncappedHeight: true,
-				isWidth100: true,
-				overlayColor: "transparent",
-				$titleSplit: $wrpBtnDel,
-				isHeaderBorder: true,
-			});
-
-			const $cbAll = $(`<input type="checkbox">`);
-			const $wrpRows = $$`<div class="list flex-col w-100"></div>`;
-			const $iptSearch = $(`<input type="search" class="search manbrew__search form-control w-100 mt-1" placeholder="Search entries...">`);
-			const $wrpBtnsSort = $$`<div class="filtertools manbrew__filtertools btn-group">
-				<button class="col-6 sort btn btn-default btn-xs" data-sort="name">Name</button>
-				<button class="col-5 sort btn btn-default btn-xs" data-sort="category">Category</button>
-				<label class="wrp-cb-all pr-0 flex-vh-center mb-0 h-100">${$cbAll}</label>
-			</div>`;
-			$$($modalInner)`
-				${$iptSearch}
-				${$wrpBtnsSort}
-				${$wrpRows}`;
-
-			let list;
-
-			// populate list
-			function populateList () {
-				$wrpRows.empty();
-
-				list = new List({
-					$iptSearch,
-					$wrpList: $wrpRows,
-					fnSort: SortUtil.listSort,
-				});
-
-				ListUiUtil.bindSelectAllCheckbox($cbAll.off("change"), list);
-
-				function mapCategoryEntry (cat, bru) {
-					const out = {};
-					out.name = bru.name;
-					out.uniqueId = bru.uniqueId;
-					out.extraInfo = "";
-					switch (cat) {
-						case "subclass":
-							out.extraInfo = ` (${bru.class})`;
-							break;
-						case "subrace":
-							out.extraInfo = ` (${(bru.race || {}).name})`;
-							break;
-						case "psionic":
-							out.extraInfo = ` (${Parser.psiTypeToMeta(bru.type).short})`;
-							break;
-						case "itemProperty": {
-							if (bru.entries) out.name = Renderer.findName(bru.entries);
-							if (!out.name) out.name = bru.abbreviation;
-							break;
-						}
-						case "adventureData":
-						case "bookData": {
-							const assocData = {
-								"adventureData": "adventure",
-								"bookData": "book",
-							};
-							out.name = (((BrewUtil.homebrew[assocData[cat]] || []).find(a => a.id === bru.id) || {}).name || bru.id);
-						}
-					}
-					out.name = out.name || `(Unknown)`;
-					return out;
-				}
-
-				const vetoolsSourceSet = new Set(BrewUtil._getActiveVetoolsSources().map(it => it.json));
-
-				const isMatchingSource = (itSrc) => showAll || (itSrc === source || (source === undefined && !vetoolsSourceSet.has(itSrc) && !BrewUtil.hasSourceJson(itSrc)));
-				BrewUtil._getBrewCategories().forEach(cat => {
-					BrewUtil.homebrew[cat]
-						.filter(it => isMatchingSource(it.source))
-						.map(it => mapCategoryEntry(cat, it))
-						.sort((a, b) => SortUtil.ascSort(a.name, b.name))
-						.forEach((it, i) => {
-							const dispCat = BrewUtil._pRenderBrewScreen_getDisplayCat(cat, true);
-
-							const eleLi = document.createElement("div");
-							eleLi.className = "lst__row flex-col px-0";
-
-							eleLi.innerHTML = `<label class="lst--border lst__row-inner no-select mb-0 flex-v-center">
-								<div class="col-6 bold">${it.name}</div>
-								<div class="col-5 flex-vh-center">${dispCat}${it.extraInfo}</div>
-								<div class="pr-0 col-1 flex-vh-center"><input type="checkbox" class="no-events"></div>
-							</label>`;
-
-							const listItem = new ListItem(
-								i,
-								eleLi,
-								it.name,
-								{
-									category: dispCat,
-									category_raw: cat,
-								},
-								{
-									uniqueId: it.uniqueId,
-									cbSel: eleLi.firstElementChild.children[2].firstElementChild,
-								},
-							);
-							list.addItem(listItem);
-
-							eleLi.addEventListener("click", evt => ListUiUtil.handleSelectClick(list, listItem, evt));
-						});
-				});
-				$wrpRows.empty();
-
-				list.init();
-				if (!list.items.length) $wrpRows.append(`<h5 class="text-center">No results found.</h5>`);
-				SortUtil.initBtnSortHandlers($wrpBtnsSort, list);
-			}
-			populateList();
-
-			$(`<button class="btn btn-danger btn-xs">Delete Selected</button>`).on("click", async () => {
-				const toDel = list.items.filter(it => $(it.ele).find(`input`).prop("checked")).map(it => ({...it.values, ...it.data}));
-
-				if (!toDel.length) return;
-				if (!window.confirm(`Are you sure you want to delete the ${toDel.length} selected item${toDel.length === 1 ? "" : "s"}?`)) return;
-
-				if (toDel.length === list.items.length) {
-					await BrewUtil._pRenderBrewScreen_pDeleteSource($brewList, source, false, false);
-					doClose();
-				} else {
-					await Promise.all(toDel.map(async it => {
-						const pDeleteFn = BrewUtil._getPDeleteFunction(it.category_raw);
-						await pDeleteFn(it.uniqueId);
-					}));
-					if (BrewUtil._lists) BrewUtil._lists.forEach(l => l.update());
-					BrewUtil._persistHomebrewDebounced();
-					populateList();
-					await BrewUtil._pRenderBrewScreen_pRefreshBrewList($brewList);
-					window.location.hash = "";
-				}
-			}).appendTo($wrpBtnDel);
-
-			$iptSearch.focus();
-		}
-
-		$brewList.empty();
-		if (!BrewUtil.homebrew) return;
-
-		const $iptSearch = $(`<input type="search" class="search manbrew__search form-control" placeholder="Search active homebrew...">`);
-		const $wrpList = $(`<div class="list-display-only brew-list brew-list--target manbrew__list flex-col w-100 mb-3"></div>`);
-		const $wrpListGroup = $(`<div class="list-display-only brew-list brew-list--groups no-shrink flex-col w-100" style="height: initial;"></div>`);
-
-		const list = new List({
-			$iptSearch,
-			$wrpList,
-			isUseJquery: true,
-			isFuzzy: true,
-			sortByInitial: "source",
-		});
-
-		const $lst = $$`
-			<div class="flex-col h-100">
-				${$iptSearch}
-				<div class="filtertools manbrew__filtertools btn-group input-group input-group--bottom flex no-shrink">
-					<button class="col-5 sort btn btn-default btn-xs ve-grow" data-sort="source">Source</button>
-					<button class="col-5 sort btn btn-default btn-xs" data-sort="authors">Authors</button>
-					<button class="col-1 btn btn-default btn-xs" disabled>Origin</button>
-					<button class="col-1 ve-grow btn btn-default btn-xs" disabled>&nbsp;</button>
-				</div>
-				<div class="flex w-100 h-100 overflow-y-auto relative">${$wrpList}</div>
-			</div>
-		`.appendTo($brewList);
-		$wrpListGroup.appendTo($brewList);
-		SortUtil.initBtnSortHandlers($lst.find(".manbrew__filtertools"), list);
-
-		const createButtons = (src, $row, isFooterGroup) => {
-			const hasConverters = !isFooterGroup && !!src.convertedBy?.length;
-			const btnConvertedBy = isFooterGroup ? null : e_({
-				tag: "button",
-				clazz: `btn btn-xs btn-default ${!hasConverters ? "disabled" : ""}`,
-				title: hasConverters ? `Converted by: ${src.convertedBy.join(", ").qq()}` : "(No conversion credit given)",
-				children: [
-					e_({
-						tag: "span",
-						clazz: "glyphicon glyphicon-certificate",
-					}),
-				],
-				click: () => {
-					if (!hasConverters) return;
-					const {$modalInner} = UiUtil.getShowModal({
-						title: "Converted By:",
-						isMinHeight0: true,
-					});
-
-					if (src.convertedBy.length === 1) return $modalInner.append(`<div>${src.convertedBy.join("").qq()}</div>`);
-
-					$modalInner.append(`<ul>${src.convertedBy.map(it => `<li>${it.qq()}</li>`).join("")}</ul>`);
-				},
-			});
-
-			const $btnViewManage = $(`<button class="btn btn-xs btn-default" title="View/Manage"><span class="glyphicon glyphicon-folder-close"></span></button>`)
-				.on("click", () => {
-					showSourceManager(src.json, src._all);
-				});
-
-			const $btnDeleteAll = $(`<button class="btn btn-danger btn-xs"><span class="glyphicon glyphicon-trash"></span></button>`)
-				.on("click", () => BrewUtil._pRenderBrewScreen_pDeleteSource($brewList, src.json, true, src._all));
-
-			$$`<div class="${isFooterGroup ? `flex-v-center flex-h-right` : `flex-vh-center ve-grow`} btn-group">
-				${$btnViewManage}
-				${btnConvertedBy}
-				${$btnDeleteAll}
-			</div>`.appendTo($row);
-		};
-
-		const brewSources = MiscUtil.copy(BrewUtil.getJsonSources())
-			.filter(src => BrewUtil._isSourceRelevantForCurrentPage(src.json));
-		brewSources.sort((a, b) => SortUtil.ascSort(a.full, b.full));
-
-		brewSources.forEach((src, i) => {
-			const validAuthors = (!src.authors ? [] : !(src.authors instanceof Array) ? [] : src.authors).join(", ");
-			const isGroup = src._unknown || src._all;
-
-			const $row = $(`<div class="manbrew__row flex-v-center lst__row lst--border lst__row-inner no-shrink">
-				<span class="col-5 source manbrew__source">${isGroup ? "<i>" : ""}${src.full}${isGroup ? "</i>" : ""}</span>
-				<span class="col-5 authors">${validAuthors}</span>
-				<${src.url ? "a" : "span"} class="col-1 text-center" ${src.url ? `href="${src.url}" target="_blank" rel="noopener noreferrer"` : ""}>${src.url ? "View Source" : ""}</${src.url ? "a" : "span"}>
-				<span class="hidden">${src.abbreviation}</span>
-			</div>`);
-			createButtons(src, $row);
-
-			const listItem = new ListItem(
-				i,
-				$row,
-				src.full,
-				{
-					authors: validAuthors,
-					abbreviation: src.abbreviation,
-				},
-			);
-			list.addItem(listItem);
-		});
-
-		const createGroupRow = (fullText, modeProp) => {
-			const $row = $(`<div class="manbrew__row flex-h-right flex-v-center">
-				<div class="source manbrew__source text-right"><i class="mr-3">${fullText}</i></div>
-			</div>`);
-			createButtons({[modeProp]: true}, $row, true);
-			$wrpListGroup.append($row);
-		};
-		createGroupRow("Entries From All Sources", "_all");
-		createGroupRow("Entries Without Sources", "_unknown");
-
-		list.init();
-		$iptSearch.focus();
-	},
-
-	_isSourceRelevantForCurrentPage (source) {
-		const cats = BrewUtil.getPageProps();
-		return !!cats.find(cat => !!(BrewUtil.homebrew[cat] || []).some(entry => (entry.inherits ? entry.inherits.source : entry.source) === source));
-	},
-
-	getPageProps (page) {
-		page = BrewUtil._PAGE || page || UrlUtil.getCurrentPage();
-
-		const _PG_SPELLS = ["spell", "spellFluff"];
-		const _PG_BESTIARY = ["monster", "legendaryGroup", "monsterFluff"];
-
-		switch (page) {
-			case UrlUtil.PG_SPELLS: return _PG_SPELLS;
-			case UrlUtil.PG_CLASSES: return ["class", "subclass", "classFeature", "subclassFeature"];
-			case UrlUtil.PG_BESTIARY: return _PG_BESTIARY;
-			case UrlUtil.PG_BACKGROUNDS: return ["background"];
-			case UrlUtil.PG_FEATS: return ["feat"];
-			case UrlUtil.PG_OPT_FEATURES: return ["optionalfeature"];
-			case UrlUtil.PG_RACES: return ["race", "raceFluff", "subrace"];
-			case UrlUtil.PG_OBJECTS: return ["object"];
-			case UrlUtil.PG_TRAPS_HAZARDS: return ["trap", "hazard"];
-			case UrlUtil.PG_DEITIES: return ["deity"];
-			case UrlUtil.PG_ITEMS: return ["item", "baseitem", "variant", "itemProperty", "itemType", "itemFluff", "itemGroup", "itemEntry"];
-			case UrlUtil.PG_REWARDS: return ["reward"];
-			case UrlUtil.PG_PSIONICS: return ["psionic"];
-			case UrlUtil.PG_VARIANTRULES: return ["variantrule"];
-			case UrlUtil.PG_CONDITIONS_DISEASES: return ["condition", "disease", "status"];
-			case UrlUtil.PG_ADVENTURES: return ["adventure", "adventureData"];
-			case UrlUtil.PG_BOOKS: return ["book", "bookData"];
-			case UrlUtil.PG_TABLES: return ["table", "tableGroup"];
-			case UrlUtil.PG_MAKE_BREW: return [
-				..._PG_SPELLS,
-				..._PG_BESTIARY,
-				"makebrewCreatureTrait",
-			];
-			case UrlUtil.PG_MANAGE_BREW:
-			case UrlUtil.PG_DEMO_RENDER: return BrewUtil._STORABLE;
-			case UrlUtil.PG_VEHICLES: return ["vehicle", "vehicleUpgrade"];
-			case UrlUtil.PG_ACTIONS: return ["action"];
-			case UrlUtil.PG_CULTS_BOONS: return ["cult", "boon"];
-			case UrlUtil.PG_LANGUAGES: return ["language", "languageScript"];
-			case UrlUtil.PG_CHAR_CREATION_OPTIONS: return ["charoption"];
-			case UrlUtil.PG_RECIPES: return ["recipe"];
-			case UrlUtil.PG_CLASS_SUBCLASS_FEATURES: return ["classFeature", "subclassFeature"];
-			default: throw new Error(`No homebrew properties defined for category ${page}`);
-		}
-	},
-
-	dirToProp (dir) {
-		if (!dir) return "";
-		else if (BrewUtil._STORABLE.includes(dir)) return dir;
-		else {
-			switch (dir) {
-				case "creature": return "monster";
-				case "collection": return dir;
-				case "magicvariant": return "variant";
-				case "makebrew": return "makebrewCreatureTrait";
-			}
-			throw new Error(`Directory was not mapped to a category: "${dir}"`);
-		}
-	},
-
-	_pRenderBrewScreen_getDisplayCat (cat, isManager) {
-		switch (cat) {
-			case "variantrule": return "Variant Rule";
-			case "legendaryGroup": return "Legendary Group";
-			case "optionalfeature": return "Optional Feature";
-			case "adventure": return isManager ? "Adventure Contents/Info" : "Adventure";
-			case "adventureData": return "Adventure Text";
-			case "book": return isManager ? "Book Contents/Info" : "Book";
-			case "bookData": return "Book Text";
-			case "itemProperty": return "Item Property";
-			case "itemEntry": return "Item Entry";
-			case "baseitem": return "Base Item";
-			case "variant": return "Magic Item Variant";
-			case "itemGroup": return "Item Group";
-			case "monsterFluff": return "Monster Fluff";
-			case "itemFluff": return "Item Fluff";
-			case "makebrewCreatureTrait": return "Homebrew Builder Creature Trait";
-			case "classFeature": return "Class Feature";
-			case "subclassFeature": return "Subclass Feature";
-			case "charoption": return "Other Character Creation Option";
-			default: return cat.uppercaseFirst();
-		}
-	},
-
-	handleLoadbrewClick: async (ele) => {
-		const $ele = $(ele);
-		if (!$ele.hasClass("rd__wrp-loadbrew--ready")) return; // an existing click is being handled
-		let jsonUrl = ele.dataset.rdLoaderPath;
-		const name = ele.dataset.rdLoaderName;
-		const cached = $ele.html();
-		const cachedTitle = $ele.title();
-		$ele.title("");
-		$ele.removeClass("rd__wrp-loadbrew--ready").html(`${name.qq()}<span class="glyphicon glyphicon-refresh rd__loadbrew-icon rd__loadbrew-icon--active"></span>`);
-		jsonUrl = jsonUrl.unescapeQuotes();
-		const data = await DataUtil.loadJSON(`${jsonUrl}?${(new Date()).getTime()}`);
-		await BrewUtil.pDoHandleBrewJson(data, BrewUtil._PAGE || UrlUtil.getCurrentPage());
-		$ele.html(`${name.qq()}<span class="glyphicon glyphicon-saved rd__loadbrew-icon"></span>`);
-		setTimeout(() => $ele.html(cached).addClass("rd__wrp-loadbrew--ready").title(cachedTitle), 500);
-	},
-
-	async _pDoRemove (arrName, uniqueId, {isChild} = {}) {
-		const index = BrewUtil.homebrew[arrName].findIndex(it => isChild ? it.parentUniqueId : it.uniqueId === uniqueId);
-		if (!~index) return;
-
-		const toRemove = BrewUtil.homebrew[arrName][index];
-		BrewUtil.homebrew[arrName].splice(index, 1);
-		if (BrewUtil._lists) {
-			BrewUtil._lists.forEach(l => l.removeItemByData(isChild ? "parentUniqueId" : "uniqueId", uniqueId));
-		}
-		return toRemove;
-	},
-
-	_getPDeleteFunction (category) {
-		switch (category) {
-			case "spell":
-			case "spellFluff":
-			case "monster":
-			case "monsterFluff":
-			case "background":
-			case "feat":
-			case "optionalfeature":
-			case "raceFluff":
-			case "subrace":
-			case "object":
-			case "trap":
-			case "hazard":
-			case "deity":
-			case "item":
-			case "itemType":
-			case "itemProperty":
-			case "itemFluff":
-			case "itemGroup":
-			case "itemEntry":
-			case "reward":
-			case "psionic":
-			case "variantrule":
-			case "legendaryGroup":
-			case "condition":
-			case "disease":
-			case "status":
-			case "table":
-			case "tableGroup":
-			case "vehicle":
-			case "vehicleUpgrade":
-			case "action":
-			case "cult":
-			case "boon":
-			case "language":
-			case "languageScript":
-			case "class":
-			case "makebrewCreatureTrait":
-			case "classFeature":
-			case "subclassFeature":
-			case "charoption":
-			case "charoptionFluff":
-			case "recipe":
-				return BrewUtil._pPDeleteGenericBrew.bind(BrewUtil, category);
-			case "baseitem": return BrewUtil._pPDeleteBaseItemBrew.bind(BrewUtil);
-			case "variant": return BrewUtil._pPDeleteMagicVariantBrew.bind(BrewUtil);
-			case "race": return BrewUtil._pDeleteRaceBrew.bind(BrewUtil);
-			case "subclass": return BrewUtil._pDeleteSubclassBrew.bind(BrewUtil);
-			case "adventure":
-			case "book": return BrewUtil._pDeleteGenericBookBrew.bind(BrewUtil, category);
-			case "adventureData":
-			case "bookData": return () => {}; // Do nothing, handled by deleting the associated book/adventure
-			default: throw new Error(`No homebrew delete function defined for category ${category}`);
-		}
-	},
-
-	async _pDeleteSubclassBrew (uniqueId) {
-		let sc;
-		let index = 0;
-		for (; index < BrewUtil.homebrew.subclass.length; ++index) {
-			if (BrewUtil.homebrew.subclass[index].uniqueId === uniqueId) {
-				sc = BrewUtil.homebrew.subclass[index];
-				break;
-			}
-		}
-
-		if (sc) {
-			BrewUtil.homebrew.subclass.splice(index, 1);
-			BrewUtil._persistHomebrewDebounced();
-
-			if (typeof ClassesPage === "undefined") return;
-			await classesPage.pDeleteSubclassBrew(uniqueId, sc);
-		}
-	},
-
-	async _pDeleteRaceBrew (uniqueId) {
-		const removedRace = await BrewUtil._pDoRemove("race", uniqueId);
-		if (!removedRace || !removedRace.subraces) return;
-		if (typeof racesPage === "undefined" || !BrewUtil._lists) return;
-
-		const subraceMetas = removedRace.subraces
-			.map(it => ({name: it.name, source: it.source || removedRace.source}))
-			.filter(it => it.name);
-		if (!subraceMetas.length) return;
-
-		const allAttachedRaces = racesPage.getMergedSubraces(uniqueId)
-			.filter(it => subraceMetas.some(meta => meta.name === it._subraceName && meta.source === it.source))
-			.filter(it => it.uniqueId);
-
-		if (!allAttachedRaces) return;
-
-		allAttachedRaces.forEach(attachedRace => {
-			BrewUtil._lists.forEach(l => l.removeItemByData("uniqueId", attachedRace.uniqueId));
-		});
-	},
-
-	async _pPDeleteBaseItemBrew (uniqueId) {
-		const removed = await BrewUtil._pDoRemove("baseitem", uniqueId);
-		if (!removed) return;
-		if (typeof itemsPage === "undefined" || !BrewUtil._lists) return;
-
-		const allVariants = itemsPage.getSpecificVariantsByBaseItemBrewUid(uniqueId);
-		if (!allVariants.length) return;
-
-		allVariants.forEach(({uniqueId}) => {
-			BrewUtil._lists.forEach(l => l.removeItemByData("uniqueId", uniqueId));
-		});
-	},
-
-	async _pPDeleteMagicVariantBrew (uniqueId) {
-		const removed = await BrewUtil._pDoRemove("variant", uniqueId);
-		if (!removed) return;
-		if (typeof itemsPage === "undefined" || !BrewUtil._lists) return;
-
-		const allVariants = itemsPage.getSpecificVariantsByGenericVariantBrewUid(uniqueId);
-		if (!allVariants.length) return;
-
-		allVariants.forEach(({uniqueId}) => {
-			BrewUtil._lists.forEach(l => l.removeItemByData("uniqueId", uniqueId));
-		});
-	},
-
-	async _pPDeleteGenericBrew (category, uniqueId) {
-		await BrewUtil._pDoRemove(category, uniqueId);
-	},
-
-	async _pDeleteGenericBookBrew (category, uniqueId) {
-		await BrewUtil._pDoRemove(category, uniqueId);
-		await BrewUtil._pDoRemove(`${category}Data`, uniqueId, {isChild: true});
-	},
-
-	manageBrew: () => {
-		const {$modalInner} = UiUtil.getShowModal({
-			isHeight100: true,
-			isWidth100: true,
-			title: `Manage Homebrew`,
-			isUncappedHeight: true,
-			$titleSplit: BrewUtil._$getBtnDeleteAll(true),
-			isHeaderBorder: true,
-		});
-
-		BrewUtil._pRenderBrewScreen($modalInner, {isModal: true});
-	},
-
-	async pAddEntry (prop, obj) {
-		BrewUtil._mutUniqueId(obj);
-		(BrewUtil.homebrew[prop] = BrewUtil.homebrew[prop] || []).push(obj);
-		BrewUtil._persistHomebrewDebounced();
-		return BrewUtil.homebrew[prop].length - 1;
-	},
-
-	async pRemoveEntry (prop, obj) {
-		const ix = (BrewUtil.homebrew[prop] = BrewUtil.homebrew[prop] || []).findIndex(it => it.uniqueId === obj.uniqueId);
-		if (~ix) {
-			BrewUtil.homebrew[prop].splice(ix, 1);
-			BrewUtil._persistHomebrewDebounced();
-		} else throw new Error(`Could not find object with ID "${obj.uniqueId}" in "${prop}" list`);
-	},
-
-	getEntryIxByEntry (prop, obj) {
-		return (BrewUtil.homebrew[prop] = BrewUtil.homebrew[prop] || []).findIndex(it => it.name === obj.name && it.source === obj.source);
-	},
-
-	getEntryByEntryIx (prop, ix) {
-		return (BrewUtil.homebrew[prop] = BrewUtil.homebrew[prop] || [])[ix];
-	},
-
-	async pUpdateEntryByIx (prop, ix, obj) {
-		if (~ix && ix < BrewUtil.homebrew[prop].length) {
-			BrewUtil._mutUniqueId(obj);
-			BrewUtil.homebrew[prop].splice(ix, 1, obj);
-			BrewUtil._persistHomebrewDebounced();
-		} else throw new Error(`Index "${ix}" was not valid!`);
-	},
-
-	_mutUniqueId (obj) {
-		delete obj.uniqueId; // avoid basing the hash on the previous hash
-		obj.uniqueId = CryptUtil.md5(JSON.stringify(obj));
-	},
-
-	_DIRS: ["action", "adventure", "background", "book", "boon", "charoption", "class", "condition", "creature", "cult", "deity", "disease", "feat", "hazard", "item", "language", "magicvariant", "makebrew", "object", "optionalfeature", "psionic", "race", "recipe", "reward", "spell", "spellFluff", /* "status", */ "subclass", "subrace", "table", "trap", "variantrule", "vehicle", "classFeature", "subclassFeature"],
-	_STORABLE: ["class", "subclass", "classFeature", "subclassFeature", "spell", "spellFluff", "monster", "legendaryGroup", "monsterFluff", "background", "feat", "optionalfeature", "race", "raceFluff", "subrace", "deity", "item", "baseitem", "variant", "itemProperty", "itemType", "itemFluff", "itemGroup", "itemEntry", "psionic", "reward", "object", "trap", "hazard", "variantrule", "condition", "disease", "status", "adventure", "adventureData", "book", "bookData", "table", "tableGroup", "vehicle", "vehicleUpgrade", "action", "cult", "boon", "language", "languageScript", "makebrewCreatureTrait", "charoption", "charoptionFluff", "recipe"],
-	async pDoHandleBrewJson (json, page, pFuncRefresh) {
-		page = BrewUtil._PAGE || page;
-		await BrewUtil._lockHandleBrewJson.pLock();
-		try {
-			await BrewUtil._pDoHandleBrewJson(json, page, {pFuncRefresh});
-
-			// Allow blacklists to be loaded alongside homebrew
-			if (json.blacklist && ExcludeUtil.isInitialised) {
-				await ExcludeUtil.pSetList(ExcludeUtil.getList().concat(json.blacklist || []));
-			}
-		} finally {
-			BrewUtil._lockHandleBrewJson.unlock();
-		}
-	},
-
-	async _pDoHandleBrewJson (json, page, {pFuncRefresh, isLocalPreload, homebrew} = {}) {
-		page = BrewUtil._PAGE || page;
-
-		homebrew = homebrew || BrewUtil.homebrew || {};
-
-		function storePrep (arrName) {
-			if (
-				(json[arrName] != null && !(json[arrName] instanceof Array))
-				|| !json[arrName]
-			) return;
-
-			json[arrName].forEach(it => BrewUtil._mutUniqueId(it));
-		}
-
-		// prepare for storage
-		BrewUtil._STORABLE.forEach(storePrep);
-
-		const bookPairs = [
-			["adventure", "adventureData"],
-			["book", "bookData"],
-		];
-		bookPairs.forEach(([bookMetaKey, bookDataKey]) => {
-			if (json[bookMetaKey] && json[bookDataKey]) {
-				json[bookMetaKey].forEach(book => {
-					const data = json[bookDataKey].find(it => it.id === book.id);
-					if (data) {
-						data.parentUniqueId = book.uniqueId;
-					}
-				});
-			}
-		});
-
-		// store
-		async function pCheckAndAdd (prop) {
-			if (!homebrew[prop]) homebrew[prop] = [];
-			if (!json[prop] || !(json[prop] instanceof Array)) return [];
-			if (IS_DEPLOYED || IS_VTT || IS_NODE) {
-				// in production mode, skip any existing brew
-				const areNew = [];
-				const existingIds = homebrew[prop].map(it => it.uniqueId);
-				json[prop].forEach(it => {
-					if (!existingIds.find(id => it.uniqueId === id)) {
-						homebrew[prop].push(it);
-						areNew.push(it);
-					}
-				});
-				return areNew;
-			}
-
-			// in development mode, replace any existing brew
-			const existingLookup = {};
-			homebrew[prop].forEach(it => {
-				const brewHash = BrewUtil._getDevBrewHash(page, prop, it);
-				existingLookup[brewHash] = it.uniqueId;
-			});
-
-			const pDeleteFn = BrewUtil._getPDeleteFunction(prop);
-			for (const entity of json[prop]) {
-				const brewHash = BrewUtil._getDevBrewHash(page, prop, entity);
-				if (existingLookup[brewHash] && entity.uniqueId !== existingLookup[brewHash]) {
-					if (isLocalPreload) {
-						const ixExisting = homebrew[prop].findIndex(ex => BrewUtil._getDevBrewHash(page, prop, ex) === brewHash);
-						if (~ixExisting) homebrew[prop].splice(ixExisting, 1);
-					} else {
-						await pDeleteFn(existingLookup[brewHash]);
-					}
-
-					homebrew[prop].push(entity);
-				} else if (!existingLookup[brewHash]) {
-					homebrew[prop].push(entity);
-				}
-			}
-
-			return json[prop];
-		}
-
-		function checkAndAddMetaGetNewSources () {
-			const areNew = [];
-			if (json._meta) {
-				if (!BrewUtil.homebrewMeta) BrewUtil.homebrewMeta = {sources: []};
-
-				Object.keys(json._meta).forEach(k => {
-					switch (k) {
-						case "dateAdded":
-						case "dateLastModified":
-							break;
-						case "sources": {
-							const existing = BrewUtil.homebrewMeta.sources.map(src => src.json);
-							json._meta.sources.forEach(src => {
-								if (!existing.find(it => it === src.json)) {
-									BrewUtil.homebrewMeta.sources.push(src);
-									areNew.push(src);
-								}
-							});
-							break;
-						}
-						default: {
-							BrewUtil.homebrewMeta[k] = BrewUtil.homebrewMeta[k] || {};
-							Object.assign(BrewUtil.homebrewMeta[k], json._meta[k]);
-							break;
-						}
-					}
-				});
-			}
-			return areNew;
-		}
-
-		let sourcesToAdd = json._meta ? json._meta.sources : [];
-		const toAdd = {};
-		BrewUtil._STORABLE.filter(k => json[k] && (json[k] instanceof Array)).forEach(k => toAdd[k] = json[k]);
-		sourcesToAdd = checkAndAddMetaGetNewSources(); // adding source(s) to Filter should happen in per-page addX functions
-		await Promise.all(BrewUtil._STORABLE.map(async k => toAdd[k] = await pCheckAndAdd(k))); // only add if unique ID not already present
-		// TODO ...run some `DataUtil[prop].mutateBrew(ent)` function for each thing here?
-		if (!isLocalPreload) BrewUtil._persistHomebrewDebounced(); // Debounce this for mass adds, e.g. "Add All"
-		StorageUtil.syncSet(VeCt.STORAGE_HOMEBREW_META, BrewUtil.homebrewMeta);
-
-		// wipe old cache
-		BrewUtil._resetSourceCache();
-
-		// display on page
-		if (!isLocalPreload) {
-			switch (page) {
-				case UrlUtil.PG_SPELLS:
-				case UrlUtil.PG_CLASSES:
-				case UrlUtil.PG_BESTIARY:
-				case UrlUtil.PG_BACKGROUNDS:
-				case UrlUtil.PG_FEATS:
-				case UrlUtil.PG_OPT_FEATURES:
-				case UrlUtil.PG_RACES:
-				case UrlUtil.PG_OBJECTS:
-				case UrlUtil.PG_TRAPS_HAZARDS:
-				case UrlUtil.PG_DEITIES:
-				case UrlUtil.PG_ITEMS:
-				case UrlUtil.PG_REWARDS:
-				case UrlUtil.PG_PSIONICS:
-				case UrlUtil.PG_VARIANTRULES:
-				case UrlUtil.PG_CONDITIONS_DISEASES:
-				case UrlUtil.PG_ADVENTURE:
-				case UrlUtil.PG_ADVENTURES:
-				case UrlUtil.PG_BOOK:
-				case UrlUtil.PG_BOOKS:
-				case UrlUtil.PG_TABLES:
-				case UrlUtil.PG_VEHICLES:
-				case UrlUtil.PG_ACTIONS:
-				case UrlUtil.PG_CULTS_BOONS:
-				case UrlUtil.PG_LANGUAGES:
-				case UrlUtil.PG_CHAR_CREATION_OPTIONS:
-				case UrlUtil.PG_RECIPES:
-				case UrlUtil.PG_CLASS_SUBCLASS_FEATURES:
-					await (BrewUtil._pHandleBrew || handleBrew)(MiscUtil.copy(toAdd));
-					break;
-				case UrlUtil.PG_MAKE_BREW:
-					if (BrewUtil._pHandleBrew) await BrewUtil._pHandleBrew(MiscUtil.copy(toAdd));
-					break;
-				case UrlUtil.PG_MANAGE_BREW:
-				case UrlUtil.PG_DEMO_RENDER:
-				case VeCt.PG_NONE:
-					// No-op
-					break;
-				default:
-					throw new Error(`No homebrew add function defined for category ${page}`);
-			}
-
-			if (pFuncRefresh) await pFuncRefresh();
-
-			if (BrewUtil._filterBox && BrewUtil._sourceFilter) {
-				const cur = BrewUtil._filterBox.getValues();
-				if (cur.Source) {
-					const toSet = JSON.parse(JSON.stringify(cur.Source));
-
-					if (toSet._totals.yes || toSet._totals.no) {
-						if (page === UrlUtil.PG_CLASSES) toSet["Core"] = 1;
-						else sourcesToAdd.forEach(src => toSet[src.json] = 1);
-						BrewUtil._filterBox.setFromValues({Source: toSet});
-					}
-				}
-				if (BrewUtil._filterBox) BrewUtil._filterBox.fireChangeEvent();
-			}
-		}
-	},
-
-	_getDevBrewHash (page, prop, it) {
-		return UrlUtil.URL_TO_HASH_BUILDER[page]
-			? UrlUtil.URL_TO_HASH_BUILDER[page](it)
-			: UrlUtil.URL_TO_HASH_BUILDER[prop]
-				? UrlUtil.URL_TO_HASH_BUILDER[prop](it)
-				// Handle magic variants
-				: `${it.inherits && it.inherits.source ? it.inherits.source : it.source}__${it.name}`;
-	},
-
-	makeBrewButton: (id) => {
-		$(`#${id}`).on("click", () => BrewUtil.manageBrew());
-	},
-
-	_getBrewCategories () {
-		return Object.keys(BrewUtil.homebrew).filter(it => !it.startsWith("_"));
-	},
-
-	// region sources
-	_buildSourceCache () {
-		function doBuild () {
-			if (BrewUtil.homebrewMeta && BrewUtil.homebrewMeta.sources) {
-				BrewUtil.homebrewMeta.sources.forEach(src => BrewUtil._sourceCache[src.json.toLowerCase()] = ({...src}));
-			}
-		}
-
-		if (!BrewUtil._sourceCache) {
-			BrewUtil._sourceCache = {};
-
-			if (!BrewUtil.homebrewMeta) {
-				const temp = StorageUtil.syncGet(VeCt.STORAGE_HOMEBREW_META) || {};
-				temp.sources = temp.sources || [];
-				BrewUtil.homebrewMeta = temp;
-				doBuild();
-			} else {
-				doBuild();
-			}
-		}
-	},
-
-	_resetSourceCache () {
-		BrewUtil._sourceCache = null;
-	},
-
-	removeJsonSource (source) {
-		if (!source) return;
-		source = source.toLowerCase();
-		BrewUtil._resetSourceCache();
-		const ix = BrewUtil.homebrewMeta.sources.findIndex(it => it.json.toLowerCase() === source);
-		if (~ix) BrewUtil.homebrewMeta.sources.splice(ix, 1);
-		StorageUtil.syncSet(VeCt.STORAGE_HOMEBREW_META, BrewUtil.homebrewMeta);
-	},
-
-	getJsonSources () {
-		BrewUtil._buildSourceCache();
-		return BrewUtil.homebrewMeta && BrewUtil.homebrewMeta.sources ? BrewUtil.homebrewMeta.sources : [];
-	},
-
-	hasSourceJson (source) {
-		if (!source) return false;
-		source = source.toLowerCase();
-		BrewUtil._buildSourceCache();
-		return !!BrewUtil._sourceCache[source];
-	},
-
-	sourceJsonToFull (source) {
-		if (!source) return "";
-		source = source.toLowerCase();
-		BrewUtil._buildSourceCache();
-		return BrewUtil._sourceCache[source] ? BrewUtil._sourceCache[source].full || source : source;
-	},
-
-	sourceJsonToAbv (source) {
-		if (!source) return "";
-		source = source.toLowerCase();
-		BrewUtil._buildSourceCache();
-		return BrewUtil._sourceCache[source] ? BrewUtil._sourceCache[source].abbreviation || source : source;
-	},
-
-	sourceJsonToDate (source) {
-		if (!source) return "";
-		source = source.toLowerCase();
-		BrewUtil._buildSourceCache();
-		return BrewUtil._sourceCache[source] ? BrewUtil._sourceCache[source].dateReleased || source : source;
-	},
-
-	sourceJsonToSource (source) {
-		if (!source) return null;
-		source = source.toLowerCase();
-		BrewUtil._buildSourceCache();
-		return BrewUtil._sourceCache[source] ? BrewUtil._sourceCache[source] : null;
-	},
-
-	sourceJsonToStyle (source) {
-		const stylePart = BrewUtil.sourceJsonToStylePart(source);
-		if (!stylePart) return stylePart;
-		return `style="${stylePart}"`;
-	},
-
-	sourceJsonToStylePart (source) {
-		if (!source) return "";
-		source = source.toLowerCase();
-		const color = BrewUtil.sourceJsonToColor(source);
-		if (color) return `color: #${color}; border-color: #${color}; text-decoration-color: #${color};`;
-		return "";
-	},
-
-	sourceJsonToColor (source) {
-		if (!source) return "";
-		source = source.toLowerCase();
-		BrewUtil._buildSourceCache();
-		if (BrewUtil._sourceCache[source] && BrewUtil._sourceCache[source].color) {
-			const validColor = BrewUtil.getValidColor(BrewUtil._sourceCache[source].color);
-			if (validColor.length) return validColor;
-			return "";
-		} else return "";
-	},
-
-	getValidColor (color) {
-		// Prevent any injection shenanigans
-		return color.replace(/[^a-fA-F0-9]/g, "").slice(0, 8);
-	},
-
-	addSource (sourceObj) {
-		BrewUtil._resetSourceCache();
-		const exists = BrewUtil.homebrewMeta.sources.some(it => it.json === sourceObj.json);
-		if (exists) throw new Error(`Source "${sourceObj.json}" already exists!`);
-		(BrewUtil.homebrewMeta.sources = BrewUtil.homebrewMeta.sources || []).push(sourceObj);
-		StorageUtil.syncSet(VeCt.STORAGE_HOMEBREW_META, BrewUtil.homebrewMeta);
-	},
-
-	updateSource (sourceObj) {
-		BrewUtil._resetSourceCache();
-		const ix = BrewUtil.homebrewMeta.sources.findIndex(it => it.json === sourceObj.json);
-		if (!~ix) throw new Error(`Source "${sourceObj.json}" does not exist!`);
-		const json = BrewUtil.homebrewMeta.sources[ix].json;
-		BrewUtil.homebrewMeta.sources[ix] = {
-			...sourceObj,
-			json,
-		};
-		StorageUtil.syncSet(VeCt.STORAGE_HOMEBREW_META, BrewUtil.homebrewMeta);
-	},
-
-	_getActiveVetoolsSources () {
-		if (BrewUtil.homebrew === null) throw new Error(`Homebrew was not initialized!`);
-
-		const allActiveSources = new Set();
-		Object.keys(BrewUtil.homebrew).forEach(k => BrewUtil.homebrew[k].forEach(it => it.source && allActiveSources.add(it.source)));
-		return Object.keys(Parser.SOURCE_JSON_TO_FULL).map(k => ({
-			json: k,
-			full: Parser.SOURCE_JSON_TO_FULL[k],
-			abbreviation: Parser.SOURCE_JSON_TO_ABV[k],
-			dateReleased: Parser.SOURCE_JSON_TO_DATE[k],
-		})).sort((a, b) => SortUtil.ascSort(a.full, b.full)).filter(it => allActiveSources.has(it.json));
-	},
-	// endregion
-
-	/**
-	 * Get data in a format similar to the main search index
-	 */
-	async pGetSearchIndex () {
-		BrewUtil._buildSourceCache();
-		const indexer = new Omnidexer(Omnisearch.highestId + 1);
-
-		await BrewUtil.pAddBrewData();
-		if (BrewUtil.homebrew) {
-			const INDEX_DEFINITIONS = [Omnidexer.TO_INDEX__FROM_INDEX_JSON, Omnidexer.TO_INDEX];
-
-			// Run these in serial, to prevent any ID race condition antics
-			for (const IX_DEF of INDEX_DEFINITIONS) {
-				for (const arbiter of IX_DEF) {
-					if (arbiter.isSkipBrew) continue;
-					if (!(BrewUtil.homebrew[arbiter.brewProp || arbiter.listProp] || []).length) continue;
-
-					if (arbiter.pFnPreProcBrew) {
-						const toProc = await arbiter.pFnPreProcBrew.bind(arbiter)(BrewUtil.homebrew);
-						await indexer.pAddToIndex(arbiter, toProc);
-					} else {
-						await indexer.pAddToIndex(arbiter, BrewUtil.homebrew);
-					}
-				}
-			}
-		}
-
-		return Omnidexer.decompressIndex(indexer.getIndex());
-	},
-
-	async pGetAdditionalSearchIndices (highestId, addiProp) {
-		BrewUtil._buildSourceCache();
-		const indexer = new Omnidexer(highestId + 1);
-
-		await BrewUtil.pAddBrewData();
-		if (BrewUtil.homebrew) {
-			const INDEX_DEFINITIONS = [Omnidexer.TO_INDEX__FROM_INDEX_JSON, Omnidexer.TO_INDEX];
-
-			await Promise.all(INDEX_DEFINITIONS.map(IXDEF => {
-				return Promise.all(IXDEF
-					.filter(ti => ti.additionalIndexes && (BrewUtil.homebrew[ti.listProp] || []).length)
-					.map(ti => {
-						return Promise.all(Object.entries(ti.additionalIndexes).filter(([prop]) => prop === addiProp).map(async ([prop, pGetIndex]) => {
-							const toIndex = await pGetIndex(indexer, {[ti.listProp]: BrewUtil.homebrew[ti.listProp]});
-							toIndex.forEach(add => indexer.pushToIndex(add));
-						}));
-					}));
-			}));
-		}
-		return Omnidexer.decompressIndex(indexer.getIndex());
-	},
-
-	async pGetAlternateSearchIndices (highestId, altProp) {
-		BrewUtil._buildSourceCache();
-		const indexer = new Omnidexer(highestId + 1);
-
-		await BrewUtil.pAddBrewData();
-		if (BrewUtil.homebrew) {
-			const INDEX_DEFINITIONS = [Omnidexer.TO_INDEX__FROM_INDEX_JSON, Omnidexer.TO_INDEX];
-
-			for (const IXDEF of INDEX_DEFINITIONS) {
-				const filteredIxDef = IXDEF.filter(ti => ti.alternateIndexes && (BrewUtil.homebrew[ti.listProp] || []).length);
-
-				for (const ti of filteredIxDef) {
-					const filteredAltIndexes = Object.entries(ti.alternateIndexes)
-						.filter(([prop]) => prop === altProp);
-					for (const tuple of filteredAltIndexes) {
-						const [prop, pGetIndex] = tuple;
-						await indexer.pAddToIndex(ti, BrewUtil.homebrew, {alt: ti.alternateIndexes[prop]});
-					}
-				}
-			}
-		}
-
-		return Omnidexer.decompressIndex(indexer.getIndex());
-	},
-
-	__pPersistHomebrewDebounced: null,
-	_persistHomebrewDebounced () {
-		if (BrewUtil.__pPersistHomebrewDebounced == null) {
-			BrewUtil.__pPersistHomebrewDebounced = MiscUtil.debounce(() => BrewUtil._pCleanSaveBrew(), 125);
-		}
-		BrewUtil.__pPersistHomebrewDebounced();
 	},
 };
 
@@ -6273,23 +5311,20 @@ CollectionUtil = {
 	},
 
 	deepEquals (a, b) {
-		if (CollectionUtil._eq_sameValueZeroEqual(a, b)) return true;
+		if (Object.is(a, b)) return true;
 		if (a && b && typeof a === "object" && typeof b === "object") {
 			if (CollectionUtil._eq_isPlainObject(a) && CollectionUtil._eq_isPlainObject(b)) return CollectionUtil._eq_areObjectsEqual(a, b);
-			const arrayA = Array.isArray(a);
-			const arrayB = Array.isArray(b);
-			if (arrayA || arrayB) return arrayA === arrayB && CollectionUtil._eq_areArraysEqual(a, b);
-			const setA = a instanceof Set;
-			const setB = b instanceof Set;
-			if (setA || setB) return setA === setB && CollectionUtil.setEq(a, b);
+			const isArrayA = Array.isArray(a);
+			const isArrayB = Array.isArray(b);
+			if (isArrayA || isArrayB) return isArrayA === isArrayB && CollectionUtil._eq_areArraysEqual(a, b);
+			const isSetA = a instanceof Set;
+			const isSetB = b instanceof Set;
+			if (isSetA || isSetB) return isSetA === isSetB && CollectionUtil.setEq(a, b);
 			return CollectionUtil._eq_areObjectsEqual(a, b);
 		}
 		return false;
 	},
 
-	// This handles the NaN != NaN case; ignore linter complaints
-	// eslint-disable-next-line no-self-compare
-	_eq_sameValueZeroEqual: (a, b) => a === b || (a !== a && b !== b),
 	_eq_isPlainObject: (value) => value.constructor === Object || value.constructor == null,
 	_eq_areObjectsEqual (a, b) {
 		const keysA = Object.keys(a);
@@ -6309,33 +5344,43 @@ CollectionUtil = {
 	},
 
 	// region Find first <X>
-	dfs (obj, prop) {
+	dfs (obj, opts) {
+		const {prop = null, fnMatch = null} = opts;
+		if (!prop && !fnMatch) throw new Error(`One of "prop" or "fnMatch" must be specified!`);
+
 		if (obj instanceof Array) {
 			for (const child of obj) {
-				const n = CollectionUtil.dfs(child, prop);
+				const n = CollectionUtil.dfs(child, opts);
 				if (n) return n;
 			}
 			return;
 		}
 
 		if (obj instanceof Object) {
-			if (obj[prop]) return obj[prop];
+			if (prop && obj[prop]) return obj[prop];
+			if (fnMatch && fnMatch(obj)) return obj;
 
 			for (const child of Object.values(obj)) {
-				const n = CollectionUtil.dfs(child, prop);
+				const n = CollectionUtil.dfs(child, opts);
 				if (n) return n;
 			}
 		}
 	},
 
-	bfs (obj, prop) {
+	bfs (obj, opts) {
+		const {prop = null, fnMatch = null} = opts;
+		if (!prop && !fnMatch) throw new Error(`One of "prop" or "fnMatch" must be specified!`);
+
 		if (obj instanceof Array) {
 			for (const child of obj) {
-				if (!(child instanceof Array) && child instanceof Object && child[prop]) return child[prop];
+				if (!(child instanceof Array) && child instanceof Object) {
+					if (prop && child[prop]) return child[prop];
+					if (fnMatch && fnMatch(child)) return child;
+				}
 			}
 
 			for (const child of obj) {
-				const n = CollectionUtil.bfs(child, prop);
+				const n = CollectionUtil.bfs(child, opts);
 				if (n) return n;
 			}
 
@@ -6343,7 +5388,8 @@ CollectionUtil = {
 		}
 
 		if (obj instanceof Object) {
-			if (obj[prop]) return obj[prop];
+			if (prop && obj[prop]) return obj[prop];
+			if (fnMatch && fnMatch(obj)) return obj;
 
 			return CollectionUtil.bfs(Object.values(obj));
 		}
@@ -6442,7 +5488,7 @@ Array.prototype.mergeMap || Object.defineProperty(Array.prototype, "mergeMap", {
 	enumerable: false,
 	writable: true,
 	value: function (fnMap) {
-		return this.map((...args) => fnMap(...args)).reduce((a, b) => Object.assign(a, b), {});
+		return this.map((...args) => fnMap(...args)).filter(it => it != null).reduce((a, b) => Object.assign(a, b), {});
 	},
 });
 
@@ -6652,7 +5698,7 @@ function BookModeView (opts) {
 	this._renderContent = async ($wrpContent, $dispName, $wrpControlsToPass) => {
 		this._$wrpRenderedContent = this._$wrpRenderedContent
 			? this._$wrpRenderedContent.empty().append($wrpContent)
-			: $$`<div class="bkmv__scroller h-100 overflow-y-auto ${isFlex ? "flex" : ""}">${this.isHideContentOnNoneShown ? null : $wrpContent}</div>`;
+			: $$`<div class="bkmv__scroller h-100 overflow-y-auto ${isFlex ? "ve-flex" : ""}">${this.isHideContentOnNoneShown ? null : $wrpContent}</div>`;
 		this._$wrpRenderedContent.appendTo(this._$wrpBook);
 
 		const numShown = await this.popTblGetNumShown({$wrpContent, $dispName, $wrpControls: $wrpControlsToPass});
@@ -6668,16 +5714,16 @@ function BookModeView (opts) {
 				const $btnClose = $(`<button class="btn btn-default">Close</button>`)
 					.click(() => this.close());
 
-				this._$wrpNoneShown = $$`<div class="w-100 flex-col flex-h-center no-shrink bkmv__footer mb-3">
-					<div class="mb-2 flex-vh-center min-h-0">${this.$eleNoneVisible}</div>
-					${this.isHideButtonCloseNone ? null : $$`<div class="flex-vh-center">${$btnClose}</div>`}
+				this._$wrpNoneShown = $$`<div class="w-100 ve-flex-col ve-flex-h-center no-shrink bkmv__footer mb-3">
+					<div class="mb-2 ve-flex-vh-center min-h-0">${this.$eleNoneVisible}</div>
+					${this.isHideButtonCloseNone ? null : $$`<div class="ve-flex-vh-center">${$btnClose}</div>`}
 				</div>`;
 			}
 			this._$wrpNoneShown.appendTo(this.isHideContentOnNoneShown ? this._$wrpRenderedContent : this._$wrpBook);
 		}
 	};
 
-	// NOTE: Avoid using `flex` css, as it doesn't play nice with printing
+	// NOTE: Avoid using `ve-flex` css, as it doesn't play nice with printing
 	this.pOpen = async () => {
 		if (this.active) return;
 		this.active = true;
@@ -6689,14 +5735,14 @@ function BookModeView (opts) {
 		this._$body.css("overflow", "hidden");
 		this._$body.addClass("bkmv-active");
 
-		const $btnClose = $(`<span class="delete-icon glyphicon glyphicon-remove"></span>`)
+		const $btnClose = $(`<button class="btn btn-xs btn-danger br-0 bt-0 bb-0 btl-0 bbl-0 h-20p" title="Close"><span class="glyphicon glyphicon-remove"></span></button>`)
 			.click(() => this._doHashTeardown());
 		const $dispName = $(`<div></div>`); // pass this to the content function to allow it to set a main header
 		$$`<div class="bkmv__spacer-name split-v-center no-shrink">${$dispName}${$btnClose}</div>`.appendTo(this._$wrpBook);
 
 		// region controls
 		// Optionally usable "controls" section at the top of the pane
-		const $wrpControls = $(`<div class="w-100 flex-col bkmv__wrp-controls"></div>`)
+		const $wrpControls = $(`<div class="w-100 ve-flex-col bkmv__wrp-controls"></div>`)
 			.appendTo(this._$wrpBook);
 
 		let $wrpControlsToPass = $wrpControls;
@@ -6725,8 +5771,8 @@ function BookModeView (opts) {
 			if (lastColumns != null) $selColumns.val(lastColumns);
 			$selColumns.change();
 
-			$wrpControlsToPass = $$`<div class="w-100 flex">
-				<div class="flex-vh-center"><div class="mr-2 no-wrap help-subtle" title="Applied when printing the page.">Print columns:</div>${$selColumns}</div>
+			$wrpControlsToPass = $$`<div class="w-100 ve-flex">
+				<div class="ve-flex-vh-center"><div class="mr-2 no-wrap help-subtle" title="Applied when printing the page.">Print columns:</div>${$selColumns}</div>
 			</div>`.appendTo($wrpControls);
 		}
 		// endregion
@@ -6768,8 +5814,21 @@ BookModeView._BOOK_VIEW_COLUMNS_K = "bookViewColumns";
 ExcludeUtil = {
 	isInitialised: false,
 	_excludes: null,
+	_cache_excludesLookup: null,
+	_lock: null,
 
-	async pInitialise () {
+	async pInitialise ({lockToken = null} = {}) {
+		try {
+			await ExcludeUtil._lock.pLock({token: lockToken});
+			await ExcludeUtil._pInitialise();
+		} finally {
+			ExcludeUtil._lock.unlock();
+		}
+	},
+
+	async _pInitialise () {
+		if (ExcludeUtil.isInitialised) return;
+
 		ExcludeUtil.pSave = MiscUtil.throttle(ExcludeUtil._pSave, 50);
 		try {
 			ExcludeUtil._excludes = await StorageUtil.pGet(VeCt.STORAGE_EXCLUDES) || [];
@@ -6792,12 +5851,69 @@ ExcludeUtil = {
 	},
 
 	getList () {
-		return ExcludeUtil._excludes || [];
+		return MiscUtil.copy(ExcludeUtil._excludes || []);
 	},
 
 	async pSetList (toSet) {
 		ExcludeUtil._excludes = toSet;
+		ExcludeUtil._cache_excludesLookup = null;
 		await ExcludeUtil.pSave();
+	},
+
+	async pExtendList (toAdd) {
+		try {
+			const lockToken = await ExcludeUtil._lock.pLock();
+			await ExcludeUtil._pExtendList({toAdd, lockToken});
+		} finally {
+			ExcludeUtil._lock.unlock();
+		}
+	},
+
+	async _pExtendList ({toAdd, lockToken}) {
+		await ExcludeUtil.pInitialise({lockToken});
+		this._doBuildCache();
+
+		const out = MiscUtil.copy(ExcludeUtil._excludes || []);
+		MiscUtil.copy(toAdd || [])
+			.filter(({hash, category, source}) => {
+				if (!hash || !category || !source) return false;
+				const cacheUid = ExcludeUtil._getCacheUids(hash, category, source, true);
+				return !ExcludeUtil._cache_excludesLookup[cacheUid];
+			})
+			.forEach(it => out.push(it));
+
+		await ExcludeUtil.pSetList(out);
+	},
+
+	_doBuildCache () {
+		if (ExcludeUtil._cache_excludesLookup) return;
+		if (!ExcludeUtil._excludes) return;
+
+		ExcludeUtil._cache_excludesLookup = {};
+		ExcludeUtil._excludes.forEach(({source, category, hash}) => {
+			const cacheUid = ExcludeUtil._getCacheUids(hash, category, source, true);
+			ExcludeUtil._cache_excludesLookup[cacheUid] = true;
+		});
+	},
+
+	_getCacheUids (hash, category, source, isExact) {
+		hash = (hash || "").toLowerCase();
+		category = (category || "").toLowerCase();
+		source = (source.source || source || "").toLowerCase();
+
+		const exact = `${hash}__${category}__${source}`;
+		if (isExact) return [exact];
+
+		return [
+			`${hash}__${category}__${source}`,
+			`*__${category}__${source}`,
+			`${hash}__*__${source}`,
+			`${hash}__${category}__*`,
+			`*__*__${source}`,
+			`*__${category}__*`,
+			`${hash}__*__*`,
+			`*__*__*`,
+		];
 	},
 
 	_excludeCount: 0,
@@ -6813,31 +5929,29 @@ ExcludeUtil = {
 		if (!source) throw new Error(`Entity had no source!`);
 		opts = opts || {};
 
-		source = source.source || source;
-		const out = !!ExcludeUtil._excludes.find(row => (row.source === "*" || row.source === source) && (row.category === "*" || row.category === category) && (row.hash === "*" || row.hash === hash));
-		if (out && !opts.isNoCount) ++ExcludeUtil._excludeCount;
-		return out;
+		this._doBuildCache();
+
+		hash = (hash || "").toLowerCase();
+		category = (category || "").toLowerCase();
+		source = (source.source || source || "").toLowerCase();
+
+		const isExcluded = ExcludeUtil._isExcluded(hash, category, source);
+		if (!isExcluded) return isExcluded;
+
+		if (!opts.isNoCount) ++ExcludeUtil._excludeCount;
+
+		return isExcluded;
 	},
 
-	isAllContentExcluded (list) { return (!list.length && ExcludeUtil._excludeCount) || (list.length > 0 && list.length === ExcludeUtil._excludeCount); },
-	getAllContentBlacklistedHtml () { return `<div class="initial-message">(All content <a href="blacklist.html">blacklisted</a>)</div>`; },
-
-	addExclude (displayName, hash, category, source) {
-		if (!ExcludeUtil._excludes.find(row => row.source === source && row.category === category && row.hash === hash)) {
-			ExcludeUtil._excludes.push({displayName, hash, category, source});
-			ExcludeUtil.pSave();
-			return true;
+	_isExcluded (hash, category, source) {
+		for (const cacheUid of ExcludeUtil._getCacheUids(hash, category, source)) {
+			if (ExcludeUtil._cache_excludesLookup[cacheUid]) return true;
 		}
 		return false;
 	},
 
-	removeExclude (hash, category, source) {
-		const ix = ExcludeUtil._excludes.findIndex(row => row.source === source && row.category === category && row.hash === hash);
-		if (~ix) {
-			ExcludeUtil._excludes.splice(ix, 1);
-			ExcludeUtil.pSave();
-		}
-	},
+	isAllContentExcluded (list) { return (!list.length && ExcludeUtil._excludeCount) || (list.length > 0 && list.length === ExcludeUtil._excludeCount); },
+	getAllContentBlacklistedHtml () { return `<div class="initial-message">(All content <a href="blacklist.html">blacklisted</a>)</div>`; },
 
 	async _pSave () {
 		return StorageUtil.pSet(VeCt.STORAGE_EXCLUDES, ExcludeUtil._excludes);
@@ -6845,11 +5959,6 @@ ExcludeUtil = {
 
 	// The throttled version, available post-initialisation
 	async pSave () { /* no-op */ },
-
-	resetExcludes () {
-		ExcludeUtil._excludes = [];
-		ExcludeUtil.pSave();
-	},
 };
 
 // ENCOUNTERS ==========================================================================================================
@@ -6934,12 +6043,7 @@ ExtensionUtil = {
 	},
 
 	async pDoSendStats (evt, ele) {
-		const $parent = $(ele).closest(`th.rnd-name`);
-		const page = $parent.attr("data-page");
-		const source = $parent.attr("data-source");
-		const hash = $parent.attr("data-hash");
-		const rawExtensionData = $parent.attr("data-extension");
-		const extensionData = rawExtensionData ? JSON.parse(rawExtensionData) : null;
+		const {page, source, hash, extensionData} = ExtensionUtil._getElementData({ele});
 
 		if (page && source && hash) {
 			let toSend = await Renderer.hover.pCacheAndGet(page, source, hash);
@@ -6956,6 +6060,28 @@ ExtensionUtil = {
 
 			ExtensionUtil._doSend("entity", {page, entity: toSend, isTemp: !!evt.shiftKey});
 		}
+	},
+
+	async doDragStart (evt, ele) {
+		const {page, source, hash} = ExtensionUtil._getElementData({ele});
+		const meta = {
+			type: VeCt.DRAG_TYPE_IMPORT,
+			page,
+			source,
+			hash,
+		};
+		evt.dataTransfer.setData("application/json", JSON.stringify(meta));
+	},
+
+	_getElementData ({ele}) {
+		const $parent = $(ele).closest(`[data-page]`);
+		const page = $parent.attr("data-page");
+		const source = $parent.attr("data-source");
+		const hash = $parent.attr("data-hash");
+		const rawExtensionData = $parent.attr("data-extension");
+		const extensionData = rawExtensionData ? JSON.parse(rawExtensionData) : null;
+
+		return {page, source, hash, extensionData};
 	},
 
 	pDoSendStatsPreloaded ({page, entity, isTemp, options}) {
@@ -6985,34 +6111,64 @@ TokenUtil = {
 };
 
 // LOCKS ===============================================================================================================
-VeLock = function () {
+VeLock = function ({name = null, isDbg = false} = {}) {
+	this._name = name;
+	this._isDbg = isDbg;
 	this._lockMeta = null;
 
-	this.pLock = async () => {
+	this._getCaller = () => {
+		return (new Error()).stack.split("\n")[3].trim();
+	};
+
+	this.pLock = async ({token = null} = {}) => {
+		if (token != null && this._lockMeta?.token === token) {
+			++this._lockMeta.depth;
+			// eslint-disable-next-line no-console
+			if (this._isDbg) console.warn(`Lock "${this._name || "(unnamed)"}" add (now ${this._lockMeta.depth}) at ${this._getCaller()}`);
+			return token;
+		}
+
 		while (this._lockMeta) await this._lockMeta.lock;
+
+		// eslint-disable-next-line no-console
+		if (this._isDbg) console.warn(`Lock "${this._name || "(unnamed)"}" acquired at ${this._getCaller()}`);
+
 		let unlock = null;
 		const lock = new Promise(resolve => unlock = resolve);
 		this._lockMeta = {
 			lock,
 			unlock,
+			token: CryptUtil.uid(),
+			depth: 0,
 		};
+
+		return this._lockMeta.token;
 	};
 
 	this.unlock = () => {
-		const lockMeta = this._lockMeta;
-		if (lockMeta) {
-			this._lockMeta = null;
-			lockMeta.unlock();
+		if (!this._lockMeta) return;
+
+		if (this._lockMeta.depth > 0) {
+			// eslint-disable-next-line no-console
+			if (this._isDbg) console.warn(`Lock "${this._name || "(unnamed)"}" sub (now ${this._lockMeta.depth - 1}) at ${this._getCaller()}`);
+			return --this._lockMeta.depth;
 		}
+
+		// eslint-disable-next-line no-console
+		if (this._isDbg) console.warn(`Lock "${this._name || "(unnamed)"}" released at ${this._getCaller()}`);
+
+		const lockMeta = this._lockMeta;
+		this._lockMeta = null;
+		lockMeta.unlock();
 	};
 };
-BrewUtil._lockHandleBrewJson = new VeLock();
+ExcludeUtil._lock = new VeLock();
 
 // DATETIME ============================================================================================================
 DatetimeUtil = {
-	getDateStr (date, short) {
+	getDateStr ({date, isShort = false, isPad = false} = {}) {
 		const month = DatetimeUtil._MONTHS[date.getMonth()];
-		return `${short ? month.substring(0, 3) : month} ${Parser.getOrdinalForm(date.getDate())}, ${date.getFullYear()}`;
+		return `${isShort ? month.substring(0, 3) : month} ${isPad && date.getDate() < 10 ? "\u00A0" : ""}${Parser.getOrdinalForm(date.getDate())}, ${date.getFullYear()}`;
 	},
 
 	getDatetimeStr ({date, isPlainText = false} = {}) {

@@ -10,7 +10,9 @@
 					"href": {
 						"type": "internal",
 						"path": "book/DoD/001.webp"
-					}
+					},
+					"width": 449,
+					"height": 590
 				},
 				"Domains of Delight are to the Feywild what Domains of Dread are to the Shadowfell: sequestered realms governed by powerful beings. Whereas a Domain of Dread is ruled by a Darklord, a Domain of Delight is ruled by an archfey\u2014the most powerful of Fey creatures. An archfey gives form to their Domain of Delight, shaping it in ways unique to their personality. Some Domains of Delight are bright and cheery, while others are gloomy, but each one reflects the emotional state of its ruler. A Domain of Delight can be as small as a few acres or as big as a country.",
 				"This accessory helps you create Domains of Delight and the archfey who rule them, building on the information about the Feywild that appears in the Dungeon Master's Guide. The ideas, tips, and tables in this chapter are meant to spark your imagination. Use what excites and intrigues you, discard what doesn't, and make up the rest!",
@@ -40,7 +42,9 @@
 										"type": "internal",
 										"path": "book/DoD/002.webp"
 									},
-									"title": "The Queen of Air and Darkness floats above her throne, attended by her quickling spies and satyr spymaster."
+									"title": "The Queen of Air and Darkness floats above her throne, attended by her quickling spies and satyr spymaster.",
+									"width": 1241,
+									"height": 816
 								},
 								{
 									"type": "entries",
@@ -227,7 +231,9 @@
 										"type": "internal",
 										"path": "book/DoD/003.webp"
 									},
-									"title": "The borders of Baba Yaga's domain are patrolled by her dancing hut, which doesn't dance so much as stomp trespassers into the ground."
+									"title": "The borders of Baba Yaga's domain are patrolled by her dancing hut, which doesn't dance so much as stomp trespassers into the ground.",
+									"width": 1241,
+									"height": 799
 								},
 								{
 									"type": "table",
@@ -478,7 +484,9 @@
 												"type": "internal",
 												"path": "book/DoD/004.webp"
 											},
-											"title": "A satyr hopes to find the perfect gift at a faerie bazaar."
+											"title": "A satyr hopes to find the perfect gift at a faerie bazaar.",
+											"width": 1241,
+											"height": 766
 										},
 										{
 											"type": "entries",
@@ -506,32 +514,32 @@
 											"items": [
 												{
 													"type": "item",
-													"name": "Audience.",
+													"name": "Audience",
 													"entry": "You and your companions gain a private audience with the Summer Queen, the Queen of Air and Darkness, or both."
 												},
 												{
 													"type": "item",
-													"name": "Major.",
+													"name": "Major",
 													"entry": "You gain a very rare magic item that is yours to keep, or a legendary magic item for {@dice 5d12} days."
 												},
 												{
 													"type": "item",
-													"name": "Safety.",
+													"name": "Safety",
 													"entry": "One creature that previously regarded you as an enemy no longer remembers you at all."
 												},
 												{
 													"type": "item",
-													"name": "Time.",
+													"name": "Time",
 													"entry": "You and your companions can return to the Material Plane up to fifty years from now without having aged a day."
 												},
 												{
 													"type": "item",
-													"name": "Title.",
+													"name": "Title",
 													"entry": "You gain an important title and all the rewards that come with it (see \"Marks of Prestige\" in the Dungeon Master's Guide)."
 												},
 												{
 													"type": "item",
-													"name": "Wealth.",
+													"name": "Wealth",
 													"entry": "You receive up to 50,000 gp worth of coins, jewelry, or property."
 												}
 											]
@@ -908,7 +916,9 @@
 								"type": "internal",
 								"path": "book/DoD/005.webp"
 							},
-							"title": "One way to end a curse on yourself is to get bitten by a faerie dragon of a particular color."
+							"title": "One way to end a curse on yourself is to get bitten by a faerie dragon of a particular color.",
+							"width": 1134,
+							"height": 753
 						},
 						{
 							"type": "section",
@@ -1239,7 +1249,9 @@
 								"type": "internal",
 								"path": "book/DoD/006.webp"
 							},
-							"title": "A centaur guards an archfey's palace."
+							"title": "A centaur guards an archfey's palace.",
+							"width": 1240,
+							"height": 824
 						},
 						{
 							"type": "entries",
@@ -1520,7 +1532,9 @@
 						"type": "internal",
 						"path": "book/DoD/007.webp"
 					},
-					"title": "An intrepid gnome adventurer traverses a moonlit stream while scowling flowers look on."
+					"title": "An intrepid gnome adventurer traverses a moonlit stream while scowling flowers look on.",
+					"width": 1239,
+					"height": 809
 				},
 				{
 					"type": "section",
@@ -1590,7 +1604,9 @@
 								"type": "internal",
 								"path": "book/DoD/008.webp"
 							},
-							"title": "One never knows where a \"shortcut\" through the Feywild might lead."
+							"title": "One never knows where a \"shortcut\" through the Feywild might lead.",
+							"width": 1241,
+							"height": 808
 						},
 						{
 							"type": "entries",
@@ -1878,7 +1894,9 @@
 								"type": "internal",
 								"path": "book/DoD/009.webp"
 							},
-							"title": "A boggle uses its innate magic to pluck a vial from a crone's belt."
+							"title": "A boggle uses its innate magic to pluck a vial from a crone's belt.",
+							"width": 1239,
+							"height": 804
 						},
 						{
 							"type": "entries",
@@ -1948,14 +1966,16 @@
 			"page": 22,
 			"name": "Putting It All Together",
 			"entries": [
-				"{@creature Yarnspinner|DoD} is an archfey created using the tables in part 2. His domain, Fablerise, was fleshed out using the tables in part 3. Fablerise is a small Domain of Delight\u2014roughly three square miles nestled in a forest called Thither, which is part of a much larger Domain of Delight called Prismeer. Yarnspinner only recently arrived in Thither and is unaware that he is intruding upon another archfey's territory (see The Wild Beyond the Witchlight for more information about Prismeer and its archfey ruler).",
+				"{@creature Yarnspinner|DoD} is an archfey created using the tables in part 2. His domain, Fablerise, was fleshed out using the tables in part 3. Fablerise is a small Domain of Delight\u2014roughly three square miles nestled in a forest called Thither, which is part of a much larger Domain of Delight called Prismeer. {@creature Yarnspinner|DoD} only recently arrived in Thither and is unaware that he is intruding upon another archfey's territory (see The Wild Beyond the Witchlight for more information about Prismeer and its archfey ruler).",
 				{
 					"type": "image",
 					"href": {
 						"type": "internal",
 						"path": "book/DoD/010.webp"
 					},
-					"title": "Yarnspinner is an archfey who loves to tell stories."
+					"title": "{@creature Yarnspinner|DoD} is an archfey who loves to tell stories.",
+					"width": 1240,
+					"height": 1637
 				}
 			],
 			"id": "037"
@@ -1971,91 +1991,117 @@
 					"href": {
 						"type": "internal",
 						"path": "book/DoD/aids1.webp"
-					}
+					},
+					"width": 655,
+					"height": 845
 				},
 				{
 					"type": "image",
 					"href": {
 						"type": "internal",
 						"path": "book/DoD/aids2.webp"
-					}
+					},
+					"width": 653,
+					"height": 847
 				},
 				{
 					"type": "image",
 					"href": {
 						"type": "internal",
 						"path": "book/DoD/aids3.webp"
-					}
+					},
+					"width": 653,
+					"height": 845
 				},
 				{
 					"type": "image",
 					"href": {
 						"type": "internal",
 						"path": "book/DoD/aids4.webp"
-					}
+					},
+					"width": 656,
+					"height": 848
 				},
 				{
 					"type": "image",
 					"href": {
 						"type": "internal",
 						"path": "book/DoD/aids5.webp"
-					}
+					},
+					"width": 654,
+					"height": 847
 				},
 				{
 					"type": "image",
 					"href": {
 						"type": "internal",
 						"path": "book/DoD/aids6.webp"
-					}
+					},
+					"width": 652,
+					"height": 846
 				},
 				{
 					"type": "image",
 					"href": {
 						"type": "internal",
 						"path": "book/DoD/aids7.webp"
-					}
+					},
+					"width": 651,
+					"height": 843
 				},
 				{
 					"type": "image",
 					"href": {
 						"type": "internal",
 						"path": "book/DoD/aids8.webp"
-					}
+					},
+					"width": 653,
+					"height": 845
 				},
 				{
 					"type": "image",
 					"href": {
 						"type": "internal",
 						"path": "book/DoD/aids9.webp"
-					}
+					},
+					"width": 621,
+					"height": 928
 				},
 				{
 					"type": "image",
 					"href": {
 						"type": "internal",
 						"path": "book/DoD/aids10.webp"
-					}
+					},
+					"width": 620,
+					"height": 928
 				},
 				{
 					"type": "image",
 					"href": {
 						"type": "internal",
 						"path": "book/DoD/aids11.webp"
-					}
+					},
+					"width": 617,
+					"height": 796
 				},
 				{
 					"type": "image",
 					"href": {
 						"type": "internal",
 						"path": "book/DoD/tracker1.webp"
-					}
+					},
+					"width": 717,
+					"height": 973
 				},
 				{
 					"type": "image",
 					"href": {
 						"type": "internal",
 						"path": "book/DoD/tracker2.webp"
-					}
+					},
+					"width": 713,
+					"height": 958
 				}
 			],
 			"id": "038"

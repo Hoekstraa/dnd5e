@@ -29,21 +29,29 @@ class BaseParser {
 			: line;
 	}
 
-	static _getCleanInput (ipt) {
+	static _getCleanInput (ipt, options) {
 		let iptClean = ipt
 			.replace(/\n\r/g, "\n")
 			.replace(/\r\n/g, "\n")
 			.replace(/\r/g, "\n")
+			.replace(/­\s*\n\s*/g, "")
 			.replace(/[−–‒]/g, "-") // convert minus signs to hyphens
 		;
 
-		iptClean = CleanUtil.getCleanString(iptClean)
+		iptClean = CleanUtil.getCleanString(iptClean, {isFast: false})
 			// Ensure CR always has a space before the dash
 			.replace(/(Challenge)([-\u2012-\u2014])/, "$1 $2");
 
 		// Connect together words which are divided over two lines
 		iptClean = iptClean
 			.replace(/((?: | ")[A-Za-z][a-z]+)- *\n([a-z])/g, "$1$2");
+
+		// Apply `PAGE=...`
+		iptClean = iptClean
+			.replace(/(?:\n|^)PAGE=(?<page>\d+)(?:\n|$)/gi, (...m) => {
+				options.page = Number(m.last().page);
+				return "";
+			});
 
 		return iptClean;
 	}
@@ -65,6 +73,7 @@ class BaseParser {
 	 * @param [opts.noHit] Disable "Hit:" checking.
 	 * @param [opts.noSpellcastingAbility] Disable spellcasting ability checking.
 	 * @param [opts.noSpellcastingWarlockSlotLevel] Disable spellcasting warlock slot checking.
+	 * @param [opts.noDc] Disable "DC" checking
 	 */
 	static _isContinuationLine (entryArray, curLine, opts) {
 		opts = opts || {};
@@ -77,12 +86,15 @@ class BaseParser {
 		if (/,\s*$/.test(lastEntry)) return true;
 		// If the current string ends in a dash
 		if (/[-\u2014]\s*$/.test(lastEntry)) return true;
+		// If the current string ends in a conjunction
+		if (/ (?:and|or)\s*$/.test(lastEntry)) return true;
 
 		const cleanLine = curLine.trim();
 
 		if (/^\d..-\d.. level\s+\(/.test(cleanLine) && !opts.noSpellcastingWarlockSlotLevel) return false;
 
-		if (/^•/.test(cleanLine)) return false;
+		// Start of a list item
+		if (/^[•●]/.test(cleanLine)) return false;
 
 		// A lowercase word
 		if (/^[a-z]/.test(cleanLine) && !opts.noLowercase) return true;
@@ -99,6 +111,7 @@ class BaseParser {
 		// "Hit:" e.g. inside creature attacks
 		if (/^Hit:/.test(cleanLine) && !opts.noHit) return true;
 		if (/^(Intelligence|Wisdom|Charisma)\s+\(/.test(cleanLine) && !opts.noSpellcastingAbility) return true;
+		if (/^DC\s+/.test(cleanLine) && !opts.noDc) return true;
 
 		return false;
 	}
@@ -112,6 +125,37 @@ class BaseParser {
 }
 
 class TaggerUtils {
+	static _ALL_LEGENDARY_GROUPS = null;
+	static _ALL_SPELLS = null;
+	static init ({legendaryGroups, spells}) {
+		this._ALL_LEGENDARY_GROUPS = legendaryGroups;
+		this._ALL_SPELLS = spells;
+	}
+
+	static findLegendaryGroup ({name, source}) {
+		name = name.toLowerCase();
+		source = source.toLowerCase();
+
+		const doFind = arr => arr.find(it => it.name.toLowerCase() === name && it.source.toLowerCase() === source);
+
+		const fromBrew = typeof BrewUtil2 !== "undefined" ? doFind(BrewUtil2.getBrewProcessedFromCache("legendaryGroup")) : null;
+		if (fromBrew) return fromBrew;
+
+		return doFind(this._ALL_LEGENDARY_GROUPS);
+	}
+
+	static findSpell ({name, source}) {
+		name = name.toLowerCase();
+		source = source.toLowerCase();
+
+		const doFind = arr => arr.find(s => (s.name.toLowerCase() === name || (typeof s.srd === "string" && s.srd.toLowerCase() === name)) && s.source.toLowerCase() === source);
+
+		const fromBrew = typeof BrewUtil2 !== "undefined" ? doFind(BrewUtil2.getBrewProcessedFromCache("spell")) : null;
+		if (fromBrew) return fromBrew;
+
+		return doFind(this._ALL_SPELLS);
+	}
+
 	/**
 	 *
 	 * @param targetTags e.g. `["@condition"]`
@@ -157,14 +201,34 @@ class TaggerUtils {
 			}
 		}
 	}
+
+	static getSpellsFromString (str, {cbMan} = {}) {
+		const strSpellcasting = str;
+		const knownSpells = {};
+		strSpellcasting.replace(/{@spell ([^}]+)}/g, (...m) => {
+			let [spellName, spellSource] = m[1].split("|").map(it => it.toLowerCase());
+			spellSource = spellSource || SRC_PHB.toLowerCase();
+
+			(knownSpells[spellSource] = knownSpells[spellSource] || new Set()).add(spellName);
+		});
+
+		const out = [];
+
+		Object.entries(knownSpells)
+			.forEach(([source, spellSet]) => {
+				spellSet.forEach(it => {
+					const spell = TaggerUtils.findSpell({name: it, source});
+					if (!spell) return cbMan ? cbMan(`${it} :: ${source}`) : null;
+
+					out.push(spell);
+				});
+			});
+
+		return out;
+	}
 }
 
 class TagCondition {
-	static init (legendaryGroups, spells) {
-		TagCondition._ALL_LEGENDARY_GROUPS = legendaryGroups;
-		TagCondition._ALL_SPELLS = spells;
-	}
-
 	static _getConvertedEntry (mon, entry, {inflictedSet, inflictedWhitelist} = {}) {
 		const walker = MiscUtil.getWalker({keyBlacklist: TagCondition._KEY_BLACKLIST});
 		const nameStack = [];
@@ -250,24 +314,10 @@ class TagCondition {
 
 		const inflictedSet = isTagInflicted ? new Set() : null;
 
-		// Collect known spells
-		const strSpellcasting = JSON.stringify(m.spellcasting);
-		const knownSpells = {};
-		strSpellcasting.replace(/{@spell ([^}]+)}/g, (...m) => {
-			let [spellName, spellSource] = m[1].split("|").map(it => it.toLowerCase());
-			spellSource = spellSource || SRC_PHB.toLowerCase();
-
-			(knownSpells[spellSource] = knownSpells[spellSource] || new Set()).add(spellName);
+		const spells = TaggerUtils.getSpellsFromString(JSON.stringify(m.spellcasting), {cbMan});
+		spells.forEach(spell => {
+			if (spell.conditionInflict) spell.conditionInflict.filter(c => !inflictedWhitelist || inflictedWhitelist.has(c)).forEach(c => inflictedSet.add(c));
 		});
-
-		Object.entries(knownSpells)
-			.forEach(([source, spellSet]) => {
-				spellSet.forEach(it => {
-					const spell = TagCondition._ALL_SPELLS.find(s => (s.name.toLowerCase() === it || (typeof s.srd === "string" && s.srd.toLowerCase() === it)) && s.source.toLowerCase() === source);
-					if (!spell) return cbMan ? cbMan(`${it} :: ${source}`) : null;
-					if (spell.conditionInflict) spell.conditionInflict.filter(c => !inflictedWhitelist || inflictedWhitelist.has(c)).forEach(c => inflictedSet.add(c));
-				});
-			});
 
 		this._mutAddInflictedSet({m, inflictedSet, isInflictedAddOnly, prop: "conditionInflictSpell"});
 	}
@@ -277,7 +327,7 @@ class TagCondition {
 
 		const inflictedSet = isTagInflicted ? new Set() : null;
 
-		const meta = TagCondition._ALL_LEGENDARY_GROUPS.find(it => it.name === m.legendaryGroup.name && it.source === m.legendaryGroup.source);
+		const meta = TaggerUtils.findLegendaryGroup({name: m.legendaryGroup.name, source: m.legendaryGroup.source});
 		if (!meta) return cbMan ? cbMan(m.legendaryGroup) : null;
 		this._collectInflictedConditions(JSON.stringify(meta), {inflictedSet, inflictedWhitelist});
 
@@ -316,7 +366,7 @@ class TagCondition {
 						},
 					);
 					return ptrStack._
-						.replace(/\b{@condition (prone)} (to)\b/gi, "$1 $2")
+						.replace(/{@condition (prone)} (to)\b/gi, "$1 $2")
 					;
 				},
 			},
@@ -328,8 +378,6 @@ TagCondition._KEY_BLACKLIST = new Set([
 	...MiscUtil.GENERIC_WALKER_ENTRIES_KEY_BLACKLIST,
 	"conditionImmune",
 ]);
-TagCondition._ALL_LEGENDARY_GROUPS = null;
-TagCondition._ALL_SPELLS = null;
 TagCondition._CONDITIONS = [
 	"blinded",
 	"charmed",
@@ -424,7 +472,22 @@ class DiceConvert {
 					"dmg2",
 				]),
 			});
-			DiceConvert._walkerHandlers = {string: DiceConvert._walkerStringHandler.bind(DiceConvert, isTagHits)};
+			DiceConvert._walkerHandlers = {
+				string: (str) => {
+					const ptrStack = {_: ""};
+					TaggerUtils.walkerStringHandler(
+						["@dice", "@hit", "@damage", "@scaledice", "@scaledamage", "@d20"],
+						ptrStack,
+						0,
+						0,
+						str,
+						{
+							fnTag: this._walkerStringHandler.bind(this, isTagHits),
+						},
+					);
+					return ptrStack._;
+				},
+			};
 		}
 		entry = MiscUtil.copy(entry);
 		return DiceConvert._walker.walk(entry, DiceConvert._walkerHandlers);
@@ -433,14 +496,13 @@ class DiceConvert {
 	static _walkerStringHandler (isTagHits, str) {
 		if (isTagHits) {
 			// replace e.g. "+X to hit"
-			str = str.replace(/([-+])?\d+(?= to hit)/g, function (match) {
-				const cleanMatch = match.startsWith("+") ? match.replace("+", "") : match;
-				return `{@hit ${cleanMatch}}`;
+			str = str.replace(/(?<op>[-+])?(?<bonus>\d+)(?= to hit)\b/g, (...m) => {
+				return `{@hit ${m.last().op === "-" ? "-" : ""}${m.last().bonus}}`;
 			});
 		}
 
 		// re-tag + format dice
-		str = str.replace(/(\s*[-+]\s*)?(([1-9]\d*)?d([1-9]\d*)(\s*?[-+×x*÷/]\s*?(\d,\d|\d)+(\.\d+)?)?)+(?:\s*\+\s*\bPB\b)?/gi, (...m) => {
+		str = str.replace(/\b(\s*[-+]\s*)?(([1-9]\d*)?d([1-9]\d*)(\s*?[-+×x*÷/]\s*?(\d,\d|\d)+(\.\d+)?)?)+(?:\s*\+\s*\bPB\b)?\b/gi, (...m) => {
 			const expanded = m[0].replace(/([^0-9d.,PB])/gi, " $1 ").replace(/\s+/g, " ");
 			return `{@dice ${expanded}}`;
 		});
@@ -578,6 +640,10 @@ class ActionTag {
 			reAction.lastIndex += replaceAs.length - 1;
 		}
 
+		strMod = strMod
+			.replace(/(Extra|Sneak) {@action Attack}/g, (...m) => `${m[1]} Attack`)
+		;
+
 		return strMod;
 	}
 }
@@ -607,7 +673,7 @@ class SenseTag {
 	}
 
 	static _fnTag (strMod) {
-		return strMod.replace(/(tremorsense|blindsight|truesight|darkvision)/g, (...m) => `{@sense ${m[0]}}`);
+		return strMod.replace(/(tremorsense|blindsight|truesight|darkvision)/g, (...m) => `{@sense ${m[0]}${m[0].toLowerCase() === "tremorsense" ? "|MM" : ""}}`);
 	}
 }
 
@@ -641,7 +707,7 @@ class EntryConvert {
 							continue;
 						}
 
-						const mBullet = /^\s*[-•]\s*(.*)$/.exec(it);
+						const mBullet = /^\s*[-•●]\s*(.*)$/.exec(it);
 						if (!mBullet) {
 							checkFinalizeList();
 							out.push(it);
@@ -730,7 +796,7 @@ class EntryConvert {
 					addEntry(list);
 				}
 
-				curLine = curLine.replace(/^\s*•\s*/, "");
+				curLine = curLine.replace(/^\s*[•●]\s*/, "");
 				addEntry(curLine.trim());
 			} else if (ConvertUtil.isNameLine(curLine)) {
 				popNestedEntries(); // this implicitly pops nested lists
@@ -777,13 +843,18 @@ class ConvertUtil {
 	 * (Inline titles)
 	 * Checks if a line of text starts with a name, e.g.
 	 * "Big Attack. Lorem ipsum..." vs "Lorem ipsum..."
+	 * @param line
+	 * @param exceptions A set of (lowercase) exceptions which should always be treated as "not a name" (e.g. "cantrips")
+	 * @param splitterPunc Regexp to use when splitting by punctuation.
+	 * @returns {boolean}
 	 */
-	static isNameLine (line) {
-		const spl = this._getMergedSplitName({line});
+	static isNameLine (line, {exceptions = null, splitterPunc = null} = {}) {
+		const spl = this._getMergedSplitName({line, splitterPunc});
 		if (spl.map(it => it.trim()).filter(Boolean).length === 1) return false;
 
 		// ignore everything inside parentheses
 		const namePart = ConvertUtil.getWithoutParens(spl[0]);
+		if (!namePart) return false; // (If this is _everything_ cancel)
 
 		const reStopwords = new RegExp(`^(${StrUtil.TITLE_LOWER_WORDS.join("|")})$`, "i");
 		const tokens = namePart.split(/([ ,;:]+)/g);
@@ -793,10 +864,15 @@ class ConvertUtil {
 			return !isStopword;
 		});
 
-		const namePartNoStopwords = cleanTokens.join("");
+		const namePartNoStopwords = cleanTokens.join("").trim();
 
 		// if it's an ability score, it's not a name
-		if (Object.values(Parser.ATB_ABV_TO_FULL).includes(namePartNoStopwords.trim())) return false;
+		if (Object.values(Parser.ATB_ABV_TO_FULL).includes(namePartNoStopwords)) return false;
+
+		// if it's a dice, it's not a name
+		if (/^\d*d\d+\b/.test(namePartNoStopwords)) return false;
+
+		if (exceptions && exceptions.has(namePartNoStopwords.toLowerCase())) return false;
 
 		// if it's in title case after removing all stopwords, it's a name
 		return namePartNoStopwords.toTitleCase() === namePartNoStopwords;
@@ -808,7 +884,7 @@ class ConvertUtil {
 		return line.toTitleCase() === line;
 	}
 
-	static isListItemLine (line) { return line.trim().startsWith("•"); }
+	static isListItemLine (line) { return /^[•●]/.test(line.trim()); }
 
 	static splitNameLine (line, isKeepPunctuation) {
 		const spl = this._getMergedSplitName({line});
@@ -820,8 +896,8 @@ class ConvertUtil {
 		return out;
 	}
 
-	static _getMergedSplitName ({line}) {
-		let spl = line.split(/([.!?:])/g);
+	static _getMergedSplitName ({line, splitterPunc}) {
+		let spl = line.split(splitterPunc || /([.!?:])/g);
 
 		// Handle e.g. "1. Freezing Ray. ..."
 		if (/^\d+$/.test(spl[0]) && spl.length > 3) {
@@ -914,7 +990,37 @@ class ConvertUtil {
 ConvertUtil._CONTRACTIONS = new Set(["Mr.", "Mrs.", "Ms.", "Dr."]);
 
 class AlignmentUtil {
+	static tryGetConvertedAlignment (align, {cbMan = null} = {}) {
+		if (!(align || "").trim()) return {};
 
+		let alignmentPrefix;
+
+		// region Support WBtW and onwards formatting
+		align = align.trim().replace(/^typically\s+/, () => {
+			alignmentPrefix = "typically ";
+			return "";
+		});
+		// endregion
+
+		const orParts = (align || "").split(/ or /g).map(it => it.trim().replace(/[.,;]$/g, "").trim());
+		const out = [];
+
+		orParts.forEach(part => {
+			Object.values(AlignmentUtil.ALIGNMENTS).forEach(it => {
+				if (it.regex.test(part)) return out.push({alignment: it.output});
+
+				const mChange = it.regexChance.exec(part);
+				if (mChange) out.push({alignment: it.output, chance: Number(mChange[1])});
+			});
+		});
+
+		if (out.length === 1) return {alignmentPrefix, alignment: out[0].alignment};
+		if (out.length) return {alignmentPrefix, alignment: out};
+
+		if (cbMan) cbMan(align);
+
+		return {alignmentPrefix, alignment: align};
+	}
 }
 // These are arranged in order of preferred precedence
 AlignmentUtil.ALIGNMENTS_RAW = {

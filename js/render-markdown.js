@@ -124,7 +124,7 @@ class RendererMarkdown {
 
 				const cacheDepth = this._adjustDepth(meta, 1);
 				this._recursiveRender(entry.items[i], textStack, meta, {suffix: "\n"});
-				if (textStack[0].slice(-2) === "\n\n") textStack[0] = textStack[0].slice(-1);
+				if (textStack[0].slice(-2) === "\n\n") textStack[0] = textStack[0].slice(0, -1);
 				meta.depth = cacheDepth;
 			}
 		}
@@ -448,7 +448,7 @@ class RendererMarkdown {
 		const bonusActionsPart = mon.bonus ? `\n>### Bonus Actions\n${RendererMarkdown.monster._getRenderedSection(mon.bonus, 1, meta)}` : "";
 		const reactionsPart = mon.reaction ? `\n>### Reactions\n${RendererMarkdown.monster._getRenderedSection(mon.reaction, 1, meta)}` : "";
 		const legendaryActionsPart = mon.legendary ? `\n>### Legendary Actions\n>${Renderer.monster.getLegendaryActionIntro(mon, RendererMarkdown.get())}\n>\n${RendererMarkdown.monster._getRenderedLegendarySection(mon.legendary, 1, meta)}` : "";
-		const mythicActionsPart = mon.mythic ? `\n>### Mythic Actions\n>${Renderer.monster.getMythicActionIntro(mon, RendererMarkdown.get())}\n>\n${RendererMarkdown.monster._getRenderedLegendarySection(mon.mythic, 1, meta)}` : "";
+		const mythicActionsPart = mon.mythic ? `\n>### Mythic Actions\n>${Renderer.monster.getSectionIntro(mon, {renderer: RendererMarkdown.get(), prop: "mythic"})}\n>\n${RendererMarkdown.monster._getRenderedLegendarySection(mon.mythic, 1, meta)}` : "";
 
 		const legendaryGroupLairPart = legendaryGroup?.lairActions ? `\n>### Lair Actions\n${RendererMarkdown.monster._getRenderedSection(legendaryGroup.lairActions, -1, meta)}` : "";
 		const legendaryGroupRegionalPart = legendaryGroup?.regionalEffects ? `\n>### Regional Effects\n${RendererMarkdown.monster._getRenderedSection(legendaryGroup.regionalEffects, -1, meta)}` : "";
@@ -457,7 +457,7 @@ class RendererMarkdown {
 
 		const unbreakablePart = `___
 >## ${mon._displayName || mon.name}
->*${mon.level ? `${Parser.getOrdinalForm(mon.level)}-level ` : ""}${Parser.sizeAbvToFull(mon.size)} ${monTypes.asText}${mon.alignment ? `, ${mon.alignmentPrefix ? RendererMarkdown.get().render(mon.alignmentPrefix) : ""}${Parser.alignmentListToFull(mon.alignment)}` : ""}*
+>*${mon.level ? `${Parser.getOrdinalForm(mon.level)}-level ` : ""}${Renderer.utils.getRenderedSize(mon.size)} ${monTypes.asText}${mon.alignment ? `, ${mon.alignmentPrefix ? RendererMarkdown.get().render(mon.alignmentPrefix) : ""}${Parser.alignmentListToFull(mon.alignment)}` : ""}*
 >___
 >- **Armor Class** ${acPart}
 >- **Hit Points** ${Renderer.monster.getRenderedHp(mon.hp, true)}
@@ -551,6 +551,14 @@ ___
 		const lgRender = subStack.join("").trim();
 		textStack[0] += `\n${lgRender}\n\n`;
 	}
+	// endregion
+
+	// region embedded entities
+	/*
+	_renderStatblock (entry, textStack, meta, options) {
+		// TODO
+	}
+	*/
 	// endregion
 
 	// region images
@@ -693,7 +701,11 @@ ___
 			case "@h": textStack[0] += `*Hit:* `; break;
 
 			// DCs /////////////////////////////////////////////////////////////////////////////////////////////
-			case "@dc": textStack[0] += `DC ${text}`; break;
+			case "@dc": {
+				const [dcText, displayText] = Renderer.splitTagByPipe(text);
+				textStack[0] += `DC ${displayText || dcText}`;
+				break;
+			}
 
 			// DICE ////////////////////////////////////////////////////////////////////////////////////////////
 			case "@dice":
@@ -804,7 +816,7 @@ ___
 					</label></div>`;
 				});
 
-			RendererMarkdown.__$wrpSettings = $$`<div class="flex-v-col w-100 h-100">${$rows}</div>`;
+			RendererMarkdown.__$wrpSettings = $$`<div class="ve-flex-v-col w-100 h-100">${$rows}</div>`;
 		}
 		RendererMarkdown.__$wrpSettings.appendTo($modalInner);
 	}
@@ -1623,7 +1635,7 @@ class MarkdownConverter {
 			tbl.rows.forEach(r => {
 				const r0Clean = Renderer.stripTags((r[0] || "").trim());
 				// u2012 = figure dash; u2013 = en-dash
-				if (!/^[-+*/×÷x^.,0-9\u2012\u2013]+$/i.exec(r0Clean)) return isDiceCol0 = false;
+				if (!/^[-+*/×÷x^.,0-9\u2012\u2013]+(?:st|nd|rd|th)?$/i.exec(r0Clean)) return isDiceCol0 = false;
 			});
 		})();
 

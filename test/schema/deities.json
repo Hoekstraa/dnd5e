@@ -1,7 +1,7 @@
 {
 	"$schema": "http://json-schema.org/draft-07/schema#",
 	"$id": "deities.json",
-	"version": "1.2.1",
+	"version": "1.2.3",
 	"type": "object",
 	"definitions": {
 		"deityData": {
@@ -92,7 +92,7 @@
 					}
 				},
 				"page": {
-					"type": "integer"
+					"$ref": "util.json#/definitions/page"
 				},
 				"additionalSources": {
 					"$ref": "util.json#/definitions/additionalSources"
@@ -113,68 +113,11 @@
 					"$ref": "util.json#/definitions/basicRules"
 				},
 				"customExtensionOf": {
-					"type": "string"
+					"type": "string",
+					"description": "A UID of an existing deity that this deity extends. e.g. \"Bahgtru|Orc|SCAG\""
 				},
 				"piety": {
 					"type": "boolean"
-				},
-				"_copy": {
-					"type": "object",
-					"properties": {
-						"name": {
-							"type": "string"
-						},
-						"source": {
-							"type": "string"
-						},
-						"pantheon": {
-							"description": "Used in deity data",
-							"type": "string"
-						},
-						"shortName": {
-							"description": "Used in subclass data",
-							"type": "string"
-						},
-						"className": {
-							"description": "Used in subclass data",
-							"type": "string"
-						},
-						"classSource": {
-							"description": "Used in subclass data",
-							"type": "string"
-						},
-						"_mod": {
-							"$ref": "util.json#/definitions/_modObject"
-						},
-						"_trait": {
-							"type": "object",
-							"properties": {
-								"name": {
-									"type": "string"
-								},
-								"source": {
-									"type": "string"
-								}
-							},
-							"required": [
-								"name",
-								"source"
-							]
-						},
-						"_preserve": {
-							"type": "object",
-							"patternProperties": {
-								".*": {
-									"type": "boolean"
-								}
-							}
-						}
-					},
-					"required": [
-						"name",
-						"source"
-					],
-					"additionalProperties": false
 				}
 			},
 			"additionalProperties": false
@@ -269,7 +212,7 @@
 							}
 						},
 						"page": {
-							"type": "integer"
+							"$ref": "util.json#/definitions/page"
 						},
 						"additionalSources": {
 							"$ref": "util.json#/definitions/additionalSources"
@@ -290,68 +233,11 @@
 							"$ref": "util.json#/definitions/basicRules"
 						},
 						"customExtensionOf": {
-							"type": "string"
+							"type": "string",
+							"description": "A UID of an existing deity that this deity extends. e.g. \"Bahgtru|Orc|SCAG\""
 						},
 						"piety": {
 							"type": "boolean"
-						},
-						"_copy": {
-							"type": "object",
-							"properties": {
-								"name": {
-									"type": "string"
-								},
-								"source": {
-									"type": "string"
-								},
-								"pantheon": {
-									"description": "Used in deity data",
-									"type": "string"
-								},
-								"shortName": {
-									"description": "Used in subclass data",
-									"type": "string"
-								},
-								"className": {
-									"description": "Used in subclass data",
-									"type": "string"
-								},
-								"classSource": {
-									"description": "Used in subclass data",
-									"type": "string"
-								},
-								"_mod": {
-									"$ref": "util.json#/definitions/_modObject"
-								},
-								"_trait": {
-									"type": "object",
-									"properties": {
-										"name": {
-											"type": "string"
-										},
-										"source": {
-											"type": "string"
-										}
-									},
-									"required": [
-										"name",
-										"source"
-									]
-								},
-								"_preserve": {
-									"type": "object",
-									"patternProperties": {
-										".*": {
-											"type": "boolean"
-										}
-									}
-								}
-							},
-							"required": [
-								"name",
-								"source"
-							],
-							"additionalProperties": false
 						}
 					},
 					"additionalProperties": false,
@@ -449,7 +335,7 @@
 							}
 						},
 						"page": {
-							"type": "integer"
+							"$ref": "util.json#/definitions/page"
 						},
 						"additionalSources": {
 							"$ref": "util.json#/definitions/additionalSources"
@@ -470,7 +356,8 @@
 							"$ref": "util.json#/definitions/basicRules"
 						},
 						"customExtensionOf": {
-							"type": "string"
+							"type": "string",
+							"description": "A UID of an existing deity that this deity extends. e.g. \"Bahgtru|Orc|SCAG\""
 						},
 						"piety": {
 							"type": "boolean"

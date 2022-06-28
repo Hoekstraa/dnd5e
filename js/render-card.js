@@ -354,6 +354,12 @@ class RendererCard {
 	}
 	// endregion
 
+	// region embedded entities
+	_renderStatblock (entry, textStack, meta, options) {
+		textStack[0] += `text | (Inline statblock rendering within cards is not supported.)\n`;
+	}
+	// endregion
+
 	// region images
 	_renderImage (entry, textStack, meta, options) {
 		textStack[0] += `text | (Image rendering within cards is not supported.)\n`;
@@ -421,7 +427,11 @@ class RendererCard {
 
 	_renderString_renderTag_card (textStack, meta, options, tag, text) {
 		switch (tag) {
-			case "@dc": { textStack[0] += `DC ${text}`; return true; }
+			case "@dc": {
+				const [dcText, displayText] = Renderer.splitTagByPipe(text);
+				textStack[0] += `DC ${displayText || dcText}`;
+				return true;
+			}
 			default: return false;
 		}
 	}

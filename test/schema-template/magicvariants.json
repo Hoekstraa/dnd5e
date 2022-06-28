@@ -1,7 +1,7 @@
 {
 	"$schema": "http://json-schema.org/draft-07/schema#",
 	"$id": "magicvariants.json",
-	"version": "1.5.1",
+	"version": "1.5.4",
 	"type": "object",
 	"properties": {
 		"variant": {
@@ -92,9 +92,7 @@
 							"source": {
 								"type": "string"
 							},
-							"page": {
-								"type": "integer"
-							},
+							"page": {"$ref": "util.json#/definitions/page"},
 							"namePrefix": {
 								"type": "string"
 							},
@@ -207,7 +205,10 @@
 									"$ref": "shared-items.json#/definitions/fluff"
 								}
 							},
-							"hasRefs": {"type": "boolean"}
+							"hasRefs": {
+								"type": "boolean",
+								"description": "Whether this item has references within its data to dedicated \"itemEntry\"s."
+							}
 						},
 						"required": [
 							"rarity",
@@ -243,9 +244,7 @@
 									}
 								]
 							},
-							"page": {
-								"type": "integer"
-							},
+							"page": {"$ref": "util.json#/definitions/page"},
 							"property": {
 								"oneOf": [
 									{
@@ -305,7 +304,11 @@
 					"$$ifBrew": {
 						"fluff": {
 							"$ref": "shared-items.json#/definitions/fluff"
-						}
+						},
+						"foundryData": {"$ref": "util.json#/definitions/foundryDataObject"},
+						"foundryFlags": {"$ref": "util.json#/definitions/foundryFlagsObject"},
+						"foundryEffects": {"$ref": "util.json#/definitions/foundryEffectsArray"},
+						"foundryImg": {"$ref": "util.json#/definitions/foundryImg"}
 					}
 				},
 				"required": [

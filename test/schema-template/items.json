@@ -1,7 +1,7 @@
 {
 	"$schema": "http://json-schema.org/draft-07/schema#",
 	"$id": "items.json",
-	"version": "1.11.1",
+	"version": "1.11.6",
 	"type": "object",
 	"definitions": {
 		"itemData": {
@@ -22,9 +22,7 @@
 				"source": {
 					"type": "string"
 				},
-				"page": {
-					"type": "integer"
-				},
+				"page": {"$ref": "util.json#/definitions/page"},
 				"additionalSources": {
 					"$ref": "util.json#/definitions/additionalSources"
 				},
@@ -413,15 +411,32 @@
 					"type": "boolean"
 				},
 				"spellScrollLevel": {"type": "integer"},
+				"seeAlsoVehicle": {
+					"type": "array",
+					"items": {
+						"type": "string",
+						"description": "UIDs of \"vehicle\"s to be linked in a \"See Also\" footnote.\nEx.: \"rowboat|gos\"."
+					}
+				},
 				"reqAttuneTags": {
 					"$ref": "util.json#/definitions/reqAttuneTags"
 				},
 				"reqAttuneAltTags": {
 					"$ref": "util.json#/definitions/reqAttuneTags"
 				},
+				"miscTags": {
+					"type": "array",
+					"items": {
+						"description": "CF/W: Creates Food/Water",
+						"enum": ["CF/W"]
+					}
+				},
 				"hasFluff": {"type": "boolean"},
 				"hasFluffImages": {"type": "boolean"},
-				"hasRefs": {"type": "boolean"},
+				"hasRefs": {
+					"type": "boolean",
+					"description": "Whether this item has references within its data to dedicated \"itemEntry\"s."
+				},
 
 				"$$ifBrew": {
 					"acSpecial": {
@@ -442,7 +457,9 @@
 						"enum": ["weapon", "equipment", "consumable", "tool", "loot", "class", "spell", "feat", "backpack"]
 					},
 					"foundryData": {"$ref": "util.json#/definitions/foundryDataObject"},
-					"foundryEffects": {"type": "array", "items": {"$ref": "util.json#/definitions/foundryEffectObject"}},
+					"foundryFlags": {"$ref": "util.json#/definitions/foundryFlagsObject"},
+					"foundryEffects": {"$ref": "util.json#/definitions/foundryEffectsArray"},
+					"foundryImg": {"$ref": "util.json#/definitions/foundryImg"},
 					"fluff": {
 						"$ref": "shared-items.json#/definitions/fluff"
 					}
@@ -498,7 +515,8 @@
 			"type": "array",
 			"items": {
 				"$ref": "#/definitions/item"
-			}
+			},
+			"uniqueItems": true
 		},
 		"itemGroup": {
 			"description": "Used to create fake item entries for groups of related items, often referred to as a single item (e.g. arcane foci)",
@@ -518,7 +536,8 @@
 						]
 					}
 				]
-			}
+			},
+			"uniqueItems": true
 		},
 		"_meta": {
 			"$ref": "util.json#/definitions/metaBlock"

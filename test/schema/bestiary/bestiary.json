@@ -1,6 +1,6 @@
 {
 	"$schema": "http://json-schema.org/draft-07/schema#",
-	"version": "1.20.0",
+	"version": "1.21.6",
 	"title": "Bestiary Schema",
 	"$id": "bestiary.json",
 	"type": "object",
@@ -122,7 +122,11 @@
 					"type": "integer"
 				},
 				"size": {
-					"$ref": "../util.json#/definitions/size"
+					"type": "array",
+					"items": {
+						"$ref": "../util.json#/definitions/size"
+					},
+					"uniqueItems": true
 				},
 				"sizeNote": {
 					"type": "string"
@@ -186,6 +190,9 @@
 				},
 				"otherSources": {
 					"$ref": "../util.json#/definitions/otherSources"
+				},
+				"reprintedAs": {
+					"$ref": "../util.json#/definitions/reprintedAs"
 				},
 				"alignment": {
 					"type": "array",
@@ -553,6 +560,12 @@
 				"actionNote": {
 					"type": "string"
 				},
+				"actionHeader": {
+					"type": "array",
+					"items": {
+						"$ref": "../entry.json"
+					}
+				},
 				"action": {
 					"oneOf": [
 						{
@@ -582,6 +595,15 @@
 						}
 					]
 				},
+				"bonusNote": {
+					"type": "string"
+				},
+				"bonusHeader": {
+					"type": "array",
+					"items": {
+						"$ref": "../entry.json"
+					}
+				},
 				"bonus": {
 					"type": "array",
 					"items": {
@@ -602,6 +624,15 @@
 							"entries"
 						],
 						"additionalProperties": false
+					}
+				},
+				"reactionNote": {
+					"type": "string"
+				},
+				"reactionHeader": {
+					"type": "array",
+					"items": {
+						"$ref": "../entry.json"
 					}
 				},
 				"reaction": {
@@ -708,7 +739,7 @@
 					}
 				},
 				"page": {
-					"type": "integer"
+					"$ref": "../util.json#/definitions/page"
 				},
 				"familiar": {
 					"type": "boolean"
@@ -736,7 +767,7 @@
 										"type": "string"
 									},
 									"page": {
-										"type": "integer"
+										"$ref": "../util.json#/definitions/page"
 									}
 								},
 								"required": [
@@ -792,6 +823,17 @@
 						"deep"
 					]
 				},
+				"dragonAge": {
+					"type": "string",
+					"enum": [
+						"young",
+						"adult",
+						"wyrmling",
+						"greatwyrm",
+						"ancient",
+						"aspect"
+					]
+				},
 				"traitTags": {
 					"type": "array",
 					"items": {
@@ -831,6 +873,7 @@
 							"Spell Immunity",
 							"Spider Climb",
 							"Sunlight Sensitivity",
+							"Tree Stride",
 							"Turn Immunity",
 							"Turn Resistance",
 							"Undead Fortitude",
@@ -936,12 +979,25 @@
 						"$ref": "../util.json#/definitions/dataDamageTags"
 					}
 				},
+				"damageTagsSpell": {
+					"type": "array",
+					"items": {
+						"$ref": "../util.json#/definitions/dataDamageTags"
+					}
+				},
+				"damageTagsLegendary": {
+					"type": "array",
+					"items": {
+						"$ref": "../util.json#/definitions/dataDamageTags"
+					}
+				},
 				"miscTags": {
 					"type": "array",
 					"items": {
-						"description": "AOE: Has Areas of Effect\n MW: Has Weapon Attacks, Melee\n RW: Has Weapon Attacks, Ranged\n RCH: Has Reach Attacks\n RNG: Has Ranged Weapons\n THW: Has Thrown Weapons",
+						"description": "AOE: Has Areas of Effect\n HPR: Has HP Reduction\n MW: Has Weapon Attacks, Melee\n RW: Has Weapon Attacks, Ranged\n RCH: Has Reach Attacks\n RNG: Has Ranged Weapons\n THW: Has Thrown Weapons",
 						"enum": [
 							"AOE",
+							"HPR",
 							"MW",
 							"RW",
 							"RCH",
@@ -976,6 +1032,10 @@
 					"description": "The spell used to summon this creature; specifically for TCE-esque summon spells.",
 					"type": "string"
 				},
+				"summonedBySpellLevel": {
+					"description": "The level of the spell used to summon this creature; specifically for TCE-esque summon spells.",
+					"type": "integer"
+				},
 				"summonedByClass": {
 					"description": "The class which can summon this creature; e.g. for those granted by some TCE class features.",
 					"type": "string"
@@ -995,64 +1055,6 @@
 				},
 				"hasFluffImages": {
 					"type": "boolean"
-				},
-				"_copy": {
-					"type": "object",
-					"properties": {
-						"name": {
-							"type": "string"
-						},
-						"source": {
-							"type": "string"
-						},
-						"pantheon": {
-							"description": "Used in deity data",
-							"type": "string"
-						},
-						"shortName": {
-							"description": "Used in subclass data",
-							"type": "string"
-						},
-						"className": {
-							"description": "Used in subclass data",
-							"type": "string"
-						},
-						"classSource": {
-							"description": "Used in subclass data",
-							"type": "string"
-						},
-						"_mod": {
-							"$ref": "../util.json#/definitions/_modObject"
-						},
-						"_trait": {
-							"type": "object",
-							"properties": {
-								"name": {
-									"type": "string"
-								},
-								"source": {
-									"type": "string"
-								}
-							},
-							"required": [
-								"name",
-								"source"
-							]
-						},
-						"_preserve": {
-							"type": "object",
-							"patternProperties": {
-								".*": {
-									"type": "boolean"
-								}
-							}
-						}
-					},
-					"required": [
-						"name",
-						"source"
-					],
-					"additionalProperties": false
 				}
 			},
 			"additionalProperties": false
@@ -1093,7 +1095,11 @@
 							"type": "integer"
 						},
 						"size": {
-							"$ref": "../util.json#/definitions/size"
+							"type": "array",
+							"items": {
+								"$ref": "../util.json#/definitions/size"
+							},
+							"uniqueItems": true
 						},
 						"sizeNote": {
 							"type": "string"
@@ -1157,6 +1163,9 @@
 						},
 						"otherSources": {
 							"$ref": "../util.json#/definitions/otherSources"
+						},
+						"reprintedAs": {
+							"$ref": "../util.json#/definitions/reprintedAs"
 						},
 						"alignment": {
 							"type": "array",
@@ -1524,6 +1533,12 @@
 						"actionNote": {
 							"type": "string"
 						},
+						"actionHeader": {
+							"type": "array",
+							"items": {
+								"$ref": "../entry.json"
+							}
+						},
 						"action": {
 							"oneOf": [
 								{
@@ -1553,6 +1568,15 @@
 								}
 							]
 						},
+						"bonusNote": {
+							"type": "string"
+						},
+						"bonusHeader": {
+							"type": "array",
+							"items": {
+								"$ref": "../entry.json"
+							}
+						},
 						"bonus": {
 							"type": "array",
 							"items": {
@@ -1573,6 +1597,15 @@
 									"entries"
 								],
 								"additionalProperties": false
+							}
+						},
+						"reactionNote": {
+							"type": "string"
+						},
+						"reactionHeader": {
+							"type": "array",
+							"items": {
+								"$ref": "../entry.json"
 							}
 						},
 						"reaction": {
@@ -1679,7 +1712,7 @@
 							}
 						},
 						"page": {
-							"type": "integer"
+							"$ref": "../util.json#/definitions/page"
 						},
 						"familiar": {
 							"type": "boolean"
@@ -1707,7 +1740,7 @@
 												"type": "string"
 											},
 											"page": {
-												"type": "integer"
+												"$ref": "../util.json#/definitions/page"
 											}
 										},
 										"required": [
@@ -1763,6 +1796,17 @@
 								"deep"
 							]
 						},
+						"dragonAge": {
+							"type": "string",
+							"enum": [
+								"young",
+								"adult",
+								"wyrmling",
+								"greatwyrm",
+								"ancient",
+								"aspect"
+							]
+						},
 						"traitTags": {
 							"type": "array",
 							"items": {
@@ -1802,6 +1846,7 @@
 									"Spell Immunity",
 									"Spider Climb",
 									"Sunlight Sensitivity",
+									"Tree Stride",
 									"Turn Immunity",
 									"Turn Resistance",
 									"Undead Fortitude",
@@ -1907,12 +1952,25 @@
 								"$ref": "../util.json#/definitions/dataDamageTags"
 							}
 						},
+						"damageTagsSpell": {
+							"type": "array",
+							"items": {
+								"$ref": "../util.json#/definitions/dataDamageTags"
+							}
+						},
+						"damageTagsLegendary": {
+							"type": "array",
+							"items": {
+								"$ref": "../util.json#/definitions/dataDamageTags"
+							}
+						},
 						"miscTags": {
 							"type": "array",
 							"items": {
-								"description": "AOE: Has Areas of Effect\n MW: Has Weapon Attacks, Melee\n RW: Has Weapon Attacks, Ranged\n RCH: Has Reach Attacks\n RNG: Has Ranged Weapons\n THW: Has Thrown Weapons",
+								"description": "AOE: Has Areas of Effect\n HPR: Has HP Reduction\n MW: Has Weapon Attacks, Melee\n RW: Has Weapon Attacks, Ranged\n RCH: Has Reach Attacks\n RNG: Has Ranged Weapons\n THW: Has Thrown Weapons",
 								"enum": [
 									"AOE",
+									"HPR",
 									"MW",
 									"RW",
 									"RCH",
@@ -1947,6 +2005,10 @@
 							"description": "The spell used to summon this creature; specifically for TCE-esque summon spells.",
 							"type": "string"
 						},
+						"summonedBySpellLevel": {
+							"description": "The level of the spell used to summon this creature; specifically for TCE-esque summon spells.",
+							"type": "integer"
+						},
 						"summonedByClass": {
 							"description": "The class which can summon this creature; e.g. for those granted by some TCE class features.",
 							"type": "string"
@@ -1966,64 +2028,6 @@
 						},
 						"hasFluffImages": {
 							"type": "boolean"
-						},
-						"_copy": {
-							"type": "object",
-							"properties": {
-								"name": {
-									"type": "string"
-								},
-								"source": {
-									"type": "string"
-								},
-								"pantheon": {
-									"description": "Used in deity data",
-									"type": "string"
-								},
-								"shortName": {
-									"description": "Used in subclass data",
-									"type": "string"
-								},
-								"className": {
-									"description": "Used in subclass data",
-									"type": "string"
-								},
-								"classSource": {
-									"description": "Used in subclass data",
-									"type": "string"
-								},
-								"_mod": {
-									"$ref": "../util.json#/definitions/_modObject"
-								},
-								"_trait": {
-									"type": "object",
-									"properties": {
-										"name": {
-											"type": "string"
-										},
-										"source": {
-											"type": "string"
-										}
-									},
-									"required": [
-										"name",
-										"source"
-									]
-								},
-								"_preserve": {
-									"type": "object",
-									"patternProperties": {
-										".*": {
-											"type": "boolean"
-										}
-									}
-								}
-							},
-							"required": [
-								"name",
-								"source"
-							],
-							"additionalProperties": false
 						}
 					},
 					"additionalProperties": false,
@@ -2079,7 +2083,11 @@
 							"type": "integer"
 						},
 						"size": {
-							"$ref": "../util.json#/definitions/size"
+							"type": "array",
+							"items": {
+								"$ref": "../util.json#/definitions/size"
+							},
+							"uniqueItems": true
 						},
 						"sizeNote": {
 							"type": "string"
@@ -2143,6 +2151,9 @@
 						},
 						"otherSources": {
 							"$ref": "../util.json#/definitions/otherSources"
+						},
+						"reprintedAs": {
+							"$ref": "../util.json#/definitions/reprintedAs"
 						},
 						"alignment": {
 							"type": "array",
@@ -2510,6 +2521,12 @@
 						"actionNote": {
 							"type": "string"
 						},
+						"actionHeader": {
+							"type": "array",
+							"items": {
+								"$ref": "../entry.json"
+							}
+						},
 						"action": {
 							"oneOf": [
 								{
@@ -2539,6 +2556,15 @@
 								}
 							]
 						},
+						"bonusNote": {
+							"type": "string"
+						},
+						"bonusHeader": {
+							"type": "array",
+							"items": {
+								"$ref": "../entry.json"
+							}
+						},
 						"bonus": {
 							"type": "array",
 							"items": {
@@ -2559,6 +2585,15 @@
 									"entries"
 								],
 								"additionalProperties": false
+							}
+						},
+						"reactionNote": {
+							"type": "string"
+						},
+						"reactionHeader": {
+							"type": "array",
+							"items": {
+								"$ref": "../entry.json"
 							}
 						},
 						"reaction": {
@@ -2665,7 +2700,7 @@
 							}
 						},
 						"page": {
-							"type": "integer"
+							"$ref": "../util.json#/definitions/page"
 						},
 						"familiar": {
 							"type": "boolean"
@@ -2693,7 +2728,7 @@
 												"type": "string"
 											},
 											"page": {
-												"type": "integer"
+												"$ref": "../util.json#/definitions/page"
 											}
 										},
 										"required": [
@@ -2749,6 +2784,17 @@
 								"deep"
 							]
 						},
+						"dragonAge": {
+							"type": "string",
+							"enum": [
+								"young",
+								"adult",
+								"wyrmling",
+								"greatwyrm",
+								"ancient",
+								"aspect"
+							]
+						},
 						"traitTags": {
 							"type": "array",
 							"items": {
@@ -2788,6 +2834,7 @@
 									"Spell Immunity",
 									"Spider Climb",
 									"Sunlight Sensitivity",
+									"Tree Stride",
 									"Turn Immunity",
 									"Turn Resistance",
 									"Undead Fortitude",
@@ -2893,12 +2940,25 @@
 								"$ref": "../util.json#/definitions/dataDamageTags"
 							}
 						},
+						"damageTagsSpell": {
+							"type": "array",
+							"items": {
+								"$ref": "../util.json#/definitions/dataDamageTags"
+							}
+						},
+						"damageTagsLegendary": {
+							"type": "array",
+							"items": {
+								"$ref": "../util.json#/definitions/dataDamageTags"
+							}
+						},
 						"miscTags": {
 							"type": "array",
 							"items": {
-								"description": "AOE: Has Areas of Effect\n MW: Has Weapon Attacks, Melee\n RW: Has Weapon Attacks, Ranged\n RCH: Has Reach Attacks\n RNG: Has Ranged Weapons\n THW: Has Thrown Weapons",
+								"description": "AOE: Has Areas of Effect\n HPR: Has HP Reduction\n MW: Has Weapon Attacks, Melee\n RW: Has Weapon Attacks, Ranged\n RCH: Has Reach Attacks\n RNG: Has Ranged Weapons\n THW: Has Thrown Weapons",
 								"enum": [
 									"AOE",
+									"HPR",
 									"MW",
 									"RW",
 									"RCH",
@@ -2932,6 +2992,10 @@
 						"summonedBySpell": {
 							"description": "The spell used to summon this creature; specifically for TCE-esque summon spells.",
 							"type": "string"
+						},
+						"summonedBySpellLevel": {
+							"description": "The level of the spell used to summon this creature; specifically for TCE-esque summon spells.",
+							"type": "integer"
 						},
 						"summonedByClass": {
 							"description": "The class which can summon this creature; e.g. for those granted by some TCE class features.",
@@ -3077,7 +3141,7 @@
 							"type": "string"
 						},
 						"page": {
-							"type": "integer"
+							"$ref": "../util.json#/definitions/page"
 						}
 					},
 					"required": [
@@ -3091,87 +3155,201 @@
 			"anyOf": [
 				{
 					"type": "object",
-					"allOf": [
-						{
-							"$ref": "../entry.json#/definitions/entry"
+					"properties": {
+						"name": {
+							"type": "string"
 						},
-						{
+						"type": {
+							"type": "string",
+							"const": "variant"
+						},
+						"source": {
+							"type": "string"
+						},
+						"page": {
+							"$ref": "../util.json#/definitions/page"
+						},
+						"srd": {
+							"$ref": "../util.json#/definitions/srd"
+						},
+						"data": {
+							"description": "A generic object for storing special data for external use-cases. Keys prefixed with \"rd-\" should be added as \"data-\" HTML attributes when rendering to HTML.",
+							"type": "object"
+						},
+						"id": {
+							"type": "string"
+						},
+						"entries": {
+							"type": "array",
+							"items": {
+								"$ref": "../entry.json"
+							}
+						},
+						"token": {
 							"type": "object",
 							"properties": {
-								"type": {
-									"const": "variant"
-								},
 								"name": {
 									"type": "string"
-								},
-								"entries": {
-									"type": "array",
-									"items": {
-										"$ref": "../entry.json"
-									}
-								}
-							},
-							"required": [
-								"name",
-								"entries"
-							]
-						},
-						{
-							"$ref": "#/definitions/variantToken"
-						},
-						{
-							"$ref": "#/definitions/variantVersion"
-						}
-					]
-				},
-				{
-					"type": "object",
-					"allOf": [
-						{
-							"$ref": "../entry.json#/definitions/entry"
-						},
-						{
-							"type": "object",
-							"properties": {
-								"type": {
-									"const": "inset"
-								},
-								"name": {
-									"type": "string"
-								},
-								"entries": {
-									"type": "array",
-									"items": {
-										"$ref": "../entry.json"
-									}
-								},
-								"data": {
-									"type": "object"
-								},
-								"page": {
-									"type": "integer"
 								},
 								"source": {
 									"type": "string"
 								},
-								"id": {
-									"type": "string"
-								},
-								"style": {
-									"type": "string"
+								"page": {
+									"$ref": "../util.json#/definitions/page"
 								}
 							},
 							"required": [
-								"entries"
+								"name",
+								"source"
 							]
 						},
-						{
-							"$ref": "#/definitions/variantToken"
-						},
-						{
-							"$ref": "#/definitions/variantVersion"
+						"_version": {
+							"oneOf": [
+								{
+									"type": "object",
+									"properties": {
+										"name": {
+											"type": "string"
+										},
+										"source": {
+											"type": "string"
+										},
+										"addAs": {
+											"type": "string"
+										}
+									},
+									"required": [
+										"addAs"
+									],
+									"additionalProperties": false
+								},
+								{
+									"type": "object",
+									"properties": {
+										"name": {
+											"type": "string"
+										},
+										"source": {
+											"type": "string"
+										},
+										"addHeadersAs": {
+											"type": "string"
+										}
+									},
+									"required": [
+										"addHeadersAs"
+									],
+									"additionalProperties": false
+								}
+							]
 						}
-					]
+					},
+					"required": [
+						"type",
+						"name",
+						"entries"
+					],
+					"additionalProperties": false
+				},
+				{
+					"type": "object",
+					"properties": {
+						"name": {
+							"type": "string"
+						},
+						"type": {
+							"type": "string",
+							"const": "inset"
+						},
+						"source": {
+							"type": "string"
+						},
+						"page": {
+							"$ref": "../util.json#/definitions/page"
+						},
+						"srd": {
+							"$ref": "../util.json#/definitions/srd"
+						},
+						"data": {
+							"description": "A generic object for storing special data for external use-cases. Keys prefixed with \"rd-\" should be added as \"data-\" HTML attributes when rendering to HTML.",
+							"type": "object"
+						},
+						"id": {
+							"type": "string"
+						},
+						"entries": {
+							"type": "array",
+							"items": {
+								"$ref": "../entry.json"
+							}
+						},
+						"style": {
+							"type": "string"
+						},
+						"token": {
+							"type": "object",
+							"properties": {
+								"name": {
+									"type": "string"
+								},
+								"source": {
+									"type": "string"
+								},
+								"page": {
+									"$ref": "../util.json#/definitions/page"
+								}
+							},
+							"required": [
+								"name",
+								"source"
+							]
+						},
+						"_version": {
+							"oneOf": [
+								{
+									"type": "object",
+									"properties": {
+										"name": {
+											"type": "string"
+										},
+										"source": {
+											"type": "string"
+										},
+										"addAs": {
+											"type": "string"
+										}
+									},
+									"required": [
+										"addAs"
+									],
+									"additionalProperties": false
+								},
+								{
+									"type": "object",
+									"properties": {
+										"name": {
+											"type": "string"
+										},
+										"source": {
+											"type": "string"
+										},
+										"addHeadersAs": {
+											"type": "string"
+										}
+									},
+									"required": [
+										"addHeadersAs"
+									],
+									"additionalProperties": false
+								}
+							]
+						}
+					},
+					"required": [
+						"type",
+						"entries"
+					],
+					"additionalProperties": false
 				}
 			]
 		},

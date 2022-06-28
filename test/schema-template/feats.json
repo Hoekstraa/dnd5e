@@ -1,7 +1,7 @@
 {
 	"$schema": "http://json-schema.org/draft-07/schema#",
 	"$id": "feats.json",
-	"version": "1.4.1",
+	"version": "1.5.5",
 	"type": "object",
 	"properties": {
 		"feat": {
@@ -22,9 +22,7 @@
 					"additionalSources": {
 						"$ref": "util.json#/definitions/additionalSources"
 					},
-					"page": {
-						"type": "integer"
-					},
+					"page": {"$ref": "util.json#/definitions/page"},
 					"entries": {
 						"type": "array",
 						"items": {
@@ -128,8 +126,20 @@
 					"skillToolLanguageProficiencies": {
 						"$ref": "util.json#/definitions/skillToolLanguageProficiencies"
 					},
-					"proficiencyTags": {
-						"$ref": "util.json#/definitions/proficiencyTags"
+					"savingThrowProficiencies": {
+						"$ref": "util.json#/definitions/savingThrowProficiencies"
+					},
+					"optionalfeatureProgression": {"$ref": "util.json#/definitions/optionalfeatureProgression"},
+					"expertise": {"$ref": "util.json#/definitions/expertise"},
+					"resist": {"$ref": "util.json#/definitions/damageResistArrayPlayer"},
+					"immune": {"$ref": "util.json#/definitions/damageImmunityArrayPlayer"},
+					"vulnerable": 	{"$ref": "util.json#/definitions/damageVulnerabilityArrayPlayer"},
+					"conditionImmune": {"$ref": "util.json#/definitions/conditionImmunityArrayPlayer"},
+					"$$ifBrew": {
+						"foundryData": {"$ref": "util.json#/definitions/foundryDataObject"},
+						"foundryFlags": {"$ref": "util.json#/definitions/foundryFlagsObject"},
+						"foundryEffects": {"$ref": "util.json#/definitions/foundryEffectsArray"},
+						"foundryImg": {"$ref": "util.json#/definitions/foundryImg"}
 					}
 				},
 				"required": ["name", "source", "entries"],

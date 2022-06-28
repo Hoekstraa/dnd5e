@@ -1,7 +1,7 @@
 {
 	"$schema": "http://json-schema.org/draft-07/schema#",
 	"$id": "optionalfeatures.json",
-	"version": "1.10.1",
+	"version": "1.11.6",
 	"title": "Optional Features",
 	"type": "object",
 
@@ -43,9 +43,7 @@
 				"source": {
 					"type": "string"
 				},
-				"page": {
-					"type": "integer"
-				},
+				"page": {"$ref": "util.json#/definitions/page"},
 				"featureType": {
 					"oneOf": [
 						{
@@ -89,17 +87,19 @@
 				"skillToolLanguageProficiencies": {
 					"$ref": "util.json#/definitions/skillToolLanguageProficiencies"
 				},
-				"proficiencyTags": {
-					"$ref": "util.json#/definitions/proficiencyTags"
-				},
+				"consumes": {"$ref": "util.json#/definitions/consumesObject"},
+				"senses": {"$ref": "util.json#/definitions/sensesArray"},
+				"optionalfeatureProgression": {"$ref": "util.json#/definitions/optionalfeatureProgression"},
+				"expertise": {"$ref": "util.json#/definitions/expertise"},
+				"resist": {"$ref": "util.json#/definitions/damageResistArrayPlayer"},
+				"immune": {"$ref": "util.json#/definitions/damageImmunityArrayPlayer"},
+				"vulnerable": 	{"$ref": "util.json#/definitions/damageVulnerabilityArrayPlayer"},
+				"conditionImmune": {"$ref": "util.json#/definitions/conditionImmunityArrayPlayer"},
 				"$$ifBrew": {
 					"foundryData": {"$ref": "util.json#/definitions/foundryDataObject"},
-					"foundryEffects": {
-						"type": "array",
-						"items": {
-							"$ref": "util.json#/definitions/foundryEffectObject"
-						}
-					}
+					"foundryFlags": {"$ref": "util.json#/definitions/foundryFlagsObject"},
+					"foundryEffects": {"$ref": "util.json#/definitions/foundryEffectsArray"},
+					"foundryImg": {"$ref": "util.json#/definitions/foundryImg"}
 				}
 			},
 			"required": [

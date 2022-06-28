@@ -63,6 +63,8 @@ class ListPage {
 		this._ixData = 0;
 		this._bookView = null;
 		this._$pgContent = null;
+
+		this._seenHashes = new Set();
 	}
 
 	_bookView_popTblGetNumShown ({$wrpContent, $dispName, $wrpControls}, {fnPartition} = {}) {
@@ -72,7 +74,7 @@ class ListPage {
 
 		const stack = [];
 		const renderEnt = (p) => {
-			stack.push(`<div class="bkmv__wrp-item"><table class="stats stats--book stats--bkmv"><tbody>`);
+			stack.push(`<div class="bkmv__wrp-item"><table class="w-100 stats stats--book stats--bkmv"><tbody>`);
 			stack.push(fnRender(p));
 			stack.push(`</tbody></table></div>`);
 		};
@@ -101,6 +103,7 @@ class ListPage {
 	async pOnLoad () {
 		this._$pgContent = $(`#pagecontent`);
 
+		await BrewUtil2.pInit();
 		await ExcludeUtil.pInitialise();
 
 		let data;
@@ -158,17 +161,9 @@ class ListPage {
 
 		this._addData(data);
 
-		BrewUtil.bind({
-			filterBox: this._filterBox,
-			sourceFilter: this._pageFilter ? this._pageFilter.sourceFilter : this._filterSource,
-			list: this._list,
-			pHandleBrew: this._pHandleBrew.bind(this),
-		});
+		this._pageFilter.trimState();
 
-		const homebrew = await (this._brewDataSource ? this._brewDataSource() : BrewUtil.pAddBrewData());
-		await this._pHandleBrew(homebrew);
-
-		BrewUtil.makeBrewButton("manage-brew");
+		ManageBrewUi.bindBtnOpen($(`#manage-brew`));
 		await ListUtil.pLoadState();
 		RollerUtil.addListRollButton();
 		ListUtil.addListShowHide();
@@ -198,8 +193,11 @@ class ListPage {
 
 	_pOnLoad_pPreDataLoad () { /* Implement as required */ }
 
-	_pOnLoad_pGetData () {
-		return typeof this._dataSource === "string" ? DataUtil.loadJSON(this._dataSource) : this._dataSource();
+	async _pOnLoad_pGetData () {
+		const data = await (typeof this._dataSource === "string" ? DataUtil.loadJSON(this._dataSource) : this._dataSource());
+		const homebrew = await (this._brewDataSource ? this._brewDataSource() : BrewUtil2.pGetBrewProcessed());
+
+		return BrewUtil2.getMergedData(data, homebrew);
 	}
 
 	_pOnLoad_bookView () {
@@ -231,20 +229,11 @@ class ListPage {
 	async _pOnLoad_pPreDataAdd () { /* Implement as required */ }
 	async _pOnLoad_pPreHashInit () { /* Implement as required */ }
 
-	async _pHandleBrew (homebrew) {
-		try {
-			this._addData(homebrew);
-		} catch (e) {
-			BrewUtil.pPurgeBrew(e);
-		}
-	}
-
 	_addData (data) {
 		if (!this._dataProps.some(prop => data[prop] && data[prop].length)) return;
 
 		this._dataProps.forEach(prop => {
 			if (!data[prop]) return;
-			data[prop].forEach(it => it.__prop = prop);
 			this._dataList.push(...data[prop]);
 		});
 

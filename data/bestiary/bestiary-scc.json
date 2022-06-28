@@ -4,7 +4,9 @@
 			"name": "Archaic",
 			"source": "SCC",
 			"page": 184,
-			"size": "G",
+			"size": [
+				"G"
+			],
 			"type": "celestial",
 			"alignment": [
 				"N"
@@ -192,7 +194,9 @@
 			"name": "Art Elemental Mascot",
 			"source": "SCC",
 			"page": 185,
-			"size": "S",
+			"size": [
+				"S"
+			],
 			"type": "elemental",
 			"alignment": [
 				"N"
@@ -260,6 +264,7 @@
 					]
 				}
 			],
+			"familiar": true,
 			"traitTags": [
 				"Death Burst"
 			],
@@ -288,7 +293,9 @@
 			"isNamedCreature": true,
 			"source": "SCC",
 			"page": 186,
-			"size": "G",
+			"size": [
+				"G"
+			],
 			"type": {
 				"type": "dragon",
 				"tags": [
@@ -413,7 +420,7 @@
 				{
 					"name": "Miasmal Flow",
 					"entries": [
-						"Beledros becomes a swirling cloud of green mist and can move up to half her flying speed without provoking opportunity attacks, then resumes her true form. During this movement, she can move through creatures and objects as if they were difficult terrain. If she moves through a creature, it must succeed on a {@dc 23} Constitution saving throw or become {@condition poisoned} until the end of its next turn. If Beledros ends this move inside an object, she takes 5 ({@damage 1d10}) force damage and is shunted to the nearest unoccupied space."
+						"Beledros becomes a swirling cloud of green mist and can move up to half her flying speed without provoking opportunity attacks, then resumes her true form. During this movement, she can move through creatures and objects as if they were {@quickref difficult terrain||3}. If she moves through a creature, it must succeed on a {@dc 23} Constitution saving throw or become {@condition poisoned} until the end of its next turn. If Beledros ends this move inside an object, she takes 5 ({@damage 1d10}) force damage and is shunted to the nearest unoccupied space."
 					]
 				}
 			],
@@ -433,7 +440,7 @@
 				{
 					"name": "Teeming with Life (Costs 3 Actions)",
 					"entries": [
-						"Beledros magically summons {@dice 1d4} pest mascots in unoccupied spaces she can see within 60 feet of herself. The pests obey her commands and take their turns immediately after hers. Any creature, other than a pest, takes 9 ({@damage 2d8}) poison damage if it starts its turn within 5 feet of one or more of these pests. When one of these pests drops to 0 hit points, Beledros regains 9 hit points. These pests disappear after 10 minutes, when Beledros dies, or when she uses this action again."
+						"Beledros magically summons {@dice 1d4} {@creature pest mascot|SCC|pest mascots} in unoccupied spaces she can see within 60 feet of herself. The pests obey her commands and take their turns immediately after hers. Any creature, other than a pest, takes 9 ({@damage 2d8}) poison damage if it starts its turn within 5 feet of one or more of these pests. When one of these pests drops to 0 hit points, Beledros regains 9 hit points. These pests disappear after 10 minutes, when Beledros dies, or when she uses this action again."
 					]
 				}
 			],
@@ -476,7 +483,9 @@
 			"name": "Brackish Trudge",
 			"source": "SCC",
 			"page": 187,
-			"size": "L",
+			"size": [
+				"L"
+			],
 			"type": "plant",
 			"alignment": [
 				"U"
@@ -552,7 +561,9 @@
 			"name": "Cogwork Archivist",
 			"source": "SCC",
 			"page": 188,
-			"size": "L",
+			"size": [
+				"L"
+			],
 			"type": "construct",
 			"alignment": [
 				"L",
@@ -679,7 +690,9 @@
 			"name": "Daemogoth",
 			"source": "SCC",
 			"page": 189,
-			"size": "H",
+			"size": [
+				"H"
+			],
 			"type": "fiend",
 			"alignment": [
 				"L",
@@ -793,7 +806,9 @@
 			"name": "Daemogoth Titan",
 			"source": "SCC",
 			"page": 190,
-			"size": "G",
+			"size": [
+				"G"
+			],
 			"type": "fiend",
 			"alignment": [
 				"C",
@@ -859,7 +874,7 @@
 				{
 					"name": "Pact of Suffering",
 					"entries": [
-						"Using a 10-minute long ritual, the titan can forge a magical bond with a willing creature it touches throughout the ritual. The creature becomes bound by the pact until it dies, the titan dies, or the pact is broken by a wish spell.",
+						"Using a 10-minute long ritual, the titan can forge a magical bond with a willing creature it touches throughout the ritual. The creature becomes bound by the pact until it dies, the titan dies, or the pact is broken by a {@spell wish} spell.",
 						"The titan chooses one spell from the necromancy or enchantment school that is 8th level or lower. The bound creature can cast that spell using this pact, requiring no material components and using Intelligence as the spellcasting ability. When it casts the spell, the creature takes 21 ({@damage 6d6}) psychic damage, which can't break the creature's concentration on a spell. Once the bound creature casts the spell in this way, it can't do so again until it finishes a long rest."
 					]
 				}
@@ -938,8 +953,10 @@
 			"name": "First-Year Student",
 			"source": "SCC",
 			"page": 191,
-			"size": "M",
-			"sizeNote": "or small",
+			"size": [
+				"S",
+				"M"
+			],
 			"type": {
 				"type": "humanoid",
 				"tags": [
@@ -1028,7 +1045,9 @@
 			"name": "Fractal Mascot",
 			"source": "SCC",
 			"page": 192,
-			"size": "S",
+			"size": [
+				"S"
+			],
 			"type": "construct",
 			"alignment": [
 				"N"
@@ -1065,7 +1084,7 @@
 				{
 					"name": "Relative Density",
 					"entries": [
-						"The fractal can move through creatures and objects as if they were difficult terrain. It takes 5 ({@damage 1d10}) force damage if it ends its turn inside an object."
+						"The fractal can move through creatures and objects as if they were {@quickref difficult terrain||3}. It takes 5 ({@damage 1d10}) force damage if it ends its turn inside an object."
 					]
 				}
 			],
@@ -1091,6 +1110,7 @@
 					]
 				}
 			],
+			"familiar": true,
 			"languageTags": [
 				"CS"
 			],
@@ -1109,7 +1129,9 @@
 			"isNamedCreature": true,
 			"source": "SCC",
 			"page": 193,
-			"size": "G",
+			"size": [
+				"G"
+			],
 			"type": {
 				"type": "dragon",
 				"tags": [
@@ -1237,7 +1259,7 @@
 				{
 					"name": "Flowing Creation (Costs 3 Actions)",
 					"entries": [
-						"Galazeth magically summons {@dice 1d4} art elemental mascots in unoccupied spaces he can see within 60 feet of himself. The art elementals obey his commands and take their turns immediately after his. Any creature, other than an art elemental, takes 5 ({@damage 1d10}) cold, fire, or lightning damage (Galazeth's choice) if it ends its turn within 5 feet of one or more of these elementals. When one of these elementals drops to 0 hit points, Galazeth can fly up to 20 feet without provoking opportunity attacks. These elementals disappear after 10 minutes, when Galazeth dies, or when he uses this action again."
+						"Galazeth magically summons {@dice 1d4} {@creature art elemental mascot|SCC|elemental mascots} in unoccupied spaces he can see within 60 feet of himself. The art elementals obey his commands and take their turns immediately after his. Any creature, other than an art elemental, takes 5 ({@damage 1d10}) cold, fire, or lightning damage (Galazeth's choice) if it ends its turn within 5 feet of one or more of these elementals. When one of these elementals drops to 0 hit points, Galazeth can fly up to 20 feet without provoking opportunity attacks. These elementals disappear after 10 minutes, when Galazeth dies, or when he uses this action again."
 					]
 				}
 			],
@@ -1262,6 +1284,9 @@
 				"P",
 				"S"
 			],
+			"damageTagsSpell": [
+				"B"
+			],
 			"miscTags": [
 				"AOE",
 				"MW",
@@ -1278,7 +1303,9 @@
 			"name": "Groff",
 			"source": "SCC",
 			"page": 194,
-			"size": "L",
+			"size": [
+				"L"
+			],
 			"type": "plant",
 			"alignment": [
 				"U"
@@ -1375,7 +1402,9 @@
 			"name": "Inkling Mascot",
 			"source": "SCC",
 			"page": 195,
-			"size": "T",
+			"size": [
+				"T"
+			],
 			"type": "ooze",
 			"alignment": [
 				"N"
@@ -1453,6 +1482,7 @@
 					]
 				}
 			],
+			"familiar": true,
 			"traitTags": [
 				"Amorphous"
 			],
@@ -1479,8 +1509,10 @@
 			"name": "Lorehold Apprentice",
 			"source": "SCC",
 			"page": 197,
-			"size": "M",
-			"sizeNote": "or small",
+			"size": [
+				"S",
+				"M"
+			],
 			"type": {
 				"type": "humanoid",
 				"tags": [
@@ -1582,8 +1614,10 @@
 			"name": "Lorehold Pledgemage",
 			"source": "SCC",
 			"page": 197,
-			"size": "M",
-			"sizeNote": "or small",
+			"size": [
+				"S",
+				"M"
+			],
 			"type": {
 				"type": "humanoid",
 				"tags": [
@@ -1709,8 +1743,10 @@
 			"name": "Lorehold Professor of Chaos",
 			"source": "SCC",
 			"page": 198,
-			"size": "M",
-			"sizeNote": "or small",
+			"size": [
+				"S",
+				"M"
+			],
 			"type": {
 				"type": "humanoid",
 				"tags": [
@@ -1778,7 +1814,7 @@
 				{
 					"name": "Voice from the Past (1/Day)",
 					"entries": [
-						"The professor can cast the contact other plane spell to contact a long-dead spirit, using Intelligence as the spellcasting ability."
+						"The professor can cast the {@spell contact other plane} spell to contact a long-dead spirit, using Intelligence as the spellcasting ability."
 					]
 				}
 			],
@@ -1826,8 +1862,10 @@
 			"name": "Lorehold Professor of Order",
 			"source": "SCC",
 			"page": 198,
-			"size": "M",
-			"sizeNote": "or small",
+			"size": [
+				"S",
+				"M"
+			],
 			"type": {
 				"type": "humanoid",
 				"tags": [
@@ -1899,7 +1937,7 @@
 				{
 					"name": "Voice from the Past (1/Day)",
 					"entries": [
-						"The professor can cast the contact other plane spell to contact a long-dead spirit, using Intelligence as the spellcasting ability."
+						"The professor can cast the {@spell contact other plane} spell to contact a long-dead spirit, using Intelligence as the spellcasting ability."
 					]
 				}
 			],
@@ -1941,6 +1979,9 @@
 			"damageTags": [
 				"O"
 			],
+			"damageTagsSpell": [
+				"O"
+			],
 			"miscTags": [
 				"AOE",
 				"RCH"
@@ -1955,7 +1996,9 @@
 			"name": "Mage Hunter",
 			"source": "SCC",
 			"page": 199,
-			"size": "L",
+			"size": [
+				"L"
+			],
 			"type": "monstrosity",
 			"alignment": [
 				"L",
@@ -2108,7 +2151,9 @@
 			"isNamedCreature": true,
 			"source": "SCC",
 			"page": 180,
-			"size": "M",
+			"size": [
+				"M"
+			],
 			"type": {
 				"type": "humanoid",
 				"tags": [
@@ -2204,6 +2249,10 @@
 					]
 				}
 			],
+			"legendaryGroup": {
+				"name": "Murgaxor",
+				"source": "SCC"
+			},
 			"actionTags": [
 				"Multiattack"
 			],
@@ -2212,6 +2261,10 @@
 				"X"
 			],
 			"damageTags": [
+				"N"
+			],
+			"damageTagsLegendary": [
+				"B",
 				"N"
 			],
 			"miscTags": [
@@ -2229,7 +2282,9 @@
 			"name": "Oracle of Strixhaven",
 			"source": "SCC",
 			"page": 200,
-			"size": "M",
+			"size": [
+				"M"
+			],
 			"type": {
 				"type": "humanoid",
 				"tags": [
@@ -2391,7 +2446,9 @@
 			"name": "Oriq Blood Mage",
 			"source": "SCC",
 			"page": 201,
-			"size": "M",
+			"size": [
+				"M"
+			],
 			"type": {
 				"type": "humanoid",
 				"tags": [
@@ -2511,7 +2568,9 @@
 			"name": "Oriq Recruiter",
 			"source": "SCC",
 			"page": 202,
-			"size": "M",
+			"size": [
+				"M"
+			],
 			"type": {
 				"type": "humanoid",
 				"tags": [
@@ -2638,7 +2697,9 @@
 			"name": "Pest Mascot",
 			"source": "SCC",
 			"page": 203,
-			"size": "T",
+			"size": [
+				"T"
+			],
 			"type": "monstrosity",
 			"alignment": [
 				"U"
@@ -2694,6 +2755,7 @@
 					]
 				}
 			],
+			"familiar": true,
 			"traitTags": [
 				"Regeneration"
 			],
@@ -2714,8 +2776,10 @@
 			"name": "Prismari Apprentice",
 			"source": "SCC",
 			"page": 205,
-			"size": "M",
-			"sizeNote": "or small",
+			"size": [
+				"S",
+				"M"
+			],
 			"type": {
 				"type": "humanoid",
 				"tags": [
@@ -2811,8 +2875,10 @@
 			"name": "Prismari Pledgemage",
 			"source": "SCC",
 			"page": 205,
-			"size": "M",
-			"sizeNote": "or small",
+			"size": [
+				"S",
+				"M"
+			],
 			"type": {
 				"type": "humanoid",
 				"tags": [
@@ -2934,8 +3000,10 @@
 			"name": "Prismari Professor of Expression",
 			"source": "SCC",
 			"page": 206,
-			"size": "M",
-			"sizeNote": "or small",
+			"size": [
+				"S",
+				"M"
+			],
 			"type": {
 				"type": "humanoid",
 				"tags": [
@@ -3053,8 +3121,10 @@
 			"name": "Prismari Professor of Perfection",
 			"source": "SCC",
 			"page": 206,
-			"size": "M",
-			"sizeNote": "or small",
+			"size": [
+				"S",
+				"M"
+			],
 			"type": {
 				"type": "humanoid",
 				"tags": [
@@ -3165,6 +3235,10 @@
 			"damageTags": [
 				"C"
 			],
+			"damageTagsSpell": [
+				"B",
+				"C"
+			],
 			"conditionInflict": [
 				"prone"
 			],
@@ -3175,8 +3249,10 @@
 			"name": "Quandrix Apprentice",
 			"source": "SCC",
 			"page": 208,
-			"size": "M",
-			"sizeNote": "or small",
+			"size": [
+				"S",
+				"M"
+			],
 			"type": {
 				"type": "humanoid",
 				"tags": [
@@ -3268,8 +3344,10 @@
 			"name": "Quandrix Pledgemage",
 			"source": "SCC",
 			"page": 208,
-			"size": "M",
-			"sizeNote": "or small",
+			"size": [
+				"S",
+				"M"
+			],
 			"type": {
 				"type": "humanoid",
 				"tags": [
@@ -3363,6 +3441,9 @@
 			"damageTags": [
 				"O"
 			],
+			"damageTagsSpell": [
+				"O"
+			],
 			"miscTags": [
 				"AOE"
 			],
@@ -3373,8 +3454,10 @@
 			"name": "Quandrix Professor of Substance",
 			"source": "SCC",
 			"page": 209,
-			"size": "M",
-			"sizeNote": "or small",
+			"size": [
+				"S",
+				"M"
+			],
 			"type": {
 				"type": "humanoid",
 				"tags": [
@@ -3496,6 +3579,9 @@
 			"damageTags": [
 				"O"
 			],
+			"damageTagsSpell": [
+				"O"
+			],
 			"hasToken": true,
 			"hasFluff": true
 		},
@@ -3503,8 +3589,10 @@
 			"name": "Quandrix Professor of Theory",
 			"source": "SCC",
 			"page": 209,
-			"size": "M",
-			"sizeNote": "or small",
+			"size": [
+				"S",
+				"M"
+			],
 			"type": {
 				"type": "humanoid",
 				"tags": [
@@ -3626,7 +3714,9 @@
 			"name": "Relic Sloth",
 			"source": "SCC",
 			"page": 210,
-			"size": "H",
+			"size": [
+				"H"
+			],
 			"type": "beast",
 			"alignment": [
 				"U"
@@ -3692,7 +3782,9 @@
 			"name": "Ruin Grinder",
 			"source": "SCC",
 			"page": 211,
-			"size": "L",
+			"size": [
+				"L"
+			],
 			"type": "construct",
 			"alignment": [
 				"U"
@@ -3802,7 +3894,9 @@
 			"name": "Scufflecup Teacup",
 			"source": "SCC",
 			"page": 159,
-			"size": "T",
+			"size": [
+				"T"
+			],
 			"type": "construct",
 			"alignment": [
 				"U"
@@ -3861,7 +3955,9 @@
 			"isNamedCreature": true,
 			"source": "SCC",
 			"page": 212,
-			"size": "G",
+			"size": [
+				"G"
+			],
 			"type": {
 				"type": "dragon",
 				"tags": [
@@ -3980,13 +4076,13 @@
 				{
 					"name": "Shadow Slip (Costs 2 Actions)",
 					"entries": [
-						"Shadrix becomes an inky cloud of shadow and can move up to half his flying speed without provoking opportunity attacks, then resumes his true form. During this movement, he can move through creatures and objects as if they were difficult terrain. If he moves through a creature, it must succeed on a {@dc 21} Constitution saving throw or become {@condition blinded} until the end of its next turn. If Shadrix ends this move inside an object, he takes 5 ({@damage 1d10}) force damage and is shunted to the nearest unoccupied space."
+						"Shadrix becomes an inky cloud of shadow and can move up to half his flying speed without provoking opportunity attacks, then resumes his true form. During this movement, he can move through creatures and objects as if they were {@quickref difficult terrain||3}. If he moves through a creature, it must succeed on a {@dc 21} Constitution saving throw or become {@condition blinded} until the end of its next turn. If Shadrix ends this move inside an object, he takes 5 ({@damage 1d10}) force damage and is shunted to the nearest unoccupied space."
 					]
 				},
 				{
 					"name": "Flash of Inspiration (Costs 3 Actions)",
 					"entries": [
-						"Shadrix magically summons {@dice 1d4} inkling mascots in unoccupied spaces he can see within 60 feet of himself. The inklings obey his commands and take their turns immediately after his. While any of these inklings live, Shadrix has advantage on attack rolls and saving throws. These inklings disappear after 10 minutes, when Shadrix dies, or when he uses this action again."
+						"Shadrix magically summons {@dice 1d4} {@creature inkling mascot|SCC|inkling mascots} in unoccupied spaces he can see within 60 feet of himself. The inklings obey his commands and take their turns immediately after his. While any of these inklings live, Shadrix has advantage on attack rolls and saving throws. These inklings disappear after 10 minutes, when Shadrix dies, or when he uses this action again."
 					]
 				}
 			],
@@ -4030,8 +4126,10 @@
 			"name": "Silverquill Apprentice",
 			"source": "SCC",
 			"page": 214,
-			"size": "M",
-			"sizeNote": "or small",
+			"size": [
+				"S",
+				"M"
+			],
 			"type": {
 				"type": "humanoid",
 				"tags": [
@@ -4126,8 +4224,10 @@
 			"name": "Silverquill Pledgemage",
 			"source": "SCC",
 			"page": 214,
-			"size": "M",
-			"sizeNote": "or small",
+			"size": [
+				"S",
+				"M"
+			],
 			"type": {
 				"type": "humanoid",
 				"tags": [
@@ -4236,8 +4336,10 @@
 			"name": "Silverquill Professor of Radiance",
 			"source": "SCC",
 			"page": 215,
-			"size": "M",
-			"sizeNote": "or small",
+			"size": [
+				"S",
+				"M"
+			],
 			"type": {
 				"type": "humanoid",
 				"tags": [
@@ -4349,8 +4451,10 @@
 			"name": "Silverquill Professor of Shadow",
 			"source": "SCC",
 			"page": 215,
-			"size": "M",
-			"sizeNote": "or small",
+			"size": [
+				"S",
+				"M"
+			],
 			"type": {
 				"type": "humanoid",
 				"tags": [
@@ -4475,7 +4579,9 @@
 			"name": "Spirit Statue Mascot",
 			"source": "SCC",
 			"page": 216,
-			"size": "M",
+			"size": [
+				"M"
+			],
 			"type": "construct",
 			"alignment": [
 				"A"
@@ -4533,6 +4639,7 @@
 					]
 				}
 			],
+			"familiar": true,
 			"traitTags": [
 				"Death Burst"
 			],
@@ -4555,7 +4662,9 @@
 			"name": "Strixhaven Campus Guide",
 			"source": "SCC",
 			"page": 217,
-			"size": "S",
+			"size": [
+				"S"
+			],
 			"type": "construct",
 			"alignment": [
 				"L",
@@ -4687,7 +4796,9 @@
 			"isNamedCreature": true,
 			"source": "SCC",
 			"page": 218,
-			"size": "G",
+			"size": [
+				"G"
+			],
 			"type": {
 				"type": "dragon",
 				"tags": [
@@ -4826,7 +4937,7 @@
 				{
 					"name": "Fractal Refraction (Costs 3 Actions)",
 					"entries": [
-						"Tanazir magically summons {@dice 1d4} fractal mascots in unoccupied spaces she can see within 120 feet of herself. The fractals obey her commands and take their turns immediately after hers. While any of these fractals remain, attack rolls made against Tanazir have disadvantage. A summoned fractal disappears after 1 minute, when it or Tanazir dies, or when she uses this action again."
+						"Tanazir magically summons {@dice 1d4} {@creature fractal mascot|SCC|fractal mascots} in unoccupied spaces she can see within 120 feet of herself. The fractals obey her commands and take their turns immediately after hers. While any of these fractals remain, attack rolls made against Tanazir have disadvantage. A summoned fractal disappears after 1 minute, when it or Tanazir dies, or when she uses this action again."
 					]
 				}
 			],
@@ -4866,7 +4977,9 @@
 			"isNamedCreature": true,
 			"source": "SCC",
 			"page": 219,
-			"size": "G",
+			"size": [
+				"G"
+			],
 			"type": {
 				"type": "dragon",
 				"tags": [
@@ -4991,7 +5104,7 @@
 				{
 					"name": "Repeating History (Costs 3 Actions)",
 					"entries": [
-						"Velomachus magically summons {@dice 1d4} spirit statue mascots in unoccupied spaces she can see within 60 feet of herself. The spirit statues obey her commands and take their turns immediately after hers. Any creature, other than a spirit statue or Velomachus, is {@condition restrained} if it starts its turn within 5 feet of one or more of these spirit statues. This {@condition restrained} condition lasts until the end of the creature's turn. These spirit statues disappear after 10 minutes, when Velomachus dies, or when she uses this action again."
+						"Velomachus magically summons {@dice 1d4} {@creature spirit statue mascot|SCC|statue mascots} in unoccupied spaces she can see within 60 feet of herself. The spirit statues obey her commands and take their turns immediately after hers. Any creature, other than a spirit statue or Velomachus, is {@condition restrained} if it starts its turn within 5 feet of one or more of these spirit statues. This {@condition restrained} condition lasts until the end of the creature's turn. These spirit statues disappear after 10 minutes, when Velomachus dies, or when she uses this action again."
 					]
 				}
 			],
@@ -5014,6 +5127,9 @@
 				"S",
 				"T"
 			],
+			"damageTagsSpell": [
+				"Y"
+			],
 			"miscTags": [
 				"AOE",
 				"MW",
@@ -5030,8 +5146,10 @@
 			"name": "Witherbloom Apprentice",
 			"source": "SCC",
 			"page": 221,
-			"size": "M",
-			"sizeNote": "or small",
+			"size": [
+				"S",
+				"M"
+			],
 			"type": {
 				"type": "humanoid",
 				"tags": [
@@ -5150,8 +5268,10 @@
 			"name": "Witherbloom Pledgemage",
 			"source": "SCC",
 			"page": 222,
-			"size": "M",
-			"sizeNote": "or small",
+			"size": [
+				"S",
+				"M"
+			],
 			"type": {
 				"type": "humanoid",
 				"tags": [
@@ -5286,8 +5406,10 @@
 			"name": "Witherbloom Professor of Decay",
 			"source": "SCC",
 			"page": 223,
-			"size": "M",
-			"sizeNote": "or small",
+			"size": [
+				"S",
+				"M"
+			],
 			"type": {
 				"type": "humanoid",
 				"tags": [
@@ -5364,7 +5486,7 @@
 				{
 					"name": "Essence Transfer (1/Day)",
 					"entries": [
-						"The professor can cast the animate dead spell, using Wisdom as the spellcasting ability."
+						"The professor can cast the {@spell animate dead} spell, using Wisdom as the spellcasting ability."
 					]
 				}
 			],
@@ -5399,7 +5521,8 @@
 				"N"
 			],
 			"miscTags": [
-				"AOE"
+				"AOE",
+				"HPR"
 			],
 			"conditionInflictSpell": [
 				"blinded",
@@ -5412,8 +5535,10 @@
 			"name": "Witherbloom Professor of Growth",
 			"source": "SCC",
 			"page": 223,
-			"size": "M",
-			"sizeNote": "or small",
+			"size": [
+				"S",
+				"M"
+			],
 			"type": {
 				"type": "humanoid",
 				"tags": [
@@ -5533,7 +5658,9 @@
 			"isNamedCreature": true,
 			"source": "SCC",
 			"page": 172,
-			"size": "M",
+			"size": [
+				"M"
+			],
 			"type": {
 				"type": "humanoid",
 				"tags": [
@@ -5632,7 +5759,7 @@
 				{
 					"name": "Sanguine Tentacles (1/Day)",
 					"entries": [
-						"The blood in the copper basin disappears as tentacles of congealed blood fill a 10-foot cube centered at a point on the ground that Y'demi can see within 15 feet of her. The effect lasts for 1 minute, during which time that area is difficult terrain. Any creature entering that area for the first time on a turn or starting its turn there must succeed on a {@dc 13} Dexterity saving throw or be {@condition restrained} by the tentacles. A creature that starts its turn {@condition restrained} by the tentacles takes 10 ({@damage 3d6}) bludgeoning damage. A creature {@condition restrained} by the tentacles can use its action to make either a {@dc 13} Strength (Athletics) check or a {@dc 13} Dexterity (Acrobatics) check, ending the {@condition restrained} condition on itself on a success."
+						"The blood in the copper basin disappears as tentacles of congealed blood fill a 10-foot cube centered at a point on the ground that Y'demi can see within 15 feet of her. The effect lasts for 1 minute, during which time that area is {@quickref difficult terrain||3}. Any creature entering that area for the first time on a turn or starting its turn there must succeed on a {@dc 13} Dexterity saving throw or be {@condition restrained} by the tentacles. A creature that starts its turn {@condition restrained} by the tentacles takes 10 ({@damage 3d6}) bludgeoning damage. A creature {@condition restrained} by the tentacles can use its action to make either a {@dc 13} Strength (Athletics) check or a {@dc 13} Dexterity (Acrobatics) check, ending the {@condition restrained} condition on itself on a success."
 					]
 				}
 			],

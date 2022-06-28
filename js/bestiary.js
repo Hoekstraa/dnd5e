@@ -40,6 +40,11 @@ class BestiaryPage extends ListPageMultiSource {
 			isSublistItemsCountable: true,
 
 			dataProps: ["monster"],
+			brewDataSource: async () => {
+				const brew = await BrewUtil2.pGetBrewProcessed();
+				DataUtil.monster.populateMetaReference(brew);
+				return brew;
+			},
 
 			hasAudio: true,
 
@@ -48,6 +53,73 @@ class BestiaryPage extends ListPageMultiSource {
 				$eleNoneVisible: $(`<span class="initial-message">If you wish to view multiple creatures, please first make a list</span>`),
 				pageTitle: "Bestiary Printer View",
 				popTblGetNumShown: (opts) => this._bookView_popTblGetNumShown(opts),
+			},
+
+			tableViewOptions: {
+				title: "Bestiary",
+				colTransforms: {
+					name: UtilsTableview.COL_TRANSFORM_NAME,
+					source: UtilsTableview.COL_TRANSFORM_SOURCE,
+					size: {name: "Size", transform: size => Renderer.utils.getRenderedSize(size)},
+					type: {name: "Type", transform: type => Parser.monTypeToFullObj(type).asText},
+					alignment: {name: "Alignment", transform: align => Parser.alignmentListToFull(align)},
+					ac: {name: "AC", transform: ac => Parser.acToFull(ac)},
+					hp: {name: "HP", transform: hp => Renderer.monster.getRenderedHp(hp)},
+					_speed: {name: "Speed", transform: mon => Parser.getSpeedString(mon)},
+					...Parser.ABIL_ABVS.mergeMap(ab => ({[ab]: {name: Parser.attAbvToFull(ab)}})),
+					_save: {name: "Saving Throws", transform: mon => Renderer.monster.getSavesPart(mon)},
+					_skill: {name: "Skills", transform: mon => Renderer.monster.getSkillsString(Renderer.get(), mon)},
+					vulnerable: {name: "Damage Vulnerabilities", transform: it => Parser.getFullImmRes(it)},
+					resist: {name: "Damage Resistances", transform: it => Parser.getFullImmRes(it)},
+					immune: {name: "Damage Immunities", transform: it => Parser.getFullImmRes(it)},
+					conditionImmune: {name: "Condition Immunities", transform: it => Parser.getFullCondImm(it)},
+					_senses: {name: "Senses", transform: mon => Renderer.monster.getSensesPart(mon)},
+					languages: {name: "Languages", transform: it => Renderer.monster.getRenderedLanguages(it)},
+					_cr: {name: "CR", transform: mon => Parser.monCrToFull(mon.cr, {isMythic: !!mon.mythic})},
+					_trait: {
+						name: "Traits",
+						transform: mon => {
+							const fnGetSpellTraits = Renderer.monster.getSpellcastingRenderedTraits.bind(Renderer.monster, Renderer.get());
+							const allTraits = Renderer.monster.getOrderedTraits(mon, {fnGetSpellTraits});
+							return (allTraits || []).map(it => it.rendered || Renderer.get().render(it, 2)).join("");
+						},
+						flex: 3,
+					},
+					_action: {
+						name: "Actions",
+						transform: mon => {
+							const fnGetSpellTraits = Renderer.monster.getSpellcastingRenderedTraits.bind(Renderer.monster, Renderer.get());
+							const allActions = Renderer.monster.getOrderedActions(mon, {fnGetSpellTraits});
+							return (allActions || []).map(it => it.rendered || Renderer.get().render(it, 2)).join("");
+						},
+						flex: 3,
+					},
+					bonus: {name: "Bonus Actions", transform: it => (it || []).map(x => Renderer.get().render(x, 2)).join(""), flex: 3},
+					reaction: {name: "Reactions", transform: it => (it || []).map(x => Renderer.get().render(x, 2)).join(""), flex: 3},
+					legendary: {name: "Legendary Actions", transform: it => (it || []).map(x => Renderer.get().render(x, 2)).join(""), flex: 3},
+					mythic: {name: "Mythic Actions", transform: it => (it || []).map(x => Renderer.get().render(x, 2)).join(""), flex: 3},
+					_lairActions: {
+						name: "Lair Actions",
+						transform: mon => {
+							const legGroup = DataUtil.monster.getMetaGroup(mon);
+							if (!legGroup?.lairActions?.length) return "";
+							return Renderer.get().render({entries: legGroup.lairActions});
+						},
+						flex: 3,
+					},
+					_regionalEffects: {
+						name: "Regional Effects",
+						transform: mon => {
+							const legGroup = DataUtil.monster.getMetaGroup(mon);
+							if (!legGroup?.regionalEffects?.length) return "";
+							return Renderer.get().render({entries: legGroup.regionalEffects});
+						},
+						flex: 3,
+					},
+					environment: {name: "Environment", transform: it => Renderer.monster.getRenderedEnvironment(it)},
+				},
+				filter: {generator: ListUtil.basicFilterGenerator},
+				sorter: (a, b) => SortUtil.ascSort(a.name, b.name) || SortUtil.ascSort(a.source, b.source),
 			},
 
 			bindPopoutButtonOptions: {
@@ -71,8 +143,6 @@ class BestiaryPage extends ListPageMultiSource {
 			jsonDir: "data/bestiary/",
 		});
 
-		this._seenHashes = new Set();
-
 		this._$btnProf = null;
 		this._$dispCrTotal = null;
 
@@ -81,6 +151,8 @@ class BestiaryPage extends ListPageMultiSource {
 		this._profDicMode = PROF_MODE_BONUS;
 
 		this._encounterBuilder = null;
+
+		this._$dispToken = null;
 	}
 
 	// region Expose for encounter builder
@@ -98,7 +170,7 @@ class BestiaryPage extends ListPageMultiSource {
 		const stack = [];
 
 		const renderCreature = (mon) => {
-			stack.push(`<div class="bkmv__wrp-item"><table class="stats stats--book stats--bkmv"><tbody>`);
+			stack.push(`<div class="bkmv__wrp-item"><table class="w-100 stats stats--book stats--bkmv"><tbody>`);
 			stack.push(Renderer.monster.getCompactRenderedString(mon, Renderer.get()));
 			stack.push(`</tbody></table></div>`);
 		};
@@ -132,7 +204,7 @@ class BestiaryPage extends ListPageMultiSource {
 		const $btnDownloadMarkdownSettings = $(`<button class="btn btn-default btn-sm px-2" title="Markdown Settings"><span class="glyphicon glyphicon-cog"/></button>`)
 			.click(async () => RendererMarkdown.pShowSettingsModal());
 
-		$$`<div class="flex-v-center btn-group ml-2">
+		$$`<div class="ve-flex-v-center btn-group ml-2">
 			${$btnDownloadMarkdown}
 			${$btnCopyMarkdown}
 			${$btnDownloadMarkdownSettings}
@@ -144,7 +216,7 @@ class BestiaryPage extends ListPageMultiSource {
 
 	getListItem (mon, mI) {
 		const hash = UrlUtil.autoEncodeHash(mon);
-		if (!mon.uniqueId && this._seenHashes.has(hash)) return null;
+		if (this._seenHashes.has(hash)) return null;
 		this._seenHashes.add(hash);
 
 		Renderer.monster.updateParsed(mon);
@@ -158,7 +230,7 @@ class BestiaryPage extends ListPageMultiSource {
 
 		const eleLi = e_({
 			tag: "div",
-			clazz: `lst__row flex-col ${isExcluded ? "lst__row--blacklisted" : ""}`,
+			clazz: `lst__row ve-flex-col ${isExcluded ? "lst__row--blacklisted" : ""}`,
 			click: (evt) => this._handleBestiaryLiClick(evt, listItem),
 			contextmenu: (evt) => this._handleBestiaryLiContext(evt, listItem),
 			children: [
@@ -175,7 +247,7 @@ class BestiaryPage extends ListPageMultiSource {
 						e_({
 							tag: "span",
 							clazz: `col-2 text-center ${Parser.sourceJsonToColor(mon.source)} pr-0`,
-							style: BrewUtil.sourceJsonToStylePart(mon.source),
+							style: BrewUtil2.sourceJsonToStylePart(mon.source),
 							title: `${Parser.sourceJsonToFull(mon.source)}${Renderer.utils.getSourceSubText(mon)}`,
 							text: source,
 						}),
@@ -195,9 +267,9 @@ class BestiaryPage extends ListPageMultiSource {
 				cr,
 				group: mon.group ? [mon.group].flat().join(",") : "",
 				alias: (mon.alias || []).map(it => `"${it}"`).join(","),
+				page: mon.page,
 			},
 			{
-				uniqueId: mon.uniqueId ? mon.uniqueId : mI,
 				isExcluded,
 			},
 		);
@@ -288,7 +360,7 @@ class BestiaryPage extends ListPageMultiSource {
 		const sublistButtonsMeta = this._encounterBuilder.getSublistButtonsMeta(listItem);
 		listItem.data.fnsUpdate.push(sublistButtonsMeta.fnUpdate);
 
-		listItem.ele = $$`<div class="lst__row lst__row--sublist flex-col lst__row--bestiary-sublist">
+		listItem.ele = $$`<div class="lst__row lst__row--sublist ve-flex-col lst__row--bestiary-sublist">
 			<a href="#${hash}" draggable="false" class="ecgen__hidden lst--border lst__row-inner">
 				<span class="bold col-5 pl-0">${name}</span>
 				<span class="col-3-8">${type}</span>
@@ -355,13 +427,13 @@ class BestiaryPage extends ListPageMultiSource {
 			}
 		} else if (scaledSpellSummonHash) {
 			const scaleTo = Number(UrlUtil.unpackSubHash(scaledSpellSummonHash)[VeCt.HASH_SCALED_SPELL_SUMMON][0]);
-			if (mon._summonedBySpell_levelBase != null && scaleTo >= mon._summonedBySpell_levelBase && scaleTo !== this._lastRendered.mon._summonedBySpell_level) {
+			if (mon.summonedBySpellLevel != null && scaleTo >= mon.summonedBySpellLevel && scaleTo !== this._lastRendered.mon._summonedBySpell_level) {
 				ScaleSpellSummonedCreature.scale(mon, scaleTo)
 					.then(monScaled => this._renderStatblock(monScaled, {isScaledSpellSummon: true}));
 			}
 		} else if (scaledClassSummonHash) {
 			const scaleTo = Number(UrlUtil.unpackSubHash(scaledClassSummonHash)[VeCt.HASH_SCALED_CLASS_SUMMON][0]);
-			if (mon.summonedByClass != null && scaleTo >= 1 && scaleTo !== this._lastRendered.mon._summonedByClass_level) {
+			if (mon.summonedByClass != null && scaleTo > 0 && scaleTo !== this._lastRendered.mon._summonedByClass_level) {
 				ScaleClassSummonedCreature.scale(mon, scaleTo)
 					.then(monScaled => this._renderStatblock(monScaled, {isScaledClassSummon: true}));
 			}
@@ -412,7 +484,7 @@ class BestiaryPage extends ListPageMultiSource {
 				const pageUrl = `#${UrlUtil.autoEncodeHash(toRender)}${this._getUrlSubhashes(toRender)}`;
 
 				const renderFn = Renderer.hover.getFnRenderCompact(UrlUtil.getCurrentPage());
-				const $content = $$`<table class="stats">${renderFn(toRender)}</table>`;
+				const $content = $$`<table class="w-100 stats">${renderFn(toRender)}</table>`;
 				const windowMeta = Renderer.hover.getShowWindow(
 					$content,
 					Renderer.hover.getWindowPositionFromEvent(evt),
@@ -420,6 +492,7 @@ class BestiaryPage extends ListPageMultiSource {
 						pageUrl,
 						title: toRender._displayName || toRender.name,
 						isPermanent: true,
+						sourceData: toRender,
 					},
 				);
 
@@ -429,7 +502,7 @@ class BestiaryPage extends ListPageMultiSource {
 				const hash = UrlUtil.URL_TO_HASH_BUILDER[UrlUtil.PG_BESTIARY](mon);
 				Renderer.monster.doBindCompactContentHandlers({
 					$content,
-					sourceData: {
+					compactReferenceData: {
 						type: "stats",
 						page,
 						source,
@@ -469,15 +542,6 @@ class BestiaryPage extends ListPageMultiSource {
 
 	async _pOnLoad_pPreHashInit () {
 		this._encounterBuilder.initState();
-	}
-
-	_pHandleBrew (homebrew) {
-		try {
-			DataUtil.monster.populateMetaReference(homebrew);
-			this._addData(homebrew);
-		} catch (e) {
-			BrewUtil.pPurgeBrew(e);
-		}
 	}
 
 	_handleBestiaryLiClick (evt, listItem) {
@@ -559,13 +623,15 @@ class BestiaryPage extends ListPageMultiSource {
 			this._$btnProf = null;
 		}
 
+		this._$dispToken = this._$dispToken || $(`#float-token`);
+
 		// reset tabs
 		const tabMetas = [
 			new Renderer.utils.TabButton({
 				label: "Statblock",
 				fnChange: () => {
 					$wrpBtnProf.append(this._$btnProf);
-					$(`#float-token`).show();
+					this._$dispToken.showVe();
 				},
 				fnPopulate: () => this._renderStatblock_doBuildStatsTab({mon, isScaledCr, isScaledSpellSummon, isScaledClassSummon}),
 				isVisible: true,
@@ -574,7 +640,7 @@ class BestiaryPage extends ListPageMultiSource {
 				label: "Info",
 				fnChange: () => {
 					this._$btnProf = $wrpBtnProf.children().length ? $wrpBtnProf.children().detach() : this._$btnProf;
-					$(`#float-token`).hide();
+					this._$dispToken.hideVe();
 				},
 				fnPopulate: () => this._renderStatblock_doBuildFluffTab(),
 				isVisible: Renderer.utils.hasFluffText(mon, "monsterFluff"),
@@ -583,7 +649,7 @@ class BestiaryPage extends ListPageMultiSource {
 				label: "Images",
 				fnChange: () => {
 					this._$btnProf = $wrpBtnProf.children().length ? $wrpBtnProf.children().detach() : this._$btnProf;
-					$(`#float-token`).hide();
+					this._$dispToken.hideVe();
 				},
 				fnPopulate: () => this._renderStatblock_doBuildFluffTab({isImageTab: true}),
 				isVisible: Renderer.utils.hasFluffImages(mon, "monsterFluff"),
@@ -741,7 +807,7 @@ class BestiaryPage extends ListPageMultiSource {
 			});
 		});
 
-		const $floatToken = $(`#float-token`).empty();
+		const $floatToken = this._$dispToken.empty();
 
 		const hasToken = mon.tokenUrl || mon.hasToken;
 		if (!hasToken) return;
@@ -819,7 +885,7 @@ class BestiaryPage extends ListPageMultiSource {
 				meta.$ele.show();
 				setTimeout(() => meta.$ele.css("max-width", ""), 10); // hack to clear the earlier 100% width
 
-				if (meta.name && meta.source) $footer.html(`<div>${meta.displayName || meta.name}; <span title="${Parser.sourceJsonToFull(meta.source)}">${Parser.sourceJsonToAbv(meta.source)}${Renderer.utils.isDisplayPage(meta.page) ? ` p${meta.page}` : ""}</span></div>`);
+				if (meta.name && meta.source) $footer.html(Renderer.monster.getRenderedAltArtEntry(meta));
 				else $footer.html("");
 
 				$wrpFooter.detach().appendTo(meta.$ele);
@@ -880,7 +946,7 @@ class BestiaryPage extends ListPageMultiSource {
 			const $btnOptions = $(`<button class="btn btn-default btn-xs btn-stats-name"><span class="glyphicon glyphicon-option-vertical"/></button>`)
 				.click(evt => ContextUtil.pOpenMenu(evt, menu));
 
-			return $$`<div class="flex-v-center btn-group ml-2">${$btnOptions}</div>`;
+			return $$`<div class="ve-flex-v-center btn-group ml-2">${$btnOptions}</div>`;
 		})();
 
 		return Renderer.utils.pBuildFluffTab({
@@ -1021,28 +1087,16 @@ class EncounterBuilderUtils {
 		let CR_THRESH_MODE = "statisticallySignificant";
 
 		switch (CR_THRESH_MODE) {
-			// "Statistically significant" method--note that even with custom butchering of the terminology, this produces
-			//   very passive filtering; the threshold is 0 in the vast majority of cases.
+			// "Statistically significant" method--note that this produces very passive filtering; the threshold is below
+			//   the minimum CR in the vast majority of cases.
 			case "statisticallySignificant": {
-				let cutoff = 0;
 				const cpy = MiscUtil.copy(crValues)
 					.sort(SortUtil.ascSort);
-				while (cpy.length > 1) {
-					const avgRest = cpy.slice(1).mean();
-					const deviationRest = cpy.slice(1).meanAbsoluteDeviation();
 
-					// This should really be `(deviationRest * 2)`, as two deviations = "statistically significant", however
-					//   using real maths produces awkward results for our tiny sample size.
-					cutoff = avgRest - deviationRest;
+				const avg = cpy.mean();
+				const deviation = cpy.meanAbsoluteDeviation();
 
-					if (cpy[0] < cutoff) {
-						cpy.shift();
-					} else {
-						break;
-					}
-				}
-
-				return cutoff;
+				return avg - (deviation * 2);
 			}
 
 			case "5etools": {

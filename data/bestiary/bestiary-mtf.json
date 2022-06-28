@@ -9,7 +9,9 @@
 					"source": "BGDIA"
 				}
 			],
-			"size": "M",
+			"size": [
+				"M"
+			],
 			"type": {
 				"type": "fiend",
 				"tags": [
@@ -88,7 +90,12 @@
 			"name": "Adult Kruthik",
 			"source": "MTF",
 			"page": 212,
-			"size": "M",
+			"reprintedAs": [
+				"Adult Kruthik|MPMM"
+			],
+			"size": [
+				"M"
+			],
 			"type": "monstrosity",
 			"alignment": [
 				"U"
@@ -208,7 +215,12 @@
 					"source": "IMR"
 				}
 			],
-			"size": "M",
+			"reprintedAs": [
+				"Adult Oblex|MPMM"
+			],
+			"size": [
+				"M"
+			],
 			"type": "ooze",
 			"alignment": [
 				"L",
@@ -385,7 +397,12 @@
 					"page": 212
 				}
 			],
-			"size": "M",
+			"reprintedAs": [
+				"Air Elemental Myrmidon|MPMM"
+			],
+			"size": [
+				"M"
+			],
 			"type": "elemental",
 			"alignment": [
 				"N"
@@ -517,7 +534,12 @@
 					"source": "SDW"
 				}
 			],
-			"size": "M",
+			"reprintedAs": [
+				"Alkilith|MPMM"
+			],
+			"size": [
+				"M"
+			],
 			"type": {
 				"type": "fiend",
 				"tags": [
@@ -675,7 +697,12 @@
 					"source": "SLW"
 				}
 			],
-			"size": "M",
+			"reprintedAs": [
+				"Allip|MPMM"
+			],
+			"size": [
+				"M"
+			],
 			"type": "undead",
 			"alignment": [
 				"L",
@@ -753,7 +780,7 @@
 				{
 					"name": "Incorporeal Movement",
 					"entries": [
-						"The allip can move through other creatures and objects as if they were difficult terrain. It takes 5 ({@damage 1d10}) force damage if it ends its turn inside an object."
+						"The allip can move through other creatures and objects as if they were {@quickref difficult terrain||3}. It takes 5 ({@damage 1d10}) force damage if it ends its turn inside an object."
 					]
 				}
 			],
@@ -814,7 +841,12 @@
 					"source": "BGDIA"
 				}
 			],
-			"size": "M",
+			"reprintedAs": [
+				"Amnizu|MPMM"
+			],
+			"size": [
+				"M"
+			],
 			"type": {
 				"type": "fiend",
 				"tags": [
@@ -1007,6 +1039,10 @@
 				"O",
 				"S"
 			],
+			"damageTagsSpell": [
+				"F",
+				"Y"
+			],
 			"spellcastingTags": [
 				"I"
 			],
@@ -1030,7 +1066,12 @@
 			"name": "Armanite",
 			"source": "MTF",
 			"page": 131,
-			"size": "L",
+			"reprintedAs": [
+				"Armanite|MPMM"
+			],
+			"size": [
+				"L"
+			],
 			"type": {
 				"type": "fiend",
 				"tags": [
@@ -1166,7 +1207,12 @@
 			"name": "Astral Dreadnought",
 			"source": "MTF",
 			"page": 117,
-			"size": "G",
+			"reprintedAs": [
+				"Astral Dreadnought|MPMM"
+			],
+			"size": [
+				"G"
+			],
 			"type": {
 				"type": "monstrosity",
 				"tags": [
@@ -1350,7 +1396,12 @@
 			"name": "Autumn Eladrin",
 			"source": "MTF",
 			"page": 195,
-			"size": "M",
+			"reprintedAs": [
+				"Autumn Eladrin|MPMM"
+			],
+			"size": [
+				"M"
+			],
 			"type": {
 				"type": "fey",
 				"tags": [
@@ -1520,7 +1571,12 @@
 			"isNamedCreature": true,
 			"source": "MTF",
 			"page": 170,
-			"size": "L",
+			"reprintedAs": [
+				"Bael|MPMM"
+			],
+			"size": [
+				"L"
+			],
 			"type": {
 				"type": "fiend",
 				"tags": [
@@ -1693,7 +1749,7 @@
 				{
 					"name": "Awaken Greed",
 					"entries": [
-						"Bael casts charm person or major image."
+						"Bael casts {@spell charm person} or major image."
 					]
 				},
 				{
@@ -1734,6 +1790,13 @@
 				"N",
 				"P"
 			],
+			"damageTagsSpell": [
+				"B",
+				"F",
+				"N",
+				"P",
+				"S"
+			],
 			"spellcastingTags": [
 				"I"
 			],
@@ -1757,7 +1820,12 @@
 			"name": "Balhannoth",
 			"source": "MTF",
 			"page": 119,
-			"size": "L",
+			"reprintedAs": [
+				"Balhannoth|MPMM"
+			],
+			"size": [
+				"L"
+			],
 			"type": "aberration",
 			"alignment": [
 				"C",
@@ -1912,7 +1980,12 @@
 					"source": "BGDIA"
 				}
 			],
-			"size": "H",
+			"reprintedAs": [
+				"Baphomet|MPMM"
+			],
+			"size": [
+				"H"
+			],
 			"type": {
 				"type": "fiend",
 				"tags": [
@@ -1970,7 +2043,7 @@
 						"piercing",
 						"slashing"
 					],
-					"note": "from nonmagical attacks",
+					"note": "that is nonmagical",
 					"cond": true
 				}
 			],
@@ -2019,7 +2092,7 @@
 				{
 					"name": "Labyrinthine Recall",
 					"entries": [
-						"Baphomet can perfectly recall any path he has traveled, and he is immune to the maze spell."
+						"Baphomet can perfectly recall any path he has traveled, and he is immune to the {@spell maze} spell."
 					]
 				},
 				{
@@ -2142,7 +2215,12 @@
 			"name": "Berbalang",
 			"source": "MTF",
 			"page": 120,
-			"size": "M",
+			"reprintedAs": [
+				"Berbalang|MPMM"
+			],
+			"size": [
+				"M"
+			],
 			"type": "aberration",
 			"alignment": [
 				"N",
@@ -2269,7 +2347,12 @@
 			"name": "Black Abishai",
 			"source": "MTF",
 			"page": 160,
-			"size": "M",
+			"reprintedAs": [
+				"Black Abishai|MPMM"
+			],
+			"size": [
+				"M"
+			],
 			"type": {
 				"type": "fiend",
 				"tags": [
@@ -2431,7 +2514,12 @@
 			"name": "Blue Abishai",
 			"source": "MTF",
 			"page": 161,
-			"size": "M",
+			"reprintedAs": [
+				"Blue Abishai|MPMM"
+			],
+			"size": [
+				"M"
+			],
 			"type": {
 				"type": "fiend",
 				"tags": [
@@ -2644,6 +2732,16 @@
 				"L",
 				"P"
 			],
+			"damageTagsSpell": [
+				"A",
+				"B",
+				"C",
+				"F",
+				"I",
+				"L",
+				"O",
+				"T"
+			],
 			"spellcastingTags": [
 				"CW"
 			],
@@ -2666,7 +2764,12 @@
 					"source": "DIP"
 				}
 			],
-			"size": "L",
+			"reprintedAs": [
+				"Boneclaw|MPMM"
+			],
+			"size": [
+				"L"
+			],
 			"type": "undead",
 			"alignment": [
 				"C",
@@ -2813,7 +2916,12 @@
 			"name": "Bronze Scout",
 			"source": "MTF",
 			"page": 125,
-			"size": "M",
+			"reprintedAs": [
+				"Clockwork Bronze Scout|MPMM"
+			],
+			"size": [
+				"M"
+			],
 			"type": "construct",
 			"alignment": [
 				"U"
@@ -2934,7 +3042,12 @@
 					"source": "BGDIA"
 				}
 			],
-			"size": "M",
+			"reprintedAs": [
+				"Bulezau|MPMM"
+			],
+			"size": [
+				"M"
+			],
 			"type": {
 				"type": "fiend",
 				"tags": [
@@ -3032,6 +3145,7 @@
 				"P"
 			],
 			"miscTags": [
+				"HPR",
 				"MW"
 			],
 			"conditionInflict": [
@@ -3045,7 +3159,12 @@
 			"name": "Cadaver Collector",
 			"source": "MTF",
 			"page": 122,
-			"size": "L",
+			"reprintedAs": [
+				"Cadaver Collector|MPMM"
+			],
+			"size": [
+				"L"
+			],
 			"type": "construct",
 			"alignment": [
 				"L",
@@ -3176,7 +3295,12 @@
 			"name": "Canoloth",
 			"source": "MTF",
 			"page": 247,
-			"size": "M",
+			"reprintedAs": [
+				"Canoloth|MPMM"
+			],
+			"size": [
+				"M"
+			],
 			"type": {
 				"type": "fiend",
 				"tags": [
@@ -3347,7 +3471,12 @@
 					"page": 232
 				}
 			],
-			"size": "S",
+			"reprintedAs": [
+				"Choker|MPMM"
+			],
+			"size": [
+				"S"
+			],
 			"type": "aberration",
 			"alignment": [
 				"C",
@@ -3467,7 +3596,12 @@
 			"name": "Corpse Flower",
 			"source": "MTF",
 			"page": 127,
-			"size": "L",
+			"reprintedAs": [
+				"Corpse Flower|MPMM"
+			],
+			"size": [
+				"L"
+			],
 			"type": "plant",
 			"alignment": [
 				"C",
@@ -3585,7 +3719,12 @@
 			"name": "Deathlock",
 			"source": "MTF",
 			"page": 128,
-			"size": "M",
+			"reprintedAs": [
+				"Deathlock|MPMM"
+			],
+			"size": [
+				"M"
+			],
 			"type": "undead",
 			"alignment": [
 				"L",
@@ -3742,6 +3881,12 @@
 			"damageTags": [
 				"N"
 			],
+			"damageTagsSpell": [
+				"A",
+				"C",
+				"N",
+				"O"
+			],
 			"spellcastingTags": [
 				"CL",
 				"I"
@@ -3881,7 +4026,12 @@
 					"source": "SDW"
 				}
 			],
-			"size": "M",
+			"reprintedAs": [
+				"Deathlock Mastermind|MPMM"
+			],
+			"size": [
+				"M"
+			],
 			"type": "undead",
 			"alignment": [
 				"L",
@@ -4050,6 +4200,11 @@
 			"damageTags": [
 				"N"
 			],
+			"damageTagsSpell": [
+				"I",
+				"N",
+				"O"
+			],
 			"spellcastingTags": [
 				"CL",
 				"I"
@@ -4213,7 +4368,12 @@
 					"page": 233
 				}
 			],
-			"size": "M",
+			"reprintedAs": [
+				"Deathlock Wight|MPMM"
+			],
+			"size": [
+				"M"
+			],
 			"type": "undead",
 			"alignment": [
 				"L",
@@ -4353,6 +4513,7 @@
 				"I"
 			],
 			"miscTags": [
+				"HPR",
 				"MW"
 			],
 			"hasToken": true,
@@ -4370,7 +4531,12 @@
 					"page": 236
 				}
 			],
-			"size": "H",
+			"reprintedAs": [
+				"Demogorgon|MPMM"
+			],
+			"size": [
+				"H"
+			],
 			"type": {
 				"type": "fiend",
 				"tags": [
@@ -4430,7 +4596,7 @@
 						"piercing",
 						"slashing"
 					],
-					"note": "from nonmagical attacks",
+					"note": "that is nonmagical",
 					"cond": true
 				}
 			],
@@ -4558,10 +4724,14 @@
 				"B",
 				"N"
 			],
+			"damageTagsSpell": [
+				"Y"
+			],
 			"spellcastingTags": [
 				"I"
 			],
 			"miscTags": [
+				"HPR",
 				"MW",
 				"RCH"
 			],
@@ -4583,13 +4753,12 @@
 			"name": "Derro",
 			"source": "MTF",
 			"page": 158,
-			"otherSources": [
-				{
-					"source": "OotA",
-					"page": 224
-				}
+			"reprintedAs": [
+				"Derro|MPMM"
 			],
-			"size": "S",
+			"size": [
+				"S"
+			],
 			"type": {
 				"type": "humanoid",
 				"tags": [
@@ -4699,13 +4868,12 @@
 			"name": "Derro Savant",
 			"source": "MTF",
 			"page": 159,
-			"otherSources": [
-				{
-					"source": "OotA",
-					"page": 225
-				}
+			"reprintedAs": [
+				"Derro Savant|MPMM"
 			],
-			"size": "S",
+			"size": [
+				"S"
+			],
 			"type": {
 				"type": "humanoid",
 				"tags": [
@@ -4833,6 +5001,14 @@
 			"damageTags": [
 				"B"
 			],
+			"damageTagsSpell": [
+				"A",
+				"C",
+				"F",
+				"I",
+				"L",
+				"T"
+			],
 			"spellcastingTags": [
 				"CS"
 			],
@@ -4847,7 +5023,12 @@
 			"name": "Dhergoloth",
 			"source": "MTF",
 			"page": 248,
-			"size": "M",
+			"reprintedAs": [
+				"Dhergoloth|MPMM"
+			],
+			"size": [
+				"M"
+			],
 			"type": {
 				"type": "fiend",
 				"tags": [
@@ -5013,7 +5194,12 @@
 			"name": "Dire Troll",
 			"source": "MTF",
 			"page": 243,
-			"size": "H",
+			"reprintedAs": [
+				"Dire Troll|MPMM"
+			],
+			"size": [
+				"H"
+			],
 			"type": "giant",
 			"alignment": [
 				"C",
@@ -5151,7 +5337,12 @@
 			"name": "Drow Arachnomancer",
 			"source": "MTF",
 			"page": 182,
-			"size": "M",
+			"reprintedAs": [
+				"Drow Arachnomancer|MPMM"
+			],
+			"size": [
+				"M"
+			],
 			"type": {
 				"type": "humanoid",
 				"tags": [
@@ -5166,7 +5357,7 @@
 				{
 					"ac": 15,
 					"from": [
-						"{@item studded leather armor|phb}"
+						"{@item studded leather armor|phb|studded leather}"
 					]
 				}
 			],
@@ -5357,6 +5548,14 @@
 				"I",
 				"P"
 			],
+			"damageTagsSpell": [
+				"F",
+				"I",
+				"L",
+				"N",
+				"O",
+				"P"
+			],
 			"spellcastingTags": [
 				"CL",
 				"I"
@@ -5385,7 +5584,12 @@
 			"name": "Drow Favored Consort",
 			"source": "MTF",
 			"page": 183,
-			"size": "M",
+			"reprintedAs": [
+				"Drow Favored Consort|MPMM"
+			],
+			"size": [
+				"M"
+			],
 			"type": {
 				"type": "humanoid",
 				"tags": [
@@ -5585,6 +5789,14 @@
 				"P",
 				"S"
 			],
+			"damageTagsSpell": [
+				"C",
+				"F",
+				"I",
+				"L",
+				"O",
+				"T"
+			],
 			"spellcastingTags": [
 				"CW",
 				"I"
@@ -5609,7 +5821,12 @@
 			"name": "Drow House Captain",
 			"source": "MTF",
 			"page": 184,
-			"size": "M",
+			"reprintedAs": [
+				"Drow House Captain|MPMM"
+			],
+			"size": [
+				"M"
+			],
 			"type": {
 				"type": "humanoid",
 				"tags": [
@@ -5779,7 +5996,12 @@
 			"name": "Drow Inquisitor",
 			"source": "MTF",
 			"page": 184,
-			"size": "M",
+			"reprintedAs": [
+				"Drow Inquisitor|MPMM"
+			],
+			"size": [
+				"M"
+			],
 			"type": {
 				"type": "humanoid",
 				"tags": [
@@ -6010,11 +6232,18 @@
 				"P",
 				"Y"
 			],
+			"damageTagsSpell": [
+				"I",
+				"N",
+				"O",
+				"P"
+			],
 			"spellcastingTags": [
 				"CC",
 				"I"
 			],
 			"miscTags": [
+				"HPR",
 				"MW"
 			],
 			"conditionInflictSpell": [
@@ -6031,7 +6260,12 @@
 			"name": "Drow Matron Mother",
 			"source": "MTF",
 			"page": 186,
-			"size": "M",
+			"reprintedAs": [
+				"Drow Matron Mother|MPMM"
+			],
+			"size": [
+				"M"
+			],
 			"type": {
 				"type": "humanoid",
 				"tags": [
@@ -6298,6 +6532,14 @@
 				"B",
 				"Y"
 			],
+			"damageTagsSpell": [
+				"F",
+				"N",
+				"O",
+				"R",
+				"S",
+				"Y"
+			],
 			"spellcastingTags": [
 				"CC",
 				"I"
@@ -6327,7 +6569,12 @@
 			"name": "Drow Shadowblade",
 			"source": "MTF",
 			"page": 187,
-			"size": "M",
+			"reprintedAs": [
+				"Drow Shadowblade|MPMM"
+			],
+			"size": [
+				"M"
+			],
 			"type": {
 				"type": "humanoid",
 				"tags": [
@@ -6342,7 +6589,7 @@
 				{
 					"ac": 17,
 					"from": [
-						"{@item studded leather armor|phb}"
+						"{@item studded leather armor|phb|studded leather}"
 					]
 				}
 			],
@@ -6503,7 +6750,12 @@
 			"name": "Duergar Despot",
 			"source": "MTF",
 			"page": 188,
-			"size": "M",
+			"reprintedAs": [
+				"Duergar Despot|MPMM"
+			],
+			"size": [
+				"M"
+			],
 			"type": {
 				"type": "humanoid",
 				"tags": [
@@ -6673,7 +6925,12 @@
 					"source": "IDRotF"
 				}
 			],
-			"size": "M",
+			"reprintedAs": [
+				"Duergar Hammerer|MPMM"
+			],
+			"size": [
+				"M"
+			],
 			"type": "construct",
 			"alignment": [
 				"L",
@@ -6793,7 +7050,12 @@
 					"page": 226
 				}
 			],
-			"size": "M",
+			"reprintedAs": [
+				"Duergar Kavalrachni|MPMM"
+			],
+			"size": [
+				"M"
+			],
 			"type": {
 				"type": "humanoid",
 				"tags": [
@@ -6929,7 +7191,12 @@
 					"source": "IDRotF"
 				}
 			],
-			"size": "M",
+			"reprintedAs": [
+				"Duergar Mind Master|MPMM"
+			],
+			"size": [
+				"M"
+			],
 			"type": {
 				"type": "humanoid",
 				"tags": [
@@ -7071,7 +7338,12 @@
 			"name": "Duergar Screamer",
 			"source": "MTF",
 			"page": 190,
-			"size": "M",
+			"reprintedAs": [
+				"Duergar Screamer|MPMM"
+			],
+			"size": [
+				"M"
+			],
 			"type": "construct",
 			"alignment": [
 				"L",
@@ -7186,7 +7458,12 @@
 					"page": 227
 				}
 			],
-			"size": "M",
+			"reprintedAs": [
+				"Duergar Soulblade|MPMM"
+			],
+			"size": [
+				"M"
+			],
 			"type": {
 				"type": "humanoid",
 				"tags": [
@@ -7333,7 +7610,12 @@
 					"page": 227
 				}
 			],
-			"size": "M",
+			"reprintedAs": [
+				"Duergar Stone Guard|MPMM"
+			],
+			"size": [
+				"M"
+			],
 			"type": {
 				"type": "humanoid",
 				"tags": [
@@ -7461,7 +7743,12 @@
 			"name": "Duergar Warlord",
 			"source": "MTF",
 			"page": 192,
-			"size": "M",
+			"reprintedAs": [
+				"Duergar Warlord|MPMM"
+			],
+			"size": [
+				"M"
+			],
 			"type": {
 				"type": "humanoid",
 				"tags": [
@@ -7613,7 +7900,12 @@
 					"page": 226
 				}
 			],
-			"size": "M",
+			"reprintedAs": [
+				"Duergar Xarrorn|MPMM"
+			],
+			"size": [
+				"M"
+			],
 			"type": {
 				"type": "humanoid",
 				"tags": [
@@ -7734,7 +8026,12 @@
 			"name": "Dybbuk",
 			"source": "MTF",
 			"page": 132,
-			"size": "M",
+			"reprintedAs": [
+				"Dybbuk|MPMM"
+			],
+			"size": [
+				"M"
+			],
 			"type": {
 				"type": "fiend",
 				"tags": [
@@ -7833,7 +8130,7 @@
 				{
 					"name": "Incorporeal Movement",
 					"entries": [
-						"The dybbuk can move through other creatures and objects as if they were difficult terrain. It takes 5 ({@damage 1d10}) force damage if it ends its turn inside an object."
+						"The dybbuk can move through other creatures and objects as if they were {@quickref difficult terrain||3}. It takes 5 ({@damage 1d10}) force damage if it ends its turn inside an object."
 					]
 				},
 				{
@@ -7889,6 +8186,10 @@
 				"N",
 				"O"
 			],
+			"damageTagsSpell": [
+				"O",
+				"Y"
+			],
 			"spellcastingTags": [
 				"I"
 			],
@@ -7915,7 +8216,12 @@
 					"page": 212
 				}
 			],
-			"size": "M",
+			"reprintedAs": [
+				"Earth Elemental Myrmidon|MPMM"
+			],
+			"size": [
+				"M"
+			],
 			"type": "elemental",
 			"alignment": [
 				"N"
@@ -8043,7 +8349,12 @@
 					"source": "IMR"
 				}
 			],
-			"size": "M",
+			"reprintedAs": [
+				"Eidolon|MPMM"
+			],
+			"size": [
+				"M"
+			],
 			"type": "undead",
 			"alignment": [
 				"A"
@@ -8118,7 +8429,7 @@
 				{
 					"name": "Incorporeal Movement",
 					"entries": [
-						"The eidolon can move through other creatures and objects as if they were difficult terrain. It takes 5 ({@damage 1d10}) force damage if it ends its turn inside an object other than a sacred statue."
+						"The eidolon can move through other creatures and objects as if they were {@quickref difficult terrain||3}. It takes 5 ({@damage 1d10}) force damage if it ends its turn inside an object other than a sacred statue."
 					]
 				},
 				{
@@ -8178,7 +8489,12 @@
 			"name": "Elder Oblex",
 			"source": "MTF",
 			"page": 219,
-			"size": "H",
+			"reprintedAs": [
+				"Elder Oblex|MPMM"
+			],
+			"size": [
+				"H"
+			],
 			"type": "ooze",
 			"alignment": [
 				"L",
@@ -8321,6 +8637,9 @@
 				"B",
 				"Y"
 			],
+			"damageTagsSpell": [
+				"O"
+			],
 			"spellcastingTags": [
 				"I"
 			],
@@ -8346,7 +8665,12 @@
 			"name": "Elder Tempest",
 			"source": "MTF",
 			"page": 200,
-			"size": "G",
+			"reprintedAs": [
+				"Elder Tempest|MPMM"
+			],
+			"size": [
+				"G"
+			],
 			"type": "elemental",
 			"alignment": [
 				"N"
@@ -8529,7 +8853,12 @@
 					"page": 231
 				}
 			],
-			"size": "L",
+			"reprintedAs": [
+				"Female Steeder|MPMM"
+			],
+			"size": [
+				"L"
+			],
 			"type": "monstrosity",
 			"alignment": [
 				"U"
@@ -8630,7 +8959,12 @@
 					"page": 213
 				}
 			],
-			"size": "M",
+			"reprintedAs": [
+				"Fire Elemental Myrmidon|MPMM"
+			],
+			"size": [
+				"M"
+			],
 			"type": "elemental",
 			"alignment": [
 				"N"
@@ -8767,7 +9101,12 @@
 					"page": 238
 				}
 			],
-			"size": "L",
+			"reprintedAs": [
+				"Fraz-Urb'luu|MPMM"
+			],
+			"size": [
+				"L"
+			],
 			"type": {
 				"type": "fiend",
 				"tags": [
@@ -8828,7 +9167,7 @@
 						"piercing",
 						"slashing"
 					],
-					"note": "from nonmagical attacks",
+					"note": "that is nonmagical",
 					"cond": true
 				}
 			],
@@ -8958,6 +9297,15 @@
 				"B",
 				"P"
 			],
+			"damageTagsLegendary": [
+				"Y"
+			],
+			"damageTagsSpell": [
+				"B",
+				"P",
+				"S",
+				"Y"
+			],
 			"spellcastingTags": [
 				"I"
 			],
@@ -8984,7 +9332,12 @@
 			"name": "Frost Salamander",
 			"source": "MTF",
 			"page": 223,
-			"size": "H",
+			"reprintedAs": [
+				"Frost Salamander|MPMM"
+			],
+			"size": [
+				"H"
+			],
 			"type": "elemental",
 			"alignment": [
 				"U"
@@ -9104,7 +9457,12 @@
 			"isNamedCreature": true,
 			"source": "MTF",
 			"page": 173,
-			"size": "H",
+			"reprintedAs": [
+				"Geryon|MPMM"
+			],
+			"size": [
+				"H"
+			],
 			"type": {
 				"type": "fiend",
 				"tags": [
@@ -9326,10 +9684,22 @@
 				"P",
 				"S"
 			],
+			"damageTagsLegendary": [
+				"C"
+			],
+			"damageTagsSpell": [
+				"B",
+				"C",
+				"N",
+				"P",
+				"S",
+				"Y"
+			],
 			"spellcastingTags": [
 				"I"
 			],
 			"miscTags": [
+				"HPR",
 				"MW",
 				"RCH"
 			],
@@ -9360,7 +9730,12 @@
 			"name": "Giff",
 			"source": "MTF",
 			"page": 204,
-			"size": "M",
+			"reprintedAs": [
+				"Giff|MPMM"
+			],
+			"size": [
+				"M"
+			],
 			"type": "humanoid",
 			"alignment": [
 				"L",
@@ -9476,7 +9851,12 @@
 					"source": "WDMM"
 				}
 			],
-			"size": "M",
+			"reprintedAs": [
+				"Githyanki Gish|MPMM"
+			],
+			"size": [
+				"M"
+			],
 			"type": {
 				"type": "humanoid",
 				"tags": [
@@ -9635,6 +10015,11 @@
 				"S",
 				"Y"
 			],
+			"damageTagsSpell": [
+				"F",
+				"O",
+				"T"
+			],
 			"spellcastingTags": [
 				"CW",
 				"I",
@@ -9651,7 +10036,12 @@
 			"name": "Githyanki Kith'rak",
 			"source": "MTF",
 			"page": 205,
-			"size": "M",
+			"reprintedAs": [
+				"Githyanki Kith'rak|MPMM"
+			],
+			"size": [
+				"M"
+			],
 			"type": {
 				"type": "humanoid",
 				"tags": [
@@ -9789,7 +10179,12 @@
 			"name": "Githyanki Supreme Commander",
 			"source": "MTF",
 			"page": 206,
-			"size": "M",
+			"reprintedAs": [
+				"Githyanki Supreme Commander|MPMM"
+			],
+			"size": [
+				"M"
+			],
 			"type": {
 				"type": "humanoid",
 				"tags": [
@@ -9900,7 +10295,7 @@
 				{
 					"name": "Teleport",
 					"entries": [
-						"The githyanki magically teleports, along with any equipment it is wearing and carrying, to an unoccupied space it can see within 30 feet of it. It also becomes insubstantial until the start of its next turn. While insubstantial, it can move through other creatures and objects as if they were difficult terrain. If it ends its turn inside an object, it takes 16 ({@damage 3d10}) force damage and is moved to the nearest unoccupied space."
+						"The githyanki magically teleports, along with any equipment it is wearing and carrying, to an unoccupied space it can see within 30 feet of it. It also becomes insubstantial until the start of its next turn. While insubstantial, it can move through other creatures and objects as if they were {@quickref difficult terrain||3}. If it ends its turn inside an object, it takes 16 ({@damage 3d10}) force damage and is moved to the nearest unoccupied space."
 					]
 				}
 			],
@@ -9925,6 +10320,10 @@
 				"S",
 				"Y"
 			],
+			"damageTagsSpell": [
+				"B",
+				"O"
+			],
 			"spellcastingTags": [
 				"I",
 				"P"
@@ -9940,7 +10339,12 @@
 			"name": "Githzerai Anarch",
 			"source": "MTF",
 			"page": 207,
-			"size": "M",
+			"reprintedAs": [
+				"Githzerai Anarch|MPMM"
+			],
+			"size": [
+				"M"
+			],
 			"type": {
 				"type": "humanoid",
 				"tags": [
@@ -10075,6 +10479,9 @@
 				"B",
 				"Y"
 			],
+			"damageTagsLegendary": [
+				"L"
+			],
 			"spellcastingTags": [
 				"I",
 				"P"
@@ -10090,7 +10497,12 @@
 			"name": "Githzerai Enlightened",
 			"source": "MTF",
 			"page": 208,
-			"size": "M",
+			"reprintedAs": [
+				"Githzerai Enlightened|MPMM"
+			],
+			"size": [
+				"M"
+			],
 			"type": {
 				"type": "humanoid",
 				"tags": [
@@ -10222,7 +10634,12 @@
 			"name": "Gloom Weaver",
 			"source": "MTF",
 			"page": 224,
-			"size": "M",
+			"reprintedAs": [
+				"Shadar-kai Gloom Weaver|MPMM"
+			],
+			"size": [
+				"M"
+			],
 			"type": {
 				"type": "humanoid",
 				"tags": [
@@ -10394,6 +10811,13 @@
 				"N",
 				"P"
 			],
+			"damageTagsSpell": [
+				"C",
+				"L",
+				"N",
+				"O",
+				"Y"
+			],
 			"spellcastingTags": [
 				"CL",
 				"I"
@@ -10415,7 +10839,12 @@
 			"name": "Gray Render",
 			"source": "MTF",
 			"page": 209,
-			"size": "L",
+			"reprintedAs": [
+				"Gray Render|MPMM"
+			],
+			"size": [
+				"L"
+			],
 			"type": "monstrosity",
 			"alignment": [
 				"C",
@@ -10523,7 +10952,12 @@
 					"page": 241
 				}
 			],
-			"size": "L",
+			"reprintedAs": [
+				"Graz'zt|MPMM"
+			],
+			"size": [
+				"L"
+			],
 			"type": {
 				"type": "fiend",
 				"tags": [
@@ -10584,7 +11018,7 @@
 						"piercing",
 						"slashing"
 					],
-					"note": "from nonmagical attacks",
+					"note": "that is nonmagical",
 					"cond": true
 				}
 			],
@@ -10691,7 +11125,7 @@
 				{
 					"name": "Sow Discord",
 					"entries": [
-						"Graz'zt casts crown of madness or dissonant whispers."
+						"Graz'zt casts {@spell crown of madness} or dissonant whispers."
 					]
 				},
 				{
@@ -10726,6 +11160,9 @@
 				"A",
 				"S"
 			],
+			"damageTagsSpell": [
+				"Y"
+			],
 			"spellcastingTags": [
 				"I"
 			],
@@ -10746,7 +11183,12 @@
 			"name": "Green Abishai",
 			"source": "MTF",
 			"page": 162,
-			"size": "M",
+			"reprintedAs": [
+				"Green Abishai|MPMM"
+			],
+			"size": [
+				"M"
+			],
 			"type": {
 				"type": "fiend",
 				"tags": [
@@ -10911,6 +11353,11 @@
 				"P",
 				"S"
 			],
+			"damageTagsSpell": [
+				"B",
+				"P",
+				"S"
+			],
 			"spellcastingTags": [
 				"I"
 			],
@@ -10932,7 +11379,12 @@
 			"name": "Hellfire Engine",
 			"source": "MTF",
 			"page": 165,
-			"size": "H",
+			"reprintedAs": [
+				"Hellfire Engine|MPMM"
+			],
+			"size": [
+				"H"
+			],
 			"type": "construct",
 			"alignment": [
 				"L",
@@ -11087,7 +11539,12 @@
 			"name": "Howler",
 			"source": "MTF",
 			"page": 210,
-			"size": "L",
+			"reprintedAs": [
+				"Howler|MPMM"
+			],
+			"size": [
+				"L"
+			],
 			"type": "fiend",
 			"alignment": [
 				"C",
@@ -11213,7 +11670,12 @@
 			"isNamedCreature": true,
 			"source": "MTF",
 			"page": 175,
-			"size": "L",
+			"reprintedAs": [
+				"Hutijin|MPMM"
+			],
+			"size": [
+				"L"
+			],
 			"type": {
 				"type": "fiend",
 				"tags": [
@@ -11440,6 +11902,14 @@
 				"P",
 				"S"
 			],
+			"damageTagsSpell": [
+				"B",
+				"F",
+				"L",
+				"N",
+				"P",
+				"S"
+			],
 			"spellcastingTags": [
 				"I"
 			],
@@ -11468,7 +11938,12 @@
 			"name": "Hydroloth",
 			"source": "MTF",
 			"page": 249,
-			"size": "M",
+			"reprintedAs": [
+				"Hydroloth|MPMM"
+			],
+			"size": [
+				"M"
+			],
 			"type": {
 				"type": "fiend",
 				"tags": [
@@ -11650,6 +12125,10 @@
 				"S",
 				"Y"
 			],
+			"damageTagsSpell": [
+				"B",
+				"Y"
+			],
 			"spellcastingTags": [
 				"I"
 			],
@@ -11669,7 +12148,12 @@
 					"source": "GoS"
 				}
 			],
-			"size": "M",
+			"reprintedAs": [
+				"Clockwork Iron Cobra|MPMM"
+			],
+			"size": [
+				"M"
+			],
 			"type": "construct",
 			"alignment": [
 				"U"
@@ -11784,7 +12268,12 @@
 					"page": 243
 				}
 			],
-			"size": "H",
+			"reprintedAs": [
+				"Juiblex|MPMM"
+			],
+			"size": [
+				"H"
+			],
 			"type": {
 				"type": "fiend",
 				"tags": [
@@ -11841,7 +12330,7 @@
 						"piercing",
 						"slashing"
 					],
-					"note": "from nonmagical attacks",
+					"note": "that is nonmagical",
 					"cond": true
 				}
 			],
@@ -11947,7 +12436,7 @@
 				{
 					"name": "Acid Splash",
 					"entries": [
-						"Juiblex casts acid splash."
+						"Juiblex casts {@spell acid splash}."
 					]
 				},
 				{
@@ -11988,6 +12477,13 @@
 				"A",
 				"I"
 			],
+			"damageTagsLegendary": [
+				"F"
+			],
+			"damageTagsSpell": [
+				"A",
+				"N"
+			],
 			"spellcastingTags": [
 				"I"
 			],
@@ -12015,7 +12511,12 @@
 			"name": "Kruthik Hive Lord",
 			"source": "MTF",
 			"page": 212,
-			"size": "L",
+			"reprintedAs": [
+				"Kruthik Hive Lord|MPMM"
+			],
+			"size": [
+				"L"
+			],
 			"type": "monstrosity",
 			"alignment": [
 				"U"
@@ -12139,7 +12640,12 @@
 			"name": "Leviathan",
 			"source": "MTF",
 			"page": 198,
-			"size": "G",
+			"reprintedAs": [
+				"Leviathan|MPMM"
+			],
+			"size": [
+				"G"
+			],
 			"type": "elemental",
 			"alignment": [
 				"N"
@@ -12304,7 +12810,12 @@
 					"page": 231
 				}
 			],
-			"size": "M",
+			"reprintedAs": [
+				"Male Steeder|MPMM"
+			],
+			"size": [
+				"M"
+			],
 			"type": "monstrosity",
 			"alignment": [
 				"U"
@@ -12399,7 +12910,12 @@
 			"name": "Marut",
 			"source": "MTF",
 			"page": 213,
-			"size": "L",
+			"reprintedAs": [
+				"Marut|MPMM"
+			],
+			"size": [
+				"L"
+			],
 			"type": {
 				"type": "construct",
 				"tags": [
@@ -12575,7 +13091,12 @@
 			"name": "Maurezhi",
 			"source": "MTF",
 			"page": 133,
-			"size": "M",
+			"reprintedAs": [
+				"Maurezhi|MPMM"
+			],
+			"size": [
+				"M"
+			],
 			"type": {
 				"type": "fiend",
 				"tags": [
@@ -12723,7 +13244,12 @@
 			"name": "Meazel",
 			"source": "MTF",
 			"page": 214,
-			"size": "M",
+			"reprintedAs": [
+				"Meazel|MPMM"
+			],
+			"size": [
+				"M"
+			],
 			"type": {
 				"type": "humanoid",
 				"tags": [
@@ -12835,7 +13361,12 @@
 					"source": "BGDIA"
 				}
 			],
-			"size": "M",
+			"reprintedAs": [
+				"Merregon|MPMM"
+			],
+			"size": [
+				"M"
+			],
 			"type": {
 				"type": "fiend",
 				"tags": [
@@ -12975,7 +13506,12 @@
 			"name": "Merrenoloth",
 			"source": "MTF",
 			"page": 250,
-			"size": "M",
+			"reprintedAs": [
+				"Merrenoloth|MPMM"
+			],
+			"size": [
+				"M"
+			],
 			"type": {
 				"type": "fiend",
 				"tags": [
@@ -13139,6 +13675,9 @@
 			"damageTags": [
 				"S"
 			],
+			"damageTagsSpell": [
+				"B"
+			],
 			"spellcastingTags": [
 				"I"
 			],
@@ -13163,7 +13702,12 @@
 			"isNamedCreature": true,
 			"source": "MTF",
 			"page": 177,
-			"size": "L",
+			"reprintedAs": [
+				"Moloch|MPMM"
+			],
+			"size": [
+				"L"
+			],
 			"type": {
 				"type": "fiend",
 				"tags": [
@@ -13377,6 +13921,15 @@
 				"S",
 				"Y"
 			],
+			"damageTagsSpell": [
+				"B",
+				"F",
+				"N",
+				"P",
+				"R",
+				"S",
+				"Y"
+			],
 			"spellcastingTags": [
 				"I"
 			],
@@ -13403,7 +13956,12 @@
 			"name": "Molydeus",
 			"source": "MTF",
 			"page": 134,
-			"size": "H",
+			"reprintedAs": [
+				"Molydeus|MPMM"
+			],
+			"size": [
+				"H"
+			],
 			"type": {
 				"type": "fiend",
 				"tags": [
@@ -13610,10 +14168,14 @@
 				"P",
 				"S"
 			],
+			"damageTagsSpell": [
+				"L"
+			],
 			"spellcastingTags": [
 				"I"
 			],
 			"miscTags": [
+				"HPR",
 				"MW",
 				"RCH"
 			],
@@ -13624,7 +14186,12 @@
 			"name": "Nabassu",
 			"source": "MTF",
 			"page": 135,
-			"size": "M",
+			"reprintedAs": [
+				"Nabassu|MPMM"
+			],
+			"size": [
+				"M"
+			],
 			"type": {
 				"type": "fiend",
 				"tags": [
@@ -13774,6 +14341,7 @@
 			],
 			"miscTags": [
 				"AOE",
+				"HPR",
 				"MW"
 			],
 			"hasToken": true,
@@ -13784,7 +14352,12 @@
 			"name": "Nagpa",
 			"source": "MTF",
 			"page": 215,
-			"size": "M",
+			"reprintedAs": [
+				"Nagpa|MPMM"
+			],
+			"size": [
+				"M"
+			],
 			"type": {
 				"type": "humanoid",
 				"tags": [
@@ -13961,6 +14534,16 @@
 			"damageTags": [
 				"B"
 			],
+			"damageTagsSpell": [
+				"A",
+				"C",
+				"F",
+				"I",
+				"L",
+				"N",
+				"O",
+				"Y"
+			],
 			"spellcastingTags": [
 				"CW"
 			],
@@ -13991,7 +14574,12 @@
 					"source": "BGDIA"
 				}
 			],
-			"size": "M",
+			"reprintedAs": [
+				"Narzugon|MPMM"
+			],
+			"size": [
+				"M"
+			],
 			"type": {
 				"type": "fiend",
 				"tags": [
@@ -14155,7 +14743,12 @@
 			"name": "Nightwalker",
 			"source": "MTF",
 			"page": 216,
-			"size": "H",
+			"reprintedAs": [
+				"Nightwalker|MPMM"
+			],
+			"size": [
+				"H"
+			],
 			"type": "undead",
 			"alignment": [
 				"C",
@@ -14270,6 +14863,7 @@
 				"N"
 			],
 			"miscTags": [
+				"HPR",
 				"MW",
 				"RCH"
 			],
@@ -14290,7 +14884,12 @@
 					"source": "BGDIA"
 				}
 			],
-			"size": "M",
+			"reprintedAs": [
+				"Nupperibo|MPMM"
+			],
+			"size": [
+				"M"
+			],
 			"type": {
 				"type": "fiend",
 				"tags": [
@@ -14403,7 +15002,12 @@
 			"name": "Oaken Bolter",
 			"source": "MTF",
 			"page": 126,
-			"size": "M",
+			"reprintedAs": [
+				"Clockwork Oaken Bolter|MPMM"
+			],
+			"size": [
+				"M"
+			],
 			"type": "construct",
 			"alignment": [
 				"U"
@@ -14533,7 +15137,12 @@
 			"name": "Oblex Spawn",
 			"source": "MTF",
 			"page": 217,
-			"size": "T",
+			"reprintedAs": [
+				"Oblex Spawn|MPMM"
+			],
+			"size": [
+				"T"
+			],
 			"type": "ooze",
 			"alignment": [
 				"L",
@@ -14623,7 +15232,12 @@
 			"name": "Ogre Battering Ram",
 			"source": "MTF",
 			"page": 220,
-			"size": "L",
+			"reprintedAs": [
+				"Ogre Battering Ram|MPMM"
+			],
+			"size": [
+				"L"
+			],
 			"type": "giant",
 			"alignment": [
 				"C",
@@ -14714,7 +15328,12 @@
 			"name": "Ogre Bolt Launcher",
 			"source": "MTF",
 			"page": 220,
-			"size": "L",
+			"reprintedAs": [
+				"Ogre Bolt Launcher|MPMM"
+			],
+			"size": [
+				"L"
+			],
 			"type": "giant",
 			"alignment": [
 				"C",
@@ -14795,7 +15414,12 @@
 			"name": "Ogre Chain Brute",
 			"source": "MTF",
 			"page": 221,
-			"size": "L",
+			"reprintedAs": [
+				"Ogre Chain Brute|MPMM"
+			],
+			"size": [
+				"L"
+			],
 			"type": "giant",
 			"alignment": [
 				"C",
@@ -14885,7 +15509,12 @@
 			"name": "Ogre Howdah",
 			"source": "MTF",
 			"page": 221,
-			"size": "L",
+			"reprintedAs": [
+				"Ogre Howdah|MPMM"
+			],
+			"size": [
+				"L"
+			],
 			"type": "giant",
 			"alignment": [
 				"C",
@@ -14966,7 +15595,12 @@
 			"name": "Oinoloth",
 			"source": "MTF",
 			"page": 251,
-			"size": "M",
+			"reprintedAs": [
+				"Oinoloth|MPMM"
+			],
+			"size": [
+				"M"
+			],
 			"type": {
 				"type": "fiend",
 				"tags": [
@@ -15145,10 +15779,16 @@
 				"N",
 				"S"
 			],
+			"damageTagsSpell": [
+				"C",
+				"F",
+				"Y"
+			],
 			"spellcastingTags": [
 				"I"
 			],
 			"miscTags": [
+				"HPR",
 				"MW"
 			],
 			"conditionInflict": [
@@ -15175,7 +15815,12 @@
 					"page": 245
 				}
 			],
-			"size": "H",
+			"reprintedAs": [
+				"Orcus|MPMM"
+			],
+			"size": [
+				"H"
+			],
 			"type": {
 				"type": "fiend",
 				"tags": [
@@ -15239,7 +15884,7 @@
 						"piercing",
 						"slashing"
 					],
-					"note": "from nonmagical attacks",
+					"note": "that is nonmagical",
 					"cond": true
 				}
 			],
@@ -15305,7 +15950,7 @@
 				{
 					"name": "Master of Undeath",
 					"entries": [
-						"When Orcus casts {@spell animate dead} or {@spell create undead}, he chooses the level at which the spell is cast, and the creatures created by the spells remain under his control indefinitely. Additionally, he can cast create undead even when it isn't night."
+						"When Orcus casts {@spell animate dead} or {@spell create undead}, he chooses the level at which the spell is cast, and the creatures created by the spells remain under his control indefinitely. Additionally, he can cast {@spell create undead} even when it isn't night."
 					]
 				}
 			],
@@ -15339,7 +15984,7 @@
 				{
 					"name": "A Taste of Undeath",
 					"entries": [
-						"Orcus casts chill touch (17th level)."
+						"Orcus casts {@spell chill touch} (17th level)."
 					]
 				},
 				{
@@ -15374,6 +16019,9 @@
 				"N",
 				"P"
 			],
+			"damageTagsSpell": [
+				"N"
+			],
 			"spellcastingTags": [
 				"I"
 			],
@@ -15395,7 +16043,12 @@
 					"source": "BGDIA"
 				}
 			],
-			"size": "L",
+			"reprintedAs": [
+				"Orthon|MPMM"
+			],
+			"size": [
+				"L"
+			],
 			"type": {
 				"type": "fiend",
 				"tags": [
@@ -15596,7 +16249,12 @@
 					"source": "MOT"
 				}
 			],
-			"size": "G",
+			"reprintedAs": [
+				"Phoenix|MPMM"
+			],
+			"size": [
+				"G"
+			],
 			"type": "elemental",
 			"alignment": [
 				"N"
@@ -15767,7 +16425,12 @@
 			"name": "Red Abishai",
 			"source": "MTF",
 			"page": 160,
-			"size": "M",
+			"reprintedAs": [
+				"Red Abishai|MPMM"
+			],
+			"size": [
+				"M"
+			],
 			"type": {
 				"type": "fiend",
 				"tags": [
@@ -15947,7 +16610,12 @@
 			"name": "Retriever",
 			"source": "MTF",
 			"page": 222,
-			"size": "L",
+			"reprintedAs": [
+				"Retriever|MPMM"
+			],
+			"size": [
+				"L"
+			],
 			"type": "construct",
 			"alignment": [
 				"L",
@@ -16092,6 +16760,9 @@
 				"O",
 				"S"
 			],
+			"damageTagsSpell": [
+				"F"
+			],
 			"spellcastingTags": [
 				"I"
 			],
@@ -16121,7 +16792,12 @@
 					"source": "SLW"
 				}
 			],
-			"size": "L",
+			"reprintedAs": [
+				"Rot Troll|MPMM"
+			],
+			"size": [
+				"L"
+			],
 			"type": "giant",
 			"alignment": [
 				"C",
@@ -16225,7 +16901,12 @@
 			"name": "Rutterkin",
 			"source": "MTF",
 			"page": 136,
-			"size": "M",
+			"reprintedAs": [
+				"Rutterkin|MPMM"
+			],
+			"size": [
+				"M"
+			],
 			"type": {
 				"type": "fiend",
 				"tags": [
@@ -16330,7 +17011,12 @@
 					"source": "IMR"
 				}
 			],
-			"size": "L",
+			"reprintedAs": [
+				"Sacred Statue|MPMM"
+			],
+			"size": [
+				"L"
+			],
 			"type": "construct",
 			"alignment": [
 				{
@@ -16466,7 +17152,12 @@
 			"name": "Shadow Dancer",
 			"source": "MTF",
 			"page": 225,
-			"size": "M",
+			"reprintedAs": [
+				"Shadar-kai Shadow Dancer|MPMM"
+			],
+			"size": [
+				"M"
+			],
 			"type": {
 				"type": "humanoid",
 				"tags": [
@@ -16480,7 +17171,7 @@
 				{
 					"ac": 15,
 					"from": [
-						"{@item studded leather armor|phb}"
+						"{@item studded leather armor|phb|studded leather}"
 					]
 				}
 			],
@@ -16604,7 +17295,12 @@
 					"source": "BGDIA"
 				}
 			],
-			"size": "H",
+			"reprintedAs": [
+				"Sibriex|MPMM"
+			],
+			"size": [
+				"H"
+			],
 			"type": {
 				"type": "fiend",
 				"tags": [
@@ -16703,7 +17399,7 @@
 				{
 					"name": "Contamination",
 					"entries": [
-						"The sibriex emits an aura of corruption 30 feet in every direction. Plants that aren't creatures wither in the aura, and the ground in it is difficult terrain for other creatures. Any creature that starts its turn in the aura must succeed on a {@dc 20} Constitution saving throw or take 14 ({@damage 4d6}) poison damage. A creature that succeeds on the save is immune to this sibriex's Contamination for 24 hours."
+						"The sibriex emits an aura of corruption 30 feet in every direction. Plants that aren't creatures wither in the aura, and the ground in it is {@quickref difficult terrain||3} for other creatures. Any creature that starts its turn in the aura must succeed on a {@dc 20} Constitution saving throw or take 14 ({@damage 4d6}) poison damage. A creature that succeeds on the save is immune to this sibriex's Contamination for 24 hours."
 					]
 				},
 				{
@@ -16905,6 +17601,9 @@
 				"I",
 				"P"
 			],
+			"damageTagsSpell": [
+				"Y"
+			],
 			"spellcastingTags": [
 				"I"
 			],
@@ -16930,7 +17629,12 @@
 			"name": "Skulk",
 			"source": "MTF",
 			"page": 227,
-			"size": "M",
+			"reprintedAs": [
+				"Skulk|MPMM"
+			],
+			"size": [
+				"M"
+			],
 			"type": "humanoid",
 			"alignment": [
 				"C",
@@ -17038,7 +17742,12 @@
 			"name": "Skull Lord",
 			"source": "MTF",
 			"page": 230,
-			"size": "M",
+			"reprintedAs": [
+				"Skull Lord|MPMM"
+			],
+			"size": [
+				"M"
+			],
 			"type": "undead",
 			"alignment": [
 				"L",
@@ -17259,6 +17968,16 @@
 				"B",
 				"N"
 			],
+			"damageTagsSpell": [
+				"B",
+				"C",
+				"F",
+				"I",
+				"L",
+				"N",
+				"O",
+				"T"
+			],
 			"spellcastingTags": [
 				"CS"
 			],
@@ -17273,7 +17992,12 @@
 			"name": "Soul Monger",
 			"source": "MTF",
 			"page": 226,
-			"size": "M",
+			"reprintedAs": [
+				"Shadar-kai Soul Monger|MPMM"
+			],
+			"size": [
+				"M"
+			],
 			"type": {
 				"type": "humanoid",
 				"tags": [
@@ -17287,7 +18011,7 @@
 				{
 					"ac": 15,
 					"from": [
-						"{@item studded leather armor|phb}"
+						"{@item studded leather armor|phb|studded leather}"
 					]
 				}
 			],
@@ -17426,6 +18150,12 @@
 				"P",
 				"Y"
 			],
+			"damageTagsSpell": [
+				"I",
+				"L",
+				"N",
+				"Y"
+			],
 			"spellcastingTags": [
 				"I"
 			],
@@ -17447,7 +18177,12 @@
 			"name": "Spirit Troll",
 			"source": "MTF",
 			"page": 244,
-			"size": "L",
+			"reprintedAs": [
+				"Spirit Troll|MPMM"
+			],
+			"size": [
+				"L"
+			],
 			"type": "giant",
 			"alignment": [
 				"C",
@@ -17516,7 +18251,7 @@
 				{
 					"name": "Incorporeal Movement",
 					"entries": [
-						"The troll can move through other creatures and objects as if they were difficult terrain. It takes 5 ({@damage 1d10}) force damage if it ends its turn inside an object."
+						"The troll can move through other creatures and objects as if they were {@quickref difficult terrain||3}. It takes 5 ({@damage 1d10}) force damage if it ends its turn inside an object."
 					]
 				},
 				{
@@ -17587,7 +18322,12 @@
 			"name": "Spring Eladrin",
 			"source": "MTF",
 			"page": 196,
-			"size": "M",
+			"reprintedAs": [
+				"Spring Eladrin|MPMM"
+			],
+			"size": [
+				"M"
+			],
 			"type": {
 				"type": "fey",
 				"tags": [
@@ -17760,7 +18500,12 @@
 			"name": "Star Spawn Grue",
 			"source": "MTF",
 			"page": 234,
-			"size": "S",
+			"reprintedAs": [
+				"Star Spawn Grue|MPMM"
+			],
+			"size": [
+				"S"
+			],
 			"type": "aberration",
 			"alignment": [
 				"L",
@@ -17836,7 +18581,12 @@
 			"name": "Star Spawn Hulk",
 			"source": "MTF",
 			"page": 234,
-			"size": "L",
+			"reprintedAs": [
+				"Star Spawn Hulk|MPMM"
+			],
+			"size": [
+				"L"
+			],
 			"type": "aberration",
 			"alignment": [
 				"C",
@@ -17958,7 +18708,12 @@
 					"source": "WDMM"
 				}
 			],
-			"size": "M",
+			"reprintedAs": [
+				"Star Spawn Larva Mage|MPMM"
+			],
+			"size": [
+				"M"
+			],
 			"type": "aberration",
 			"alignment": [
 				"C",
@@ -18115,6 +18870,10 @@
 				"B",
 				"N"
 			],
+			"damageTagsSpell": [
+				"N",
+				"O"
+			],
 			"spellcastingTags": [
 				"I"
 			],
@@ -18149,7 +18908,12 @@
 					"source": "SLW"
 				}
 			],
-			"size": "M",
+			"reprintedAs": [
+				"Star Spawn Mangler|MPMM"
+			],
+			"size": [
+				"M"
+			],
 			"type": "aberration",
 			"alignment": [
 				"C",
@@ -18200,7 +18964,7 @@
 			"cr": "5",
 			"trait": [
 				{
-					"name": "Ambush",
+					"name": "Ambusher",
 					"entries": [
 						"On the first round of each combat, the mangler has advantage on attack rolls against a creature that hasn't taken a turn yet."
 					]
@@ -18262,7 +19026,12 @@
 			"name": "Star Spawn Seer",
 			"source": "MTF",
 			"page": 236,
-			"size": "M",
+			"reprintedAs": [
+				"Star Spawn Seer|MPMM"
+			],
+			"size": [
+				"M"
+			],
 			"type": "aberration",
 			"alignment": [
 				"L",
@@ -18331,7 +19100,7 @@
 				{
 					"name": "Out-of-Phase Movement",
 					"entries": [
-						"The seer can move through other creatures and objects as if they were difficult terrain. Each creature it moves through takes 5 ({@damage 1d10}) psychic damage; no creature can take this damage more than once per turn. The seer takes 5 ({@damage 1d10}) force damage if it ends its turn inside an object."
+						"The seer can move through other creatures and objects as if they were {@quickref difficult terrain||3}. Each creature it moves through takes 5 ({@damage 1d10}) psychic damage; no creature can take this damage more than once per turn. The seer takes 5 ({@damage 1d10}) force damage if it ends its turn inside an object."
 					]
 				}
 			],
@@ -18407,7 +19176,12 @@
 			"name": "Steel Predator",
 			"source": "MTF",
 			"page": 239,
-			"size": "L",
+			"reprintedAs": [
+				"Steel Predator|MPMM"
+			],
+			"size": [
+				"L"
+			],
 			"type": "construct",
 			"alignment": [
 				"L",
@@ -18558,6 +19332,9 @@
 				"S",
 				"T"
 			],
+			"damageTagsSpell": [
+				"O"
+			],
 			"spellcastingTags": [
 				"I"
 			],
@@ -18576,7 +19353,12 @@
 			"name": "Stone Cursed",
 			"source": "MTF",
 			"page": 240,
-			"size": "M",
+			"reprintedAs": [
+				"Stone Cursed|MPMM"
+			],
+			"size": [
+				"M"
+			],
 			"type": "construct",
 			"alignment": [
 				"L",
@@ -18676,7 +19458,12 @@
 			"name": "Stone Defender",
 			"source": "MTF",
 			"page": 126,
-			"size": "M",
+			"reprintedAs": [
+				"Clockwork Stone Defender|MPMM"
+			],
+			"size": [
+				"M"
+			],
 			"type": "construct",
 			"alignment": [
 				"U"
@@ -18797,7 +19584,12 @@
 			"name": "Summer Eladrin",
 			"source": "MTF",
 			"page": 196,
-			"size": "M",
+			"reprintedAs": [
+				"Summer Eladrin|MPMM"
+			],
+			"size": [
+				"M"
+			],
 			"type": {
 				"type": "fey",
 				"tags": [
@@ -18957,7 +19749,12 @@
 					"source": "SDW"
 				}
 			],
-			"size": "M",
+			"reprintedAs": [
+				"Sword Wraith Commander|MPMM"
+			],
+			"size": [
+				"M"
+			],
 			"type": "undead",
 			"alignment": [
 				"L",
@@ -19106,7 +19903,12 @@
 					"source": "SDW"
 				}
 			],
-			"size": "M",
+			"reprintedAs": [
+				"Sword Wraith Warrior|MPMM"
+			],
+			"size": [
+				"M"
+			],
 			"type": "undead",
 			"alignment": [
 				"L",
@@ -19216,7 +20018,12 @@
 			"name": "The Angry",
 			"source": "MTF",
 			"page": 231,
-			"size": "M",
+			"reprintedAs": [
+				"Angry Sorrowsworn|MPMM"
+			],
+			"size": [
+				"M"
+			],
 			"type": "monstrosity",
 			"alignment": [
 				"L",
@@ -19326,7 +20133,12 @@
 			"name": "The Hungry",
 			"source": "MTF",
 			"page": 232,
-			"size": "M",
+			"reprintedAs": [
+				"Hungry Sorrowsworn|MPMM"
+			],
+			"size": [
+				"M"
+			],
 			"type": "monstrosity",
 			"alignment": [
 				"L",
@@ -19439,7 +20251,12 @@
 			"name": "The Lonely",
 			"source": "MTF",
 			"page": 232,
-			"size": "M",
+			"reprintedAs": [
+				"Lonely Sorrowsworn|MPMM"
+			],
+			"size": [
+				"M"
+			],
 			"type": "monstrosity",
 			"alignment": [
 				"L",
@@ -19559,7 +20376,12 @@
 			"name": "The Lost",
 			"source": "MTF",
 			"page": 233,
-			"size": "M",
+			"reprintedAs": [
+				"Lost Sorrowsworn|MPMM"
+			],
+			"size": [
+				"M"
+			],
 			"type": "monstrosity",
 			"alignment": [
 				"L",
@@ -19677,7 +20499,12 @@
 			"name": "The Wretched",
 			"source": "MTF",
 			"page": 233,
-			"size": "S",
+			"reprintedAs": [
+				"Wretched Sorrowsworn|MPMM"
+			],
+			"size": [
+				"S"
+			],
 			"type": "monstrosity",
 			"alignment": [
 				"L",
@@ -19765,7 +20592,12 @@
 			"isNamedCreature": true,
 			"source": "MTF",
 			"page": 179,
-			"size": "M",
+			"reprintedAs": [
+				"Titivilus|MPMM"
+			],
+			"size": [
+				"M"
+			],
 			"type": {
 				"type": "fiend",
 				"tags": [
@@ -19980,10 +20812,18 @@
 				"N",
 				"S"
 			],
+			"damageTagsSpell": [
+				"B",
+				"N",
+				"P",
+				"S",
+				"Y"
+			],
 			"spellcastingTags": [
 				"I"
 			],
 			"miscTags": [
+				"HPR",
 				"MW"
 			],
 			"conditionInflict": [
@@ -20014,7 +20854,12 @@
 					"page": 23
 				}
 			],
-			"size": "M",
+			"reprintedAs": [
+				"Tortle|MPMM"
+			],
+			"size": [
+				"M"
+			],
 			"type": {
 				"type": "humanoid",
 				"tags": [
@@ -20128,7 +20973,12 @@
 					"page": 23
 				}
 			],
-			"size": "M",
+			"reprintedAs": [
+				"Tortle Druid|MPMM"
+			],
+			"size": [
+				"M"
+			],
 			"type": {
 				"type": "humanoid",
 				"tags": [
@@ -20251,6 +21101,10 @@
 				"B",
 				"S"
 			],
+			"damageTagsSpell": [
+				"F",
+				"T"
+			],
 			"spellcastingTags": [
 				"CD"
 			],
@@ -20275,7 +21129,12 @@
 					"page": 247
 				}
 			],
-			"size": "M",
+			"reprintedAs": [
+				"Vampiric Mist|MPMM"
+			],
+			"size": [
+				"M"
+			],
 			"type": "undead",
 			"alignment": [
 				"C",
@@ -20403,6 +21262,9 @@
 				"N",
 				"R"
 			],
+			"miscTags": [
+				"HPR"
+			],
 			"hasToken": true,
 			"hasFluff": true,
 			"hasFluffImages": true
@@ -20411,7 +21273,12 @@
 			"name": "Venom Troll",
 			"source": "MTF",
 			"page": 245,
-			"size": "L",
+			"reprintedAs": [
+				"Venom Troll|MPMM"
+			],
+			"size": [
+				"L"
+			],
 			"type": "giant",
 			"alignment": [
 				"C",
@@ -20543,7 +21410,12 @@
 			"name": "Wastrilith",
 			"source": "MTF",
 			"page": 139,
-			"size": "L",
+			"reprintedAs": [
+				"Wastrilith|MPMM"
+			],
+			"size": [
+				"L"
+			],
 			"type": {
 				"type": "fiend",
 				"tags": [
@@ -20633,7 +21505,7 @@
 				{
 					"name": "Undertow",
 					"entries": [
-						"As a bonus action when the wastrilith is underwater, it can cause all water within 60 feet of it to be difficult terrain for other creatures until the start of its next turn."
+						"As a bonus action when the wastrilith is underwater, it can cause all water within 60 feet of it to be {@quickref difficult terrain||3} for other creatures until the start of its next turn."
 					]
 				}
 			],
@@ -20717,7 +21589,12 @@
 					"page": 213
 				}
 			],
-			"size": "M",
+			"reprintedAs": [
+				"Water Elemental Myrmidon|MPMM"
+			],
+			"size": [
+				"M"
+			],
 			"type": "elemental",
 			"alignment": [
 				"N"
@@ -20840,7 +21717,12 @@
 					"source": "BGDIA"
 				}
 			],
-			"size": "M",
+			"reprintedAs": [
+				"White Abishai|MPMM"
+			],
+			"size": [
+				"M"
+			],
 			"type": {
 				"type": "fiend",
 				"tags": [
@@ -21006,7 +21888,12 @@
 			"name": "Winter Eladrin",
 			"source": "MTF",
 			"page": 197,
-			"size": "M",
+			"reprintedAs": [
+				"Winter Eladrin|MPMM"
+			],
+			"size": [
+				"M"
+			],
 			"type": {
 				"type": "fey",
 				"tags": [
@@ -21146,6 +22033,10 @@
 				"P",
 				"S"
 			],
+			"damageTagsSpell": [
+				"B",
+				"C"
+			],
 			"spellcastingTags": [
 				"I"
 			],
@@ -21165,7 +22056,12 @@
 			"name": "Yagnoloth",
 			"source": "MTF",
 			"page": 252,
-			"size": "L",
+			"reprintedAs": [
+				"Yagnoloth|MPMM"
+			],
+			"size": [
+				"L"
+			],
 			"type": {
 				"type": "fiend",
 				"tags": [
@@ -21343,10 +22239,14 @@
 				"L",
 				"N"
 			],
+			"damageTagsSpell": [
+				"L"
+			],
 			"spellcastingTags": [
 				"I"
 			],
 			"miscTags": [
+				"HPR",
 				"MW",
 				"RCH"
 			],
@@ -21374,7 +22274,12 @@
 					"source": "BGDIA"
 				}
 			],
-			"size": "H",
+			"reprintedAs": [
+				"Yeenoghu|MPMM"
+			],
+			"size": [
+				"H"
+			],
 			"type": {
 				"type": "fiend",
 				"tags": [
@@ -21432,7 +22337,7 @@
 						"piercing",
 						"slashing"
 					],
-					"note": "from nonmagical attacks",
+					"note": "that is nonmagical",
 					"cond": true
 				}
 			],
@@ -21562,6 +22467,9 @@
 				"B",
 				"P"
 			],
+			"damageTagsLegendary": [
+				"P"
+			],
 			"spellcastingTags": [
 				"I"
 			],
@@ -21588,7 +22496,12 @@
 			"name": "Young Kruthik",
 			"source": "MTF",
 			"page": 211,
-			"size": "S",
+			"reprintedAs": [
+				"Young Kruthik|MPMM"
+			],
+			"size": [
+				"S"
+			],
 			"type": "monstrosity",
 			"alignment": [
 				"U"
@@ -21641,7 +22554,7 @@
 				{
 					"name": "Tunneler",
 					"entries": [
-						"The kruthik can burrow through solid rock at half its burrowing speed and leaves a 2 1/2-foot-diameter tunnel in its wake."
+						"The kruthik can burrow through solid rock at half its burrowing speed and leaves a 2½-foot-diameter tunnel in its wake."
 					]
 				}
 			],
@@ -21687,7 +22600,12 @@
 			"name": "Zaratan",
 			"source": "MTF",
 			"page": 201,
-			"size": "G",
+			"reprintedAs": [
+				"Zaratan|MPMM"
+			],
+			"size": [
+				"G"
+			],
 			"type": "elemental",
 			"alignment": [
 				"N"
@@ -21755,7 +22673,7 @@
 				{
 					"name": "Earth-Shaking Movement",
 					"entries": [
-						"As a bonus action after moving at least 10 feet on the ground, the zaratan can send a shock wave through the ground in a 120-foot-radius circle centered on itself. That area becomes difficult terrain for 1 minute. Each creature on the ground that is concentrating must succeed on a {@dc 25} Constitution saving throw or the creature's concentration is broken.",
+						"As a bonus action after moving at least 10 feet on the ground, the zaratan can send a shock wave through the ground in a 120-foot-radius circle centered on itself. That area becomes {@quickref difficult terrain||3} for 1 minute. Each creature on the ground that is concentrating must succeed on a {@dc 25} Constitution saving throw or the creature's concentration is broken.",
 						"The shock wave deals 100 thunder damage to all structures in contact with the ground in the area. If a creature is near a structure that collapses, the creature might be buried; a creature within half the distance of the structure's height must make a {@dc 25} Dexterity saving throw. On a failed save, the creature takes 17 ({@damage 5d6}) bludgeoning damage, is knocked {@condition prone}, and is trapped in the rubble. A trapped creature is {@condition restrained}, requiring a successful {@dc 20} Strength (Athletics) check as an action to escape. Another creature within 5 feet of the buried creature can use its action to clear rubble and grant advantage on the check. If three creatures use their actions in this way, the check is an automatic success. On a successful save, the creature takes half as much damage and doesn't fall {@condition prone} or become trapped."
 					]
 				},
@@ -21896,7 +22814,12 @@
 			"isNamedCreature": true,
 			"source": "MTF",
 			"page": 180,
-			"size": "L",
+			"reprintedAs": [
+				"Zariel|MPMM"
+			],
+			"size": [
+				"L"
+			],
 			"type": {
 				"type": "fiend",
 				"tags": [
@@ -22100,6 +23023,16 @@
 				"P",
 				"S"
 			],
+			"damageTagsLegendary": [
+				"F"
+			],
+			"damageTagsSpell": [
+				"B",
+				"F",
+				"N",
+				"P",
+				"S"
+			],
 			"spellcastingTags": [
 				"I"
 			],
@@ -22135,7 +23068,12 @@
 					"page": 249
 				}
 			],
-			"size": "L",
+			"reprintedAs": [
+				"Zuggtmoy|MPMM"
+			],
+			"size": [
+				"L"
+			],
 			"type": {
 				"type": "fiend",
 				"tags": [
@@ -22192,7 +23130,7 @@
 						"piercing",
 						"slashing"
 					],
-					"note": "from nonmagical attacks",
+					"note": "that is nonmagical",
 					"cond": true
 				}
 			],
@@ -22323,6 +23261,11 @@
 			"damageTags": [
 				"B",
 				"I"
+			],
+			"damageTagsSpell": [
+				"I",
+				"O",
+				"P"
 			],
 			"spellcastingTags": [
 				"I"
