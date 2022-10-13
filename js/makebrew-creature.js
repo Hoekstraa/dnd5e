@@ -15,7 +15,6 @@ class CreatureBuilder extends Builder {
 				},
 			},
 			prop: "monster",
-			typeRenderData: "dataCreature",
 		});
 
 		this._bestiaryFluffIndex = null;
@@ -36,7 +35,7 @@ class CreatureBuilder extends Builder {
 	}
 
 	static _getAsMarkdown (mon) {
-		return RendererMarkdown.get().render({entries: [{type: "dataCreature", dataCreature: mon}]});
+		return RendererMarkdown.get().render({entries: [{type: "statblockInline", dataType: "monster", data: mon}]});
 	}
 
 	async pHandleSidebarLoadExistingClick () {
@@ -97,6 +96,8 @@ class CreatureBuilder extends Builder {
 		delete creature.altArt;
 		delete creature.hasToken;
 		delete creature.uniqueId;
+		delete creature._versions;
+		if (creature.variant) creature.variant.forEach(ent => delete ent._version);
 
 		// Semi-gracefully handle e.g. ERLW's Steel Defender
 		if (creature.passive != null && typeof creature.passive === "string") delete creature.passive;
@@ -426,8 +427,11 @@ class CreatureBuilder extends Builder {
 		// ABILITIES
 		this.__$getSpellcastingInput(cb).appendTo(abilTab.$wrpTab);
 		this.__$getTraitInput(cb).appendTo(abilTab.$wrpTab);
+		BuilderUi.$getStateIptEntries("Actions Intro", cb, this._state, {}, "actionHeader").appendTo(abilTab.$wrpTab);
 		this.__$getActionInput(cb).appendTo(abilTab.$wrpTab);
+		BuilderUi.$getStateIptEntries("Bonus Actions Intro", cb, this._state, {}, "bonusHeader").appendTo(abilTab.$wrpTab);
 		this.__$getBonusActionInput(cb).appendTo(abilTab.$wrpTab);
+		BuilderUi.$getStateIptEntries("Reactions Intro", cb, this._state, {}, "reactionHeader").appendTo(abilTab.$wrpTab);
 		this.__$getReactionInput(cb).appendTo(abilTab.$wrpTab);
 		BuilderUi.$getStateIptNumber(
 			"Legendary Action Count",
@@ -1817,7 +1821,7 @@ class CreatureBuilder extends Builder {
 			.change(() => doUpdateState());
 		if (this._state.languages && this._state.languages.length) $iptLanguages.val(this._state.languages.join(", "));
 
-		const availLanguages = Object.entries(Parser.MON_LANGUAGE_TAG_TO_FULL).filter(([k]) => !CreatureBuilder._LANGUAGE_BLACKLIST.has(k))
+		const availLanguages = Object.entries(Parser.MON_LANGUAGE_TAG_TO_FULL).filter(([k]) => !CreatureBuilder._LANGUAGE_BLOCKLIST.has(k))
 			.map(([k, v]) => v === "Telepathy" ? "telepathy" : v); // lowercase telepathy
 
 		const $btnAddGeneric = $(`<button class="btn btn-xs btn-default mr-2 mkbru_mon__btn-add-sense-language">Add Language</button>`)
@@ -3132,7 +3136,7 @@ class CreatureBuilder extends Builder {
 
 		const tabs = this._renderTabs(
 			[
-				new TabUiUtil.TabMeta({name: "Statblock"}),
+				new TabUiUtil.TabMeta({name: "Stat Block"}),
 				new TabUiUtil.TabMeta({name: "Info"}),
 				new TabUiUtil.TabMeta({name: "Images"}),
 				new TabUiUtil.TabMeta({name: "Data"}),
@@ -3226,7 +3230,7 @@ CreatureBuilder._AC_COMMON = {
 	"Unarmored Defense": "unarmored defense",
 	"Natural Armor": "natural armor",
 };
-CreatureBuilder._LANGUAGE_BLACKLIST = new Set(["CS", "X", "XX"]);
+CreatureBuilder._LANGUAGE_BLOCKLIST = new Set(["CS", "X", "XX"]);
 CreatureBuilder._rowSortOrder = 0;
 
 const creatureBuilder = new CreatureBuilder();

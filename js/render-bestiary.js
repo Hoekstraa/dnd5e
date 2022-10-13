@@ -6,7 +6,7 @@ class RenderBestiary {
 	 * @param [options.$btnResetScaleCr] CR scaler reset button.
 	 * @param [options.selSummonSpellLevel] Summon spell level selector.
 	 * @param [options.selSummonClassLevel] Summon spell level selector.
-	 * @param [options.isSkipExcludesRender] If the "this entity is blacklisted" display should be skipped.
+	 * @param [options.isSkipExcludesRender] If the "this entity is blocklisted" display should be skipped.
 	 */
 	static $getRenderedCreature (mon, options) {
 		const renderer = Renderer.get();
@@ -70,7 +70,7 @@ class RenderBestiary {
 			${options.$btnScaleCr || ""}
 			${options.$btnResetScaleCr || ""}
 		</td>
-		` : `<td colspan="3"><strong>Challenge</strong> <span>\u2014</span></td>`}${mon.pbNote || Parser.crToNumber(mon.cr) < VeCt.CR_CUSTOM ? `<td colspan="3" class="text-right"><strong>Proficiency Bonus</strong> ${mon.pbNote ?? UiUtil.intToBonus(Parser.crToPb(mon.cr))}</td>` : ""}</tr>
+		` : `<td colspan="3"><strong>Challenge</strong> <span>\u2014</span></td>`}${mon.pbNote || Parser.crToNumber(mon.cr) < VeCt.CR_CUSTOM ? `<td colspan="3" class="text-right"><strong>Proficiency Bonus</strong> ${mon.pbNote ?? UiUtil.intToBonus(Parser.crToPb(mon.cr), {isPretty: true})}</td>` : ""}</tr>
 
 		<tr>${options.selSummonSpellLevel ? $$`<td colspan="6"><strong>Spell Level</strong> ${options.selSummonSpellLevel}</td>` : ""}</tr>
 		<tr>${options.selSummonClassLevel ? $$`<td colspan="6"><strong>Class Level</strong> ${options.selSummonClassLevel}</td>` : ""}</tr>

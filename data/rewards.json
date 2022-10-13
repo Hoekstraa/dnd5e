@@ -334,6 +334,15 @@
 			]
 		},
 		{
+			"name": "Charm of Air Bubbles",
+			"source": "BAM",
+			"type": "Charm",
+			"entries": [
+				"{@note This charm can be bestowed by a {@creature chwinga astronaut|BAM} using their Magical Gift action.}",
+				"This charm allows you to cast the air bubble spell (see the Astral Adventurer's Guide) as an action. Once used three times, this charm goes away."
+			]
+		},
+		{
 			"name": "Charm of Animal Conjuring",
 			"source": "DMG",
 			"page": 228,
@@ -397,6 +406,15 @@
 			"type": "Charm",
 			"entries": [
 				"This charm allows you to give yourself the benefit of a {@item potion of heroism} as an action. Once you do so, the charm vanishes from you."
+			]
+		},
+		{
+			"name": "Charm of Instant Tools",
+			"source": "BAM",
+			"type": "Charm",
+			"entries": [
+				"{@note This charm can be bestowed by a {@creature chwinga astronaut|BAM} using their Magical Gift action.}",
+				"This charm allows you to magically conjure a set of artisan's tools, navigator's tools, or thieves' tools. The conjured tools appear either in your hand or somewhere else in your space (your choice). Once used, this charm goes away, but the tools remain."
 			]
 		},
 		{
@@ -567,8 +585,9 @@
 				"While you have Clay No-Face in your possession, you don't need to eat, drink, or breathe. These benefits last for 30 days while the doll is in your possession, after which the charm vanishes from you.",
 				"The doll is a Tiny construct. Destroying the doll causes the child's soul within it to become trapped in {@adventure the Soulmonger|ToA|5|The Soulmonger}.",
 				{
-					"type": "dataObject",
-					"dataObject": {
+					"type": "statblockInline",
+					"dataType": "object",
+					"data": {
 						"name": "Clay No-Face",
 						"isNpc": true,
 						"source": "ToA",
@@ -803,7 +822,7 @@
 					"type": "entries",
 					"name": "Blindsight",
 					"entries": [
-						"You have {@sense blindsight} to a range of 10 feet. Within that range, you can effectively see anything that isn't behind {@book total cover|PHB|9|Cover}, even if you're {@condition blinded} or in darkness. Moreover, you can see {@condition invisible} creatures within that range, unless the creatures successfully hide from you."
+						"You have {@sense blindsight} to a range of 10 feet. Within that range, you can effectively see anything that isn't behind {@quickref cover|PHB|3|0|total cover}, even if you're {@condition blinded} or in darkness. Moreover, you can see {@condition invisible} creatures within that range, unless the creatures successfully hide from you."
 					]
 				},
 				{
@@ -1116,8 +1135,9 @@
 				"While you have Joho in your possession, it grants you the benefit of a {@item helm of comprehending languages}. This benefit lasts for 7 days while the doll is in your possession, after which the charm vanishes from you.",
 				"The doll is a Tiny construct. Destroying the doll causes the child's soul within it to become trapped in {@adventure the Soulmonger|ToA|5|The Soulmonger}.",
 				{
-					"type": "dataObject",
-					"dataObject": {
+					"type": "statblockInline",
+					"dataType": "object",
+					"data": {
 						"name": "Joho",
 						"isNpc": true,
 						"source": "ToA",
@@ -1362,7 +1382,7 @@
 						{
 							"type": "item",
 							"name": "Power:",
-							"entry": "The host can't be surprised, gains advantage on all Wisdom checks, and never takes damage from falling."
+							"entry": "The host can't be {@quickref Surprise|PHB|3|0|surprised}, gains advantage on all Wisdom checks, and never takes damage from falling."
 						}
 					]
 				}
@@ -1469,8 +1489,9 @@
 				"While you have Strawbundle in your possession, this charm allows you to cast the {@spell etherealness} spell as an action, no components required. After it is used three times, the charm vanishes.",
 				"The doll is a Tiny construct. Destroying the doll causes the child's soul within it to become trapped in {@adventure the Soulmonger|ToA|5|The Soulmonger}.",
 				{
-					"type": "dataObject",
-					"dataObject": {
+					"type": "statblockInline",
+					"dataType": "object",
+					"data": {
 						"name": "Strawbundle",
 						"isNpc": true,
 						"source": "ToA",

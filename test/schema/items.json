@@ -1,7 +1,7 @@
 {
 	"$schema": "http://json-schema.org/draft-07/schema#",
 	"$id": "items.json",
-	"version": "1.11.6",
+	"version": "1.11.7",
 	"type": "object",
 	"definitions": {
 		"itemData": {
@@ -11,13 +11,13 @@
 					"type": "string"
 				},
 				"type": {
-					"$ref": "shared-items.json#/definitions/itemType"
+					"$ref": "items-shared.json#/definitions/itemType"
 				},
 				"typeAlt": {
-					"$ref": "shared-items.json#/definitions/itemType"
+					"$ref": "items-shared.json#/definitions/itemType"
 				},
 				"rarity": {
-					"$ref": "shared-items.json#/definitions/itemRarity"
+					"$ref": "items-shared.json#/definitions/itemRarity"
 				},
 				"source": {
 					"type": "string"
@@ -35,7 +35,7 @@
 					"type": "integer"
 				},
 				"age": {
-					"$ref": "shared-items.json#/definitions/itemAge"
+					"$ref": "items-shared.json#/definitions/itemAge"
 				},
 				"ammunition": {
 					"type": "boolean",
@@ -71,7 +71,7 @@
 					}
 				},
 				"property": {
-					"$ref": "shared-items.json#/definitions/itemProperty"
+					"$ref": "items-shared.json#/definitions/itemProperty"
 				},
 				"range": {
 					"type": "string"
@@ -115,7 +115,7 @@
 					"type": "string"
 				},
 				"scfType": {
-					"$ref": "shared-items.json#/definitions/itemScfType"
+					"$ref": "items-shared.json#/definitions/itemScfType"
 				},
 				"speed": {
 					"type": "integer"
@@ -147,7 +147,7 @@
 					"type": "boolean"
 				},
 				"tier": {
-					"$ref": "shared-items.json#/definitions/itemTier"
+					"$ref": "items-shared.json#/definitions/itemTier"
 				},
 				"value": {
 					"description": "In copper pieces.",
@@ -163,7 +163,7 @@
 					"type": "boolean"
 				},
 				"weaponCategory": {
-					"$ref": "shared-items.json#/definitions/itemWeaponCategory"
+					"$ref": "items-shared.json#/definitions/itemWeaponCategory"
 				},
 				"weight": {
 					"type": "number"
@@ -242,7 +242,10 @@
 					]
 				},
 				"recharge": {
-					"$ref": "shared-items.json#/definitions/itemRecharge"
+					"$ref": "items-shared.json#/definitions/itemRecharge"
+				},
+				"rechargeAmount": {
+					"$ref": "items-shared.json#/definitions/itemRechargeAmount"
 				},
 				"attachedSpells": {
 					"type": "array",
@@ -262,10 +265,60 @@
 					"type": "object",
 					"properties": {
 						"choose": {
-							"type": "array"
+							"type": "array",
+							"items": {
+								"type": "object",
+								"properties": {
+									"from": {
+										"type": "array",
+										"items": {
+											"enum": [
+												"str",
+												"dex",
+												"con",
+												"int",
+												"wis",
+												"cha"
+											]
+										},
+										"uniqueItems": true
+									},
+									"count": {
+										"type": "integer"
+									},
+									"amount": {
+										"type": "integer"
+									}
+								},
+								"required": [
+									"from"
+								],
+								"additionalProperties": false
+							}
 						},
 						"static": {
-							"type": "object"
+							"type": "object",
+							"properties": {
+								"str": {
+									"type": "integer"
+								},
+								"dex": {
+									"type": "integer"
+								},
+								"con": {
+									"type": "integer"
+								},
+								"int": {
+									"type": "integer"
+								},
+								"wis": {
+									"type": "integer"
+								},
+								"cha": {
+									"type": "integer"
+								}
+							},
+							"additionalProperties": false
 						},
 						"str": {
 							"type": "integer"
@@ -355,7 +408,7 @@
 					"type": "string"
 				},
 				"modifySpeed": {
-					"$ref": "shared-items.json#/definitions/itemModifySpeed"
+					"$ref": "items-shared.json#/definitions/itemModifySpeed"
 				},
 				"otherSources": {
 					"$ref": "util.json#/definitions/otherSources"
@@ -440,7 +493,7 @@
 					"additionalProperties": false
 				},
 				"ammoType": {
-					"$ref": "shared-items.json#/definitions/itemAmmoType"
+					"$ref": "items-shared.json#/definitions/itemAmmoType"
 				},
 				"grantsProficiency": {
 					"type": "boolean"
@@ -492,13 +545,13 @@
 							"type": "string"
 						},
 						"type": {
-							"$ref": "shared-items.json#/definitions/itemType"
+							"$ref": "items-shared.json#/definitions/itemType"
 						},
 						"typeAlt": {
-							"$ref": "shared-items.json#/definitions/itemType"
+							"$ref": "items-shared.json#/definitions/itemType"
 						},
 						"rarity": {
-							"$ref": "shared-items.json#/definitions/itemRarity"
+							"$ref": "items-shared.json#/definitions/itemRarity"
 						},
 						"source": {
 							"type": "string"
@@ -516,7 +569,7 @@
 							"type": "integer"
 						},
 						"age": {
-							"$ref": "shared-items.json#/definitions/itemAge"
+							"$ref": "items-shared.json#/definitions/itemAge"
 						},
 						"ammunition": {
 							"type": "boolean",
@@ -552,7 +605,7 @@
 							}
 						},
 						"property": {
-							"$ref": "shared-items.json#/definitions/itemProperty"
+							"$ref": "items-shared.json#/definitions/itemProperty"
 						},
 						"range": {
 							"type": "string"
@@ -596,7 +649,7 @@
 							"type": "string"
 						},
 						"scfType": {
-							"$ref": "shared-items.json#/definitions/itemScfType"
+							"$ref": "items-shared.json#/definitions/itemScfType"
 						},
 						"speed": {
 							"type": "integer"
@@ -628,7 +681,7 @@
 							"type": "boolean"
 						},
 						"tier": {
-							"$ref": "shared-items.json#/definitions/itemTier"
+							"$ref": "items-shared.json#/definitions/itemTier"
 						},
 						"value": {
 							"description": "In copper pieces.",
@@ -644,7 +697,7 @@
 							"type": "boolean"
 						},
 						"weaponCategory": {
-							"$ref": "shared-items.json#/definitions/itemWeaponCategory"
+							"$ref": "items-shared.json#/definitions/itemWeaponCategory"
 						},
 						"weight": {
 							"type": "number"
@@ -723,7 +776,10 @@
 							]
 						},
 						"recharge": {
-							"$ref": "shared-items.json#/definitions/itemRecharge"
+							"$ref": "items-shared.json#/definitions/itemRecharge"
+						},
+						"rechargeAmount": {
+							"$ref": "items-shared.json#/definitions/itemRechargeAmount"
 						},
 						"attachedSpells": {
 							"type": "array",
@@ -743,10 +799,60 @@
 							"type": "object",
 							"properties": {
 								"choose": {
-									"type": "array"
+									"type": "array",
+									"items": {
+										"type": "object",
+										"properties": {
+											"from": {
+												"type": "array",
+												"items": {
+													"enum": [
+														"str",
+														"dex",
+														"con",
+														"int",
+														"wis",
+														"cha"
+													]
+												},
+												"uniqueItems": true
+											},
+											"count": {
+												"type": "integer"
+											},
+											"amount": {
+												"type": "integer"
+											}
+										},
+										"required": [
+											"from"
+										],
+										"additionalProperties": false
+									}
 								},
 								"static": {
-									"type": "object"
+									"type": "object",
+									"properties": {
+										"str": {
+											"type": "integer"
+										},
+										"dex": {
+											"type": "integer"
+										},
+										"con": {
+											"type": "integer"
+										},
+										"int": {
+											"type": "integer"
+										},
+										"wis": {
+											"type": "integer"
+										},
+										"cha": {
+											"type": "integer"
+										}
+									},
+									"additionalProperties": false
 								},
 								"str": {
 									"type": "integer"
@@ -836,7 +942,7 @@
 							"type": "string"
 						},
 						"modifySpeed": {
-							"$ref": "shared-items.json#/definitions/itemModifySpeed"
+							"$ref": "items-shared.json#/definitions/itemModifySpeed"
 						},
 						"otherSources": {
 							"$ref": "util.json#/definitions/otherSources"
@@ -921,7 +1027,7 @@
 							"additionalProperties": false
 						},
 						"ammoType": {
-							"$ref": "shared-items.json#/definitions/itemAmmoType"
+							"$ref": "items-shared.json#/definitions/itemAmmoType"
 						},
 						"grantsProficiency": {
 							"type": "boolean"
@@ -976,13 +1082,13 @@
 							"type": "string"
 						},
 						"type": {
-							"$ref": "shared-items.json#/definitions/itemType"
+							"$ref": "items-shared.json#/definitions/itemType"
 						},
 						"typeAlt": {
-							"$ref": "shared-items.json#/definitions/itemType"
+							"$ref": "items-shared.json#/definitions/itemType"
 						},
 						"rarity": {
-							"$ref": "shared-items.json#/definitions/itemRarity"
+							"$ref": "items-shared.json#/definitions/itemRarity"
 						},
 						"source": {
 							"type": "string"
@@ -1000,7 +1106,7 @@
 							"type": "integer"
 						},
 						"age": {
-							"$ref": "shared-items.json#/definitions/itemAge"
+							"$ref": "items-shared.json#/definitions/itemAge"
 						},
 						"ammunition": {
 							"type": "boolean",
@@ -1036,7 +1142,7 @@
 							}
 						},
 						"property": {
-							"$ref": "shared-items.json#/definitions/itemProperty"
+							"$ref": "items-shared.json#/definitions/itemProperty"
 						},
 						"range": {
 							"type": "string"
@@ -1080,7 +1186,7 @@
 							"type": "string"
 						},
 						"scfType": {
-							"$ref": "shared-items.json#/definitions/itemScfType"
+							"$ref": "items-shared.json#/definitions/itemScfType"
 						},
 						"speed": {
 							"type": "integer"
@@ -1112,7 +1218,7 @@
 							"type": "boolean"
 						},
 						"tier": {
-							"$ref": "shared-items.json#/definitions/itemTier"
+							"$ref": "items-shared.json#/definitions/itemTier"
 						},
 						"value": {
 							"description": "In copper pieces.",
@@ -1128,7 +1234,7 @@
 							"type": "boolean"
 						},
 						"weaponCategory": {
-							"$ref": "shared-items.json#/definitions/itemWeaponCategory"
+							"$ref": "items-shared.json#/definitions/itemWeaponCategory"
 						},
 						"weight": {
 							"type": "number"
@@ -1207,7 +1313,10 @@
 							]
 						},
 						"recharge": {
-							"$ref": "shared-items.json#/definitions/itemRecharge"
+							"$ref": "items-shared.json#/definitions/itemRecharge"
+						},
+						"rechargeAmount": {
+							"$ref": "items-shared.json#/definitions/itemRechargeAmount"
 						},
 						"attachedSpells": {
 							"type": "array",
@@ -1227,10 +1336,60 @@
 							"type": "object",
 							"properties": {
 								"choose": {
-									"type": "array"
+									"type": "array",
+									"items": {
+										"type": "object",
+										"properties": {
+											"from": {
+												"type": "array",
+												"items": {
+													"enum": [
+														"str",
+														"dex",
+														"con",
+														"int",
+														"wis",
+														"cha"
+													]
+												},
+												"uniqueItems": true
+											},
+											"count": {
+												"type": "integer"
+											},
+											"amount": {
+												"type": "integer"
+											}
+										},
+										"required": [
+											"from"
+										],
+										"additionalProperties": false
+									}
 								},
 								"static": {
-									"type": "object"
+									"type": "object",
+									"properties": {
+										"str": {
+											"type": "integer"
+										},
+										"dex": {
+											"type": "integer"
+										},
+										"con": {
+											"type": "integer"
+										},
+										"int": {
+											"type": "integer"
+										},
+										"wis": {
+											"type": "integer"
+										},
+										"cha": {
+											"type": "integer"
+										}
+									},
+									"additionalProperties": false
 								},
 								"str": {
 									"type": "integer"
@@ -1320,7 +1479,7 @@
 							"type": "string"
 						},
 						"modifySpeed": {
-							"$ref": "shared-items.json#/definitions/itemModifySpeed"
+							"$ref": "items-shared.json#/definitions/itemModifySpeed"
 						},
 						"otherSources": {
 							"$ref": "util.json#/definitions/otherSources"
@@ -1405,7 +1564,7 @@
 							"additionalProperties": false
 						},
 						"ammoType": {
-							"$ref": "shared-items.json#/definitions/itemAmmoType"
+							"$ref": "items-shared.json#/definitions/itemAmmoType"
 						},
 						"grantsProficiency": {
 							"type": "boolean"

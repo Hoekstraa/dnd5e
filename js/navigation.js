@@ -98,7 +98,7 @@ class NavBar {
 		this._addElement_dropdown(null, NavBar._CAT_UTILITIES);
 		this._addElement_li(NavBar._CAT_UTILITIES, "search.html", "Search");
 		this._addElement_divider(NavBar._CAT_UTILITIES);
-		this._addElement_li(NavBar._CAT_UTILITIES, "blacklist.html", "Content Blacklist");
+		this._addElement_li(NavBar._CAT_UTILITIES, "blocklist.html", "Content Blocklist");
 		this._addElement_li(NavBar._CAT_UTILITIES, "makebrew.html", "Homebrew Builder");
 		this._addElement_li(NavBar._CAT_UTILITIES, "managebrew.html", "Homebrew Manager");
 		this._addElement_divider(NavBar._CAT_UTILITIES);
@@ -113,7 +113,7 @@ class NavBar {
 		this._addElement_li(NavBar._CAT_UTILITIES, "https://wiki.tercept.net/en/betteR20", "Roll20 Script Help", {isExternal: true});
 		this._addElement_divider(NavBar._CAT_UTILITIES);
 		this._addElement_li(NavBar._CAT_UTILITIES, "changelog.html", "Changelog");
-		this._addElement_li(NavBar._CAT_UTILITIES, `https://wiki.tercept.net/en/5eTools/HelpPages/${NavBar._getCurrentPage().replace(/.html$/i, "")}`, "Help", {isExternal: true});
+		this._addElement_li(NavBar._CAT_UTILITIES, NavBar._getCurrentWikiHelpPage(), "Help", {isExternal: true});
 		this._addElement_divider(NavBar._CAT_UTILITIES);
 		this._addElement_li(NavBar._CAT_UTILITIES, "privacy-policy.html", "Privacy Policy");
 
@@ -142,7 +142,7 @@ class NavBar {
 			{
 				html: "Save State to File",
 				click: async (evt) => NavBar.InteractionManager._pOnClick_button_saveStateFile(evt),
-				title: "Save any locally-stored data (loaded homebrew, active blacklists, DM Screen configuration,...) to a file.",
+				title: "Save any locally-stored data (loaded homebrew, active blocklists, DM Screen configuration,...) to a file.",
 			},
 		);
 		this._addElement_button(
@@ -150,7 +150,7 @@ class NavBar {
 			{
 				html: "Load State from File",
 				click: async (evt) => NavBar.InteractionManager._pOnClick_button_loadStateFile(evt),
-				title: "Load previously-saved data (loaded homebrew, active blacklists, DM Screen configuration,...) from a file.",
+				title: "Load previously-saved data (loaded homebrew, active blocklists, DM Screen configuration,...) from a file.",
 			},
 		);
 		this._addElement_divider(NavBar._CAT_SETTINGS);
@@ -233,7 +233,7 @@ class NavBar {
 	/**
 	 * Adventure/book elements are added as a second, asynchronous, step, as they require loading of:
 	 * - An index JSON file.
-	 * - The user's Blacklist.
+	 * - The user's Blocklist.
 	 */
 	static async _initAdventureBookElements () {
 		await BrewUtil2.pInit();
@@ -556,6 +556,11 @@ class NavBar {
 		return currentPage.trim();
 	}
 
+	static _getCurrentWikiHelpPage () {
+		const slug = NavBar._getCurrentPage().replace(/.html$/i, "");
+		return `https://wiki.tercept.net/en/5eTools/HelpPages/${slug === "index" ? "" : slug}`;
+	}
+
 	static highlightCurrentPage () {
 		let currentPage = NavBar._getCurrentPage();
 		let hash = "";
@@ -767,7 +772,7 @@ NavBar.InteractionManager = class {
 
 	static async _pOnClick_button_loadStateFile (evt) {
 		evt.preventDefault();
-		const {jsons, errors} = await DataUtil.pUserUpload({expectedFileType: "5etools"});
+		const {jsons, errors} = await DataUtil.pUserUpload({expectedFileTypes: ["5etools"]});
 
 		DataUtil.doHandleFileLoadErrorsGeneric(errors);
 

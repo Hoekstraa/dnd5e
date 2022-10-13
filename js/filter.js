@@ -272,7 +272,7 @@ class ModalFilter {
 	async pGetUserSelection ({filterExpression = null} = {}) {
 		// eslint-disable-next-line no-async-promise-executor
 		return new Promise(async resolve => {
-			const {$modalInner, doClose} = this._getShowModal(resolve);
+			const {$modalInner, doClose} = await this._pGetShowModal(resolve);
 
 			await this.pPreloadHidden($modalInner);
 
@@ -297,8 +297,8 @@ class ModalFilter {
 		});
 	}
 
-	_getShowModal (resolve) {
-		const {$modalInner, doClose} = UiUtil.getShowModal({
+	async _pGetShowModal (resolve) {
+		const {$modalInner, doClose} = await UiUtil.pGetShowModal({
 			isHeight100: true,
 			isWidth100: true,
 			title: `Filter/Search for ${this._modalTitle}`,
@@ -412,6 +412,7 @@ class FilterBox extends ProxyBase {
 		this._cachedState = null;
 
 		this._compSearch = BaseComponent.fromObject({search: ""});
+		this._metaIptSearch = null;
 
 		this._filters.forEach(f => f.filterBox = this);
 
@@ -583,22 +584,23 @@ class FilterBox extends ProxyBase {
 		if (this._$wrpMiniPills) this._filters.map((f, i) => f.$renderMinis({filterBox: this, isFirst: i === 0, $wrpMini: this._$wrpMiniPills}));
 	}
 
-	_render_renderModal () {
+	async _render_pRenderModal () {
 		this._isModalRendered = true;
 
-		this._modalMeta = UiUtil.getShowModal({
+		this._modalMeta = await UiUtil.pGetShowModal({
 			isHeight100: true,
 			isWidth100: true,
 			isUncappedHeight: true,
 			isIndestructible: true,
 			isClosed: true,
 			isEmpty: true,
+			title: "Filter", // Not shown due toe `isEmpty`, but useful for external overrides
 			cbClose: (isDataEntered) => this._pHandleHide(!isDataEntered),
 		});
 
 		const $children = this._filters.map((f, i) => f.$render({filterBox: this, isFirst: i === 0, $wrpMini: this._$wrpMiniPills}));
 
-		const metaIptSearch = ComponentUiUtil.$getIptStr(
+		this._metaIptSearch = ComponentUiUtil.$getIptStr(
 			this._compSearch, "search",
 			{decorationRight: "clear", asMeta: true, html: `<input class="form-control input-xs" placeholder="Search...">`},
 		);
@@ -616,14 +618,14 @@ class FilterBox extends ProxyBase {
 			.click(evt => this.reset(evt.shiftKey));
 
 		const $btnSettings = $(`<button class="btn btn-xs btn-default mr-3"><span class="glyphicon glyphicon-cog"></span></button>`)
-			.click(() => this._openSettingsModal());
+			.click(() => this._pOpenSettingsModal());
 
 		const $btnSaveAlt = $(`<button class="btn btn-xs btn-primary" title="Save"><span class="glyphicon glyphicon-ok"></span></button>`)
 			.click(() => this._modalMeta.doClose(true));
 
 		const $wrpBtnCombineFilters = $(`<div class="btn-group mr-3"></div>`);
 		const $btnCombineFilterSettings = $(`<button class="btn btn-xs btn-default"><span class="glyphicon glyphicon-cog"></span></button>`)
-			.click(() => this._openCombineAsModal());
+			.click(() => this._pOpenCombineAsModal());
 
 		const btnCombineFiltersAs = e_({
 			tag: "button",
@@ -650,7 +652,7 @@ class FilterBox extends ProxyBase {
 		$$(this._modalMeta.$modal)`<div class="split mb-2 mt-2 ve-flex-v-center mobile__ve-flex-col">
 			<div class="ve-flex-v-baseline mobile__ve-flex-col">
 				<h4 class="m-0 mr-2 mobile__mb-2">Filters</h4>
-				${metaIptSearch.$wrp.addClass("mobile__mb-2")}
+				${this._metaIptSearch.$wrp.addClass("mobile__mb-2")}
 			</div>
 			<div class="ve-flex-v-center mobile__ve-flex-col">
 				<div class="ve-flex-v-center mobile__m-1">
@@ -678,8 +680,8 @@ class FilterBox extends ProxyBase {
 		<div class="w-100 ve-flex-vh-center my-1">${$btnSave}${$btnCancel}</div>`;
 	}
 
-	_openSettingsModal () {
-		const {$modalInner} = UiUtil.getShowModal({title: "Settings"});
+	async _pOpenSettingsModal () {
+		const {$modalInner} = await UiUtil.pGetShowModal({title: "Settings"});
 
 		UiUtil.$getAddModalRowCb($modalInner, "Deselect Homebrew Sources by Default", this._meta, "isBrewDefaultHidden");
 
@@ -700,8 +702,8 @@ class FilterBox extends ProxyBase {
 			});
 	}
 
-	_openCombineAsModal () {
-		const {$modalInner} = UiUtil.getShowModal({title: "Filter Combination Logic"});
+	async _pOpenCombineAsModal () {
+		const {$modalInner} = await UiUtil.pGetShowModal({title: "Filter Combination Logic"});
 		const $btnReset = $(`<button class="btn btn-xs btn-default">Reset</button>`)
 			.click(() => {
 				Object.keys(this._combineAs).forEach(k => this._combineAs[k] = "and");
@@ -744,10 +746,11 @@ class FilterBox extends ProxyBase {
 		this.fireChangeEvent();
 	}
 
-	show () {
-		if (!this._isModalRendered) this._render_renderModal();
+	async show () {
+		if (!this._isModalRendered) await this._render_pRenderModal();
 		this._cachedState = this._getSaveableState();
 		this._modalMeta.doOpen();
+		if (this._metaIptSearch?.$ipt) this._metaIptSearch.$ipt.focus();
 	}
 
 	async _pHandleHide (isCancel = false) {
@@ -786,6 +789,7 @@ class FilterBox extends ProxyBase {
 	}
 
 	setFromSubHashes (subHashes, {force = false, $iptSearch = null} = {}) {
+		// TODO(unpack) refactor
 		const unpacked = {};
 		subHashes.forEach(s => {
 			const unpackedPart = UrlUtil.unpackSubHash(s, true);
@@ -954,6 +958,7 @@ class FilterBox extends ProxyBase {
 
 	setFromValues (values) {
 		this._filters.forEach(it => it.setFromValues(values));
+		this.fireChangeEvent();
 	}
 
 	toDisplay (boxState, ...entryVals) {
@@ -2335,6 +2340,7 @@ class SourceFilter extends Filter {
 			clazz: `btn btn-default ${opts.isMulti ? "btn-xxs" : "btn-xs"}`,
 			html: `<span class="glyphicon glyphicon-option-vertical"></span>`,
 			click: evt => ContextUtil.pOpenMenu(evt, menu),
+			title: "Other Options",
 		});
 
 		const btnOnlyPrimary = e_({

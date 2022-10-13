@@ -135,6 +135,14 @@ class BrewDoc {
 	}
 
 	static _mergeObjects_mutMakeCompatible (json) {
+		// region Item
+		if (json.variant) {
+			// 2022-07-09
+			json.magicvariant = json.variant;
+			delete json.variant;
+		}
+		// endregion
+
 		// region Race
 		if (json.subrace) {
 			json.subrace.forEach(sr => {
@@ -231,6 +239,7 @@ class BrewUtil2 {
 
 	static _isDirty = false;
 
+	static _brewsTemp = [];
 	static _addLazy_brewsTemp = [];
 
 	static _storage = StorageUtil;
@@ -280,10 +289,13 @@ class BrewUtil2 {
 	}
 
 	static async _pGetBrewProcessed_ ({lockToken}) {
-		const cpyBrews = MiscUtil.copy(await this.pGetBrew({lockToken}));
+		const cpyBrews = MiscUtil.copy([
+			...await this.pGetBrew({lockToken}),
+			...this._brewsTemp,
+		]);
 		if (!cpyBrews.length) return this._cache_brewsProc = {};
 
-		await this._pGetBrewProcessed_pDoBlacklistExtension({cpyBrews});
+		await this._pGetBrewProcessed_pDoBlocklistExtension({cpyBrews});
 
 		// Avoid caching the meta merge, as we have our own cache. We might edit the brew, so we don't want a stale copy.
 		const cpyBrewsLoaded = await cpyBrews.pSerialAwaitMap(async ({head, body}) => DataUtil.pDoMetaMerge(head.url || head.docIdLocal, body, {isSkipMetaMergeCache: true}));
@@ -292,11 +304,11 @@ class BrewUtil2 {
 		return this._cache_brewsProc;
 	}
 
-	/** Homebrew files can contain embedded blacklists. */
-	static async _pGetBrewProcessed_pDoBlacklistExtension ({cpyBrews}) {
+	/** Homebrew files can contain embedded blocklists. */
+	static async _pGetBrewProcessed_pDoBlocklistExtension ({cpyBrews}) {
 		for (const {body} of cpyBrews) {
-			if (!body?.blacklist?.length || !(body.blacklist instanceof Array)) continue;
-			await ExcludeUtil.pExtendList(body.blacklist);
+			if (!body?.blocklist?.length || !(body.blocklist instanceof Array)) continue;
+			await ExcludeUtil.pExtendList(body.blocklist);
 		}
 	}
 
@@ -412,6 +424,14 @@ class BrewUtil2 {
 		return this._storage.pGet(this._STORAGE_KEY);
 	}
 
+	static getBrewRawTemp () { return this._brewsTemp; }
+
+	static setBrewRawTemp (val) {
+		this._mutBrewsForSet(val);
+		this._cache_brewsProc = null;
+		this._brewsTemp = val;
+	}
+
 	static async _pGetMigrationInfo () {
 		const version = await this._storage.pGet(this._STORAGE_KEY_MIGRATION_VERSION);
 
@@ -438,14 +458,18 @@ class BrewUtil2 {
 	}
 
 	static async _pSetBrew_ ({val, isInitialMigration}) {
-		if (!(val instanceof Array)) throw new Error(`Homebrew array must be an array!`);
-
-		this._setBrewMetas(val.map(brew => this._getBrewDocReduced(brew)));
+		this._mutBrewsForSet(val);
 
 		if (!isInitialMigration) this._cache_brewsProc = null;
 		await this._storage.pSet(this._STORAGE_KEY, val);
 
 		if (!isInitialMigration) BrewUtil2._isDirty = true;
+	}
+
+	static _mutBrewsForSet (val) {
+		if (!(val instanceof Array)) throw new Error(`Homebrew array must be an array!`);
+
+		this._setBrewMetas(val.map(brew => this._getBrewDocReduced(brew)));
 	}
 
 	static _getBrewId (brew) {
@@ -488,7 +512,7 @@ class BrewUtil2 {
 			.filter(src => src.json)
 			.forEach(src => loaded.add(src.json));
 		brewsRaw.forEach(brew => trackLoaded(brew));
-		brewsRawLocal.forEach(brew => brewsRawLocal(brew));
+		brewsRawLocal.forEach(brew => trackLoaded(brew));
 
 		brewDocs.forEach(brewDoc => toLoad.push(...this._getBrewDependencySources({brewDoc, brewIndex})));
 
@@ -613,7 +637,34 @@ class BrewUtil2 {
 	 */
 	static async pAddBrewFromMemory (json) {
 		try {
-			return (await this._pAddBrewFromMemory({json}));
+			const lockToken = await this._LOCK.pLock();
+			return (await this._pAddBrewFromMemory({json, lockToken}));
+		} catch (e) {
+			JqueryUtil.doToast({type: "danger", content: `Failed to load homebrew from pre-loaded data! ${VeCt.STR_SEE_CONSOLE}`});
+			setTimeout(() => { throw e; });
+		} finally {
+			this._LOCK.unlock();
+		}
+		return [];
+	}
+
+	static async _pAddBrewFromMemory ({json, lockToken}) {
+		const brewDoc = this._getBrewDoc({json});
+
+		const brews = MiscUtil.copy(await this._pGetBrewRaw({lockToken}));
+		const brewsNxt = this._getNextBrews(brews, [brewDoc]);
+		await this.pSetBrew(brewsNxt, {lockToken});
+
+		return [brewDoc];
+	}
+
+	/**
+	 * As above.
+	 * Note that this is sync, and should not make use of locks.
+	 */
+	static addTempBrewFromMemory (json) {
+		try {
+			return (this._addTempBrewFromMemory({json}));
 		} catch (e) {
 			JqueryUtil.doToast({type: "danger", content: `Failed to load homebrew from pre-loaded data! ${VeCt.STR_SEE_CONSOLE}`});
 			setTimeout(() => { throw e; });
@@ -621,12 +672,12 @@ class BrewUtil2 {
 		return [];
 	}
 
-	static async _pAddBrewFromMemory ({json}) {
+	static _addTempBrewFromMemory ({json}) {
 		const brewDoc = this._getBrewDoc({json});
 
-		const brews = MiscUtil.copy(await this._pGetBrewRaw());
+		const brews = MiscUtil.copy(this.getBrewRawTemp());
 		const brewsNxt = this._getNextBrews(brews, [brewDoc]);
-		await this.pSetBrew(brewsNxt);
+		this.setBrewRawTemp(brewsNxt);
 
 		return [brewDoc];
 	}
@@ -963,7 +1014,7 @@ class BrewUtil2 {
 		[UrlUtil.PG_OBJECTS]: ["object"],
 		[UrlUtil.PG_TRAPS_HAZARDS]: ["trap", "hazard"],
 		[UrlUtil.PG_DEITIES]: ["deity"],
-		[UrlUtil.PG_ITEMS]: ["item", "baseitem", "variant", "itemProperty", "itemType", "itemFluff", "itemGroup", "itemEntry"],
+		[UrlUtil.PG_ITEMS]: ["item", "baseitem", "magicvariant", "itemProperty", "itemType", "itemFluff", "itemGroup", "itemEntry"],
 		[UrlUtil.PG_REWARDS]: ["reward"],
 		[UrlUtil.PG_PSIONICS]: ["psionic"],
 		[UrlUtil.PG_VARIANTRULES]: ["variantrule"],
@@ -1013,8 +1064,6 @@ class BrewUtil2 {
 	static getDirProp (dir) {
 		switch (dir) {
 			case "creature": return "monster";
-			case "collection": return dir;
-			case "magicvariant": return "variant";
 			case "makebrew": return "makebrewCreatureTrait";
 		}
 		return dir;
@@ -1037,7 +1086,7 @@ class BrewUtil2 {
 
 		(this._getBrewMetas() || [])
 			.forEach(({_meta}) => {
-				Object.entries(_meta)
+				Object.entries(_meta || {})
 					.forEach(([prop, val]) => {
 						if (!val) return;
 						if (typeof val !== "object") return;
@@ -1055,7 +1104,7 @@ class BrewUtil2 {
 		// Add a special "_sources" cache, which is a lookup-friendly object (rather than "sources", which is an array)
 		this._cache_metas["_sources"] = (this._getBrewMetas() || [])
 			.mergeMap(({_meta}) => {
-				return (_meta.sources || [])
+				return (_meta?.sources || [])
 					.mergeMap(src => ({[(src.json || "").toLowerCase()]: MiscUtil.copy(src)}));
 			});
 	}
@@ -1130,8 +1179,9 @@ class BrewUtil2 {
 		return BrewUtil2.getValidColor(source.color);
 	}
 
-	static getValidColor (color) {
-		// Prevent any injection shenanigans
+	/** Prevent any injection shenanigans */
+	static getValidColor (color, {isExtended = false} = {}) {
+		if (isExtended) return color.replace(/[^-a-zA-Z\d]/g, "");
 		return color.replace(/[^a-fA-F\d]/g, "").slice(0, 8);
 	}
 
@@ -1881,9 +1931,9 @@ class ManageBrewUi {
 
 		// region Filter output by selected sources
 		const cpyBrew = MiscUtil.copy(brew.body);
-		const sourceWhitelist = new Set(choices.map(it => it.json));
+		const sourceAllowlist = new Set(choices.map(it => it.json));
 
-		cpyBrew._meta.sources = cpyBrew._meta.sources.filter(it => sourceWhitelist.has(it.json));
+		cpyBrew._meta.sources = cpyBrew._meta.sources.filter(it => sourceAllowlist.has(it.json));
 
 		Object.entries(cpyBrew)
 			.forEach(([k, v]) => {
@@ -1892,7 +1942,7 @@ class ManageBrewUi {
 				cpyBrew[k] = v.filter(it => {
 					const source = SourceUtil.getEntitySource(it);
 					if (!source) return true;
-					return sourceWhitelist.has(source);
+					return sourceAllowlist.has(source);
 				});
 			});
 		// endregion
@@ -2069,7 +2119,7 @@ class GetBrewUi {
 		_getHeaderControls_addExtraStateBtns (opts, wrpStateBtnsOuter) {
 			const menu = ContextUtil.getMenu(
 				BrewUtil2.getPropPages()
-					.map(page => ({page, displayPage: UrlUtil.PG_TO_NAME[page] || page}))
+					.map(page => ({page, displayPage: UrlUtil.pageToDisplayPage(page)}))
 					.sort(SortUtil.ascSortProp.bind(SortUtil, "displayPage"))
 					.map(({page, displayPage}) => {
 						return new ContextUtil.Action(
