@@ -1,20 +1,15 @@
-const ut = require("../node/util");
-const rl = require("readline-sync");
-const fs = require("fs");
-require("../js/utils");
+import * as ut from "../node/util.js";
+import * as rl from "readline-sync";
+import * as fs from "fs";
+import "../js/parser.js";
+import "../js/utils.js";
 
 const BLOCKLIST_FILE_PREFIXES = [
 	...ut.FILE_PREFIX_BLOCKLIST,
 	"fluff-",
 
 	// specific files
-	"roll20-tables.json",
-	"roll20-items.json",
 	"makebrew-creature.json",
-	"srd-spells.json",
-	"srd-monsters.json",
-	"roll20.json",
-	"spells-stream.json",
 	"makecards.json",
 	"foundry.json",
 	"characters.json",
@@ -38,17 +33,25 @@ const BLOCKLIST_KEYS = new Set([
 	"dragonMundaneItems",
 ]);
 
-// Sources which only exist in digital form
 const BLOCKLIST_SOURCES = new Set([
-	"DC",
-	"SLW",
-	"SDW",
-	"VD",
+	// region Sources which only exist in digital form
+	Parser.SRC_DC,
+	Parser.SRC_SLW,
+	Parser.SRC_SDW,
+	Parser.SRC_VD,
+	// endregion
+
+	// region Sources which are screens, and therefore pageless"
+	Parser.SRC_SCREEN,
+	Parser.SRC_SCREEN_WILDERNESS_KIT,
+	Parser.SRC_SCREEN_DUNGEON_KIT,
+	Parser.SRC_SCREEN_SPELLJAMMER,
+	// endregion
 ]);
 
 const SUB_KEYS = {};
 
-function run (isModificationMode) {
+function run ({isModificationMode = false} = {}) {
 	console.log(`##### Checking for Missing Page Numbers #####`);
 	const FILE_MAP = {};
 	const files = ut.listFiles({dir: `./data`, blocklistFilePrefixes: BLOCKLIST_FILE_PREFIXES});
@@ -131,5 +134,4 @@ function run (isModificationMode) {
 	} else console.log(`Page numbers are as expected.`);
 }
 
-if (require.main === module) run(true);
-else run(false);
+run();

@@ -817,6 +817,18 @@ class ConverterUi extends BaseComponent {
 					return;
 				}
 
+				const brewDocEditable = await BrewUtil2.pGetEditableBrewDoc();
+				const uneditableSources = entries
+					.filter(ent => !(brewDocEditable?.body?._meta?.sources || []).some(src => src.json === ent.source))
+					.map(ent => ent.source);
+				if (uneditableSources.length) {
+					JqueryUtil.doToast({
+						content: `One or more entries have sources which belong to non-editable homebrew: ${uneditableSources.join(", ")}`,
+						type: "danger",
+					});
+					return;
+				}
+
 				// ignore duplicates
 				const _dupes = {};
 				const dupes = [];
@@ -1073,7 +1085,10 @@ ConverterUi._DEFAULT_STATE = {
 };
 
 async function doPageInit () {
-	await BrewUtil2.pInit();
+	await Promise.all([
+		PrereleaseUtil.pInit(),
+		BrewUtil2.pInit(),
+	]);
 	ExcludeUtil.pInitialise().then(null); // don't await, as this is only used for search
 	const [spells, items, itemsRaw, legendaryGroups, classes] = await Promise.all([
 		DataUtil.spell.pLoadAll(),
@@ -1083,12 +1098,14 @@ async function doPageInit () {
 		DataUtil.class.loadJSON(),
 		BrewUtil2.pGetBrewProcessed(), // init homebrew
 	]);
+	const itemsNoGroups = items.filter(it => !it._isItemGroup);
 	SpellcastingTraitConvert.init(spells);
-	ItemParser.init(items, classes);
-	AcConvert.init(items);
+	ItemParser.init(itemsNoGroups, classes);
+	AcConvert.init(itemsNoGroups);
 	TaggerUtils.init({legendaryGroups, spells});
 	await TagJsons.pInit({spells});
 	RaceTraitTag.init({itemsRaw});
+	AttachedItemTag.init({items});
 
 	const ui = new ConverterUi();
 

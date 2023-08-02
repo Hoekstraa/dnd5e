@@ -403,10 +403,18 @@
 					"type": "image",
 					"href": {
 						"type": "internal",
-						"path": "items/DMG/Book of Vile Darkness.jpg"
+						"path": "items/DMG/Book of Vile Darkness.webp"
 					}
 				}
 			]
+		},
+		{
+			"name": "Book of Vile Darkness (Variant)",
+			"source": "KftGV",
+			"_copy": {
+				"name": "Book of Vile Darkness",
+				"source": "DMG"
+			}
 		},
 		{
 			"name": "Boots of Elvenkind",
@@ -768,6 +776,19 @@
 					"href": {
 						"type": "internal",
 						"path": "items/SKT/Conch of Teleportation.png"
+					}
+				}
+			]
+		},
+		{
+			"name": "Constantori's Portrait",
+			"source": "KftGV",
+			"images": [
+				{
+					"type": "image",
+					"href": {
+						"type": "internal",
+						"path": "items/KftGV/Constantoris Portrait.webp"
 					}
 				}
 			]
@@ -1412,6 +1433,19 @@
 			]
 		},
 		{
+			"name": "Fargab",
+			"source": "DSotDQ",
+			"images": [
+				{
+					"type": "image",
+					"href": {
+						"type": "internal",
+						"path": "items/DSotDQ/Fargab.webp"
+					}
+				}
+			]
+		},
+		{
 			"name": "Feywild Shard",
 			"source": "TCE",
 			"images": [
@@ -1902,6 +1936,19 @@
 			]
 		},
 		{
+			"name": "Helm of Disjunction",
+			"source": "HAT-LMI",
+			"images": [
+				{
+					"type": "image",
+					"href": {
+						"type": "internal",
+						"path": "items/HAT-LMI/Helm of Disjunction.webp"
+					}
+				}
+			]
+		},
+		{
 			"name": "Helm of Telepathy",
 			"source": "DMG",
 			"images": [
@@ -1941,6 +1988,19 @@
 			]
 		},
 		{
+			"name": "Hither-Thither Staff",
+			"source": "HAT-LMI",
+			"images": [
+				{
+					"type": "image",
+					"href": {
+						"type": "internal",
+						"path": "items/HAT-LMI/Hither-Thither Staff.webp"
+					}
+				}
+			]
+		},
+		{
 			"name": "Holy Avenger",
 			"source": "DMG",
 			"images": [
@@ -1962,6 +2022,19 @@
 					"href": {
 						"type": "internal",
 						"path": "items/CoS/Holy Symbol of Ravenkind.png"
+					}
+				}
+			]
+		},
+		{
+			"name": "Horn of Beckoning Death",
+			"source": "HAT-LMI",
+			"images": [
+				{
+					"type": "image",
+					"href": {
+						"type": "internal",
+						"path": "items/HAT-LMI/Horn of Beckoning Death.webp"
 					}
 				}
 			]
@@ -2306,6 +2379,19 @@
 				"name": "Jewel of Three Prayers",
 				"source": "CRCotN"
 			}
+		},
+		{
+			"name": "Kagonesti Forest Shroud",
+			"source": "DSotDQ",
+			"images": [
+				{
+					"type": "image",
+					"href": {
+						"type": "internal",
+						"path": "items/DSotDQ/Kagonesti Forest Shroud.webp"
+					}
+				}
+			]
 		},
 		{
 			"name": "Keoghtom's Ointment",
@@ -2701,7 +2787,7 @@
 					"type": "image",
 					"href": {
 						"type": "internal",
-						"path": "items/CRCotN/Medal of the Maze.jpg"
+						"path": "items/CRCotN/Medal of the Maze.webp"
 					}
 				}
 			]
@@ -2780,6 +2866,19 @@
 					"href": {
 						"type": "internal",
 						"path": "items/DMG/Moonblade.jpg"
+					}
+				}
+			]
+		},
+		{
+			"name": "Narycrash",
+			"source": "DSotDQ",
+			"images": [
+				{
+					"type": "image",
+					"href": {
+						"type": "internal",
+						"path": "items/DSotDQ/Narycrash.webp"
 					}
 				}
 			]
@@ -3261,6 +3360,19 @@
 					"href": {
 						"type": "internal",
 						"path": "items/GGR/Rakdos Riteknife.jpg"
+					}
+				}
+			]
+		},
+		{
+			"name": "Red Wizard Blade",
+			"source": "HAT-LMI",
+			"images": [
+				{
+					"type": "image",
+					"href": {
+						"type": "internal",
+						"path": "items/HAT-LMI/Red Wizard Blade.webp"
 					}
 				}
 			]
@@ -3836,6 +3948,72 @@
 			]
 		},
 		{
+			"name": "Shard of Xeluan",
+			"source": "KftGV",
+			"images": [
+				{
+					"type": "image",
+					"href": {
+						"type": "internal",
+						"path": "items/KftGV/Shard of Xeluan.webp"
+					}
+				}
+			]
+		},
+		{
+			"name": "Shard Solitaire",
+			"source": "KftGV",
+			"images": [
+				{
+					"type": "image",
+					"href": {
+						"type": "internal",
+						"path": "items/KftGV/Shard Solitaire.webp"
+					}
+				}
+			]
+		},
+		{
+			"name": "Shard Solitaire (Black Sapphire)",
+			"source": "KftGV",
+			"_copy": {
+				"name": "Shard Solitaire",
+				"source": "KftGV"
+			}
+		},
+		{
+			"name": "Shard Solitaire (Diamond)",
+			"source": "KftGV",
+			"_copy": {
+				"name": "Shard Solitaire",
+				"source": "KftGV"
+			}
+		},
+		{
+			"name": "Shard Solitaire (Jacinth)",
+			"source": "KftGV",
+			"_copy": {
+				"name": "Shard Solitaire",
+				"source": "KftGV"
+			}
+		},
+		{
+			"name": "Shard Solitaire (Rainbow Pearl)",
+			"source": "KftGV",
+			"_copy": {
+				"name": "Shard Solitaire",
+				"source": "KftGV"
+			}
+		},
+		{
+			"name": "Shard Solitaire (Ruby)",
+			"source": "KftGV",
+			"_copy": {
+				"name": "Shard Solitaire",
+				"source": "KftGV"
+			}
+		},
+		{
 			"name": "Shield Guardian Amulet",
 			"source": "IDRotF",
 			"images": [
@@ -4346,6 +4524,19 @@
 					"href": {
 						"type": "internal",
 						"path": "items/BGDIA/Sword of Zariel.jpg"
+					}
+				}
+			]
+		},
+		{
+			"name": "Tablet of Reawakening",
+			"source": "HAT-LMI",
+			"images": [
+				{
+					"type": "image",
+					"href": {
+						"type": "internal",
+						"path": "items/HAT-LMI/Tablet of Reawakening.webp"
 					}
 				}
 			]

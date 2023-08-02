@@ -8,7 +8,7 @@
 	<meta charset="utf-8">
 	<meta name="description" content="">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
-	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 	<meta name="apple-mobile-web-app-capable" content="yes">
 
 	<title>Maps - 5etools</title>
@@ -74,7 +74,9 @@
 	</nav>
 
 	<div id="content" class="maps ve-flex h-100 mobile__h-initial mobile__ve-flex-col min-h-0">
-		<div class="ve-flex-vh-center ve-muted initial-message italic h-100 w-100">Loading...</div>
+		<div class="ve-flex-vh-center h-100 w-100">
+			<div class="ve-flex ve-muted initial-message italic maps__disp-message-initial px-3">Loading...</div>
+		</div>
 	</div>
 </div>
 
@@ -87,6 +89,7 @@
 <script type="text/javascript" src="js/omnidexer.js"></script>
 <script type="text/javascript" src="js/omnisearch.js"></script>
 <script type="text/javascript" src="js/filter.js"></script>
+<script type="text/javascript" src="js/utils-dataloader.js"></script>
 <script type="text/javascript" src="js/utils-brew.js"></script>
 <script type="text/javascript" src="js/render.js"></script>
 <script type="text/javascript" src="js/render-dice.js"></script>

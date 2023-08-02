@@ -17,6 +17,7 @@
 		{
 			"name": "Ebondeath",
 			"isNpc": true,
+			"isNamedCreature": true,
 			"source": "DC",
 			"size": [
 				"M"
@@ -159,7 +160,11 @@
 			"size": [
 				"M"
 			],
-			"type": "humanoid",
+			"type": {
+				"type": "humanoid",
+				"sidekickType": "expert",
+				"sidekickHidden": true
+			},
 			"ac": [
 				{
 					"ac": 17,
@@ -248,6 +253,11 @@
 					]
 				}
 			],
+			"attachedItems": [
+				"dagger|phb",
+				"shortbow|phb",
+				"shortsword|phb"
+			],
 			"languageTags": [
 				"C"
 			],
@@ -269,7 +279,14 @@
 			"size": [
 				"M"
 			],
-			"type": "humanoid",
+			"type": {
+				"type": "humanoid",
+				"sidekickType": "spellcaster",
+				"tags": [
+					"healer"
+				],
+				"sidekickHidden": true
+			},
 			"ac": [
 				{
 					"ac": 13,
@@ -388,6 +405,9 @@
 					]
 				}
 			],
+			"attachedItems": [
+				"quarterstaff|phb"
+			],
 			"languageTags": [
 				"C"
 			],
@@ -415,7 +435,14 @@
 			"size": [
 				"M"
 			],
-			"type": "humanoid",
+			"type": {
+				"type": "humanoid",
+				"sidekickType": "spellcaster",
+				"tags": [
+					"mage"
+				],
+				"sidekickHidden": true
+			},
 			"ac": [
 				{
 					"ac": 13,
@@ -534,6 +561,9 @@
 					]
 				}
 			],
+			"attachedItems": [
+				"quarterstaff|phb"
+			],
 			"languageTags": [
 				"C"
 			],
@@ -565,7 +595,11 @@
 			"size": [
 				"M"
 			],
-			"type": "humanoid",
+			"type": {
+				"type": "humanoid",
+				"sidekickType": "warrior",
+				"sidekickHidden": true
+			},
 			"ac": [
 				{
 					"ac": 21,
@@ -686,6 +720,10 @@
 						"When a creature the warrior can see attacks a target other than the warrior that is within 5 feet of the warrior, the warrior can use their reaction to impose disadvantage on the attack roll. The warrior must be wielding a shield."
 					]
 				}
+			],
+			"attachedItems": [
+				"longbow|phb",
+				"longsword|phb"
 			],
 			"languageTags": [
 				"C"

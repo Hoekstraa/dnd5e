@@ -90,7 +90,7 @@
 				{
 					"name": "Summon Air Elemental",
 					"entries": [
-						"Five aarakocra within 30 feet of each other can magically summon an {@creature air elemental}. Each of the five must use its action and movement on three consecutive turns to perform an aerial dance and must maintain concentration while doing so (as if concentrating on a spell). When all five have finished their third turn of the dance, the elemental appears in an unoccupied space within 60 feet of them. It is friendly toward them and obeys their spoken commands. It remains for 1 hour, until it or all its summoners die, or until any of its summoners dismisses it as a bonus action. A summoner can't perform the dance again until it finishes a short rest. When the elemental returns to the Elemental Plane of Air, any aarakocra within 5 feet of it can return with it."
+						"Five aarakocra within 30 feet of each other can magically summon an {@creature air elemental}. Each of the five must use its action and movement on three consecutive turns to perform an aerial dance and must maintain {@status concentration} while doing so (as if {@status concentration||concentrating} on a spell). When all five have finished their third turn of the dance, the elemental appears in an unoccupied space within 60 feet of them. It is friendly toward them and obeys their spoken commands. It remains for 1 hour, until it or all its summoners die, or until any of its summoners dismisses it as a bonus action. A summoner can't perform the dance again until it finishes a short rest. When the elemental returns to the Elemental Plane of Air, any aarakocra within 5 feet of it can return with it."
 					]
 				}
 			],
@@ -101,6 +101,9 @@
 				"type": "internal",
 				"path": "bestiary/aarakocra.mp3"
 			},
+			"attachedItems": [
+				"javelin|phb"
+			],
 			"languageTags": [
 				"AU",
 				"OTH"
@@ -503,6 +506,9 @@
 				},
 				{
 					"source": "SjA"
+				},
+				{
+					"source": "DSotDQ"
 				}
 			],
 			"size": [
@@ -583,6 +589,9 @@
 				"type": "internal",
 				"path": "bestiary/acolyte.mp3"
 			},
+			"attachedItems": [
+				"club|phb"
+			],
 			"languageTags": [
 				"C",
 				"X"
@@ -625,6 +634,12 @@
 				},
 				{
 					"source": "CM"
+				},
+				{
+					"source": "DSotDQ"
+				},
+				{
+					"source": "KftGV"
 				}
 			],
 			"size": [
@@ -1712,6 +1727,9 @@
 				},
 				{
 					"source": "DoSI"
+				},
+				{
+					"source": "DSotDQ"
 				}
 			],
 			"size": [
@@ -3843,6 +3861,12 @@
 				},
 				{
 					"source": "JttRC"
+				},
+				{
+					"source": "DSotDQ"
+				},
+				{
+					"source": "KftGV"
 				}
 			],
 			"size": [
@@ -3982,6 +4006,9 @@
 				},
 				{
 					"source": "JttRC"
+				},
+				{
+					"source": "KftGV"
 				}
 			],
 			"size": [
@@ -7288,6 +7315,9 @@
 				},
 				{
 					"source": "WBtW"
+				},
+				{
+					"source": "KftGV"
 				}
 			],
 			"size": [
@@ -7412,6 +7442,9 @@
 				},
 				{
 					"source": "JttRC"
+				},
+				{
+					"source": "KftGV"
 				}
 			],
 			"size": [
@@ -7682,6 +7715,9 @@
 				},
 				{
 					"source": "TCE"
+				},
+				{
+					"source": "KftGV"
 				}
 			],
 			"size": [
@@ -7999,6 +8035,12 @@
 				},
 				{
 					"source": "LoX"
+				},
+				{
+					"source": "DSotDQ"
+				},
+				{
+					"source": "KftGV"
 				}
 			],
 			"size": [
@@ -8189,6 +8231,9 @@
 				"type": "internal",
 				"path": "bestiary/archmage.mp3"
 			},
+			"attachedItems": [
+				"dagger|phb"
+			],
 			"traitTags": [
 				"Magic Resistance"
 			],
@@ -8294,6 +8339,9 @@
 				},
 				{
 					"source": "JttRC"
+				},
+				{
+					"source": "KftGV"
 				}
 			],
 			"size": [
@@ -8398,6 +8446,10 @@
 				"type": "internal",
 				"path": "bestiary/assassin.mp3"
 			},
+			"attachedItems": [
+				"light crossbow|phb",
+				"shortsword|phb"
+			],
 			"traitTags": [
 				"Sneak Attack"
 			],
@@ -8714,6 +8766,9 @@
 				},
 				{
 					"source": "WDMM"
+				},
+				{
+					"source": "KftGV"
 				}
 			],
 			"size": [
@@ -8793,6 +8848,9 @@
 				"type": "internal",
 				"path": "bestiary/azer.mp3"
 			},
+			"attachedItems": [
+				"warhammer|phb"
+			],
 			"traitTags": [
 				"Illumination"
 			],
@@ -8832,6 +8890,9 @@
 				},
 				{
 					"source": "WBtW"
+				},
+				{
+					"source": "KftGV"
 				}
 			],
 			"size": [
@@ -9136,6 +9197,10 @@
 				"type": "internal",
 				"path": "bestiary/balor.mp3"
 			},
+			"attachedItems": [
+				"longsword|phb",
+				"whip|phb"
+			],
 			"traitTags": [
 				"Death Burst",
 				"Magic Resistance",
@@ -9231,6 +9296,12 @@
 				},
 				{
 					"source": "LoX"
+				},
+				{
+					"source": "DSotDQ"
+				},
+				{
+					"source": "KftGV"
 				}
 			],
 			"size": [
@@ -9312,6 +9383,10 @@
 					"source": "EGW"
 				}
 			],
+			"attachedItems": [
+				"light crossbow|phb",
+				"scimitar|phb"
+			],
 			"languageTags": [
 				"C",
 				"X"
@@ -9387,6 +9462,12 @@
 				},
 				{
 					"source": "LoX"
+				},
+				{
+					"source": "DSotDQ"
+				},
+				{
+					"source": "KftGV"
 				}
 			],
 			"size": [
@@ -9486,6 +9567,10 @@
 					"source": "MTF",
 					"page": 18
 				}
+			],
+			"attachedItems": [
+				"dagger|phb",
+				"scimitar|phb"
 			],
 			"actionTags": [
 				"Multiattack",
@@ -9828,6 +9913,21 @@
 					]
 				}
 			],
+			"variant": [
+				{
+					"type": "variant",
+					"name": "Summon Devil (1/Day)",
+					"entries": [
+						"The devil chooses what to summon and attempts a magical summoning.",
+						"A barbed devil has a {@chance 30|30 percent} chance of summoning one barbed devil.",
+						"A summoned devil appears in an unoccupied space within 60 feet of its summoner, acts as an ally of its summoner, and can't summon other devils. It remains for 1 minute, until it or its summoner dies, or until its summoner dismisses it as an action."
+					],
+					"_version": {
+						"name": "Barbed Devil (Summoner)",
+						"addAs": "action"
+					}
+				}
+			],
 			"soundClip": {
 				"type": "internal",
 				"path": "bestiary/barbed-devil.mp3"
@@ -9879,6 +9979,9 @@
 				},
 				{
 					"source": "CRCotN"
+				},
+				{
+					"source": "KftGV"
 				}
 			],
 			"size": [
@@ -10168,6 +10271,9 @@
 				},
 				{
 					"source": "WBtW"
+				},
+				{
+					"source": "PSX"
 				}
 			],
 			"size": [
@@ -10373,10 +10479,28 @@
 					]
 				}
 			],
+			"variant": [
+				{
+					"type": "variant",
+					"name": "Summon Devil (1/Day)",
+					"entries": [
+						"The devil chooses what to summon and attempts a magical summoning.",
+						"A bearded devil has a {@chance 30|30 percent} chance of summoning one bearded devil.",
+						"A summoned devil appears in an unoccupied space within 60 feet of its summoner, acts as an ally of its summoner, and can't summon other devils. It remains for 1 minute, until it or its summoner dies, or until its summoner dismisses it as an action."
+					],
+					"_version": {
+						"name": "Bearded Devil (Summoner)",
+						"addAs": "action"
+					}
+				}
+			],
 			"soundClip": {
 				"type": "internal",
 				"path": "bestiary/bearded-devil.mp3"
 			},
+			"attachedItems": [
+				"glaive|phb"
+			],
 			"traitTags": [
 				"Devil's Sight",
 				"Magic Resistance"
@@ -10423,6 +10547,9 @@
 				},
 				{
 					"source": "JttRC"
+				},
+				{
+					"source": "KftGV"
 				}
 			],
 			"size": [
@@ -10575,6 +10702,9 @@
 				},
 				{
 					"source": "LoX"
+				},
+				{
+					"source": "KftGV"
 				}
 			],
 			"size": [
@@ -11142,6 +11272,9 @@
 					"page": 18
 				}
 			],
+			"attachedItems": [
+				"greataxe|phb"
+			],
 			"traitTags": [
 				"Reckless"
 			],
@@ -11494,6 +11627,12 @@
 				},
 				{
 					"source": "JttRC"
+				},
+				{
+					"source": "DSotDQ"
+				},
+				{
+					"source": "KftGV"
 				}
 			],
 			"size": [
@@ -12278,6 +12417,9 @@
 				},
 				{
 					"source": "EGW"
+				},
+				{
+					"source": "DSotDQ"
 				}
 			],
 			"size": [
@@ -12410,6 +12552,19 @@
 					"_version": {
 						"name": "Bone Devil (Polearm)",
 						"addHeadersAs": "action"
+					}
+				},
+				{
+					"type": "variant",
+					"name": "Summon Devil (1/Day)",
+					"entries": [
+						"The devil chooses what to summon and attempts a magical summoning.",
+						"A bone devil has a {@chance 40|40 percent} chance of summoning {@dice 2d6} {@creature spined devil||spined devils} or one bone devil.",
+						"A summoned devil appears in an unoccupied space within 60 feet of its summoner, acts as an ally of its summoner, and can't summon other devils. It remains for 1 minute, until it or its summoner dies, or until its summoner dismisses it as an action."
+					],
+					"_version": {
+						"name": "Bone Devil (Summoner)",
+						"addAs": "action"
 					}
 				}
 			],
@@ -12589,6 +12744,11 @@
 			"name": "Bone Naga (Spirit)",
 			"source": "MM",
 			"page": 233,
+			"otherSources": [
+				{
+					"source": "DSotDQ"
+				}
+			],
 			"size": [
 				"L"
 			],
@@ -13318,6 +13478,9 @@
 				},
 				{
 					"source": "CRCotN"
+				},
+				{
+					"source": "KftGV"
 				}
 			],
 			"size": [
@@ -13405,6 +13568,10 @@
 				"type": "internal",
 				"path": "bestiary/bugbear.mp3"
 			},
+			"attachedItems": [
+				"javelin|phb",
+				"morningstar|phb"
+			],
 			"traitTags": [
 				"Brute"
 			],
@@ -13537,6 +13704,10 @@
 				"type": "internal",
 				"path": "bestiary/bugbear-chief.mp3"
 			},
+			"attachedItems": [
+				"javelin|phb",
+				"morningstar|phb"
+			],
 			"traitTags": [
 				"Brute"
 			],
@@ -13582,6 +13753,9 @@
 				},
 				{
 					"source": "LoX"
+				},
+				{
+					"source": "DSotDQ"
 				}
 			],
 			"size": [
@@ -13796,6 +13970,9 @@
 					"source": "WDMM"
 				}
 			],
+			"attachedItems": [
+				"spear|phb"
+			],
 			"traitTags": [
 				"Amphibious"
 			],
@@ -13831,6 +14008,9 @@
 				},
 				{
 					"source": "CM"
+				},
+				{
+					"source": "KftGV"
 				}
 			],
 			"size": [
@@ -13999,6 +14179,9 @@
 					"source": "MTF",
 					"page": 32
 				}
+			],
+			"attachedItems": [
+				"spear|phb"
 			],
 			"senseTags": [
 				"D"
@@ -14591,6 +14774,10 @@
 				"type": "internal",
 				"path": "bestiary/centaur.mp3"
 			},
+			"attachedItems": [
+				"longbow|phb",
+				"pike|phb"
+			],
 			"traitTags": [
 				"Charge"
 			],
@@ -14786,6 +14973,9 @@
 				},
 				{
 					"source": "CRCotN"
+				},
+				{
+					"source": "KftGV"
 				}
 			],
 			"size": [
@@ -15222,6 +15412,12 @@
 				},
 				{
 					"source": "WDMM"
+				},
+				{
+					"source": "DSotDQ"
+				},
+				{
+					"source": "KftGV"
 				}
 			],
 			"size": [
@@ -15383,6 +15579,9 @@
 				},
 				{
 					"source": "JttRC"
+				},
+				{
+					"source": "KftGV"
 				}
 			],
 			"size": [
@@ -15670,7 +15869,7 @@
 							"name": "Wind Aura",
 							"type": "entries",
 							"entries": [
-								"A magical aura of wind surrounds the giant. The aura is a 10-foot-radius sphere that lasts as long as the giant maintains concentration on it (as if concentrating on a spell). While the aura is in effect, the giant gains a +2 bonus to its AC against ranged weapon attacks, and all open flames within the aura are extinguished unless they are magical."
+								"A magical aura of wind surrounds the giant. The aura is a 10-foot-radius sphere that lasts as long as the giant maintains {@status concentration} on it (as if {@status concentration||concentrating} on a spell). While the aura is in effect, the giant gains a +2 bonus to its AC against ranged weapon attacks, and all open flames within the aura are extinguished unless they are magical."
 							]
 						}
 					],
@@ -15689,6 +15888,9 @@
 				"type": "internal",
 				"path": "bestiary/cloud-giant.mp3"
 			},
+			"attachedItems": [
+				"morningstar|phb"
+			],
 			"traitTags": [
 				"Keen Senses"
 			],
@@ -15889,6 +16091,12 @@
 				},
 				{
 					"source": "LoX"
+				},
+				{
+					"source": "DSotDQ"
+				},
+				{
+					"source": "KftGV"
 				}
 			],
 			"size": [
@@ -15950,6 +16158,9 @@
 					"name": "Commoner",
 					"source": "EGW"
 				}
+			],
+			"attachedItems": [
+				"club|phb"
 			],
 			"languageTags": [
 				"C",
@@ -16572,6 +16783,9 @@
 				},
 				{
 					"source": "LoX"
+				},
+				{
+					"source": "KftGV"
 				}
 			],
 			"size": [
@@ -16689,6 +16903,9 @@
 				},
 				{
 					"source": "WBtW"
+				},
+				{
+					"source": "PSX"
 				}
 			],
 			"size": [
@@ -16835,6 +17052,9 @@
 				},
 				{
 					"source": "LoX"
+				},
+				{
+					"source": "KftGV"
 				}
 			],
 			"size": [
@@ -16953,6 +17173,9 @@
 					"page": 18
 				}
 			],
+			"attachedItems": [
+				"dagger|phb"
+			],
 			"actionTags": [
 				"Multiattack"
 			],
@@ -17050,6 +17273,9 @@
 				},
 				{
 					"source": "JttRC"
+				},
+				{
+					"source": "KftGV"
 				}
 			],
 			"size": [
@@ -17132,6 +17358,9 @@
 					"source": "RMBRE"
 				}
 			],
+			"attachedItems": [
+				"scimitar|phb"
+			],
 			"languageTags": [
 				"C",
 				"X"
@@ -17172,6 +17401,9 @@
 				},
 				{
 					"source": "WBtW"
+				},
+				{
+					"source": "DSotDQ"
 				}
 			],
 			"size": [
@@ -17248,6 +17480,9 @@
 				"type": "internal",
 				"path": "bestiary/cyclops.mp3"
 			},
+			"attachedItems": [
+				"greatclub|phb"
+			],
 			"actionTags": [
 				"Multiattack"
 			],
@@ -17443,6 +17678,9 @@
 				"type": "internal",
 				"path": "bestiary/dao.mp3"
 			},
+			"attachedItems": [
+				"maul|phb"
+			],
 			"senseTags": [
 				"SD"
 			],
@@ -17543,6 +17781,9 @@
 				},
 				{
 					"source": "WBtW"
+				},
+				{
+					"source": "KftGV"
 				}
 			],
 			"size": [
@@ -17603,7 +17844,7 @@
 				{
 					"name": "Darkness Aura (1/Day)",
 					"entries": [
-						"A 15-foot radius of magical darkness extends out from the darkmantle, moves with it, and spreads around corners. The darkness lasts as long as the darkmantle maintains concentration, up to 10 minutes (as if concentrating on a spell). Darkvision can't penetrate this darkness, and no natural light can illuminate it. If any of the darkness overlaps with an area of light created by a spell of 2nd level or lower, the spell creating the light is dispelled."
+						"A 15-foot radius of magical darkness extends out from the darkmantle, moves with it, and spreads around corners. The darkness lasts as long as the darkmantle maintains {@status concentration}, up to 10 minutes (as if {@status concentration||concentrating} on a spell). Darkvision can't penetrate this darkness, and no natural light can illuminate it. If any of the darkness overlaps with an area of light created by a spell of 2nd level or lower, the spell creating the light is dispelled."
 					]
 				}
 			],
@@ -17763,6 +18004,9 @@
 				},
 				{
 					"source": "CM"
+				},
+				{
+					"source": "DSotDQ"
 				}
 			],
 			"size": [
@@ -17910,6 +18154,9 @@
 				"type": "internal",
 				"path": "bestiary/death-knight.mp3"
 			},
+			"attachedItems": [
+				"longsword|phb"
+			],
 			"traitTags": [
 				"Magic Resistance"
 			],
@@ -17980,6 +18227,9 @@
 				},
 				{
 					"source": "CM"
+				},
+				{
+					"source": "DSotDQ"
 				}
 			],
 			"size": [
@@ -18137,6 +18387,9 @@
 				"type": "internal",
 				"path": "bestiary/death-slaad.mp3"
 			},
+			"attachedItems": [
+				"greatsword|phb"
+			],
 			"traitTags": [
 				"Magic Resistance",
 				"Magic Weapons",
@@ -18416,6 +18669,9 @@
 				},
 				{
 					"source": "WDMM"
+				},
+				{
+					"source": "KftGV"
 				}
 			],
 			"size": [
@@ -18521,6 +18777,9 @@
 				"type": "internal",
 				"path": "bestiary/svirfneblin.mp3"
 			},
+			"attachedItems": [
+				"war pick|phb"
+			],
 			"senseTags": [
 				"SD"
 			],
@@ -18885,6 +19144,9 @@
 				},
 				{
 					"source": "JttRC"
+				},
+				{
+					"source": "KftGV"
 				}
 			],
 			"size": [
@@ -19014,6 +19276,9 @@
 				"type": "internal",
 				"path": "bestiary/deva.mp3"
 			},
+			"attachedItems": [
+				"mace|phb"
+			],
 			"traitTags": [
 				"Magic Resistance"
 			],
@@ -19170,6 +19435,9 @@
 				},
 				{
 					"source": "JttRC"
+				},
+				{
+					"source": "KftGV"
 				}
 			],
 			"size": [
@@ -19385,7 +19653,7 @@
 				{
 					"name": "Create Whirlwind",
 					"entries": [
-						"A 5-foot-radius, 30-foot-tall cylinder of swirling air magically forms on a point the djinni can see within 120 feet of it. The whirlwind lasts as long as the djinni maintains concentration (as if concentrating on a spell). Any creature but the djinni that enters the whirlwind must succeed on a {@dc 18} Strength saving throw or be {@condition restrained} by it. The djinni can move the whirlwind up to 60 feet as an action, and creatures {@condition restrained} by the whirlwind move with it. The whirlwind ends if the djinni loses sight of it.",
+						"A 5-foot-radius, 30-foot-tall cylinder of swirling air magically forms on a point the djinni can see within 120 feet of it. The whirlwind lasts as long as the djinni maintains {@status concentration} (as if {@status concentration||concentrating} on a spell). Any creature but the djinni that enters the whirlwind must succeed on a {@dc 18} Strength saving throw or be {@condition restrained} by it. The djinni can move the whirlwind up to 60 feet as an action, and creatures {@condition restrained} by the whirlwind move with it. The whirlwind ends if the djinni loses sight of it.",
 						"A creature can use its action to free a creature {@condition restrained} by the whirlwind, including itself, by succeeding on a {@dc 18} Strength check. If the check succeeds, the creature is no longer {@condition restrained} and moves to the nearest space outside the whirlwind."
 					]
 				}
@@ -19421,6 +19689,9 @@
 				"type": "internal",
 				"path": "bestiary/djinni.mp3"
 			},
+			"attachedItems": [
+				"scimitar|phb"
+			],
 			"senseTags": [
 				"SD"
 			],
@@ -19555,6 +19826,9 @@
 				},
 				{
 					"source": "JttRC"
+				},
+				{
+					"source": "KftGV"
 				}
 			],
 			"size": [
@@ -19636,7 +19910,7 @@
 				{
 					"name": "Read Thoughts",
 					"entries": [
-						"The doppelganger magically reads the surface thoughts of one creature within 60 feet of it. The effect can penetrate barriers, but 3 feet of wood or dirt, 2 feet of stone, 2 inches of metal, or a thin sheet of lead blocks it. While the target is in range, the doppelganger can continue reading its thoughts, as long as the doppelganger's concentration isn't broken (as if concentrating on a spell). While reading the target's mind, the doppelganger has advantage on Wisdom ({@skill Insight}) and Charisma ({@skill Deception}, {@skill Intimidation}, and {@skill Persuasion}) checks against the target."
+						"The doppelganger magically reads the surface thoughts of one creature within 60 feet of it. The effect can penetrate barriers, but 3 feet of wood or dirt, 2 feet of stone, 2 inches of metal, or a thin sheet of lead blocks it. While the target is in range, the doppelganger can continue reading its thoughts, as long as the doppelganger's {@status concentration} isn't broken (as if {@status concentration||concentrating} on a spell). While reading the target's mind, the doppelganger has advantage on Wisdom ({@skill Insight}) and Charisma ({@skill Deception}, {@skill Intimidation}, and {@skill Persuasion}) checks against the target."
 					]
 				}
 			],
@@ -20184,6 +20458,10 @@
 				"type": "internal",
 				"path": "bestiary/drider.mp3"
 			},
+			"attachedItems": [
+				"longbow|phb",
+				"longsword|phb"
+			],
 			"traitTags": [
 				"Fey Ancestry",
 				"Spider Climb",
@@ -20420,6 +20698,10 @@
 				"type": "internal",
 				"path": "bestiary/drow.mp3"
 			},
+			"attachedItems": [
+				"hand crossbow|phb",
+				"shortsword|phb"
+			],
 			"traitTags": [
 				"Fey Ancestry",
 				"Sunlight Sensitivity"
@@ -20655,6 +20937,10 @@
 				"type": "internal",
 				"path": "bestiary/drow-elite-warrior.mp3"
 			},
+			"attachedItems": [
+				"hand crossbow|phb",
+				"shortsword|phb"
+			],
 			"traitTags": [
 				"Fey Ancestry",
 				"Sunlight Sensitivity"
@@ -21085,7 +21371,7 @@
 						"3": {
 							"slots": 3,
 							"spells": [
-								"{@spell conjure animals} (2 giant spiders)",
+								"{@spell conjure animals} (2 {@creature giant spider|mm|giant spiders})",
 								"{@spell dispel magic}"
 							]
 						},
@@ -21391,6 +21677,9 @@
 					"page": 29
 				}
 			],
+			"attachedItems": [
+				"quarterstaff|phb"
+			],
 			"languageTags": [
 				"DU",
 				"X"
@@ -21447,6 +21736,9 @@
 				},
 				{
 					"source": "JttRC"
+				},
+				{
+					"source": "KftGV"
 				}
 			],
 			"size": [
@@ -21556,6 +21848,9 @@
 				"type": "internal",
 				"path": "bestiary/dryad.mp3"
 			},
+			"attachedItems": [
+				"club|phb"
+			],
 			"traitTags": [
 				"Magic Resistance",
 				"Tree Stride"
@@ -21612,6 +21907,9 @@
 				},
 				{
 					"source": "IDRotF"
+				},
+				{
+					"source": "KftGV"
 				}
 			],
 			"size": [
@@ -21697,7 +21995,7 @@
 				{
 					"name": "Invisibility (Recharges after a Short or Long Rest)",
 					"entries": [
-						"The duergar magically turns {@condition invisible} until it attacks, casts a spell, or uses its Enlarge, or until its concentration is broken, up to 1 hour (as if concentrating on a spell). Any equipment the duergar wears or carries is {@condition invisible} with it."
+						"The duergar magically turns {@condition invisible} until it attacks, casts a spell, or uses its Enlarge, or until its {@status concentration} is broken, up to 1 hour (as if {@status concentration||concentrating} on a spell). Any equipment the duergar wears or carries is {@condition invisible} with it."
 					]
 				}
 			],
@@ -21708,6 +22006,10 @@
 				"type": "internal",
 				"path": "bestiary/duergar.mp3"
 			},
+			"attachedItems": [
+				"javelin|phb",
+				"war pick|phb"
+			],
 			"traitTags": [
 				"Sunlight Sensitivity"
 			],
@@ -21740,6 +22042,11 @@
 			],
 			"source": "MM",
 			"page": 225,
+			"otherSources": [
+				{
+					"source": "KftGV"
+				}
+			],
 			"size": [
 				"M"
 			],
@@ -21825,6 +22132,9 @@
 				"type": "internal",
 				"path": "bestiary/duodrone.mp3"
 			},
+			"attachedItems": [
+				"javelin|phb"
+			],
 			"senseTags": [
 				"U"
 			],
@@ -22273,6 +22583,9 @@
 				},
 				{
 					"source": "JttRC"
+				},
+				{
+					"source": "KftGV"
 				}
 			],
 			"size": [
@@ -22406,6 +22719,9 @@
 				"type": "internal",
 				"path": "bestiary/efreeti.mp3"
 			},
+			"attachedItems": [
+				"scimitar|phb"
+			],
 			"senseTags": [
 				"SD"
 			],
@@ -22838,6 +23154,9 @@
 				"type": "internal",
 				"path": "bestiary/empyrean.mp3"
 			},
+			"attachedItems": [
+				"maul|phb"
+			],
 			"traitTags": [
 				"Legendary Resistances",
 				"Magic Resistance",
@@ -22888,6 +23207,9 @@
 				},
 				{
 					"source": "EGW"
+				},
+				{
+					"source": "KftGV"
 				}
 			],
 			"size": [
@@ -23008,12 +23330,29 @@
 					"entries": [
 						"Some erinyes carry a {@item rope of entanglement} (detailed in the Dungeon Master's Guide). When such an erinyes uses its Multiattack, the erinyes can use the rope in place of two of the attacks."
 					]
+				},
+				{
+					"type": "variant",
+					"name": "Summon Devil (1/Day)",
+					"entries": [
+						"The devil chooses what to summon and attempts a magical summoning.",
+						"An erinyes has a {@chance 50|50 percent} chance of summoning {@dice 3d6} {@creature spined devil||spined devils}, {@dice 1d6} {@creature bearded devil||bearded devils}, or one {@creature erinyes}.",
+						"A summoned devil appears in an unoccupied space within 60 feet of its summoner, acts as an ally of its summoner, and can't summon other devils. It remains for 1 minute, until it or its summoner dies, or until its summoner dismisses it as an action."
+					],
+					"_version": {
+						"name": "Erinyes (Summoner)",
+						"addAs": "action"
+					}
 				}
 			],
 			"soundClip": {
 				"type": "internal",
 				"path": "bestiary/erinyes.mp3"
 			},
+			"attachedItems": [
+				"longbow|phb",
+				"longsword|phb"
+			],
 			"traitTags": [
 				"Magic Resistance"
 			],
@@ -23355,6 +23694,10 @@
 				"type": "internal",
 				"path": "bestiary/ettin.mp3"
 			},
+			"attachedItems": [
+				"battleaxe|phb",
+				"morningstar|phb"
+			],
 			"senseTags": [
 				"D"
 			],
@@ -23457,7 +23800,7 @@
 				{
 					"name": "Superior Invisibility",
 					"entries": [
-						"As a bonus action, the dragon can magically turn {@condition invisible} until its concentration ends (as if concentrating on a spell). Any equipment the dragon wears or carries is {@condition invisible} with it."
+						"As a bonus action, the dragon can magically turn {@condition invisible} until its {@status concentration} ends (as if {@status concentration||concentrating} on a spell). Any equipment the dragon wears or carries is {@condition invisible} with it."
 					]
 				},
 				{
@@ -23617,7 +23960,7 @@
 				{
 					"name": "Superior Invisibility",
 					"entries": [
-						"As a bonus action, the dragon can magically turn {@condition invisible} until its concentration ends (as if concentrating on a spell). Any equipment the dragon wears or carries is {@condition invisible} with it."
+						"As a bonus action, the dragon can magically turn {@condition invisible} until its {@status concentration} ends (as if {@status concentration||concentrating} on a spell). Any equipment the dragon wears or carries is {@condition invisible} with it."
 					]
 				},
 				{
@@ -23774,7 +24117,7 @@
 				{
 					"name": "Superior Invisibility",
 					"entries": [
-						"As a bonus action, the dragon can magically turn {@condition invisible} until its concentration ends (as if concentrating on a spell). Any equipment the dragon wears or carries is {@condition invisible} with it."
+						"As a bonus action, the dragon can magically turn {@condition invisible} until its {@status concentration} ends (as if {@status concentration||concentrating} on a spell). Any equipment the dragon wears or carries is {@condition invisible} with it."
 					]
 				},
 				{
@@ -23927,7 +24270,7 @@
 				{
 					"name": "Superior Invisibility",
 					"entries": [
-						"As a bonus action, the dragon can magically turn {@condition invisible} until its concentration ends (as if concentrating on a spell). Any equipment the dragon wears or carries is {@condition invisible} with it."
+						"As a bonus action, the dragon can magically turn {@condition invisible} until its {@status concentration} ends (as if {@status concentration||concentrating} on a spell). Any equipment the dragon wears or carries is {@condition invisible} with it."
 					]
 				},
 				{
@@ -24083,7 +24426,7 @@
 				{
 					"name": "Superior Invisibility",
 					"entries": [
-						"As a bonus action, the dragon can magically turn {@condition invisible} until its concentration ends (as if concentrating on a spell). Any equipment the dragon wears or carries is {@condition invisible} with it."
+						"As a bonus action, the dragon can magically turn {@condition invisible} until its {@status concentration} ends (as if {@status concentration||concentrating} on a spell). Any equipment the dragon wears or carries is {@condition invisible} with it."
 					]
 				},
 				{
@@ -24248,7 +24591,7 @@
 				{
 					"name": "Superior Invisibility",
 					"entries": [
-						"As a bonus action, the dragon can magically turn {@condition invisible} until its concentration ends (as if concentrating on a spell). Any equipment the dragon wears or carries is {@condition invisible} with it."
+						"As a bonus action, the dragon can magically turn {@condition invisible} until its {@status concentration} ends (as if {@status concentration||concentrating} on a spell). Any equipment the dragon wears or carries is {@condition invisible} with it."
 					]
 				},
 				{
@@ -24402,7 +24745,7 @@
 				{
 					"name": "Superior Invisibility",
 					"entries": [
-						"As a bonus action, the dragon can magically turn {@condition invisible} until its concentration ends (as if concentrating on a spell). Any equipment the dragon wears or carries is {@condition invisible} with it."
+						"As a bonus action, the dragon can magically turn {@condition invisible} until its {@status concentration} ends (as if {@status concentration||concentrating} on a spell). Any equipment the dragon wears or carries is {@condition invisible} with it."
 					]
 				},
 				{
@@ -24773,6 +25116,9 @@
 				"type": "internal",
 				"path": "bestiary/fire-giant.mp3"
 			},
+			"attachedItems": [
+				"greatsword|phb"
+			],
 			"actionTags": [
 				"Multiattack"
 			],
@@ -24977,6 +25323,9 @@
 				},
 				{
 					"source": "JttRC"
+				},
+				{
+					"source": "DSotDQ"
 				}
 			],
 			"size": [
@@ -25469,6 +25818,9 @@
 				},
 				{
 					"source": "IDRotF"
+				},
+				{
+					"source": "KftGV"
 				}
 			],
 			"size": [
@@ -25592,6 +25944,9 @@
 				},
 				{
 					"source": "CM"
+				},
+				{
+					"source": "KftGV"
 				}
 			],
 			"size": [
@@ -25674,6 +26029,9 @@
 				"type": "internal",
 				"path": "bestiary/flying-sword.mp3"
 			},
+			"attachedItems": [
+				"longsword|phb"
+			],
 			"traitTags": [
 				"Antimagic Susceptibility",
 				"False Appearance"
@@ -25785,6 +26143,9 @@
 				"type": "internal",
 				"path": "bestiary/fomorian.mp3"
 			},
+			"attachedItems": [
+				"greatclub|phb"
+			],
 			"senseTags": [
 				"SD"
 			],
@@ -25822,6 +26183,12 @@
 				},
 				{
 					"source": "WBtW"
+				},
+				{
+					"source": "PSX"
+				},
+				{
+					"source": "KftGV"
 				}
 			],
 			"size": [
@@ -26008,6 +26375,9 @@
 				"type": "internal",
 				"path": "bestiary/frost-giant.mp3"
 			},
+			"attachedItems": [
+				"greataxe|phb"
+			],
 			"actionTags": [
 				"Multiattack"
 			],
@@ -26046,6 +26416,9 @@
 				},
 				{
 					"source": "WBtW"
+				},
+				{
+					"source": "KftGV"
 				}
 			],
 			"size": [
@@ -26132,7 +26505,7 @@
 				{
 					"name": "Animate Boulders (1/Day)",
 					"entries": [
-						"The galeb duhr magically animates up to two boulders it can see within 60 feet of it. A boulder has statistics like those of a galeb duhr, except it has Intelligence 1 and Charisma 1, it can't be {@condition charmed} or {@condition frightened}, and it lacks this action option. A boulder remains animated as long as the galeb duhr maintains concentration, up to 1 minute (as if concentrating on a spell)."
+						"The galeb duhr magically animates up to two boulders it can see within 60 feet of it. A boulder has statistics like those of a galeb duhr, except it has Intelligence 1 and Charisma 1, it can't be {@condition charmed} or {@condition frightened}, and it lacks this action option. A boulder remains animated as long as the galeb duhr maintains {@status concentration}, up to 1 minute (as if {@status concentration||concentrating} on a spell)."
 					]
 				}
 			],
@@ -26591,6 +26964,9 @@
 				},
 				{
 					"source": "BGDIA"
+				},
+				{
+					"source": "DSotDQ"
 				}
 			],
 			"size": [
@@ -26772,6 +27148,12 @@
 				},
 				{
 					"source": "LoX"
+				},
+				{
+					"source": "DSotDQ"
+				},
+				{
+					"source": "KftGV"
 				}
 			],
 			"size": [
@@ -26974,6 +27356,9 @@
 				},
 				{
 					"source": "DoSI"
+				},
+				{
+					"source": "KftGV"
 				}
 			],
 			"size": [
@@ -27261,6 +27646,9 @@
 				},
 				{
 					"source": "TCE"
+				},
+				{
+					"source": "PSX"
 				}
 			],
 			"size": [
@@ -27455,6 +27843,9 @@
 				},
 				{
 					"source": "TCE"
+				},
+				{
+					"source": "PSX"
 				}
 			],
 			"size": [
@@ -28078,6 +28469,9 @@
 				},
 				{
 					"source": "WDMM"
+				},
+				{
+					"source": "PSX"
 				}
 			],
 			"size": [
@@ -28482,6 +28876,9 @@
 				},
 				{
 					"source": "JttRC"
+				},
+				{
+					"source": "KftGV"
 				}
 			],
 			"size": [
@@ -28630,6 +29027,9 @@
 				},
 				{
 					"source": "CRCotN"
+				},
+				{
+					"source": "DSotDQ"
 				}
 			],
 			"size": [
@@ -29109,6 +29509,9 @@
 				},
 				{
 					"source": "JttRC"
+				},
+				{
+					"source": "DSotDQ"
 				}
 			],
 			"size": [
@@ -29313,6 +29716,12 @@
 				},
 				{
 					"source": "JttRC"
+				},
+				{
+					"source": "DSotDQ"
+				},
+				{
+					"source": "PSX"
 				}
 			],
 			"size": [
@@ -29455,6 +29864,12 @@
 				},
 				{
 					"source": "CRCotN"
+				},
+				{
+					"source": "DSotDQ"
+				},
+				{
+					"source": "PSX"
 				}
 			],
 			"size": [
@@ -29587,6 +30002,9 @@
 				},
 				{
 					"source": "WBtW"
+				},
+				{
+					"source": "KftGV"
 				}
 			],
 			"size": [
@@ -29819,6 +30237,9 @@
 				},
 				{
 					"source": "EGW"
+				},
+				{
+					"source": "PSX"
 				}
 			],
 			"size": [
@@ -29986,6 +30407,9 @@
 				},
 				{
 					"source": "WBtW"
+				},
+				{
+					"source": "PSX"
 				}
 			],
 			"size": [
@@ -30113,6 +30537,9 @@
 				},
 				{
 					"source": "JttRC"
+				},
+				{
+					"source": "KftGV"
 				}
 			],
 			"size": [
@@ -30424,6 +30851,9 @@
 				"type": "internal",
 				"path": "bestiary/githyanki-warrior.mp3"
 			},
+			"attachedItems": [
+				"greatsword|phb"
+			],
 			"actionTags": [
 				"Multiattack"
 			],
@@ -30927,6 +31357,9 @@
 				},
 				{
 					"source": "CRCotN"
+				},
+				{
+					"source": "KftGV"
 				}
 			],
 			"size": [
@@ -31026,6 +31459,9 @@
 				"type": "internal",
 				"path": "bestiary/gladiator.mp3"
 			},
+			"attachedItems": [
+				"spear|phb"
+			],
 			"traitTags": [
 				"Brute"
 			],
@@ -31162,6 +31598,10 @@
 				"type": "internal",
 				"path": "bestiary/gnoll.mp3"
 			},
+			"attachedItems": [
+				"longbow|phb",
+				"spear|phb"
+			],
 			"traitTags": [
 				"Rampage"
 			],
@@ -31414,6 +31854,10 @@
 				"type": "internal",
 				"path": "bestiary/gnoll-pack-lord.mp3"
 			},
+			"attachedItems": [
+				"glaive|phb",
+				"longbow|phb"
+			],
 			"traitTags": [
 				"Rampage"
 			],
@@ -31603,6 +32047,9 @@
 				},
 				{
 					"source": "CRCotN"
+				},
+				{
+					"source": "DSotDQ"
 				}
 			],
 			"size": [
@@ -31690,6 +32137,10 @@
 					"source": "RMBRE"
 				}
 			],
+			"attachedItems": [
+				"scimitar|phb",
+				"shortbow|phb"
+			],
 			"senseTags": [
 				"D"
 			],
@@ -31738,6 +32189,9 @@
 				},
 				{
 					"source": "WBtW"
+				},
+				{
+					"source": "KftGV"
 				}
 			],
 			"size": [
@@ -31833,6 +32287,10 @@
 				"type": "internal",
 				"path": "bestiary/goblin-boss.mp3"
 			},
+			"attachedItems": [
+				"javelin|phb",
+				"scimitar|phb"
+			],
 			"senseTags": [
 				"D"
 			],
@@ -32385,6 +32843,9 @@
 				},
 				{
 					"source": "GoS"
+				},
+				{
+					"source": "KftGV"
 				}
 			],
 			"size": [
@@ -32508,7 +32969,7 @@
 					"name": "Gray Ooze (Psychic)",
 					"source": "MM",
 					"_mod": {
-						"trait": {
+						"action": {
 							"mode": "appendArr",
 							"items": {
 								"name": "Psychic Crush {@recharge 5}",
@@ -32536,6 +32997,9 @@
 				},
 				{
 					"source": "WBtW"
+				},
+				{
+					"source": "KftGV"
 				}
 			],
 			"size": [
@@ -32695,6 +33159,9 @@
 				"type": "internal",
 				"path": "bestiary/gray-slaad.mp3"
 			},
+			"attachedItems": [
+				"greatsword|phb"
+			],
 			"traitTags": [
 				"Magic Resistance",
 				"Magic Weapons",
@@ -33058,7 +33525,7 @@
 				{
 					"name": "Invisible Passage",
 					"entries": [
-						"The hag magically turns {@condition invisible} until she attacks or casts a spell, or until her concentration ends (as if concentrating on a spell). While {@condition invisible}, she leaves no physical evidence of her passage, so she can be tracked only by magic. Any equipment she wears or carries is {@condition invisible} with her."
+						"The hag magically turns {@condition invisible} until she attacks or casts a spell, or until her {@status concentration} ends (as if {@status concentration||concentrating} on a spell). While {@condition invisible}, she leaves no physical evidence of her passage, so she can be tracked only by magic. Any equipment she wears or carries is {@condition invisible} with her."
 					]
 				}
 			],
@@ -33262,6 +33729,9 @@
 				},
 				{
 					"source": "IDRotF"
+				},
+				{
+					"source": "DSotDQ"
 				}
 			],
 			"size": [
@@ -33479,6 +33949,9 @@
 				},
 				{
 					"source": "CM"
+				},
+				{
+					"source": "KftGV"
 				}
 			],
 			"size": [
@@ -33608,6 +34081,12 @@
 				},
 				{
 					"source": "CM"
+				},
+				{
+					"source": "DSotDQ"
+				},
+				{
+					"source": "KftGV"
 				}
 			],
 			"size": [
@@ -33719,6 +34198,9 @@
 				},
 				{
 					"source": "CM"
+				},
+				{
+					"source": "DSotDQ"
 				}
 			],
 			"size": [
@@ -34130,6 +34612,12 @@
 				},
 				{
 					"source": "LoX"
+				},
+				{
+					"source": "DSotDQ"
+				},
+				{
+					"source": "KftGV"
 				}
 			],
 			"size": [
@@ -34195,6 +34683,9 @@
 				"type": "internal",
 				"path": "bestiary/guard.mp3"
 			},
+			"attachedItems": [
+				"spear|phb"
+			],
 			"languageTags": [
 				"C",
 				"X"
@@ -34644,6 +35135,9 @@
 				},
 				{
 					"source": "IDRotF"
+				},
+				{
+					"source": "DSotDQ"
 				}
 			],
 			"size": [
@@ -34713,6 +35207,10 @@
 				"type": "internal",
 				"path": "bestiary/half-ogre.mp3"
 			},
+			"attachedItems": [
+				"battleaxe|phb",
+				"javelin|phb"
+			],
 			"senseTags": [
 				"D"
 			],
@@ -34838,6 +35336,11 @@
 				"type": "internal",
 				"path": "bestiary/half-red-dragon-veteran.mp3"
 			},
+			"attachedItems": [
+				"heavy crossbow|phb",
+				"longsword|phb",
+				"shortsword|phb"
+			],
 			"senseTags": [
 				"B",
 				"D"
@@ -34968,6 +35471,9 @@
 				"type": "internal",
 				"path": "bestiary/harpy.mp3"
 			},
+			"attachedItems": [
+				"club|phb"
+			],
 			"actionTags": [
 				"Multiattack"
 			],
@@ -35122,6 +35628,9 @@
 				},
 				{
 					"source": "CM"
+				},
+				{
+					"source": "KftGV"
 				}
 			],
 			"size": [
@@ -35263,6 +35772,9 @@
 				},
 				{
 					"source": "JttRC"
+				},
+				{
+					"source": "KftGV"
 				}
 			],
 			"size": [
@@ -35364,6 +35876,9 @@
 				"type": "internal",
 				"path": "bestiary/helmed-horror.mp3"
 			},
+			"attachedItems": [
+				"longsword|phb"
+			],
 			"traitTags": [
 				"Magic Resistance",
 				"Spell Immunity"
@@ -35678,6 +36193,9 @@
 				"type": "internal",
 				"path": "bestiary/hill-giant.mp3"
 			},
+			"attachedItems": [
+				"greatclub|phb"
+			],
 			"actionTags": [
 				"Multiattack"
 			],
@@ -35848,6 +36366,9 @@
 				},
 				{
 					"source": "WBtW"
+				},
+				{
+					"source": "DSotDQ"
 				}
 			],
 			"size": [
@@ -35927,6 +36448,10 @@
 				"type": "internal",
 				"path": "bestiary/hobgoblin.mp3"
 			},
+			"attachedItems": [
+				"longbow|phb",
+				"longsword|phb"
+			],
 			"senseTags": [
 				"D"
 			],
@@ -35966,6 +36491,9 @@
 				},
 				{
 					"source": "BGDIA"
+				},
+				{
+					"source": "DSotDQ"
 				}
 			],
 			"size": [
@@ -36056,6 +36584,10 @@
 				"type": "internal",
 				"path": "bestiary/hobgoblin-captain.mp3"
 			},
+			"attachedItems": [
+				"greatsword|phb",
+				"javelin|phb"
+			],
 			"senseTags": [
 				"D"
 			],
@@ -36092,6 +36624,9 @@
 				},
 				{
 					"source": "BGDIA"
+				},
+				{
+					"source": "DSotDQ"
 				}
 			],
 			"size": [
@@ -36202,6 +36737,10 @@
 				"type": "internal",
 				"path": "bestiary/hobgoblin-warlord.mp3"
 			},
+			"attachedItems": [
+				"javelin|phb",
+				"longsword|phb"
+			],
 			"senseTags": [
 				"D"
 			],
@@ -36355,6 +36894,9 @@
 				},
 				{
 					"source": "LoX"
+				},
+				{
+					"source": "KftGV"
 				}
 			],
 			"size": [
@@ -36579,6 +37121,21 @@
 					]
 				}
 			],
+			"variant": [
+				{
+					"type": "variant",
+					"name": "Summon Devil (1/Day)",
+					"entries": [
+						"The devil chooses what to summon and attempts a magical summoning.",
+						"A horned devil has a {@chance 30|30 percent} chance of summoning one horned devil.",
+						"A summoned devil appears in an unoccupied space within 60 feet of its summoner, acts as an ally of its summoner, and can't summon other devils. It remains for 1 minute, until it or its summoner dies, or until its summoner dismisses it as an action."
+					],
+					"_version": {
+						"name": "Horned Devil (Summoner)",
+						"addAs": "action"
+					}
+				}
+			],
 			"soundClip": {
 				"type": "internal",
 				"path": "bestiary/horned-devil.mp3"
@@ -36636,6 +37193,9 @@
 				},
 				{
 					"source": "EGW"
+				},
+				{
+					"source": "PSX"
 				}
 			],
 			"size": [
@@ -37103,6 +37663,19 @@
 						"name": "Ice Devil (Spear)",
 						"addHeadersAs": "action"
 					}
+				},
+				{
+					"type": "variant",
+					"name": "Summon Devil (1/Day)",
+					"entries": [
+						"The devil chooses what to summon and attempts a magical summoning.",
+						"An ice devil has a {@chance 60|60 percent} chance of summoning one ice devil.",
+						"A summoned devil appears in an unoccupied space within 60 feet of its summoner, acts as an ally of its summoner, and can't summon other devils. It remains for 1 minute, until it or its summoner dies, or until its summoner dismisses it as an action."
+					],
+					"_version": {
+						"name": "Ice Devil (Summoner)",
+						"addAs": "action"
+					}
 				}
 			],
 			"soundClip": {
@@ -37161,6 +37734,9 @@
 				},
 				{
 					"source": "CM"
+				},
+				{
+					"source": "KftGV"
 				}
 			],
 			"size": [
@@ -37336,6 +37912,9 @@
 				},
 				{
 					"source": "CM"
+				},
+				{
+					"source": "KftGV"
 				}
 			],
 			"size": [
@@ -37432,7 +38011,7 @@
 				{
 					"name": "Invisibility",
 					"entries": [
-						"The imp magically turns {@condition invisible} until it attacks, or until its concentration ends (as if concentrating on a spell). Any equipment the imp wears or carries is {@condition invisible} with it."
+						"The imp magically turns {@condition invisible} until it attacks, or until its {@status concentration} ends (as if {@status concentration||concentrating} on a spell). Any equipment the imp wears or carries is {@condition invisible} with it."
 					]
 				}
 			],
@@ -37518,6 +38097,9 @@
 				},
 				{
 					"source": "CRCotN"
+				},
+				{
+					"source": "KftGV"
 				}
 			],
 			"size": [
@@ -37843,6 +38425,9 @@
 				},
 				{
 					"source": "CRCotN"
+				},
+				{
+					"source": "KftGV"
 				}
 			],
 			"size": [
@@ -38340,6 +38925,9 @@
 				"type": "internal",
 				"path": "bestiary/jackalwere.mp3"
 			},
+			"attachedItems": [
+				"scimitar|phb"
+			],
 			"traitTags": [
 				"Keen Senses",
 				"Pack Tactics",
@@ -38465,6 +39053,10 @@
 				"type": "internal",
 				"path": "bestiary/kenku.mp3"
 			},
+			"attachedItems": [
+				"shortbow|phb",
+				"shortsword|phb"
+			],
 			"traitTags": [
 				"Ambusher"
 			],
@@ -38653,6 +39245,12 @@
 				},
 				{
 					"source": "JttRC"
+				},
+				{
+					"source": "DSotDQ"
+				},
+				{
+					"source": "KftGV"
 				}
 			],
 			"size": [
@@ -38746,6 +39344,10 @@
 				"type": "internal",
 				"path": "bestiary/knight.mp3"
 			},
+			"attachedItems": [
+				"greatsword|phb",
+				"heavy crossbow|phb"
+			],
 			"actionTags": [
 				"Multiattack",
 				"Parry"
@@ -38888,6 +39490,10 @@
 				"type": "internal",
 				"path": "bestiary/kobold.mp3"
 			},
+			"attachedItems": [
+				"dagger|phb",
+				"sling|phb"
+			],
 			"traitTags": [
 				"Pack Tactics",
 				"Sunlight Sensitivity"
@@ -39261,6 +39867,10 @@
 				"type": "internal",
 				"path": "bestiary/kuo-toa.mp3"
 			},
+			"attachedItems": [
+				"net|phb",
+				"spear|phb"
+			],
 			"traitTags": [
 				"Amphibious",
 				"Sunlight Sensitivity"
@@ -39928,6 +40538,9 @@
 				"type": "internal",
 				"path": "bestiary/lamia.mp3"
 			},
+			"attachedItems": [
+				"dagger|phb"
+			],
 			"senseTags": [
 				"D"
 			],
@@ -40363,6 +40976,9 @@
 				},
 				{
 					"source": "ToA"
+				},
+				{
+					"source": "KftGV"
 				}
 			],
 			"size": [
@@ -40473,6 +41089,9 @@
 				},
 				{
 					"source": "JttRC"
+				},
+				{
+					"source": "KftGV"
 				}
 			],
 			"size": [
@@ -40647,6 +41266,9 @@
 				"type": "internal",
 				"path": "bestiary/lizard-king-_-queen.mp3"
 			},
+			"attachedItems": [
+				"trident|phb"
+			],
 			"traitTags": [
 				"Hold Breath"
 			],
@@ -40781,6 +41403,9 @@
 				"type": "internal",
 				"path": "bestiary/lizard-king-_-queen.mp3"
 			},
+			"attachedItems": [
+				"trident|phb"
+			],
 			"traitTags": [
 				"Hold Breath"
 			],
@@ -40944,6 +41569,9 @@
 				"type": "internal",
 				"path": "bestiary/lizardfolk.mp3"
 			},
+			"attachedItems": [
+				"javelin|phb"
+			],
 			"traitTags": [
 				"Hold Breath"
 			],
@@ -41226,6 +41854,12 @@
 				},
 				{
 					"source": "LoX"
+				},
+				{
+					"source": "DSotDQ"
+				},
+				{
+					"source": "KftGV"
 				}
 			],
 			"size": [
@@ -41354,6 +41988,9 @@
 				"type": "internal",
 				"path": "bestiary/mage.mp3"
 			},
+			"attachedItems": [
+				"dagger|phb"
+			],
 			"languageTags": [
 				"X"
 			],
@@ -41922,6 +42559,9 @@
 				},
 				{
 					"source": "JttRC"
+				},
+				{
+					"source": "DSotDQ"
 				}
 			],
 			"size": [
@@ -42056,6 +42696,9 @@
 				},
 				{
 					"source": "JttRC"
+				},
+				{
+					"source": "DSotDQ"
 				}
 			],
 			"size": [
@@ -42204,6 +42847,9 @@
 				"type": "internal",
 				"path": "bestiary/marid.mp3"
 			},
+			"attachedItems": [
+				"trident|phb"
+			],
 			"traitTags": [
 				"Amphibious"
 			],
@@ -42461,6 +43107,9 @@
 				"type": "internal",
 				"path": "bestiary/marilith.mp3"
 			},
+			"attachedItems": [
+				"longsword|phb"
+			],
 			"traitTags": [
 				"Magic Resistance",
 				"Magic Weapons"
@@ -42520,6 +43169,12 @@
 				},
 				{
 					"source": "EGW"
+				},
+				{
+					"source": "DSotDQ"
+				},
+				{
+					"source": "KftGV"
 				}
 			],
 			"size": [
@@ -42703,6 +43358,10 @@
 				"type": "internal",
 				"path": "bestiary/medusa.mp3"
 			},
+			"attachedItems": [
+				"longbow|phb",
+				"shortsword|phb"
+			],
 			"senseTags": [
 				"D"
 			],
@@ -42811,6 +43470,9 @@
 				"type": "internal",
 				"path": "bestiary/merfolk.mp3"
 			},
+			"attachedItems": [
+				"spear|phb"
+			],
 			"traitTags": [
 				"Amphibious"
 			],
@@ -42859,6 +43521,9 @@
 				},
 				{
 					"source": "WBtW"
+				},
+				{
+					"source": "DSotDQ"
 				}
 			],
 			"size": [
@@ -43141,6 +43806,9 @@
 				"type": "internal",
 				"path": "bestiary/mezzoloth.mp3"
 			},
+			"attachedItems": [
+				"trident|phb"
+			],
 			"traitTags": [
 				"Magic Resistance",
 				"Magic Weapons"
@@ -43218,6 +43886,9 @@
 				},
 				{
 					"source": "WBtW"
+				},
+				{
+					"source": "KftGV"
 				}
 			],
 			"size": [
@@ -43371,6 +44042,9 @@
 				},
 				{
 					"source": "LoX"
+				},
+				{
+					"source": "KftGV"
 				}
 			],
 			"size": [
@@ -43850,6 +44524,9 @@
 				"type": "internal",
 				"path": "bestiary/minotaur.mp3"
 			},
+			"attachedItems": [
+				"greataxe|phb"
+			],
 			"traitTags": [
 				"Charge",
 				"Reckless"
@@ -43903,6 +44580,12 @@
 				},
 				{
 					"source": "IMR"
+				},
+				{
+					"source": "DSotDQ"
+				},
+				{
+					"source": "KftGV"
 				}
 			],
 			"size": [
@@ -43981,6 +44664,9 @@
 				"type": "internal",
 				"path": "bestiary/minotaur-skeleton.mp3"
 			},
+			"attachedItems": [
+				"greataxe|phb"
+			],
 			"traitTags": [
 				"Charge"
 			],
@@ -44021,6 +44707,9 @@
 				},
 				{
 					"source": "CM"
+				},
+				{
+					"source": "KftGV"
 				}
 			],
 			"size": [
@@ -44103,6 +44792,10 @@
 				"type": "internal",
 				"path": "bestiary/monodrone.mp3"
 			},
+			"attachedItems": [
+				"dagger|phb",
+				"javelin|phb"
+			],
 			"senseTags": [
 				"U"
 			],
@@ -44295,6 +44988,9 @@
 				},
 				{
 					"source": "GoS"
+				},
+				{
+					"source": "KftGV"
 				}
 			],
 			"size": [
@@ -44394,6 +45090,9 @@
 				},
 				{
 					"source": "CM"
+				},
+				{
+					"source": "DSotDQ"
 				}
 			],
 			"size": [
@@ -44785,7 +45484,8 @@
 				"stunned"
 			],
 			"hasToken": true,
-			"hasFluff": true
+			"hasFluff": true,
+			"hasFluffImages": true
 		},
 		{
 			"name": "Myconid Adult",
@@ -44800,6 +45500,9 @@
 				},
 				{
 					"source": "DoSI"
+				},
+				{
+					"source": "KftGV"
 				}
 			],
 			"size": [
@@ -44950,6 +45653,9 @@
 				},
 				{
 					"source": "IDRotF"
+				},
+				{
+					"source": "KftGV"
 				}
 			],
 			"size": [
@@ -45516,6 +46222,9 @@
 				},
 				{
 					"source": "JttRC"
+				},
+				{
+					"source": "KftGV"
 				}
 			],
 			"size": [
@@ -46016,6 +46725,12 @@
 				},
 				{
 					"source": "JttRC"
+				},
+				{
+					"source": "DSotDQ"
+				},
+				{
+					"source": "KftGV"
 				}
 			],
 			"size": [
@@ -46084,6 +46799,9 @@
 				"type": "internal",
 				"path": "bestiary/noble.mp3"
 			},
+			"attachedItems": [
+				"rapier|phb"
+			],
 			"actionTags": [
 				"Parry"
 			],
@@ -46138,6 +46856,9 @@
 				},
 				{
 					"source": "JttRC"
+				},
+				{
+					"source": "KftGV"
 				}
 			],
 			"size": [
@@ -46269,6 +46990,9 @@
 				},
 				{
 					"source": "TCE"
+				},
+				{
+					"source": "KftGV"
 				}
 			],
 			"size": [
@@ -46425,6 +47149,9 @@
 				"type": "internal",
 				"path": "bestiary/nycaloth.mp3"
 			},
+			"attachedItems": [
+				"greataxe|phb"
+			],
 			"traitTags": [
 				"Magic Resistance",
 				"Magic Weapons"
@@ -46770,6 +47497,12 @@
 				},
 				{
 					"source": "SjA"
+				},
+				{
+					"source": "DSotDQ"
+				},
+				{
+					"source": "KftGV"
 				}
 			],
 			"size": [
@@ -46839,6 +47572,10 @@
 				"type": "internal",
 				"path": "bestiary/ogre.mp3"
 			},
+			"attachedItems": [
+				"greatclub|phb",
+				"javelin|phb"
+			],
 			"senseTags": [
 				"D"
 			],
@@ -46951,6 +47688,9 @@
 				"type": "internal",
 				"path": "bestiary/ogre-zombie.mp3"
 			},
+			"attachedItems": [
+				"morningstar|phb"
+			],
 			"traitTags": [
 				"Undead Fortitude"
 			],
@@ -47007,6 +47747,9 @@
 				},
 				{
 					"source": "JttRC"
+				},
+				{
+					"source": "KftGV"
 				}
 			],
 			"size": [
@@ -47128,6 +47871,9 @@
 				"type": "internal",
 				"path": "bestiary/oni.mp3"
 			},
+			"attachedItems": [
+				"glaive|phb"
+			],
 			"traitTags": [
 				"Magic Weapons",
 				"Regeneration"
@@ -47294,6 +48040,10 @@
 					"source": "PotA"
 				}
 			],
+			"attachedItems": [
+				"greataxe|phb",
+				"javelin|phb"
+			],
 			"traitTags": [
 				"Aggressive"
 			],
@@ -47453,6 +48203,9 @@
 				"type": "internal",
 				"path": "bestiary/orc-eye-of-gruumsh.mp3"
 			},
+			"attachedItems": [
+				"spear|phb"
+			],
 			"traitTags": [
 				"Aggressive"
 			],
@@ -47612,6 +48365,10 @@
 				"type": "internal",
 				"path": "bestiary/orc-war-chief.mp3"
 			},
+			"attachedItems": [
+				"greataxe|phb",
+				"spear|phb"
+			],
 			"traitTags": [
 				"Aggressive"
 			],
@@ -47751,6 +48508,10 @@
 				"type": "internal",
 				"path": "bestiary/orog.mp3"
 			},
+			"attachedItems": [
+				"greataxe|phb",
+				"javelin|phb"
+			],
 			"traitTags": [
 				"Aggressive"
 			],
@@ -48373,6 +49134,9 @@
 			"otherSources": [
 				{
 					"source": "ToA"
+				},
+				{
+					"source": "KftGV"
 				}
 			],
 			"size": [
@@ -49037,10 +49801,28 @@
 					]
 				}
 			],
+			"variant": [
+				{
+					"type": "variant",
+					"name": "Summon Devil (1/Day)",
+					"entries": [
+						"The devil chooses what to summon and attempts a magical summoning.",
+						"A pit fiend summons {@dice 2d4} {@creature bearded devil||bearded devils}, {@dice 1d4} {@creature barbed devil||barbed devils}, or one {@creature erinyes} with no chance of failure.",
+						"A summoned devil appears in an unoccupied space within 60 feet of its summoner, acts as an ally of its summoner, and can't summon other devils. It remains for 1 minute, until it or its summoner dies, or until its summoner dismisses it as an action."
+					],
+					"_version": {
+						"name": "Pit Fiend (Summoner)",
+						"addAs": "action"
+					}
+				}
+			],
 			"soundClip": {
 				"type": "internal",
 				"path": "bestiary/pit-fiend.mp3"
 			},
+			"attachedItems": [
+				"mace|phb"
+			],
 			"traitTags": [
 				"Magic Resistance",
 				"Magic Weapons"
@@ -49102,6 +49884,9 @@
 				},
 				{
 					"source": "WBtW"
+				},
+				{
+					"source": "KftGV"
 				}
 			],
 			"size": [
@@ -49176,7 +49961,7 @@
 				{
 					"name": "Superior Invisibility",
 					"entries": [
-						"The pixie magically turns {@condition invisible} until its concentration ends (as if concentrating on a spell). Any equipment the pixie wears or carries is {@condition invisible} with it."
+						"The pixie magically turns {@condition invisible} until its {@status concentration} ends (as if {@status concentration||concentrating} on a spell). Any equipment the pixie wears or carries is {@condition invisible} with it."
 					]
 				}
 			],
@@ -49363,6 +50148,9 @@
 				"type": "internal",
 				"path": "bestiary/planetar.mp3"
 			},
+			"attachedItems": [
+				"greatsword|phb"
+			],
 			"traitTags": [
 				"Magic Resistance"
 			],
@@ -49417,6 +50205,9 @@
 				},
 				{
 					"source": "IDRotF"
+				},
+				{
+					"source": "DSotDQ"
 				}
 			],
 			"size": [
@@ -49698,6 +50489,9 @@
 				},
 				{
 					"source": "CM"
+				},
+				{
+					"source": "KftGV"
 				}
 			],
 			"size": [
@@ -49970,6 +50764,9 @@
 				},
 				{
 					"source": "JttRC"
+				},
+				{
+					"source": "DSotDQ"
 				}
 			],
 			"size": [
@@ -50078,6 +50875,9 @@
 				"type": "internal",
 				"path": "bestiary/priest.mp3"
 			},
+			"attachedItems": [
+				"mace|phb"
+			],
 			"languageTags": [
 				"X"
 			],
@@ -50372,6 +51172,9 @@
 				},
 				{
 					"source": "LoX"
+				},
+				{
+					"source": "DSotDQ"
 				}
 			],
 			"size": [
@@ -50450,6 +51253,9 @@
 				"type": "internal",
 				"path": "bestiary/purple-worm.mp3"
 			},
+			"traitTags": [
+				"Tunneler"
+			],
 			"senseTags": [
 				"B",
 				"T"
@@ -50488,6 +51294,9 @@
 				},
 				{
 					"source": "WDMM"
+				},
+				{
+					"source": "KftGV"
 				}
 			],
 			"size": [
@@ -50579,6 +51388,9 @@
 				"type": "internal",
 				"path": "bestiary/quadrone.mp3"
 			},
+			"attachedItems": [
+				"shortbow|phb"
+			],
 			"senseTags": [
 				"U"
 			],
@@ -50996,6 +51808,9 @@
 				},
 				{
 					"source": "CRCotN"
+				},
+				{
+					"source": "KftGV"
 				}
 			],
 			"size": [
@@ -51089,7 +51904,7 @@
 				{
 					"name": "Invisibility",
 					"entries": [
-						"The quasit magically turns {@condition invisible} until it attacks or uses Scare, or until its concentration ends (as if concentrating on a spell). Any equipment the quasit wears or carries is {@condition invisible} with it."
+						"The quasit magically turns {@condition invisible} until it attacks or uses Scare, or until its {@status concentration} ends (as if {@status concentration||concentrating} on a spell). Any equipment the quasit wears or carries is {@condition invisible} with it."
 					]
 				}
 			],
@@ -51528,6 +52343,9 @@
 				},
 				{
 					"source": "WBtW"
+				},
+				{
+					"source": "KftGV"
 				}
 			],
 			"size": [
@@ -51611,6 +52429,9 @@
 				},
 				{
 					"source": "BGDIA"
+				},
+				{
+					"source": "DSotDQ"
 				}
 			],
 			"size": [
@@ -51804,6 +52625,9 @@
 				},
 				{
 					"source": "IDRotF"
+				},
+				{
+					"source": "DSotDQ"
 				}
 			],
 			"size": [
@@ -52128,7 +52952,7 @@
 					"name": "Swallow",
 					"entries": [
 						"The remorhaz makes one bite attack against a Medium or smaller creature it is grappling. If the attack hits, that creature takes the bite's damage and is swallowed, and the grapple ends. While swallowed, the creature is {@condition blinded} and {@condition restrained}, it has total cover against attacks and other effects outside the remorhaz, and it takes 21 ({@damage 6d6}) acid damage at the start of each of the remorhaz's turns.",
-						"If the remorhaz takes 30 damage or more on a single turn from a creature inside it, the remorhaz must succeed on a {@dc 15} Constitution saving throw at the end of that turn or regurgitate all swallowed creatures, which fall {@condition prone} in a space within 10 feet oft he remorhaz. If the remorhaz dies, a swallowed creature is no longer {@condition restrained} by it and can escape from the corpse using 15 feet of movement, exiting {@condition prone}."
+						"If the remorhaz takes 30 damage or more on a single turn from a creature inside it, the remorhaz must succeed on a {@dc 15} Constitution saving throw at the end of that turn or regurgitate all swallowed creatures, which fall {@condition prone} in a space within 10 feet of the remorhaz. If the remorhaz dies, a swallowed creature is no longer {@condition restrained} by it and can escape from the corpse using 15 feet of movement, exiting {@condition prone}."
 					]
 				}
 			],
@@ -52466,6 +53290,9 @@
 				},
 				{
 					"source": "JttRC"
+				},
+				{
+					"source": "KftGV"
 				}
 			],
 			"size": [
@@ -52845,6 +53672,9 @@
 				},
 				{
 					"source": "WBtW"
+				},
+				{
+					"source": "KftGV"
 				}
 			],
 			"size": [
@@ -53282,6 +54112,9 @@
 				"type": "internal",
 				"path": "bestiary/sahuagin.mp3"
 			},
+			"attachedItems": [
+				"spear|phb"
+			],
 			"senseTags": [
 				"SD"
 			],
@@ -53428,6 +54261,9 @@
 				"type": "internal",
 				"path": "bestiary/sahuagin-baron.mp3"
 			},
+			"attachedItems": [
+				"trident|phb"
+			],
 			"senseTags": [
 				"SD"
 			],
@@ -53655,6 +54491,9 @@
 				},
 				{
 					"source": "DoSI"
+				},
+				{
+					"source": "KftGV"
 				}
 			],
 			"size": [
@@ -53752,6 +54591,9 @@
 				"type": "internal",
 				"path": "bestiary/salamander.mp3"
 			},
+			"attachedItems": [
+				"spear|phb"
+			],
 			"senseTags": [
 				"D"
 			],
@@ -53798,6 +54640,9 @@
 				},
 				{
 					"source": "WBtW"
+				},
+				{
+					"source": "KftGV"
 				}
 			],
 			"size": [
@@ -53918,6 +54763,10 @@
 				"type": "internal",
 				"path": "bestiary/satyr.mp3"
 			},
+			"attachedItems": [
+				"shortbow|phb",
+				"shortsword|phb"
+			],
 			"traitTags": [
 				"Magic Resistance"
 			],
@@ -53957,6 +54806,9 @@
 				},
 				{
 					"source": "CM"
+				},
+				{
+					"source": "KftGV"
 				}
 			],
 			"size": [
@@ -54086,6 +54938,9 @@
 			"otherSources": [
 				{
 					"source": "WDMM"
+				},
+				{
+					"source": "PSX"
 				}
 			],
 			"size": [
@@ -54213,6 +55068,12 @@
 				},
 				{
 					"source": "JttRC"
+				},
+				{
+					"source": "DSotDQ"
+				},
+				{
+					"source": "KftGV"
 				}
 			],
 			"size": [
@@ -54302,6 +55163,10 @@
 				"type": "internal",
 				"path": "bestiary/scout.mp3"
 			},
+			"attachedItems": [
+				"longbow|phb",
+				"shortsword|phb"
+			],
 			"traitTags": [
 				"Keen Senses"
 			],
@@ -54881,6 +55746,9 @@
 				},
 				{
 					"source": "JttRC"
+				},
+				{
+					"source": "KftGV"
 				}
 			],
 			"size": [
@@ -55053,6 +55921,9 @@
 				},
 				{
 					"source": "JttRC"
+				},
+				{
+					"source": "KftGV"
 				}
 			],
 			"size": [
@@ -55199,6 +56070,9 @@
 				},
 				{
 					"source": "CRCotN"
+				},
+				{
+					"source": "KftGV"
 				}
 			],
 			"size": [
@@ -55375,7 +56249,7 @@
 					]
 				}
 			],
-			"action": [
+			"reaction": [
 				{
 					"name": "Shriek",
 					"entries": [
@@ -55676,6 +56550,12 @@
 				},
 				{
 					"source": "JttRC"
+				},
+				{
+					"source": "DSotDQ"
+				},
+				{
+					"source": "KftGV"
 				}
 			],
 			"size": [
@@ -55746,6 +56626,10 @@
 				"type": "internal",
 				"path": "bestiary/skeleton.mp3"
 			},
+			"attachedItems": [
+				"shortbow|phb",
+				"shortsword|phb"
+			],
 			"senseTags": [
 				"D"
 			],
@@ -55778,6 +56662,12 @@
 				},
 				{
 					"source": "CM"
+				},
+				{
+					"source": "DSotDQ"
+				},
+				{
+					"source": "KftGV"
 				}
 			],
 			"size": [
@@ -55881,6 +56771,9 @@
 				},
 				{
 					"source": "WDMM"
+				},
+				{
+					"source": "KftGV"
 				}
 			],
 			"size": [
@@ -56206,6 +57099,9 @@
 				"type": "internal",
 				"path": "bestiary/solar.mp3"
 			},
+			"attachedItems": [
+				"greatsword|phb"
+			],
 			"traitTags": [
 				"Magic Resistance"
 			],
@@ -56273,6 +57169,9 @@
 				},
 				{
 					"source": "SjA"
+				},
+				{
+					"source": "KftGV"
 				}
 			],
 			"size": [
@@ -56484,6 +57383,9 @@
 				},
 				{
 					"source": "JttRC"
+				},
+				{
+					"source": "KftGV"
 				}
 			],
 			"size": [
@@ -56618,6 +57520,12 @@
 				},
 				{
 					"source": "WDMM"
+				},
+				{
+					"source": "PSX"
+				},
+				{
+					"source": "KftGV"
 				}
 			],
 			"size": [
@@ -56716,6 +57624,9 @@
 				},
 				{
 					"source": "BGDIA"
+				},
+				{
+					"source": "KftGV"
 				}
 			],
 			"size": [
@@ -57077,6 +57988,9 @@
 				},
 				{
 					"source": "WBtW"
+				},
+				{
+					"source": "KftGV"
 				}
 			],
 			"size": [
@@ -57142,7 +58056,7 @@
 				{
 					"name": "Invisibility",
 					"entries": [
-						"The sprite magically turns {@condition invisible} until it attacks or casts a spell, or until its concentration ends (as if concentrating on a spell). Any equipment the sprite wears or carries is {@condition invisible} with it."
+						"The sprite magically turns {@condition invisible} until it attacks or casts a spell, or until its {@status concentration} ends (as if {@status concentration||concentrating} on a spell). Any equipment the sprite wears or carries is {@condition invisible} with it."
 					]
 				}
 			],
@@ -57154,6 +58068,10 @@
 				"type": "internal",
 				"path": "bestiary/sprite.mp3"
 			},
+			"attachedItems": [
+				"longsword|phb",
+				"shortbow|phb"
+			],
 			"languageTags": [
 				"C",
 				"E",
@@ -57241,6 +58159,9 @@
 				},
 				{
 					"source": "JttRC"
+				},
+				{
+					"source": "KftGV"
 				}
 			],
 			"size": [
@@ -57326,6 +58247,10 @@
 				"type": "internal",
 				"path": "bestiary/spy.mp3"
 			},
+			"attachedItems": [
+				"hand crossbow|phb",
+				"shortsword|phb"
+			],
 			"traitTags": [
 				"Sneak Attack"
 			],
@@ -57542,6 +58467,9 @@
 				},
 				{
 					"source": "DoSI"
+				},
+				{
+					"source": "KftGV"
 				}
 			],
 			"size": [
@@ -57756,6 +58684,9 @@
 				"type": "internal",
 				"path": "bestiary/stone-giant.mp3"
 			},
+			"attachedItems": [
+				"greatclub|phb"
+			],
 			"senseTags": [
 				"D"
 			],
@@ -57831,6 +58762,12 @@
 				},
 				{
 					"source": "JttRC"
+				},
+				{
+					"source": "DSotDQ"
+				},
+				{
+					"source": "KftGV"
 				}
 			],
 			"size": [
@@ -58120,6 +59057,9 @@
 				"type": "internal",
 				"path": "bestiary/storm-giant.mp3"
 			},
+			"attachedItems": [
+				"greatsword|phb"
+			],
 			"traitTags": [
 				"Amphibious"
 			],
@@ -58695,6 +59635,9 @@
 				},
 				{
 					"source": "LoX"
+				},
+				{
+					"source": "PSX"
 				}
 			],
 			"size": [
@@ -58945,6 +59888,12 @@
 				},
 				{
 					"source": "JttRC"
+				},
+				{
+					"source": "DSotDQ"
+				},
+				{
+					"source": "KftGV"
 				}
 			],
 			"size": [
@@ -60045,6 +60994,9 @@
 				},
 				{
 					"source": "LoX"
+				},
+				{
+					"source": "KftGV"
 				}
 			],
 			"size": [
@@ -60127,6 +61079,10 @@
 				"type": "internal",
 				"path": "bestiary/thug.mp3"
 			},
+			"attachedItems": [
+				"heavy crossbow|phb",
+				"mace|phb"
+			],
 			"traitTags": [
 				"Pack Tactics"
 			],
@@ -60310,6 +61266,9 @@
 				},
 				{
 					"source": "LoX"
+				},
+				{
+					"source": "DSotDQ"
 				}
 			],
 			"size": [
@@ -60530,6 +61489,9 @@
 				"type": "internal",
 				"path": "bestiary/tribal-warrior.mp3"
 			},
+			"attachedItems": [
+				"spear|phb"
+			],
 			"traitTags": [
 				"Pack Tactics"
 			],
@@ -60644,6 +61606,9 @@
 			"otherSources": [
 				{
 					"source": "ToA"
+				},
+				{
+					"source": "KftGV"
 				}
 			],
 			"size": [
@@ -60731,6 +61696,9 @@
 				"type": "internal",
 				"path": "bestiary/tridrone.mp3"
 			},
+			"attachedItems": [
+				"javelin|phb"
+			],
 			"senseTags": [
 				"U"
 			],
@@ -61625,6 +62593,9 @@
 				"type": "internal",
 				"path": "bestiary/ultroloth.mp3"
 			},
+			"attachedItems": [
+				"longsword|phb"
+			],
 			"traitTags": [
 				"Magic Resistance",
 				"Magic Weapons"
@@ -61773,6 +62744,9 @@
 				"type": "internal",
 				"path": "bestiary/umber-hulk.mp3"
 			},
+			"traitTags": [
+				"Tunneler"
+			],
 			"senseTags": [
 				"SD",
 				"T"
@@ -61816,6 +62790,9 @@
 				},
 				{
 					"source": "WBtW"
+				},
+				{
+					"source": "KftGV"
 				}
 			],
 			"size": [
@@ -62041,6 +63018,9 @@
 				},
 				{
 					"source": "CM"
+				},
+				{
+					"source": "DSotDQ"
 				}
 			],
 			"size": [
@@ -62891,6 +63871,9 @@
 				"type": "internal",
 				"path": "bestiary/vampire-warrior.mp3"
 			},
+			"attachedItems": [
+				"greatsword|phb"
+			],
 			"traitTags": [
 				"Legendary Resistances",
 				"Regeneration",
@@ -62998,6 +63981,12 @@
 				},
 				{
 					"source": "LoX"
+				},
+				{
+					"source": "DSotDQ"
+				},
+				{
+					"source": "KftGV"
 				}
 			],
 			"size": [
@@ -63082,6 +64071,11 @@
 				"type": "internal",
 				"path": "bestiary/veteran.mp3"
 			},
+			"attachedItems": [
+				"heavy crossbow|phb",
+				"longsword|phb",
+				"shortsword|phb"
+			],
 			"actionTags": [
 				"Multiattack"
 			],
@@ -63638,6 +64632,9 @@
 				},
 				{
 					"source": "CRCotN"
+				},
+				{
+					"source": "DSotDQ"
 				}
 			],
 			"size": [
@@ -63856,6 +64853,9 @@
 				},
 				{
 					"source": "CM"
+				},
+				{
+					"source": "DSotDQ"
 				}
 			],
 			"size": [
@@ -63968,6 +64968,9 @@
 				},
 				{
 					"source": "JttRC"
+				},
+				{
+					"source": "DSotDQ"
 				}
 			],
 			"size": [
@@ -64127,6 +65130,9 @@
 				},
 				{
 					"source": "JttRC"
+				},
+				{
+					"source": "DSotDQ"
 				}
 			],
 			"size": [
@@ -64326,6 +65332,9 @@
 				},
 				{
 					"source": "EGW"
+				},
+				{
+					"source": "KftGV"
 				}
 			],
 			"size": [
@@ -64448,6 +65457,9 @@
 				"type": "internal",
 				"path": "bestiary/werebear.mp3"
 			},
+			"attachedItems": [
+				"greataxe|phb"
+			],
 			"traitTags": [
 				"Keen Senses",
 				"Shapechanger"
@@ -64624,6 +65636,9 @@
 				"type": "internal",
 				"path": "bestiary/wereboar.mp3"
 			},
+			"attachedItems": [
+				"maul|phb"
+			],
 			"traitTags": [
 				"Charge",
 				"Shapechanger"
@@ -64796,6 +65811,10 @@
 				"type": "internal",
 				"path": "bestiary/wererat.mp3"
 			},
+			"attachedItems": [
+				"hand crossbow|phb",
+				"shortsword|phb"
+			],
 			"traitTags": [
 				"Keen Senses",
 				"Shapechanger"
@@ -64966,6 +65985,10 @@
 				"type": "internal",
 				"path": "bestiary/weretiger.mp3"
 			},
+			"attachedItems": [
+				"longbow|phb",
+				"scimitar|phb"
+			],
 			"traitTags": [
 				"Keen Senses",
 				"Pounce",
@@ -65160,6 +66183,9 @@
 				"type": "internal",
 				"path": "bestiary/werewolf.mp3"
 			},
+			"attachedItems": [
+				"spear|phb"
+			],
 			"traitTags": [
 				"Keen Senses",
 				"Shapechanger"
@@ -65429,6 +66455,9 @@
 				},
 				{
 					"source": "CM"
+				},
+				{
+					"source": "DSotDQ"
 				}
 			],
 			"size": [
@@ -65536,6 +66565,10 @@
 				"type": "internal",
 				"path": "bestiary/wight.mp3"
 			},
+			"attachedItems": [
+				"longbow|phb",
+				"longsword|phb"
+			],
 			"traitTags": [
 				"Sunlight Sensitivity"
 			],
@@ -65717,7 +66750,7 @@
 				{
 					"name": "Invisibility",
 					"entries": [
-						"The will-o'-wisp and its light magically become {@condition invisible} until it attacks or uses its Consume Life, or until its concentration ends (as if concentrating on a spell)."
+						"The will-o'-wisp and its light magically become {@condition invisible} until it attacks or uses its Consume Life, or until its {@status concentration} ends (as if {@status concentration||concentrating} on a spell)."
 					]
 				}
 			],
@@ -65856,6 +66889,9 @@
 				"type": "internal",
 				"path": "bestiary/winged-kobold.mp3"
 			},
+			"attachedItems": [
+				"dagger|phb"
+			],
 			"traitTags": [
 				"Pack Tactics",
 				"Sunlight Sensitivity"
@@ -65897,6 +66933,9 @@
 				},
 				{
 					"source": "IDRotF"
+				},
+				{
+					"source": "KftGV"
 				}
 			],
 			"size": [
@@ -66303,6 +67342,12 @@
 				},
 				{
 					"source": "JttRC"
+				},
+				{
+					"source": "DSotDQ"
+				},
+				{
+					"source": "KftGV"
 				}
 			],
 			"size": [
@@ -67293,6 +68338,9 @@
 				},
 				{
 					"source": "MOT"
+				},
+				{
+					"source": "DSotDQ"
 				}
 			],
 			"size": [
@@ -68721,6 +69769,12 @@
 				},
 				{
 					"source": "LoX"
+				},
+				{
+					"source": "DSotDQ"
+				},
+				{
+					"source": "KftGV"
 				}
 			],
 			"size": [
@@ -69255,6 +70309,9 @@
 			"otherSources": [
 				{
 					"source": "SKT"
+				},
+				{
+					"source": "DSotDQ"
 				}
 			],
 			"size": [
@@ -69861,6 +70918,10 @@
 				"type": "internal",
 				"path": "bestiary/yuan-ti-abomination.mp3"
 			},
+			"attachedItems": [
+				"longbow|phb",
+				"scimitar|phb"
+			],
 			"traitTags": [
 				"Magic Resistance",
 				"Shapechanger"
@@ -70068,6 +71129,10 @@
 				"type": "internal",
 				"path": "bestiary/yuan-ti-malison.mp3"
 			},
+			"attachedItems": [
+				"longbow|phb",
+				"scimitar|phb"
+			],
 			"traitTags": [
 				"Magic Resistance",
 				"Shapechanger"
@@ -70450,6 +71515,10 @@
 				"type": "internal",
 				"path": "bestiary/yuan-ti-malison.mp3"
 			},
+			"attachedItems": [
+				"longbow|phb",
+				"scimitar|phb"
+			],
 			"traitTags": [
 				"Magic Resistance",
 				"Shapechanger"
@@ -70621,6 +71690,10 @@
 				"type": "internal",
 				"path": "bestiary/yuan-ti-pureblood.mp3"
 			},
+			"attachedItems": [
+				"scimitar|phb",
+				"shortbow|phb"
+			],
 			"traitTags": [
 				"Magic Resistance"
 			],
@@ -70721,6 +71794,12 @@
 				},
 				{
 					"source": "DoSI"
+				},
+				{
+					"source": "DSotDQ"
+				},
+				{
+					"source": "KftGV"
 				}
 			],
 			"size": [

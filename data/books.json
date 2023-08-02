@@ -3459,6 +3459,9 @@
 		},
 		{
 			"name": "Astral Adventurer's Guide",
+			"alias": [
+				"Spelljammer: Astral Adventurer's Guide"
+			],
 			"id": "AAG",
 			"source": "AAG",
 			"group": "supplement",
@@ -3519,12 +3522,18 @@
 					]
 				},
 				{
+					"name": "Additional Spelljammer Tables"
+				},
+				{
 					"name": "Poster Map"
 				}
 			]
 		},
 		{
 			"name": "Boo's Astral Menagerie",
+			"alias": [
+				"Spelljammer: Boo's Astral Menagerie"
+			],
 			"id": "BAM",
 			"source": "BAM",
 			"group": "supplement",
@@ -3539,6 +3548,33 @@
 						"Astral Encounters",
 						"Bestiary"
 					]
+				}
+			]
+		},
+		{
+			"name": "Dungeon Master's Screen: Spelljammer",
+			"id": "ScreenSpelljammer",
+			"source": "ScreenSpelljammer",
+			"group": "screen",
+			"coverUrl": "img/covers/ScreenSpelljammer.png",
+			"published": "2022-08-16",
+			"contents": [
+				{
+					"name": "Screen"
+				}
+			]
+		},
+		{
+			"name": "Thieves' Gallery",
+			"id": "HAT-TG",
+			"source": "HAT-TG",
+			"group": "supplement-alt",
+			"coverUrl": "img/covers/TG.png",
+			"published": "2023-03-06",
+			"author": "Wizards RPG Team",
+			"contents": [
+				{
+					"name": "Thieves' Gallery"
 				}
 			]
 		}

@@ -172,6 +172,7 @@ PropOrder._MONSTER = [
 			"will",
 			"rest",
 			"daily",
+			"recharge",
 			"charges",
 
 			"ritual",
@@ -216,6 +217,7 @@ PropOrder._MONSTER = [
 
 	"altArt",
 
+	new PropOrder._ArrayKey("attachedItems", {fnSort: SortUtil.ascSortLower}),
 	new PropOrder._ArrayKey("traitTags", {fnSort: SortUtil.ascSortLower}),
 	new PropOrder._ArrayKey("senseTags", {fnSort: SortUtil.ascSortLower}),
 	new PropOrder._ArrayKey("actionTags", {fnSort: SortUtil.ascSortLower}),
@@ -261,6 +263,48 @@ PropOrder._MONSTER__COPY_MOD = [
 
 			return it;
 		}),
+];
+PropOrder._MONSTER_TEMPLATE = [
+	"name",
+
+	"source",
+	"page",
+
+	"ref",
+
+	new PropOrder._ObjectKey("_copy", {
+		order: [
+			"name",
+			"source",
+			"_trait",
+			new PropOrder._ObjectKey("_mod", {
+				fnGetOrder: () => PropOrder._MONSTER_TEMPLATE__COPY_MOD,
+			}),
+			"_preserve",
+		],
+	}),
+
+	"crMin",
+	"crMax",
+
+	new PropOrder._ObjectKey("prerequisite", {
+		order: PropOrder._MONSTER,
+	}),
+	new PropOrder._ObjectKey("apply", {
+		order: [
+			new PropOrder._ObjectKey("_root", {
+				order: PropOrder._MONSTER,
+			}),
+			new PropOrder._ObjectKey("_mod", {
+				fnGetOrder: () => PropOrder._MONSTER__COPY_MOD,
+			}),
+		],
+	}),
+];
+PropOrder._MONSTER_TEMPLATE__COPY_MOD = [
+	"*",
+	"_",
+	...PropOrder._MONSTER_TEMPLATE,
 ];
 PropOrder._GENERIC_FLUFF = [
 	"name",
@@ -312,11 +356,6 @@ PropOrder._SPELL = [
 	"miscTags",
 	"areaTags",
 
-	"classes",
-	"races",
-	"backgrounds",
-	"eldritchInvocations",
-
 	"hasFluff",
 	"hasFluffImages",
 ];
@@ -338,6 +377,7 @@ PropOrder._ACTION = [
 ];
 PropOrder._ADVENTURE = [
 	"name",
+	"alias",
 
 	"id",
 	"source",
@@ -355,6 +395,7 @@ PropOrder._ADVENTURE = [
 ];
 PropOrder._BOOK = [
 	"name",
+	"alias",
 
 	"id",
 	"source",
@@ -389,6 +430,8 @@ PropOrder._BACKGROUND = [
 		],
 	}),
 
+	"prerequisite",
+
 	"feats",
 
 	"skillProficiencies",
@@ -409,30 +452,6 @@ PropOrder._BACKGROUND__COPY_MOD = [
 	"*",
 	"_",
 	...PropOrder._BACKGROUND,
-];
-PropOrder._TRAIT = [
-	"name",
-
-	"source",
-	"page",
-
-	"ref",
-
-	"crMin",
-
-	new PropOrder._ObjectKey("prerequisite", {
-		order: PropOrder._MONSTER,
-	}),
-	new PropOrder._ObjectKey("apply", {
-		order: [
-			new PropOrder._ObjectKey("_root", {
-				order: PropOrder._MONSTER,
-			}),
-			new PropOrder._ObjectKey("_mod", {
-				fnGetOrder: () => PropOrder._MONSTER__COPY_MOD,
-			}),
-		],
-	}),
 ];
 PropOrder._LEGENDARY_GROUP = [
 	"name",
@@ -607,6 +626,7 @@ PropOrder._LANGUAGE = [
 	"srd",
 	"basicRules",
 	"additionalSources",
+	"otherSources",
 
 	"type",
 	"typicalSpeakers",
@@ -777,6 +797,9 @@ PropOrder._FEAT = [
 	"optionalfeatureProgression",
 
 	"entries",
+
+	"hasFluff",
+	"hasFluffImages",
 ];
 PropOrder._VEHICLE = [
 	"name",
@@ -911,7 +934,6 @@ PropOrder._ITEM = [
 	"reqAttuneAltTags",
 
 	"wondrous",
-	"ammunition",
 	"tattoo",
 	"curse",
 	"sentient",
@@ -1007,10 +1029,12 @@ PropOrder._ITEM = [
 	"atomicPackContents",
 	"containerCapacity",
 
+	"optionalfeatures",
 	"attachedSpells",
 	"spellScrollLevel",
 	"lootTables",
 
+	"seeAlsoDeck",
 	"seeAlsoVehicle",
 
 	"miscTags",
@@ -1080,6 +1104,8 @@ PropOrder._OBJECT = [
 
 	"tokenUrl",
 	"hasToken",
+	"hasFluff",
+	"hasFluffImages",
 ];
 PropOrder._OPTIONALFEATURE = [
 	"name",
@@ -1341,6 +1367,8 @@ PropOrder._CHAROPTION = [
 	"source",
 	"page",
 
+	"otherSources",
+
 	"prerequisite",
 
 	"optionType",
@@ -1370,15 +1398,69 @@ PropOrder._SENSE = [
 
 	"entries",
 ];
+PropOrder._DECK = [
+	"name",
+
+	"source",
+	"page",
+	"srd",
+	"basicRules",
+
+	new PropOrder._ObjectKey("_copy", {
+		order: [
+			"name",
+			"source",
+			new PropOrder._ObjectKey("_mod", {
+				fnGetOrder: () => PropOrder._DECK__COPY_MOD,
+			}),
+			"_preserve",
+		],
+	}),
+
+	"cards",
+	"back",
+
+	"entries",
+
+	"hasCardArt",
+];
+
+PropOrder._DECK__COPY_MOD = [
+	"*",
+	"_",
+	...PropOrder._DECK,
+];
+PropOrder._CARD = [
+	"name",
+	"alias",
+
+	"source",
+	"set",
+	"page",
+	"srd",
+	"basicRules",
+
+	"suit",
+	"value",
+	"valueName",
+
+	"face",
+	"back",
+
+	"entries",
+];
 
 PropOrder._PROP_TO_LIST = {
 	"monster": PropOrder._MONSTER,
 	"monsterFluff": PropOrder._GENERIC_FLUFF,
+	"monsterTemplate": PropOrder._MONSTER_TEMPLATE,
 	"backgroundFluff": PropOrder._GENERIC_FLUFF,
+	"featFluff": PropOrder._GENERIC_FLUFF,
 	"conditionFluff": PropOrder._GENERIC_FLUFF,
 	"itemFluff": PropOrder._GENERIC_FLUFF,
 	"languageFluff": PropOrder._GENERIC_FLUFF,
 	"vehicleFluff": PropOrder._GENERIC_FLUFF,
+	"objectFluff": PropOrder._GENERIC_FLUFF,
 	"raceFluff": PropOrder._RACE_FLUFF,
 	"spell": PropOrder._SPELL,
 	"action": PropOrder._ACTION,
@@ -1423,8 +1505,8 @@ PropOrder._PROP_TO_LIST = {
 	"charoptionFluff": PropOrder._GENERIC_FLUFF,
 	"skill": PropOrder._SKILL,
 	"sense": PropOrder._SENSE,
+	"deck": PropOrder._DECK,
+	"card": PropOrder._CARD,
 };
 
-if (typeof module !== "undefined") {
-	module.exports = PropOrder;
-}
+globalThis.PropOrder = PropOrder;

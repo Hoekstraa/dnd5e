@@ -21,7 +21,11 @@
 			"size": [
 				"M"
 			],
-			"type": "humanoid",
+			"type": {
+				"type": "humanoid",
+				"sidekickType": "expert",
+				"sidekickHidden": true
+			},
 			"ac": [
 				{
 					"ac": 16,
@@ -103,6 +107,11 @@
 						"{@atk rw} {@hit 8} to hit, range 80/320 ft., one target. {@h}7 ({@damage 1d6 + 4}) piercing damage."
 					]
 				}
+			],
+			"attachedItems": [
+				"dagger|phb",
+				"shortbow|phb",
+				"shortsword|phb"
 			],
 			"languageTags": [
 				"C"
@@ -476,8 +485,7 @@
 				"unconscious"
 			],
 			"hasToken": true,
-			"hasFluff": true,
-			"hasFluffImages": true
+			"hasFluff": true
 		},
 		{
 			"name": "Spellcaster (Healer)",
@@ -486,7 +494,14 @@
 			"size": [
 				"M"
 			],
-			"type": "humanoid",
+			"type": {
+				"type": "humanoid",
+				"sidekickType": "spellcaster",
+				"tags": [
+					"healer"
+				],
+				"sidekickHidden": true
+			},
 			"ac": [
 				{
 					"ac": 13,
@@ -591,6 +606,9 @@
 					]
 				}
 			],
+			"attachedItems": [
+				"quarterstaff|phb"
+			],
 			"languageTags": [
 				"C"
 			],
@@ -618,7 +636,14 @@
 			"size": [
 				"M"
 			],
-			"type": "humanoid",
+			"type": {
+				"type": "humanoid",
+				"sidekickType": "spellcaster",
+				"tags": [
+					"mage"
+				],
+				"sidekickHidden": true
+			},
 			"ac": [
 				{
 					"ac": 13,
@@ -723,6 +748,9 @@
 					]
 				}
 			],
+			"attachedItems": [
+				"quarterstaff|phb"
+			],
 			"languageTags": [
 				"C"
 			],
@@ -752,7 +780,11 @@
 			"size": [
 				"M"
 			],
-			"type": "humanoid",
+			"type": {
+				"type": "humanoid",
+				"sidekickType": "warrior",
+				"sidekickHidden": true
+			},
 			"ac": [
 				{
 					"ac": 20,
@@ -867,6 +899,10 @@
 						"When a creature the warrior can see attacks a target other than the warrior that is within 5 feet of the warrior, the warrior can use their reaction to impose disadvantage on the attack roll. The warrior must be wielding a shield."
 					]
 				}
+			],
+			"attachedItems": [
+				"longbow|phb",
+				"longsword|phb"
 			],
 			"languageTags": [
 				"C"

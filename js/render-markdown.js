@@ -1,3 +1,5 @@
+"use strict";
+
 // TODO implement remaining methods
 class RendererMarkdown {
 	static async pInit () {
@@ -65,7 +67,7 @@ class RendererMarkdown {
 				textStack[0] += `${nxtPrefix}***${Renderer.stripTags(entry.name)}.*** `;
 			} else {
 				const hashCount = meta._typeStack.length === 1 && meta.depth === -1 ? 1 : Math.min(6, meta.depth + 3);
-				textStack[0] += `\n${nxtPrefix}${"#".repeat(hashCount)} ${Renderer.stripTags(entry.name)}\n`;
+				textStack[0] += `\n${nxtPrefix}${"#".repeat(hashCount)} ${Renderer.stripTags(entry.name)}\n\n`;
 			}
 		}
 
@@ -76,10 +78,10 @@ class RendererMarkdown {
 			for (let i = 0; i < len; ++i) {
 				meta.depth = nextDepth;
 				const isFirstInline = i === 0 && entry.name && isInlineTitle;
-				const suffix = meta.isDataMonster ? `  \n` : `\n\n`;
+				const suffix = meta.isStatblockInlineMonster ? `  \n` : `\n\n`;
 				this._recursiveRender(entry.entries[i], textStack, meta, {prefix: isFirstInline ? "" : RendererMarkdown._getNextPrefix(options), suffix});
 			}
-			if (meta.isDataMonster) textStack[0] += "\n";
+			if (meta.isStatblockInlineMonster) textStack[0] += "\n";
 			meta.depth = cacheDepth;
 		}
 	}
@@ -141,7 +143,9 @@ class RendererMarkdown {
 
 		if (entry.caption) textStack[0] += `##### ${entry.caption}\n`;
 
-		const hasLabels = entry.colLabels && entry.colLabels.length;
+		const headerRowMetas = Renderer.table.getHeaderRowMetas(entry);
+
+		const hasLabels = headerRowMetas != null;
 		// If there's no data, render a stub table.
 		if (!hasLabels && (!entry.rows || !entry.rows.length)) {
 			textStack[0] += `|   |\n`;
@@ -150,49 +154,63 @@ class RendererMarkdown {
 			return;
 		}
 
-		// TODO to format cell widths evenly, each header/cell should rendered to a string independently and stored in a buffer
-		//   Once all the strings are available, we can pull out all the widths and pad as appropriate
-
-		// Labels are required for markdown tables
-		let labels = entry.colLabels;
+		// Labels are required for Markdown tables
+		let labelRows = MiscUtil.copyFast(headerRowMetas || []);
 		if (!hasLabels) {
 			const numCells = Math.max(...entry.rows.map(r => r.length));
-			labels = [...new Array(numCells)].map(() => "");
+			labelRows = [
+				[...new Array(numCells)].map(() => ""),
+			];
 		}
 
 		// Pad labels to style width
-		if (entry.colStyles && labels.length < entry.colStyles.length) {
-			labels = labels.concat([...new Array(entry.colStyles.length - labels.length)].map(() => ""));
-		}
-
-		for (const label of labels) textStack[0] += `| ${Renderer.stripTags(label)} `;
-		textStack[0] += "|\n";
-
 		if (entry.colStyles) {
-			let styles = entry.colStyles;
+			labelRows
+				.filter(labelRow => labelRow.length < entry.colStyles.length)
+				.forEach(labelRow => {
+					labelRow.push(
+						...[...new Array(entry.colStyles.length - labelRow.length)].map(() => ""),
+					);
+				});
+		}
+
+		// region Prepare styles
+		let styles = null;
+		if (entry.colStyles) {
+			styles = [...entry.colStyles];
 			// Pad styles to label width
-			if (labels.length > entry.colStyles.length) {
-				styles = styles.concat([...new Array(labels.length - entry.colStyles.length)].map(() => ""));
-			}
-
-			for (const style of styles) {
-				textStack[0] += `|`;
-				if (style.includes("text-center")) textStack[0] += ":---:";
-				else if (style.includes("text-right")) textStack[0] += "---:";
-				else textStack[0] += "---";
-			}
-			textStack[0] += "|\n";
+			labelRows
+				.forEach(labelRow => {
+					if (labelRow.length > styles.length) {
+						styles = styles.concat([...new Array(labelRow.length - styles.length)].map(() => ""));
+					}
+				});
 		}
+		// endregion
 
-		if (!entry.rows) {
-			textStack[0] += `||\n`;
-			return;
-		}
+		const mdHeaderRows = labelRows.map(labelRow => labelRow.map(label => ` ${Renderer.stripTags(label)} `));
 
-		for (const row of entry.rows) {
+		// Get per-cell max width
+		const widths = [
+			...new Array(
+				Math.max(...mdHeaderRows.map(mdHeaderRow => mdHeaderRow.length)),
+			),
+		]
+			.map((_, i) => Math.max(...mdHeaderRows.map(mdHeaderRow => (mdHeaderRow[i] || "").length)));
+
+		// region Build 2d array of table cells
+		const mdTable = [];
+
+		const numRows = entry.rows.length;
+		for (let ixRow = 0; ixRow < numRows; ++ixRow) {
+			const row = entry.rows[ixRow];
+
 			const rowRender = row.type === "row" ? row.row : row;
 
-			for (const cell of rowRender) {
+			const numCells = rowRender.length;
+			for (let ixCell = 0; ixCell < numCells; ++ixCell) {
+				const cell = rowRender[ixCell];
+
 				let toRenderCell;
 
 				if (cell.type === "cell") {
@@ -211,14 +229,58 @@ class RendererMarkdown {
 					toRenderCell = cell;
 				}
 
-				textStack[0] += "| ";
+				const textStackCell = [""];
 				const cacheDepth = this._adjustDepth(meta, 1);
-				this._recursiveRender(toRenderCell, textStack, meta);
+				this._recursiveRender(toRenderCell, textStackCell, meta);
 				meta.depth = cacheDepth;
-				textStack[0] += " ";
+
+				const mdCell = ` ${textStackCell.join("").trim()} `
+					// Markdown tables can't handle multi-line cells, so HTML linebreaks must be used
+					.split(/\n+/)
+					.join("<br>");
+
+				widths[ixCell] = Math.max(widths[ixCell] || 0, mdCell.length);
+				(mdTable[ixRow] = mdTable[ixRow] || [])[ixCell] = mdCell;
 			}
-			textStack[0] += "|\n";
 		}
+		// endregion
+
+		const mdHeaderRowsPadded = mdHeaderRows
+			.map(mdHeaderRow => {
+				return mdHeaderRow
+					.map((header, ixCell) => RendererMarkdown._md_getPaddedTableText({text: header, width: widths[ixCell], ixCell, styles}));
+			});
+
+		// region Build style headers
+		const mdStyles = [];
+		if (styles) {
+			styles.forEach((style, i) => {
+				const w = widths[i];
+
+				if (style.includes("ve-text-center")) mdStyles.push(`:${"-".repeat(Math.max(w - 2, 3))}:`);
+				else if (style.includes("text-right")) mdStyles.push(`${"-".repeat(Math.max(w - 1, 3))}:`);
+				else mdStyles.push("-".repeat(Math.max(w, 3)));
+			});
+		}
+		// endregion
+
+		// region Assemble the table
+		for (const mdHeaderRowPadded of mdHeaderRowsPadded) {
+			textStack[0] += `|${mdHeaderRowPadded.join("|")}|\n`;
+		}
+		if (mdStyles.length) textStack[0] += `|${mdStyles.join("|")}|\n`;
+		for (const mdRow of mdTable) {
+			textStack[0] += "|";
+
+			const numCells = mdRow.length;
+			for (let ixCell = 0; ixCell < numCells; ++ixCell) {
+				textStack[0] += RendererMarkdown._md_getPaddedTableText({text: mdRow[ixCell], width: widths[ixCell], ixCell, styles});
+				textStack[0] += "|";
+			}
+
+			textStack[0] += "\n";
+		}
+		// endregion
 
 		if (entry.footnotes) {
 			for (const ent of entry.footnotes) {
@@ -229,7 +291,20 @@ class RendererMarkdown {
 		}
 		if (entry.outro) for (const ent of entry.outro) this._recursiveRender(ent, textStack, meta);
 
+		if (!entry.rows) {
+			textStack[0] += `||\n`;
+			return;
+		}
+
 		textStack[0] += "\n";
+	}
+
+	static _md_getPaddedTableText ({text, width, ixCell, styles}) {
+		if (text.length >= width) return text;
+
+		if (styles?.[ixCell]?.includes("ve-text-center")) return text.padStart(Math.floor((width - text.length) / 2) + text.length, " ").padEnd(width, " ");
+		if (styles?.[ixCell]?.includes("text-right")) return text.padStart(width, " ");
+		return text.padEnd(width, " ");
 	}
 
 	/*
@@ -240,7 +315,7 @@ class RendererMarkdown {
 
 	_renderInset (entry, textStack, meta, options) {
 		textStack[0] += "\n";
-		if (entry.name != null) textStack[0] += `> ##### ${entry.name}\n`;
+		if (entry.name != null) textStack[0] += `> ##### ${entry.name}\n>\n`;
 		if (entry.entries) {
 			const len = entry.entries.length;
 			for (let i = 0; i < len; ++i) {
@@ -255,7 +330,7 @@ class RendererMarkdown {
 
 	_renderInsetReadaloud (entry, textStack, meta, options) {
 		textStack[0] += "\n";
-		if (entry.name != null) textStack[0] += `>> ##### ${entry.name}\n`;
+		if (entry.name != null) textStack[0] += `>> ##### ${entry.name}\n>>\n`;
 		if (entry.entries) {
 			const len = entry.entries.length;
 			for (let i = 0; i < len; ++i) {
@@ -270,7 +345,7 @@ class RendererMarkdown {
 
 	_renderVariant (entry, textStack, meta, options) {
 		textStack[0] += "\n";
-		if (entry.name != null) textStack[0] += `> ##### Variant: ${entry.name}\n`;
+		if (entry.name != null) textStack[0] += `> ##### Variant: ${entry.name}\n>\n`;
 		if (entry.entries) {
 			const len = entry.entries.length;
 			for (let i = 0; i < len; ++i) {
@@ -306,9 +381,14 @@ class RendererMarkdown {
 			this._recursiveRender(entry.entries[i], textStack, meta, {prefix: RendererMarkdown._getNextPrefix(options, "*"), suffix: "*"});
 			if (i !== entry.entries.length - 1) textStack[0] += `\n\n`;
 		}
-		if (entry.by) {
+		const byArr = this._renderQuote_getBy(entry);
+		if (byArr) {
 			const tempStack = [""];
-			this._recursiveRender(entry.by, tempStack, meta);
+			for (let i = 0, len = byArr.length; i < len; ++i) {
+				const by = byArr[i];
+				this._recursiveRender(by, tempStack, meta);
+				if (i < len - 1) tempStack[0] += "\n";
+			}
 			textStack[0] += `\u2014 ${tempStack.join("")}${entry.from ? `, *${entry.from}*` : ""}`;
 		}
 	}
@@ -451,14 +531,14 @@ class RendererMarkdown {
 	_renderImage (entry, textStack, meta, options) {
 		this._renderPrefix(entry, textStack, meta, options);
 		const href = this._renderImage_getUrl(entry);
-		textStack[0] += `[${href}]${entry.title ? `(${entry.title})` : ""}`;
+		textStack[0] += `![${entry.title || ""}](${href})`;
 		this._renderSuffix(entry, textStack, meta, options);
 	}
 
 	_renderGallery (entry, textStack, meta, options) {
 		const len = entry.images.length;
 		for (let i = 0; i < len; ++i) {
-			const img = MiscUtil.copy(entry.images[i]);
+			const img = MiscUtil.copyFast(entry.images[i]);
 			this._recursiveRender(img, textStack, meta);
 		}
 	}
@@ -474,7 +554,7 @@ class RendererMarkdown {
 
 	_renderFlowBlock (entry, textStack, meta, options) {
 		textStack[0] += "\n";
-		if (entry.name != null) textStack[0] += `> ##### ${entry.name}\n`;
+		if (entry.name != null) textStack[0] += `> ##### ${entry.name}\n>\n`;
 		if (entry.entries) {
 			const len = entry.entries.length;
 			for (let i = 0; i < len; ++i) {
@@ -600,6 +680,7 @@ class RendererMarkdown {
 			case "@d20":
 			case "@chance":
 			case "@recharge":
+			case "@coinflip":
 				textStack[0] += Renderer.stripTags(`{${tag} ${text}}`); break;
 
 			// SCALE DICE //////////////////////////////////////////////////////////////////////////////////////
@@ -625,7 +706,8 @@ class RendererMarkdown {
 
 			// HOMEBREW LOADING ////////////////////////////////////////////////////////////////////////////////
 			case "@loader": {
-				const {name, path} = this._renderString_getLoaderTagMeta(text);
+				// FIXME this does not respect the user's homebrew base URL setting
+				const {name, path} = this._renderString_getLoaderTagMeta(text, {isDefaultUrl: true});
 				textStack[0] += `[${name}](${path})`;
 				break;
 			}
@@ -748,16 +830,21 @@ RendererMarkdown.monster = class {
 		const legendaryGroup = opts.legendaryGroup;
 		const meta = opts.meta || {};
 
-		let addedDataMonster;
-		if (!meta.isDataMonster) {
-			meta.isDataMonster = true;
-			addedDataMonster = true;
+		let addedStatblockInline;
+		if (!meta.isStatblockInlineMonster) {
+			meta.isStatblockInlineMonster = true;
+			addedStatblockInline = true;
 		}
 
 		const monTypes = Parser.monTypeToFullObj(mon.type);
 		RendererMarkdown.get().isSkipStylingItemLinks = true;
 		const acPart = Parser.acToFull(mon.ac, RendererMarkdown.get());
 		RendererMarkdown.get().isSkipStylingItemLinks = false;
+		const resourcePart = mon.resource?.length
+			? mon.resource
+				.map(res => `\n>- **${res.name}** ${Renderer.monster.getRenderedResource(res, true)}`)
+				.join("")
+			: "";
 		const savePart = mon.save ? `\n>- **Saving Throws** ${Object.keys(mon.save).sort(SortUtil.ascSortAtts).map(it => RendererMarkdown.monster.getSave(it, mon.save[it])).join(", ")}` : "";
 		const skillPart = mon.skill ? `\n>- **Skills** ${RendererMarkdown.monster.getSkillsString(mon)}` : "";
 		const damVulnPart = mon.vulnerable ? `\n>- **Damage Vulnerabilities** ${Parser.getFullImmRes(mon.vulnerable)}` : "";
@@ -768,26 +855,40 @@ RendererMarkdown.monster = class {
 		const fnGetSpellTraits = RendererMarkdown.monster.getSpellcastingRenderedTraits.bind(RendererMarkdown.monster, meta);
 		const traitArray = Renderer.monster.getOrderedTraits(mon, {fnGetSpellTraits});
 		const actionArray = Renderer.monster.getOrderedActions(mon, {fnGetSpellTraits});
+		const bonusActionArray = Renderer.monster.getOrderedBonusActions(mon, {fnGetSpellTraits});
+		const reactionArray = Renderer.monster.getOrderedReactions(mon, {fnGetSpellTraits});
 
-		const traitsPart = traitArray?.length ? `\n${RendererMarkdown.monster._getRenderedSection(traitArray, 1, meta)}` : "";
+		const traitsPart = traitArray?.length
+			? `\n${RendererMarkdown.monster._getRenderedSection({prop: "trait", entries: traitArray, depth: 1, meta})}`
+			: "";
 
-		const actionsPart = actionArray?.length ? `\n>### Actions\n${RendererMarkdown.monster._getRenderedSection(actionArray, 1, meta)}` : "";
-		const bonusActionsPart = mon.bonus ? `\n>### Bonus Actions\n${RendererMarkdown.monster._getRenderedSection(mon.bonus, 1, meta)}` : "";
-		const reactionsPart = mon.reaction ? `\n>### Reactions\n${RendererMarkdown.monster._getRenderedSection(mon.reaction, 1, meta)}` : "";
-		const legendaryActionsPart = mon.legendary ? `\n>### Legendary Actions\n>${Renderer.monster.getLegendaryActionIntro(mon, {renderer: RendererMarkdown.get()})}\n>\n${RendererMarkdown.monster._getRenderedLegendarySection(mon.legendary, 1, meta)}` : "";
-		const mythicActionsPart = mon.mythic ? `\n>### Mythic Actions\n>${Renderer.monster.getSectionIntro(mon, {renderer: RendererMarkdown.get(), prop: "mythic"})}\n>\n${RendererMarkdown.monster._getRenderedLegendarySection(mon.mythic, 1, meta)}` : "";
+		const actionsPart = actionArray?.length
+			? `${RendererMarkdown.monster._getRenderedSectionHeader({mon, title: "Actions", prop: "action"})}${RendererMarkdown.monster._getRenderedSection({mon, prop: "action", entries: actionArray, depth: 1, meta})}`
+			: "";
+		const bonusActionsPart = bonusActionArray?.length
+			? `${RendererMarkdown.monster._getRenderedSectionHeader({mon, title: "Bonus Actions", prop: "bonus"})}${RendererMarkdown.monster._getRenderedSection({mon, prop: "bonus", entries: bonusActionArray, depth: 1, meta})}`
+			: "";
+		const reactionsPart = reactionArray?.length
+			? `${RendererMarkdown.monster._getRenderedSectionHeader({mon, title: "Reactions", prop: "reaction"})}${RendererMarkdown.monster._getRenderedSection({mon, prop: "reaction", entries: reactionArray, depth: 1, meta})}`
+			: "";
+		const legendaryActionsPart = mon.legendary
+			? `${RendererMarkdown.monster._getRenderedSectionHeader({mon, title: "Legendary Actions", prop: "legendary"})}>${Renderer.monster.getLegendaryActionIntro(mon, {renderer: RendererMarkdown.get()})}\n>\n${RendererMarkdown.monster._getRenderedLegendarySection(mon.legendary, 1, meta)}`
+			: "";
+		const mythicActionsPart = mon.mythic
+			? `${RendererMarkdown.monster._getRenderedSectionHeader({mon, title: "Mythic Actions", prop: "mythic"})}>${Renderer.monster.getSectionIntro(mon, {renderer: RendererMarkdown.get(), prop: "mythic"})}\n>\n${RendererMarkdown.monster._getRenderedLegendarySection(mon.mythic, 1, meta)}`
+			: "";
 
-		const legendaryGroupLairPart = legendaryGroup?.lairActions ? `\n>### Lair Actions\n${RendererMarkdown.monster._getRenderedSection(legendaryGroup.lairActions, -1, meta)}` : "";
-		const legendaryGroupRegionalPart = legendaryGroup?.regionalEffects ? `\n>### Regional Effects\n${RendererMarkdown.monster._getRenderedSection(legendaryGroup.regionalEffects, -1, meta)}` : "";
+		const legendaryGroupLairPart = legendaryGroup?.lairActions ? `\n>### Lair Actions\n${RendererMarkdown.monster._getRenderedSection({prop: "lairaction", entries: legendaryGroup.lairActions, depth: -1, meta})}` : "";
+		const legendaryGroupRegionalPart = legendaryGroup?.regionalEffects ? `\n>### Regional Effects\n${RendererMarkdown.monster._getRenderedSection({prop: "regionaleffect", entries: legendaryGroup.regionalEffects, depth: -1, meta})}` : "";
 
-		const footerPart = mon.footer ? `\n${RendererMarkdown.monster._getRenderedSection(mon.footer, 0, meta)}` : "";
+		const footerPart = mon.footer ? `\n${RendererMarkdown.monster._getRenderedSectionEntries(mon.footer, 0, meta)}` : "";
 
 		const unbreakablePart = `___
 >## ${mon._displayName || mon.name}
 >*${mon.level ? `${Parser.getOrdinalForm(mon.level)}-level ` : ""}${Renderer.utils.getRenderedSize(mon.size)} ${monTypes.asText}${mon.alignment ? `, ${mon.alignmentPrefix ? RendererMarkdown.get().render(mon.alignmentPrefix) : ""}${Parser.alignmentListToFull(mon.alignment)}` : ""}*
 >___
 >- **Armor Class** ${acPart}
->- **Hit Points** ${Renderer.monster.getRenderedHp(mon.hp, true)}
+>- **Hit Points** ${Renderer.monster.getRenderedHp(mon.hp, true)}${resourcePart}
 >- **Speed** ${Parser.getSpeedString(mon)}
 >___
 >|${Parser.ABIL_ABVS.map(it => `${it.toUpperCase()}|`).join("")}
@@ -821,7 +922,7 @@ ${mon.pbNote || Parser.crToNumber(mon.cr) < VeCt.CR_CUSTOM ? `>- **Proficiency B
 		const monRender = str.trim().split("\n").map(it => it.trim() ? it : `>`).join("\n");
 		const out = `\n${monRender}\n\n`;
 
-		if (addedDataMonster) delete meta.isDataMonster;
+		if (addedStatblockInline) delete meta.isStatblockInlineMonster;
 
 		return out;
 	}
@@ -851,7 +952,22 @@ ${mon.pbNote || Parser.crToNumber(mon.cr) < VeCt.CR_CUSTOM ? `>- **Proficiency B
 		} else return skills;
 	}
 
-	static _getRenderedSection (sectionEntries, sectionLevel, meta) {
+	static _getRenderedSectionHeader ({mon, title, prop}) {
+		const propNote = `${prop}Note`;
+		const ptTitle = `\n>### ${title}`;
+		if (!mon[propNote]) return `${ptTitle}\n`;
+		return `${ptTitle} (${mon[propNote]})\n`;
+	}
+
+	static _getRenderedSection ({mon = null, prop, entries, depth = 1, meta}) {
+		const ptHeader = mon
+			? Renderer.monster.getSectionIntro(mon, {renderer: RendererMarkdown.get(), prop})
+			: "";
+
+		return `${ptHeader ? `>${ptHeader}\n>\n` : ""}${this._getRenderedSectionEntries(entries, depth, meta)}`;
+	}
+
+	static _getRenderedSectionEntries (sectionEntries, sectionLevel, meta) {
 		const renderer = RendererMarkdown.get();
 		const renderStack = [""];
 		sectionEntries.forEach(e => {
@@ -870,7 +986,7 @@ ${mon.pbNote || Parser.crToNumber(mon.cr) < VeCt.CR_CUSTOM ? `>- **Proficiency B
 		const renderer = RendererMarkdown.get();
 		const renderStack = [""];
 
-		const cpy = MiscUtil.copy(sectionEntries).map(it => {
+		const cpy = MiscUtil.copyFast(sectionEntries).map(it => {
 			if (it.name && it.entries) {
 				it.name = `${it.name}.`;
 				it.type = it.type || "item";
@@ -906,7 +1022,7 @@ ${mon.pbNote || Parser.crToNumber(mon.cr) < VeCt.CR_CUSTOM ? `>- **Proficiency B
 	static async pGetMarkdownDoc (monsters) {
 		const asEntries = (await Promise.all(monsters
 			.map(async (mon, i) => {
-				const monEntry = ({type: "dataMonster", dataMonster: mon});
+				const monEntry = ({type: "statblockInline", dataType: "monster", data: mon});
 
 				const fluff = await Renderer.monster.pGetFluff(mon);
 
@@ -1657,7 +1773,7 @@ class MarkdownConverter {
 				if (cells.every(c => !c || !!/^:?\s*---+\s*:?$/.exec(c))) { // a header break
 					alignment = cells.map(c => {
 						if (c.startsWith(":") && c.endsWith(":")) {
-							return "text-center";
+							return "ve-text-center";
 						} else if (c.startsWith(":")) {
 							return "text-align-left";
 						} else if (c.endsWith(":")) {
@@ -1788,13 +1904,13 @@ class MarkdownConverter {
 			assignColWidths(isAllBelowCap ? maxWidths : avgWidths);
 		})();
 
-		if (isDiceCol0 && !tbl.colStyles.includes("text-center")) tbl.colStyles[0] += " text-center";
+		if (isDiceCol0 && !tbl.colStyles.includes("ve-text-center")) tbl.colStyles[0] += " ve-text-center";
 
 		(function doCheckNumericCols () {
 			if (isDiceCol0 && tbl.colStyles.length === 2) return; // don't apply this step for generic rollable tables
 
 			tbl.colStyles.forEach((col, i) => {
-				if (col.includes("text-center") || col.includes("text-right")) return;
+				if (col.includes("ve-text-center") || col.includes("text-right")) return;
 
 				const counts = {number: 0, text: 0};
 
@@ -1810,7 +1926,7 @@ class MarkdownConverter {
 				// If most of the cells in this column contain number data, right-align
 				// Unless it's the first column, in which case, center-align
 				if ((counts.number / tbl.rows.length) >= 0.80) {
-					if (i === 0) tbl.colStyles[i] += ` text-center`;
+					if (i === 0) tbl.colStyles[i] += ` ve-text-center`;
 					else tbl.colStyles[i] += ` text-right`;
 				}
 			});
@@ -1826,7 +1942,7 @@ class MarkdownConverter {
 				const col = tbl.colStyles[i];
 
 				// If we're the first column and other columns are not center-aligned, don't center
-				if (i === 0 && tbl.colStyles.length > 1 && tbl.colStyles.filter((_, i) => i !== 0).some(it => !it.includes("text-center"))) continue;
+				if (i === 0 && tbl.colStyles.length > 1 && tbl.colStyles.filter((_, i) => i !== 0).some(it => !it.includes("ve-text-center"))) continue;
 
 				const counts = {short: 0, long: 0};
 
@@ -1840,8 +1956,8 @@ class MarkdownConverter {
 				// If most of the cells in this column contain short text, center-align
 				if ((counts.short / tbl.rows.length) >= 0.80) {
 					if (i === 1) isFewWordsCol1 = true;
-					if (col.includes("text-center") || col.includes("text-right")) continue;
-					tbl.colStyles[i] += ` text-center`;
+					if (col.includes("ve-text-center") || col.includes("text-right")) continue;
+					tbl.colStyles[i] += ` ve-text-center`;
 				}
 			}
 		})();
@@ -1851,7 +1967,7 @@ class MarkdownConverter {
 		(function doEvenCenteredColumns () {
 			if (!isDiceCol0) return;
 			if (tbl.colStyles.length === 2 && isFewWordsCol1) {
-				tbl.colStyles = ["col-6 text-center", "col-6 text-center"];
+				tbl.colStyles = ["col-6 ve-text-center", "col-6 ve-text-center"];
 			}
 		})();
 
@@ -1872,9 +1988,5 @@ class MarkdownConverter {
 	// endregion
 }
 
-if (typeof module !== "undefined") {
-	module.exports = {
-		RendererMarkdown,
-		MarkdownConverter,
-	};
-}
+globalThis.RendererMarkdown = RendererMarkdown;
+globalThis.MarkdownConverter = MarkdownConverter;

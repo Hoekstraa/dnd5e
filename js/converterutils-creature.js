@@ -1,13 +1,10 @@
 "use strict";
 
-if (typeof module !== "undefined") {
-	const cv = require("./converterutils.js");
-	Object.assign(global, cv);
-}
-
 class AcConvert {
 	static tryPostProcessAc (mon, cbMan, cbErr) {
-		let nuAc = [];
+		if (this._tryPostProcessAc_special(mon, cbMan, cbErr)) return;
+
+		const nuAc = [];
 
 		const parts = mon.ac.trim().split(StrUtil.COMMAS_NOT_IN_PARENTHESES_REGEX).map(it => it.trim()).filter(Boolean);
 		parts.forEach(pt => {
@@ -27,23 +24,35 @@ class AcConvert {
 			// Plain number
 			if (!fromRaw) return nuAc.push(acNum);
 
-			let nxtAc = null; // A distinct AC value included in this text from e.g. mage armor
+			const nuAcTail = [];
 			const cur = {ac: acNum};
 			const froms = [];
 
-			// Handle "in ... form" parts
+			// region Handle "in ... form" parts
 			let fromClean = fromRaw
 				// FIXME(Future) Find an example of a creature with this AC form to check accuracy of this parse
 				.replace(/ \(in .*? form\)$/i, (...m) => {
+					if (cur.condition) throw new Error(`Multiple AC conditions! "${cur.condition}" and "${m[0]}"`);
 					cur.condition = m[0].trim().toLowerCase();
 					return "";
 				})
 				.trim()
 				.replace(/ in .*? form$/i, (...m) => {
+					if (cur.condition) throw new Error(`Multiple AC conditions! "${cur.condition}" and "${m[0]}"`);
 					cur.condition = m[0].trim().toLowerCase();
 					return "";
 				})
 				.trim();
+			// endregion
+
+			// region Handle "while ..." parts
+			fromClean = fromClean
+				.replace(/^while .*$/, (...m) => {
+					if (cur.condition) throw new Error(`Multiple AC conditions! "${cur.condition}" and "${m[0]}"`);
+					cur.condition = m[0].trim().toLowerCase();
+					return "";
+				});
+			// endregion
 
 			fromClean
 				.toLowerCase()
@@ -76,11 +85,11 @@ class AcConvert {
 											return `{@item ${name}${source ? `|${source}` : "|"}|${mWithBarding.groups.name}}`;
 										});
 
-									nxtAc = {
+									nuAcTail.push({
 										ac: Number(mWithBarding.groups.ac),
 										condition: `with ${simpleFromBarding}`,
 										braces: true,
-									};
+									});
 
 									return;
 								}
@@ -95,11 +104,11 @@ class AcConvert {
 								else if (numMatch[2] === "barkskin") spell = `{@spell barkskin}`;
 								else throw new Error(`Unhandled spell! ${numMatch[2]}`);
 
-								nxtAc = {
+								nuAcTail.push({
 									ac: Number(numMatch[1]),
 									condition: `with ${spell}`,
 									braces: true,
-								};
+								});
 
 								return;
 							}
@@ -128,9 +137,23 @@ class AcConvert {
 			} else {
 				nuAc.push(cur.ac);
 			}
+
+			if (nuAcTail.length) nuAc.push(...nuAcTail);
 		});
 
 		mon.ac = nuAc;
+	}
+
+	static _tryPostProcessAc_special (mon, cbMan, cbErr) {
+		mon.ac = mon.ac.trim();
+
+		const mPlusSpecial = /^(\d+) (plus|\+) (?:PB|the level of the spell|your [^ ]+ modifier)(?: \([^)]+\))?$/i.exec(mon.ac);
+		if (mPlusSpecial) {
+			mon.ac = [{special: mon.ac}];
+			return true;
+		}
+
+		return false;
 	}
 
 	static _getSimpleFrom (fromLow) {
@@ -167,8 +190,13 @@ class AcConvert {
 			case "blood aegis":
 			case "psychic defense":
 			case "glory": // BAM :: Reigar
+			case "mountain tattoo": // KftGV :: Prisoner 13
+			case "disarming charm": // TG :: Forge Fitzwilliam
 				return fromLow;
 				// endregion
+
+			case "graz'zt's gift": // KftGV :: Sythian Skalderang
+				return fromLow.uppercaseFirst();
 
 			// region au naturel
 			case "natural armor":
@@ -221,8 +249,8 @@ class AcConvert {
 				if (AcConvert._ITEM_LOOKUP[fromLow]) {
 					const itemMeta = AcConvert._ITEM_LOOKUP[fromLow];
 
-					if (itemMeta.isExact) return `{@item ${fromLow}${itemMeta.source === SRC_DMG ? "" : `|${itemMeta.source}`}}`;
-					return `{@item ${itemMeta.name}${itemMeta.source === SRC_DMG ? "|" : `|${itemMeta.source}`}|${fromLow}}`;
+					if (itemMeta.isExact) return `{@item ${fromLow}${itemMeta.source === Parser.SRC_DMG ? "" : `|${itemMeta.source}`}}`;
+					return `{@item ${itemMeta.name}${itemMeta.source === Parser.SRC_DMG ? "|" : `|${itemMeta.source}`}|${fromLow}}`;
 				}
 
 				if (/scraps of .*?armor/i.test(fromLow)) { // e.g. "scraps of hide armor"
@@ -259,6 +287,8 @@ class AcConvert {
 	}
 }
 AcConvert._ITEM_LOOKUP = null;
+
+globalThis.AcConvert = AcConvert;
 
 class TagAttack {
 	static tryTagAttacks (m, cbMan) {
@@ -301,6 +331,8 @@ TagAttack.MAP = {
 	"melee or ranged attack:": "{@atk m,r}",
 };
 
+globalThis.TagAttack = TagAttack;
+
 class TagHit {
 	static tryTagHits (m) {
 		TagHit._PROPS.forEach(prop => this._handleProp({m, prop}));
@@ -321,6 +353,8 @@ class TagHit {
 }
 TagHit._PROPS = ["action", "reaction", "bonus", "trait", "legendary", "mythic", "variant"];
 
+globalThis.TagHit = TagHit;
+
 class TagDc {
 	static tryTagDcs (m) {
 		TagDc._PROPS.forEach(prop => this._handleProp({m, prop}));
@@ -332,12 +366,14 @@ class TagDc {
 		m[prop] = m[prop]
 			.map(it => {
 				const str = JSON.stringify(it, null, "\t");
-				const out = str.replace(/DC (\d+)/g, "{@dc $1}");
+				const out = str.replace(/DC (\d+)(\s+plus PB|\s*\+\s*PB)?/g, "{@dc $1$2}");
 				return JSON.parse(out);
 			});
 	}
 }
 TagDc._PROPS = ["action", "reaction", "bonus", "trait", "legendary", "mythic", "variant", "spellcasting"];
+
+globalThis.TagDc = TagDc;
 
 class AlignmentConvert {
 	static tryConvertAlignment (stats, cbMan) {
@@ -350,6 +386,8 @@ class AlignmentConvert {
 		if (!stats.alignmentPrefix) delete stats.alignmentPrefix;
 	}
 }
+
+globalThis.AlignmentConvert = AlignmentConvert;
 
 class TraitActionTag {
 	static _doTag ({m, cbMan, prop, outProp}) {
@@ -403,8 +441,8 @@ class TraitActionTag {
 	static _isActions (prop) { return prop === "action"; }
 
 	static tryRun (m, cbMan) {
-		m.traitTags = new Set();
-		m.actionTags = new Set();
+		m.traitTags = new Set(m.traitTags || []);
+		m.actionTags = new Set(m.actionTags || []);
 
 		this._doTag({m, cbMan, prop: "trait", outProp: "traitTags"});
 		this._doTag({m, cbMan, prop: "action", outProp: "actionTags"});
@@ -504,6 +542,8 @@ TraitActionTag.tags = { // true = map directly; string = map to this string
 		"tree stride": "Tree Stride",
 
 		"unusual nature": "Unusual Nature",
+
+		"tunneler": "Tunneler",
 	},
 	action: {
 		"multiattack": "Multiattack",
@@ -532,6 +572,8 @@ TraitActionTag.tagsDeep = {
 		"Swallow": strEntries => /\bswallowed\b/i.test(strEntries),
 	},
 };
+
+globalThis.TraitActionTag = TraitActionTag;
 
 class LanguageTag {
 	/**
@@ -664,6 +706,8 @@ LanguageTag.LANGUAGE_MAP = {
 	"spoke in life": "LF",
 };
 
+globalThis.LanguageTag = LanguageTag;
+
 class SenseFilterTag {
 	static tryRun (m, cbAll) {
 		if (m.senses) {
@@ -695,6 +739,8 @@ SenseFilterTag.TAGS = {
 	"tremorsense": "T",
 	"truesight": "U",
 };
+
+globalThis.SenseFilterTag = SenseFilterTag;
 
 class SpellcastingTypeTag {
 	static tryRun (m, cbAll) {
@@ -745,6 +791,8 @@ SpellcastingTypeTag.CLASSES = {
 	"CL": /(^|[^a-zA-Z])warlock([^a-zA-Z]|$)/gi,
 	"CW": /(^|[^a-zA-Z])wizard([^a-zA-Z]|$)/gi,
 };
+
+globalThis.SpellcastingTypeTag = SpellcastingTypeTag;
 
 class DamageTypeTag {
 	static _init () {
@@ -893,6 +941,8 @@ DamageTypeTag._BLOCKLIST_NAMES = new Set([
 	"vampire weaknesses",
 ]);
 
+globalThis.DamageTypeTag = DamageTypeTag;
+
 class MiscTag {
 	/** @return empty string for easy use in `.replace` */
 	static _addTag ({tagSet, allowlistTags, tag}) {
@@ -984,6 +1034,8 @@ MiscTag._RANGED_WEAPONS = [
 	"longbow",
 ];
 MiscTag._RANGED_WEAPON_MATCHERS = MiscTag._RANGED_WEAPONS.map(it => new RegExp(`(^|[^\\w])(${it})([^\\w]|$)`, "gi"));
+
+globalThis.MiscTag = MiscTag;
 
 class SpellcastingTraitConvert {
 	static init (spellData) {
@@ -1116,7 +1168,7 @@ class SpellcastingTraitConvert {
 
 	static _parseSpell_getSourcePart (spellName) {
 		const source = SpellcastingTraitConvert._getSpellSource(spellName);
-		return `${source && source !== SRC_PHB ? `|${source}` : ""}`;
+		return `${source && source !== Parser.SRC_PHB ? `|${source}` : ""}`;
 	}
 
 	static _parseToHit (line) {
@@ -1185,7 +1237,7 @@ class SpellcastingTraitConvert {
 	static _getSpellUids (str) {
 		const uids = [];
 		str.replace(/{@spell ([^}]+)}/gi, (...m) => {
-			const [name, source = SRC_PHB.toLowerCase()] = m[1].toLowerCase().split("|").map(it => it.trim());
+			const [name, source = Parser.SRC_PHB.toLowerCase()] = m[1].toLowerCase().split("|").map(it => it.trim());
 			uids.push(`${name}|${source}`);
 		});
 		return uids;
@@ -1200,6 +1252,8 @@ class SpellcastingTraitConvert {
 	}
 }
 SpellcastingTraitConvert.SPELL_SRC_MAP = {};
+
+globalThis.SpellcastingTraitConvert = SpellcastingTraitConvert;
 
 class RechargeConvert {
 	static tryConvertRecharge (traitOrAction, cbAll, cbMan) {
@@ -1217,6 +1271,8 @@ class RechargeConvert {
 		}
 	}
 }
+
+globalThis.RechargeConvert = RechargeConvert;
 
 class SpeedConvert {
 	static _splitSpeed (str) {
@@ -1309,6 +1365,8 @@ class SpeedConvert {
 }
 SpeedConvert._SPEED_TYPES = new Set(Parser.SPEED_MODES);
 
+globalThis.SpeedConvert = SpeedConvert;
+
 class DetectNamedCreature {
 	static tryRun (mon) {
 		const totals = {yes: 0, no: 0};
@@ -1345,6 +1403,8 @@ class DetectNamedCreature {
 	}
 }
 
+globalThis.DetectNamedCreature = DetectNamedCreature;
+
 class TagImmResVulnConditional {
 	static tryRun (mon) {
 		this._handleProp(mon, "resist");
@@ -1378,6 +1438,8 @@ class TagImmResVulnConditional {
 	}
 }
 
+globalThis.TagImmResVulnConditional = TagImmResVulnConditional;
+
 class DragonAgeTag {
 	static tryRun (mon) {
 		const type = mon.type?.type ?? mon.type;
@@ -1389,24 +1451,81 @@ class DragonAgeTag {
 	}
 }
 
-if (typeof module !== "undefined") {
-	module.exports = {
-		AcConvert,
-		TagAttack,
-		TagHit,
-		TagDc,
-		AlignmentConvert,
-		TraitActionTag,
-		LanguageTag,
-		SenseFilterTag,
-		SpellcastingTypeTag,
-		DamageTypeTag,
-		MiscTag,
-		SpellcastingTraitConvert,
-		RechargeConvert,
-		DetectNamedCreature,
-		TagImmResVulnConditional,
-		SpeedConvert,
-		DragonAgeTag,
-	};
+globalThis.DragonAgeTag = DragonAgeTag;
+
+class AttachedItemTag {
+	static _WEAPON_DETAIL_CACHE = {};
+
+	static init ({items}) {
+		for (const item of items) {
+			if (item.type === "GV") continue;
+			if (!["M", "R"].includes(item.type)) continue;
+
+			const lowName = item.name.toLowerCase();
+			// If there's e.g. a " +1" suffix on the end, make a copy with it as a prefix instead
+			const prefixBonusKey = lowName.replace(/^(.*?)( \+\d+)$/, (...m) => `${m[2].trim()} ${m[1].trim()}`);
+			// And vice-versa
+			const suffixBonusKey = lowName.replace(/^(\+\d+) (.*?)$/, (...m) => `${m[2].trim()} ${m[1].trim()}`);
+			const suffixBonusKeyComma = lowName.replace(/^(\+\d+) (.*?)$/, (...m) => `${m[2].trim()}, ${m[1].trim()}`);
+
+			const itemKeys = [
+				lowName,
+				prefixBonusKey === lowName ? null : prefixBonusKey,
+				suffixBonusKey === lowName ? null : suffixBonusKey,
+				suffixBonusKeyComma === lowName ? null : suffixBonusKeyComma,
+			].filter(Boolean);
+
+			const cpy = MiscUtil.copy(item);
+
+			itemKeys.forEach(k => {
+				if (!this._WEAPON_DETAIL_CACHE[k]) {
+					this._WEAPON_DETAIL_CACHE[k] = cpy;
+					return;
+				}
+
+				// If there is already something in the cache, prefer DMG + PHB entries, then official sources
+				const existing = this._WEAPON_DETAIL_CACHE[k];
+				if (
+					!(existing.source === Parser.SRC_DMG || existing.source === Parser.SRC_PHB)
+					&& SourceUtil.isNonstandardSource(existing.source)
+				) {
+					this._WEAPON_DETAIL_CACHE[k] = cpy;
+				}
+			});
+		}
+	}
+
+	static _isLikelyWeapon (act) {
+		if (!act.entries?.length || typeof act.entries[0] !== "string") return false;
+		const mAtk = /^{@atk ([^}]+)}/.exec(act.entries[0].trim());
+		if (!mAtk) return;
+		return mAtk[1].split(",").some(it => it.includes("w"));
+	}
+
+	static tryRun (mon, {cbNotFound = null, isAddOnly = false} = {}) {
+		if (!this._WEAPON_DETAIL_CACHE) throw new Error(`Attached item cache was not initialized!`);
+
+		if (!mon.action?.length) return;
+
+		const itemSet = new Set();
+
+		mon.action
+			.forEach(act => {
+				const weapon = this._WEAPON_DETAIL_CACHE[Renderer.monsterAction.getWeaponLookupName(act)];
+				if (weapon) return itemSet.add(DataUtil.proxy.getUid("item", weapon));
+
+				if (!cbNotFound) return;
+
+				if (!this._isLikelyWeapon(act)) return;
+
+				cbNotFound(act.name);
+			});
+
+		if (isAddOnly && mon.attachedItems) mon.attachedItems.forEach(it => itemSet.add(it));
+
+		if (!itemSet.size) delete mon.attachedItems;
+		else mon.attachedItems = [...itemSet].sort(SortUtil.ascSortLower);
+	}
 }
+
+globalThis.AttachedItemTag = AttachedItemTag;

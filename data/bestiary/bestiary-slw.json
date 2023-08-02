@@ -20,7 +20,11 @@
 			"size": [
 				"M"
 			],
-			"type": "humanoid",
+			"type": {
+				"type": "humanoid",
+				"sidekickType": "expert",
+				"sidekickHidden": true
+			},
 			"ac": [
 				{
 					"ac": 15,
@@ -96,6 +100,11 @@
 						"{@atk rw} {@hit 6} to hit, range 80/320 ft., one target. {@h}6 ({@damage 1d6 + 3}) piercing damage."
 					]
 				}
+			],
+			"attachedItems": [
+				"dagger|phb",
+				"shortbow|phb",
+				"shortsword|phb"
 			],
 			"languageTags": [
 				"C"
@@ -190,7 +199,14 @@
 			"size": [
 				"M"
 			],
-			"type": "humanoid",
+			"type": {
+				"type": "humanoid",
+				"sidekickType": "spellcaster",
+				"tags": [
+					"healer"
+				],
+				"sidekickHidden": true
+			},
 			"ac": [
 				{
 					"ac": 13,
@@ -288,6 +304,9 @@
 					]
 				}
 			],
+			"attachedItems": [
+				"quarterstaff|phb"
+			],
 			"languageTags": [
 				"C"
 			],
@@ -312,7 +331,14 @@
 			"size": [
 				"M"
 			],
-			"type": "humanoid",
+			"type": {
+				"type": "humanoid",
+				"sidekickType": "spellcaster",
+				"tags": [
+					"mage"
+				],
+				"sidekickHidden": true
+			},
 			"ac": [
 				{
 					"ac": 13,
@@ -409,6 +435,9 @@
 						"{@atk mw} {@hit 3} to hit, reach 5 ft., one target. {@h}3 ({@damage 1d6}) bludgeoning damage, or 4 ({@damage 1d8}) bludgeoning damage if used with two hands."
 					]
 				}
+			],
+			"attachedItems": [
+				"quarterstaff|phb"
 			],
 			"languageTags": [
 				"C"
@@ -545,6 +574,7 @@
 		{
 			"name": "Tooth-N-Claw",
 			"isNpc": true,
+			"isNamedCreature": true,
 			"source": "SLW",
 			"size": [
 				"M"
@@ -648,7 +678,11 @@
 			"size": [
 				"M"
 			],
-			"type": "humanoid",
+			"type": {
+				"type": "humanoid",
+				"sidekickType": "warrior",
+				"sidekickHidden": true
+			},
 			"ac": [
 				{
 					"ac": 20,
@@ -753,6 +787,10 @@
 					"name": "Warrior (Defender)",
 					"source": "SLW"
 				}
+			],
+			"attachedItems": [
+				"longbow|phb",
+				"longsword|phb"
 			],
 			"languageTags": [
 				"C"
